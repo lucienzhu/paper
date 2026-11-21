@@ -7,7 +7,8 @@ import { cameraView } from '../../design/checks';
 import { realRanges } from '../../data/aircraft';
 import type { DroneParameters, ParameterGroup } from '../../types/DroneParameters';
 
-const INK = '#0b1220', BLUE = '#1f62f0', SIGNAL = '#ff6a1a', VIOLET = '#7c3aed', AMBER = '#f59e0b';
+// 4.0“石墨”：线条用石墨，选中用深石墨；橙色只给电机轴心；相机与视野属于核对，用琥珀；紫色留给 AI 的建议。
+const INK = '#16181b', BLUE = '#4a5058', SIGNAL = '#e8590c', VIOLET = '#a86a0f', AMBER = '#c9922e';
 
 /** 数值过渡：参数一变，图形在约四分之一秒内滑到新位置；拖动时不做过渡。 */
 function useTween(target: number[], immediate: boolean, ms = 260) {
@@ -162,7 +163,7 @@ export const TopStage: React.FC<{
 
       {/* 起落架：在机身下方，虚线标位置 */}
       {overlays.hidden && gear.landing_gear_style !== '无独立起落架' && (
-        <g data-layer="gear" stroke={lit('landing_gear') ? BLUE : '#7c8aa0'} strokeWidth={fs * 0.1} strokeDasharray={`${fs * 0.3} ${fs * 0.25}`} fill="none" {...pick('landing_gear')}>
+        <g data-layer="gear" stroke={lit('landing_gear') ? BLUE : '#8a9099'} strokeWidth={fs * 0.1} strokeDasharray={`${fs * 0.3} ${fs * 0.25}`} fill="none" {...pick('landing_gear')}>
           {gear.landing_gear_style === '低矮滑撬/支腿'
             ? [-1, 1].map(s => <line key={s} x1={s * (bw / 2 + 6)} y1={-bl * 0.36} x2={s * (bw / 2 + 6)} y2={bl * 0.36} />)
             : [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy], i) => <circle key={i} cx={sx * (bw / 2 + 7)} cy={sy * bl * 0.32} r={fs * 0.3} />)}
@@ -182,7 +183,7 @@ export const TopStage: React.FC<{
           const bladeW = Math.max(2.4, propR * 0.11);
           return (
             <g key={h.id}>
-              <circle cx={h.x} cy={h.y} r={propR} fill={`url(#stage-disc-${uid})`} stroke={lit('propulsion') ? BLUE : '#a9bbdc'} strokeWidth={fs * 0.07} />
+              <circle cx={h.x} cy={h.y} r={propR} fill={`url(#stage-disc-${uid})`} stroke={lit('propulsion') ? BLUE : '#b9bec6'} strokeWidth={fs * 0.07} />
               {propulsion.prop_guard === 'ring' && <circle cx={h.x} cy={h.y} r={propR + 4} fill="none" stroke={INK} strokeOpacity="0.7" strokeWidth={3.2} />}
               {Array.from({ length: blades }, (_, k) => (
                 <path key={k} d={`M0,0 Q${propR * 0.45},${-bladeW} ${propR},0 Q${propR * 0.45},${bladeW} 0,0 Z`} fill={INK} fillOpacity="0.86"
@@ -312,7 +313,7 @@ export const SideView: React.FC<{ parameters: DroneParameters; layout: Layout; c
         : <path d={`M${-bl * 0.3},${bodyBottom} L${-bl * 0.44},0 M${bl * 0.3},${bodyBottom} L${bl * 0.44},0`} fill="none" stroke="#4a5568" strokeWidth={fs * 0.16} strokeLinecap="round" />)}
       {accessories.has_camera_gimbal && (
         <g data-layer="side-camera">
-          <rect x={mount === 'flush' ? nose + 1 : nose - 4} y={camY} width={camLen} height={camH} rx="3" fill={mount ? '#3b4658' : '#fff'} stroke={VIOLET} strokeWidth={fs * 0.12} strokeDasharray={mount ? undefined : `${fs * 0.3} ${fs * 0.22}`} />
+          <rect x={mount === 'flush' ? nose + 1 : nose - 4} y={camY} width={camLen} height={camH} rx="3" fill={mount ? '#4a5058' : '#fff'} stroke={VIOLET} strokeWidth={fs * 0.12} strokeDasharray={mount ? undefined : `${fs * 0.3} ${fs * 0.22}`} />
           <text x={nose - 88} y={camY + camH / 2 + fs * 0.25} fontSize={fs * 0.78} fill={VIOLET} textAnchor="end">相机朝前</text>
         </g>
       )}

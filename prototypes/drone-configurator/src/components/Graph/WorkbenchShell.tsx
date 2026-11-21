@@ -27,6 +27,7 @@ export function CanvasTopBar({board,research,drawer,onBoard,onResearch,onDrawer}
         <button className="canvas-small-tool" data-step="handoff" data-testid="open-research" onClick={()=>onDrawer(true)}
           title="核对提示词与规格、导出，查看全部轮次和历史回放"><FileSearch size={15}/><span>研究详情与导出</span></button>
       </>}
+      {!drawer && <a className="canvas-small-tool" href="#v=4" data-testid="open-v4" title="回到 4.0 工作台"><Workflow size={15}/><span>4.0</span></a>}
     </div>
   </header>;
 }

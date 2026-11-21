@@ -16,7 +16,7 @@ try {
   execFileSync(process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3'),
     ['-m','zipfile','-e',join(root,'configurator-offline.zip'),join(work,'package')]);
   browser = await launch({port:9341});
-  const page = await browser.open(pathToFileURL(join(work,'package','index.html')).href);
+  const page = await browser.open(pathToFileURL(join(work,'package','index.html')).href + '#v=3');
   assert.equal(await page.evaluate("document.querySelector('#drone-configurator-app').dataset.stepActive"),'canvas');
   // 只有一块画布：目标和造型是画布上的卡片，底部工具条用来添加步骤。
   assert.equal(await page.evaluate("document.querySelectorAll('nav.canvas-rail').length"),0);
@@ -90,6 +90,18 @@ try {
     await page.click('[data-history-case='+id+']');
     assert.ok(await page.evaluate("document.querySelector('[data-testid=history-replay] img').naturalWidth > 0"));
   }
+  // 4.0 也能离线打开：决定链照常画出；AI 明说要从本机工作台服务打开页面，设计者写的话照样留下。
+  await page.evaluate("location.hash=''");
+  await page.sleep(900);
+  assert.ok(await page.evaluate("!!document.querySelector('[data-testid=studio4]')"));
+  assert.equal(await page.evaluate("document.querySelectorAll('[data-node=layer]').length"),5);
+  assert.match(await page.evaluate("document.querySelector('[data-testid=ai-chip]').textContent"),/AI 未连接/);
+  await page.type('#v4-command','做一台小巧的航拍机');
+  await page.evaluate("document.querySelector('[data-testid=command-bar]').requestSubmit()");
+  await page.sleep(500);
+  assert.match(await page.evaluate("document.querySelector('.k4-status')?.textContent ?? ''"),/本机工作台服务/);
+  assert.match(await page.evaluate("JSON.parse(localStorage.getItem('multirotor-studio/v4/project')).project.intent.text"),/小巧/);
+  if(captures) await page.screenshot(join(captures,'studio4-offline.png'));
   assert.equal(page.errors().length,0);
   assert.equal(page.requests().filter(x=>/^https?:/.test(x)).length,0);
   console.log(JSON.stringify({offline:true,canvas:{nodes:canvas.cards.length,edges:canvas.edges.length,images:canvas.images},

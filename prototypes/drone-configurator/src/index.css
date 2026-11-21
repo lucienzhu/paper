@@ -6,7 +6,7 @@
   html, body, #root { height: 100%; }
   body { @apply bg-canvas font-sans text-ink antialiased; }
   button { -webkit-tap-highlight-color: transparent; }
-  :focus-visible { outline: 2px solid #1f62f0; outline-offset: 2px; border-radius: 6px; }
+  :focus-visible { outline: 2px solid #16181b; outline-offset: 2px; border-radius: 6px; }
 }
 
 @layer components {
@@ -33,6 +33,6 @@
   .slider:active::-webkit-slider-thumb { @apply cursor-grabbing bg-primary-600; }
 
   /* 画布：点阵底 */
-  .dot-grid { background-image: radial-gradient(circle, rgba(11,18,32,.10) 1px, transparent 1.2px); background-size: 18px 18px; }
+  .dot-grid { background-image: radial-gradient(circle, rgba(22,24,27,.10) 1px, transparent 1.2px); background-size: 18px 18px; }
   .scroll-thin { scrollbar-width: thin; scrollbar-color: #cfd5de transparent; }
 }

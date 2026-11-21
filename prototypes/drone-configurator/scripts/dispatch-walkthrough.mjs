@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { tagPNG } from './fixture-png.mjs';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_CORE || 'playwright-core');
-const url=process.argv[2] || pathToFileURL(resolve('dist/index.html')).href;
+const url=process.argv[2] || pathToFileURL(resolve('dist/index.html')).href + '#v=3';
 const fixture='http://127.0.0.1:47489';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const chromiumClient=await chromium.launch({channel:process.env.BROWSER_CHANNEL || 'chrome',headless:true});

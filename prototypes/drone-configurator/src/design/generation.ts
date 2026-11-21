@@ -184,6 +184,14 @@ export interface GenerationOptions {
   id: string; task: Task; goal?: string; parentCandidateId?: string;
   /** 自由提示：text 是设计者写的原文，原样发给模型。 */
   method?: 'free'; text?: string;
+  /** 4.0：直接给出这一轮的规格和所属方向，不读旧的草稿仓库。 */
+  context?: {
+    state: { parameters: import('../types/DroneParameters').DroneParameters; touched: Record<string, boolean>; intent: DesignIntent; designChatAudit?: [] };
+    variantId: string; variantName: string; variantScope: string; workflowOrigin?: { id: string; task: Task };
+    decisionPath?: { nodeId: string; layer: string; version: number }[];
+    /** 这一轮保持不动的层，写进记录。 */
+    keep?: string;
+  };
   /** 画布上的参考图：编号是它在画布上的节点，原件须为 PNG。 */
   reference?: { id: string; file: Blob };
 }
@@ -228,13 +236,18 @@ export function structuredText(parameters: DroneParameters, touched: Record<stri
 /** 自由提示这一轮在画布上的标题：原文的第一行，过长时截短。发给模型的仍是全文。 */
 export const freeTitle = (text: string) => { const line = text.trim().split(/\r?\n/)[0]; return line.length > 60 ? line.slice(0, 58) + '…' : line; };
 
-async function start({id, task, goal: requestedGoal, parentCandidateId, reference, method, text: freeText}: GenerationOptions) {
+async function start({id, task, goal: requestedGoal, parentCandidateId, reference, method, text: freeText, context}: GenerationOptions) {
   // Read the live draft at click time; a saved variant snapshot can be older.
-  const {parameters, touched, intent, designChatAudit, variants, activeVariant, workflowOrigin} = taskStores[task].getState();
-  const state = structuredClone({parameters, touched, intent, designChatAudit});
-  const variant = variants.find(v => v.id === activeVariant);
-  const name = variant?.name ?? activeVariant;
-  const variantScope = task + '/' + (variant?.workflowKey ?? activeVariant);
+  const live = context ? null : taskStores[task].getState();
+  const state = context ? structuredClone({...context.state, designChatAudit: context.state.designChatAudit ?? []})
+    : structuredClone({parameters: live!.parameters, touched: live!.touched, intent: live!.intent, designChatAudit: live!.designChatAudit});
+  const {parameters, intent} = state;
+  const activeVariant = context ? context.variantId : live!.activeVariant;
+  const variant = live?.variants.find(v => v.id === activeVariant);
+  const name = context ? context.variantName : variant?.name ?? activeVariant;
+  const variantScope = context ? context.variantScope : task + '/' + (variant?.workflowKey ?? activeVariant);
+  const workflowOrigin = context ? context.workflowOrigin : live!.workflowOrigin;
+  const decisionPath = context?.decisionPath;
   const goal = requestedGoal?.trim() || intent.note.trim() || name + ' · ' + taskLabels[intent.taskId ?? 'consumer_camera'] + ' · ' + frameRules[parameters.frame.frame_type].zh;
   if (!await findAttempt(id)) {
     const candidate = parentCandidateId
@@ -247,13 +260,13 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
       const words = (freeText ?? '').trim();
       if (!words) throw new Error('先写下要发给模型的文字。');
       await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal: freeTitle(words), keep: '', condition: 'free',
-        h3: {model: (await imageBackend()).model, status: 'ready'}}, words, parent, undefined, id);
+        h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath}, words, parent, undefined, id);
       ensureRunning(id);
       return id;
     }
     const text = structuredText(state.parameters, state.touched, state.intent, candidate ? 'candidate' : reference ? 'reference' : undefined, requestedGoal);
-    await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal, keep: '', condition: 'structured',
-      h3: {model: (await imageBackend()).model, status: 'ready'}}, '', parent, text, id);
+    await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal, keep: context?.keep ?? '', condition: 'structured',
+      h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath}, '', parent, text, id);
   }
   ensureRunning(id);
   return id;
