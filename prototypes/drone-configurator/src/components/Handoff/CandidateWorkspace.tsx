@@ -60,7 +60,8 @@ function AttemptView({attempt,onParent}:{attempt:FrozenAttempt;onParent:(id:stri
   </div>;
 }
 
-export default function CandidateWorkspace({initialAttempt, initialParent,onParentConsumed}: {initialAttempt?:string; initialParent?:string;onParentConsumed?:()=>void} = {}){
+/** allowNewRound=false：4.0 的轮次从画布上的生成节点发出，这里只看记录、取舍和导出。 */
+export default function CandidateWorkspace({initialAttempt, initialParent,onParentConsumed,allowNewRound=true}: {initialAttempt?:string; initialParent?:string;onParentConsumed?:()=>void;allowNewRound?:boolean} = {}){
   const {task,workflowOrigin,parameters,touched,intent,designChatAudit,activeVariant,variants}=useDroneStore();
   const [attempts,setAttempts]=useState<FrozenAttempt[]>([]),[selected,setSelected]=useState(initialAttempt ?? '');
   const [condition,setCondition]=useState<'free'|'structured'>('structured'),[text,setText]=useState(''),[editText,setEditText]=useState<string|null>(null);
@@ -102,8 +103,8 @@ export default function CandidateWorkspace({initialAttempt, initialParent,onPare
     }catch(e){setError(e instanceof Error?e.message:String(e));}finally{setBusy(false);}
   }
   return <div className="space-y-4 pb-5" data-testid="candidate-workspace">
-    <div className="grid items-start gap-4 lg:grid-cols-[minmax(280px,.85fr)_minmax(0,1.15fr)]">
-      <form ref={form} className="panel p-4 sm:p-5" onSubmit={e=>{e.preventDefault();void freeze();}}>
+    <div className={allowNewRound ? "grid items-start gap-4 lg:grid-cols-[minmax(280px,.85fr)_minmax(0,1.15fr)]" : "grid items-start gap-4"}>
+      {allowNewRound && <form ref={form} className="panel p-4 sm:p-5" onSubmit={e=>{e.preventDefault();void freeze();}}>
         <h3 className="flex items-center gap-2 font-semibold"><Save size={17}/>新一轮设计</h3><p className="mt-1 text-xs text-ink-soft">先确认输入，再连接服务或导入外部运行结果。</p>
         <label className="mt-3 block text-xs">本轮想改什么<input data-attempt-goal required className={input} value={goal} onChange={e=>setGoal(e.target.value)} placeholder="例如，调整机身与臂根的过渡"/></label>
         <label className="mt-3 block text-xs">希望保持什么<input className={input} value={keep} onChange={e=>setKeep(e.target.value)} placeholder="例如，当前布局和机鼻位置"/></label>
@@ -114,7 +115,7 @@ export default function CandidateWorkspace({initialAttempt, initialParent,onPare
         {parentId&&<p className="mt-2 break-all text-xs">父图 · {parentId}<br/>{parentRound && <>来源为{parentRound.variantName}的{frameRules[parentRound.config.parameters.frame.frame_type].zh}（{taskLabels[parentRound.config.task_id]}）。本轮使用当前草稿的规格。 </>}<button className="underline" type="button" onClick={()=>chooseParent('')}>移除</button></p>}
         <button type="submit" data-freeze-attempt className="btn-dark mt-4" disabled={busy||!goal.trim()||(condition==='free'&&!text.trim())}>确认并冻结本轮输入</button>
         {error&&<p role="alert" className="mt-2 text-xs text-rose-700">{error}</p>}
-      </form>
+      </form>}
       <section className="panel p-4 sm:p-5">
         <h3 className="flex items-center gap-2 font-semibold"><FileClock size={17}/>本机设计记录</h3>
         {attempt?<><label className="mt-3 block text-xs">选择轮次<select data-attempt className={input} value={attempt.id} onChange={e=>setSelected(e.target.value)}>{attempts.map(a=><option value={a.id} key={a.id}>{a.variantName} · {a.goal} · {stamp(a.createdAt)}</option>)}</select></label>

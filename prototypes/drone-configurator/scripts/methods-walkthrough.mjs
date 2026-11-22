@@ -65,7 +65,7 @@ try {
   const done = n => page.waitForFunction(count => document.querySelectorAll('[data-step-kind=picture], .cv-card.is-picture, [data-kind=image]').length >= count, n);
 
   // 1. 起始值取自真实产品；它不是登记的实验条件
-  await page.goto(origin);
+  await page.goto(origin + '/#v=3');
   await cards('goal').waitFor();
   await cards('design').locator('.cv-head').first().click();
   const stats = await cards('design').locator('.cv-stats b').allTextContents();

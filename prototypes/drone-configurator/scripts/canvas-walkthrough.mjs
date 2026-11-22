@@ -57,7 +57,7 @@ try {
   }
 
   // 1. 一块画布：没有另外的页面，目标和造型已经是画布上的两张卡片。
-  await page.goto(origin);
+  await page.goto(origin + '/#v=3');
   await cards('goal').waitFor();
   assert.equal(await page.locator('nav.canvas-rail').count(), 0);
   assert.equal(await page.locator('[data-workflow-node]').count(), 2);

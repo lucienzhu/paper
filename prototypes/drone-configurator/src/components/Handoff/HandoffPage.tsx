@@ -11,7 +11,7 @@ import './generation.css';
 
 export interface HandoffEntry { attemptId?: string; parentCandidateId?: string; candidates?: boolean }
 
-const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry }> = ({ wide, entry }) => {
+const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry; allowNewRound?: boolean }> = ({ wide, entry, allowNewRound = true }) => {
   const { parameters } = useDroneStore();
   const [panel, setPanel] = useState<'inputs'|'candidates'>(entry?.candidates ? 'candidates' : 'inputs');
   const [initialParent,setInitialParent]=useState(entry?.parentCandidateId);
@@ -40,7 +40,7 @@ const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry }> = ({ wide, 
 
         <PromptGenerator />
         <ParameterOverview />
-      </div> : <div className="mt-4"><CandidateWorkspace initialAttempt={entry?.attemptId} initialParent={initialParent} onParentConsumed={consumeParent}/></div>}
+      </div> : <div className="mt-4"><CandidateWorkspace initialAttempt={entry?.attemptId} initialParent={initialParent} onParentConsumed={consumeParent} allowNewRound={allowNewRound}/></div>}
       </section>
     </div>
   );

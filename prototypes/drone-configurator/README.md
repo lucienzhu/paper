@@ -4,7 +4,63 @@
 
 [下载离线版 ZIP](configurator-offline.zip?raw=true)，完整解压后打开 `index.html`。画布上的目标、依据、造型、便签、参考图、保存版本和历史案例可离线使用。在线生成与设计对话使用下方本机服务。工作台支持三旋、四旋、平面六旋、平面八旋、共轴六旋 Y6 和共轴八旋 X8，使用任务可分别选择日常航拍、农业植保或中性外观比较。
 
-## 一块画布，每一步都在上面做
+## 4.0：每条方向是一串设计决定（默认打开）
+
+打开页面看到的是 4.0。画布上每条方向占一行，从左到右是：意图 → 机架 → 动力 → 机身 → 细节 → 色材 → 生成 → 候选与比较。每一层节点只管自己的决定，节点上画着累到这一层为止的顶视小图。点哪个节点，右侧面板就是那一步；画布下方的输入框跟着选中的节点走。为什么这样分层、和别的分法比过什么，见[界面设计说明](interface-design.md)第一节。
+
+| 想做的事 | 怎样做 |
+| --- | --- |
+| 写这次想做什么 | 在下方输入框写一句，回车。AI 读出场景、观察状态和造型目标，配上用户原话；每一条在右侧采纳或不要。意图写过以后再说一句是补充，已确认的条目保留 |
+| 让 AI 提几个方向 | 意图面板里点「让 AI 提几个方向」。每个方向是一组跨层的改动，「放上画布」后成为一条方向，上游能共用的层继续共用 |
+| 改某一层 | 点那一层，在右侧直接改；或在下方输入框对这一层说，例如“再紧凑一点”。AI 的建议出现在右侧，写明依据有多强 |
+| 试另一种做法 | 在任何一层点「在这里分叉」，或在 AI 建议上点「开一个分支试试」。新方向复制这一层和下游，上游继续共用 |
+| 生成 | 每行末尾的「生成」节点。上游改过以后它标“已过时”，并列出改了哪几项 |
+| 在一张候选上改 | 选中候选，在「在这张图上改」里说要改什么。AI 只改相关的层，其余层记为“保持不动”，父图就是这张候选；确认后才生成 |
+| 比较取舍 | 在候选上勾两到四张，点「比较已选的 N 张」。图并排放，下面列出差在哪几项决定；选定一张并写理由 |
+| 把问题送回某一层 | 候选面板里「把问题送回某一层」，那一层的节点会标“待处理” |
+| 回到总览 | 点画布空白处，或按 Esc |
+| 查研究记录 | 顶栏「研究记录与导出」：当前方向的提示词逐句来源、规格卡、全部轮次与取舍、原件导出。新的一轮只能从画布上的生成节点发出 |
+
+**AI 的话分三档，档位由证据登记决定，不由模型决定。** 每条建议标出依据的强度：
+
+- **已验证**：几何算得出的，或出图管线已经量过、有分母的事实。例如 W/L 0.70 的设计通路实际出成约 1.0，0/12。这一档的主按钮是「照此修正」。
+- **统计相关**：S5 里真实产品的相关。例如机身相对轴距更宽的，往往被评为更紧凑。这一档的主按钮是「开一个分支试试」。
+- **设计假设**：设计者的转译，还没有检验过。例如臂根无缝过渡更显整体。主按钮同样是「开一个分支试试」。
+
+档位取建议所引条目里与改动字段相关的最强一条。没有引用的建议一律算设计假设。登记表在 [registry.mjs](src/design/evidence/registry.mjs)，每条写明来源和适用范围。用户原话单独显示：它支撑意图，不支撑比例。两条依据方向相反时两边都列出来。分支比较时写下的观察记为设计者对这个方案的判断，不算研究数据。
+
+**AI 的提议先经本机服务核对再给设计者看。** 字段和取值必须合法，锁定的层不能改，引用的条目必须存在且和改动的字段有关。不合格的条目被拿掉，并写进调用日志。
+
+**文字模型。** 工作台那一场和“AI 对话 + 自由提示”那一场用同一个文字模型，通过接口调用，不在本机部署。版本先锁定：服务回执里的模型名和锁定的不一致，这次回答就不用。每次调用记一行到 `WORKBENCH_AI_LOG_DIR`（默认在用户数据目录的 `Freeloop/multirotor-workbench/ai-calls`）下的 `ai-calls-日期.jsonl`。每行包括调用编号、时间、任务、模型、耗时、实际发出的消息、原始回答、核对后的结果、被拿掉的条目、用量和服务的请求编号。没有配置密钥时由规则回退应答，界面上写“规则回退（未连模型）”。给自由提示那一场的助手不带证据登记，也不带参数表。
+
+| 环境变量 | 作用 |
+| --- | --- |
+| `WORKBENCH_LLM_API_KEY`（或 `MINIMAX_API_KEY`） | 文字模型的密钥。只放在启动进程的环境里，不写进任何文件 |
+| `MINIMAX_REGION` | `global` 或 `cn`，用 MiniMax 时选区域 |
+| `WORKBENCH_LLM_MODEL` | 锁定的模型名，默认 `MiniMax-M3.1-Flash`。正式场次前由作者定下并写进登记 |
+| `WORKBENCH_LLM_BASE_URL` | 改接其他兼容 OpenAI 接口的服务时填它的地址 |
+| `WORKBENCH_LLM_EFFORT` | 推理强度，接口支持时才填 |
+| `WORKBENCH_AI_LOG_DIR` | 调用日志目录 |
+
+```powershell
+$env:MINIMAX_REGION = 'global'
+$env:WORKBENCH_LLM_MODEL = 'MiniMax-M3.1-Flash'
+$env:WORKBENCH_LLM_API_KEY = [System.Net.NetworkCredential]::new('', (Read-Host 'API Key' -AsSecureString)).Password
+try { node scripts/design-chat-server.mjs --port 4178 --image-backend qwen-comfy --comfy-url http://GPU主机:8188 } finally { Remove-Item Env:WORKBENCH_LLM_API_KEY }
+```
+
+**研究场次设置。** 不选节点时，总览面板最下面有「研究场次设置（主持人用）」，内容如下：
+
+- 这一场的方式：不限、工作台、AI 对话 + 自由提示。
+- 载入并锁定 C2 登记条件：每条方向的机架都锁定，AI 也不提这一层的建议。
+- 出图后端、文字模型和证据登记各自的版本。
+- 「导出工作区记录（JSON）」：方向、各层节点、AI 建议及其处理、对话、比较与取舍、事件。
+
+“AI 对话 + 自由提示”那一场的界面只有对话、提示词和候选。设计者可以和同一个文字模型聊想法、让它起草提示词。发给出图模型的是设计者确认的那段文字。每一轮记下这段文字的来历：设计者自己写的、AI 起草后原样用的，或起草后改过的。
+
+**3.6 版仍在。** 地址栏加 `#v=3`，或者用旧的复核地址（带 `step=`、`cfg=`、`board=` 等），打开的是 3.6 版和 B2 案例；它的顶栏有回到 4.0 的入口。下面几节写的是 3.6 版。
+
+## 3.6 版：一块画布，每一步都在上面做（地址栏 `#v=3`）
 
 3.4 版把目标、参数、候选图三个页面并进了画布。设计的每一步是画布上的一张卡片，在卡片上直接做；右侧面板跟着所选的卡片变化。为什么这样改见[界面设计说明](interface-design.md)和[画布式工作流拆解](../../planning/workbench-handoff/literature/画布式工作流拆解.md)。
 
@@ -108,6 +164,14 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 
 | 要修改的内容 | 文件 |
 | --- | --- |
+| 4.0：入口与版本切换 | [Root.tsx](src/Root.tsx)、[Studio4.tsx](src/v4/ui/Studio4.tsx) |
+| 4.0：决定链的数据与分叉、共用、过时（纯逻辑，有测试） | [model.ts](src/v4/model.ts)、[v4-model.test.mjs](scripts/v4-model.test.mjs) |
+| 4.0：工作区状态、撤销、本机保存；让旧控件改到所属的层 | [store.ts](src/v4/store.ts)、[adapter.ts](src/v4/adapter.ts) |
+| 4.0：画布、节点与视图 | [Board4.tsx](src/v4/ui/Board4.tsx)、[MiniTop.tsx](src/v4/ui/MiniTop.tsx)、[studio4.css](src/v4/ui/studio4.css) |
+| 4.0：右侧面板（总览、意图、各层、生成、候选、比较）与语言输入 | [PanelOverview.tsx](src/v4/ui/PanelOverview.tsx)、[PanelIntent.tsx](src/v4/ui/PanelIntent.tsx)、[PanelLayer.tsx](src/v4/ui/PanelLayer.tsx)、[PanelRound.tsx](src/v4/ui/PanelRound.tsx)、[CommandBar.tsx](src/v4/ui/CommandBar.tsx) |
+| 4.0：AI 对话加自由提示那一场；研究场次设置；工作区导出 | [FreeStudio.tsx](src/v4/ui/FreeStudio.tsx)、[SessionSetup.tsx](src/v4/ui/SessionSetup.tsx)、[exportWorkspace.ts](src/v4/exportWorkspace.ts) |
+| 4.0：证据登记与分档 | [registry.mjs](src/design/evidence/registry.mjs)、[Evidence.tsx](src/v4/ui/Evidence.tsx) |
+| 4.0：AI 服务（提示、核对、锁定版本、调用日志、规则回退） | [design-ai.mjs](scripts/design-ai.mjs)、[design-ai.test.mjs](scripts/design-ai.test.mjs)、浏览器一侧 [ai.ts](src/v4/ai.ts) |
 | 应用外壳、地址栏入口、顶栏 | [App.tsx](src/App.tsx)、[WorkbenchShell.tsx](src/components/Graph/WorkbenchShell.tsx) |
 | 设计画布：添加步骤、选中后的下一步、生成与取舍 | [CanvasWorkspace.tsx](src/components/Canvas/CanvasWorkspace.tsx) |
 | 画布上的步骤卡片（目标、造型、生成、图像、便签） | [StepCards.tsx](src/components/Canvas/StepCards.tsx) |
@@ -153,8 +217,10 @@ npm run evidence -- --extra 路径/新增短引文.csv
 | `npm run dev` | 本机编辑预览。检索、对话和图像作业转给 4178 端口的本机服务（`studio:chat` 或 `studio:fixture`） |
 | `npm run build` | TypeScript 检查并生成 `dist/index.html` |
 | `npm run package-offline` | 重新构建并打包 `configurator-offline.zip` |
-| `npm run walkthrough:canvas` | 先 `npm run build`。在隔离的浏览器里把画布上的每一步做一遍：目标、依据、造型拖动、生成、保留、以候选继续、参考图作输入、便签、新方向、留档、B2 案例和手机宽度。图像作业由软件夹具应答，不调用模型。可加一个目录参数保存截图 |
-| `npm run walkthrough:methods` | 先 `npm run build`。同一块画布、同一个 Qwen 后端（软件夹具），先做一场自由提示，再做一场结构化：核对起始值、载入 C2 登记条件、自由提示只发原文、两种方式的生成设置逐项相同、原始文件都存了盘、一场只显示一种方式。加两个目录参数可保存截图和留下作业文件，供 [登记工具试收](review/20261121-defaults-free-prompt/bridge-dry-run.sh) |
+| `npm run walkthrough:studio4` | 先 `npm run build`。4.0 的整条流程：写意图、AI 读目标、补充一句不盖掉已确认的条目、AI 提方向并放成两条方向（上游共用）、对机身说话（建议标统计相关、默认开分支）、生成、在候选上改、两张比较取舍；再做一场 AI 对话加自由提示（核对发出的就是确认的原文、记下来源），载入登记条件看机架锁定，导出工作区记录，核对 AI 调用日志。文字模型和图像作业都由夹具应答，不调用模型。可加一个目录参数保存截图 |
+| `npm run ai:smoke` | 接上真实文字模型后的冒烟检查：读意图、提方向、对机身说话、在候选上改、自由提示的助手各调用一次，列出是否通过服务的核对、耗时和拿掉的条目。会产生 5 次真实调用；密钥只从环境变量读。加 `-- --fixture` 只检查脚本本身 |
+| `npm run walkthrough:canvas` | 先 `npm run build`。3.6 版（`#v=3`）。在隔离的浏览器里把画布上的每一步做一遍：目标、依据、造型拖动、生成、保留、以候选继续、参考图作输入、便签、新方向、留档、B2 案例和手机宽度。图像作业由软件夹具应答，不调用模型。可加一个目录参数保存截图 |
+| `npm run walkthrough:methods` | 先 `npm run build`。3.6 版（`#v=3`）。同一块画布、同一个 Qwen 后端（软件夹具），先做一场自由提示，再做一场结构化：核对起始值、载入 C2 登记条件、自由提示只发原文、两种方式的生成设置逐项相同、原始文件都存了盘、一场只显示一种方式。加两个目录参数可保存截图和留下作业文件，供 [登记工具试收](review/20261121-defaults-free-prompt/bridge-dry-run.sh) |
 | `npm run walkthrough` | 从离线包走一遍目标、造型和导出，保存农业六旋实际导出与桌面截图，命令会输出所在目录 |
 | `npm run check-offline` | 解压离线包，以 `file://` 打开，检查画布、目标面板、造型、导出、报错、是否有非本地请求和实际下载 |
 | `npm run verify` | 任务、构型、几何、导入导出与提示词自动复核 |

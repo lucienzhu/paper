@@ -7,6 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 import { ChatError, createDesignService } from './design-chat.mjs';
 import { createImageJobs } from './image-jobs.mjs';
+import { AiError, createDesignAI, defaultModel, evidenceForClient } from './design-ai.mjs';
 
 const dist = fileURLToPath(new URL('../dist/', import.meta.url));
 const limit = 64 * 1024;
@@ -63,7 +64,7 @@ async function serveAsset(req, res, pathname) {
   else await pipeline(createReadStream(asset), res);
 }
 
-export function createDesignServer(chat, evidence, imageJobs) {
+export function createDesignServer(chat, evidence, imageJobs, ai) {
   return createServer({ requestTimeout: 20000, headersTimeout: 10000, maxHeaderSize: 8192 }, async (req, res) => {
     try {
       res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -87,6 +88,21 @@ export function createDesignServer(chat, evidence, imageJobs) {
           const result = pathname === '/api/design/evidence' ? evidence(input) : await chat(input, { signal: controller.signal });
           if (!res.destroyed) sendJson(res, 200, result);
         } finally { res.off('close', cancel); }
+      } else if (ai && pathname === '/api/ai/describe') {
+        if (req.method !== 'GET') fail(405, 'method_not_allowed', '仅支持 GET。');
+        sendJson(res, 200, { ...ai.describe(), evidence: evidenceForClient() });
+      } else if (ai && /^\/api\/ai\/(intent|directions|layer|revise|free)$/.test(pathname)) {
+        if (req.method !== 'POST') fail(405, 'method_not_allowed', 'AI 请求仅支持 POST。');
+        const task = pathname.slice('/api/ai/'.length);
+        const controller = new AbortController();
+        const cancel = () => { if (!res.writableEnded) controller.abort(); };
+        res.once('close', cancel);
+        try {
+          const input = await readInput(req);
+          if (res.destroyed) return;
+          const result = await ai[task](input, { signal: controller.signal });
+          if (!res.destroyed) sendJson(res, 200, result);
+        } finally { res.off('close', cancel); }
       } else if (imageJobs && pathname==='/api/h3/backend') {
         if (req.method!=='GET') fail(405,'method_not_allowed','后端信息仅支持 GET。');
         sendJson(res,200,imageJobs.describe());
@@ -101,7 +117,7 @@ export function createDesignServer(chat, evidence, imageJobs) {
       }
     } catch (error) {
       if (res.headersSent || res.destroyed) return;
-      if (error instanceof ChatError) {
+      if (error instanceof ChatError || error instanceof AiError) {
         sendJson(res, error.status, { error: error.message, code: error.code, ...error.metadata });
       } else {
         sendJson(res, 500, { error: '本机设计对话服务未能处理本次请求。', code: 'local_error' });
@@ -122,9 +138,14 @@ async function main() {
     unet: process.env.QWEN_UNET, clip: process.env.QWEN_CLIP, vae: process.env.QWEN_VAE } : undefined;
   const imageJobs=createImageJobs({apiKey:process.env.MINIMAX_IMAGE_API_KEY?.trim() || process.env.MINIMAX_API_KEY?.trim(),backend,
     region:process.env.MINIMAX_IMAGE_REGION ?? process.env.MINIMAX_REGION ?? 'cn',directory:process.env.WORKBENCH_IMAGE_JOBS_DIR});
-  const server = createDesignServer(chat, evidence, imageJobs);
+  // 4.0 的 AI：文字模型经 API 调用，两组同一个锁定的版本。密钥只从环境变量读。
+  const ai = await createDesignAI({ apiKey: (process.env.WORKBENCH_LLM_API_KEY ?? process.env.MINIMAX_API_KEY)?.trim(),
+    region: process.env.MINIMAX_REGION ?? 'cn', model: process.env.WORKBENCH_LLM_MODEL?.trim() || defaultModel,
+    baseUrl: process.env.WORKBENCH_LLM_BASE_URL?.trim() || undefined, effort: process.env.WORKBENCH_LLM_EFFORT?.trim() || undefined,
+    logDir: process.env.WORKBENCH_AI_LOG_DIR });
+  const server = createDesignServer(chat, evidence, imageJobs, ai);
   server.on('error', () => { console.error('本机设计对话服务启动失败，请核对端口。'); process.exitCode = 1; });
-  server.listen(port, '127.0.0.1', () => console.log(`本机多旋翼设计工作台 http://127.0.0.1:${port}/ · 图像后端：${imageJobs.describe().label}`));
+  server.listen(port, '127.0.0.1', () => console.log(`本机多旋翼设计工作台 http://127.0.0.1:${port}/ · 图像后端：${imageJobs.describe().label} · 文字模型：${ai.describe().label}`));
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

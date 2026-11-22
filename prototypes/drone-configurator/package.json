@@ -1,7 +1,7 @@
 {
   "name": "drone_configurator_ui",
   "private": true,
-  "version": "3.6.0",
+  "version": "4.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,6 +18,8 @@
     "walkthrough": "node scripts/check-offline.mjs --capture",
     "walkthrough:canvas": "node scripts/canvas-walkthrough.mjs",
     "walkthrough:methods": "node scripts/methods-walkthrough.mjs",
+    "walkthrough:studio4": "node scripts/studio4-walkthrough.mjs",
+    "ai:smoke": "node scripts/ai-smoke.mjs",
     "walkthrough:pr75": "node scripts/walkthrough.mjs"
   },
   "dependencies": {

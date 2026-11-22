@@ -45,7 +45,7 @@ try {
     await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, {steps: 3});
     await page.mouse.up();
   }
-  await page.goto(origin);
+  await page.goto(origin + '/#v=3');
   await page.locator('[data-board="history"]').click();
   await page.locator('.react-flow__edge-path').first().waitFor({state: 'attached'});
   assert.equal(await page.locator('.react-flow__node').count(), 6);

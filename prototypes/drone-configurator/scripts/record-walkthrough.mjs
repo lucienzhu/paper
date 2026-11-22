@@ -22,7 +22,7 @@ try{
     await page.locator('[data-testid=step-panel][data-panel-mode=' + (step === 'insight' ? 'goal' : 'design') + ']').waitFor();
   };
  async function open(){
-  await page.goto(origin);await go('handoff');
+  await page.goto(origin + '/#v=3');await go('handoff');
  }
  async function exportSelected(){
    const download=page.waitForEvent('download');await page.locator('[data-export-attempt]').click();

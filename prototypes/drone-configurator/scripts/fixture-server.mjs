@@ -7,6 +7,7 @@ import { parseArgs } from 'node:util';
 import { createDesignService } from './design-chat.mjs';
 import { createDesignServer } from './design-chat-server.mjs';
 import { createImageJobs } from './image-jobs.mjs';
+import { createDesignAI } from './design-ai.mjs';
 import { tagPNGFront as tagPNG } from './fixture-png.mjs';
 
 const { values } = parseArgs({ options: { port: { type: 'string' }, delay: { type: 'string' }, 'image-backend': { type: 'string' } } });
@@ -35,5 +36,6 @@ const jobs = values['image-backend'] === 'qwen-comfy'
     await new Promise(resolve => setTimeout(resolve, delay));
     return Response.json({ data: [{ b64_json: body.images[0].image_url.split(',')[1] }] }, { headers: { 'trace-id': 'software-fixture' } });
   } });
-createDesignServer(chat, evidence, jobs).listen(port, '127.0.0.1', () =>
+const ai = await createDesignAI({ logDir: await mkdtemp(join(tmpdir(), 'workbench-ai-')) });
+createDesignServer(chat, evidence, jobs, ai).listen(port, '127.0.0.1', () =>
   console.log(`界面走查服务（软件夹具，不调用模型） http://127.0.0.1:${port}/ · 冒充的后端：${jobs.describe().label}`));
