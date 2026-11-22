@@ -177,3 +177,23 @@ test('a free-prompt Qwen job sends only the designer text, with the same setting
     await assert.rejects(dev.submit({attemptId:randomUUID(),condition:'free',prompt:words,inputs:[]}),/MiniMax 后端不接受不带图的自由提示/);
   } finally { await rm(directory,{recursive:true,force:true}); }
 });
+
+test('a record replace that hits a transient Windows lock is retried instead of leaving the round stuck', async () => {
+  const { mkdtemp, readFile, writeFile } = await import('node:fs/promises');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { replaceFile } = await import('./image-jobs.mjs');
+  const dir = await mkdtemp(join(tmpdir(), 'replace-'));
+  const target = join(dir, 'a.json'), tmp = join(dir, 'a.json.tmp');
+  await writeFile(target, 'old'); await writeFile(tmp, 'new');
+  // 冒充 Windows：前两次 rename 报 EPERM。
+  const fs = await import('node:fs/promises');
+  const real = fs.rename; let calls = 0;
+  const { syncBuiltinESMExports } = await import('node:module');
+  fs.default.rename = async (...args) => { calls++; if (calls <= 2) { const e = new Error('locked'); e.code = 'EPERM'; throw e; } return real(...args); };
+  syncBuiltinESMExports();
+  try { await replaceFile(tmp, target); }
+  finally { fs.default.rename = real; syncBuiltinESMExports(); }
+  assert.equal(await readFile(target, 'utf8'), 'new');
+  assert.equal(calls, 3);
+});

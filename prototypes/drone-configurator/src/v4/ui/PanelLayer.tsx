@@ -1,5 +1,5 @@
 // 一层的面板：这一层决定什么；可拖动的顶视图；AI 的建议；这一层自己的控件；核对；从候选送回来的问题；这一层的记录。
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GitBranch, Lock, Copy, CheckCircle2, AlertTriangle, Info, RotateCcw } from 'lucide-react';
 import { DroneStoreContext, taskStores } from '../../store/droneStore';
 import { TopStage } from '../../components/Studio/Stage';
@@ -105,17 +105,36 @@ function DetailsControls({ laneId }: { laneId: string }) {
 function CmfControls({ laneId }: { laneId: string }) {
   const p = laneParameters(useStudio(s => s.project), laneId);
   const colour = p.accessories.drone_primary_color;
+  const custom = !!colour && !colourSwatches.some(c => c.value.toLowerCase() === colour.toLowerCase());
+  const [hex, setHex] = useState(custom ? colour : '');
+  const [note, setNote] = useState(p.accessories.custom_prompt_additions);
+  useEffect(() => { setNote(p.accessories.custom_prompt_additions); }, [p.accessories.custom_prompt_additions]);
+  const set = (path: string, value: unknown) => useStudio.getState().setField(laneId, path, value);
+  const applyHex = (value: string) => { const v = value.trim().toLowerCase(); if (/^#[0-9a-f]{6}$/.test(v)) set('accessories.drone_primary_color', v); };
   return <>
-    <Field path="accessories.drone_primary_color" hint="不指定就不写进文字。">
+    <Field path="accessories.drone_primary_color" hint="不指定就不写进文字。色板以外的颜色用“自定义”，也可以在下面的说明里写颜色的名字。">
       <div className="row4" role="radiogroup" aria-label="主色">
-        <button type="button" role="radio" aria-checked={!colour} className={'b4 sm' + (!colour ? ' pri' : '')} onClick={() => useStudio.getState().setField(laneId, 'accessories.drone_primary_color', '')}>不指定</button>
-        {colourSwatches.map(c => <button key={c.value} type="button" role="radio" aria-checked={colour === c.value} title={c.zh} data-colour={c.value}
-          onClick={() => useStudio.getState().setField(laneId, 'accessories.drone_primary_color', c.value)}
+        <button type="button" role="radio" aria-checked={!colour} className={'b4 sm' + (!colour ? ' pri' : '')} onClick={() => set('accessories.drone_primary_color', '')}>不指定</button>
+        {colourSwatches.map(c => <button key={c.value} type="button" role="radio" aria-checked={colour === c.value} title={c.zh} aria-label={c.zh} data-colour={c.value}
+          onClick={() => set('accessories.drone_primary_color', c.value)}
           style={{ width: 30, height: 30, borderRadius: 8, background: c.value, border: colour === c.value ? '2px solid var(--ink)' : '1px solid var(--line-2)', boxShadow: colour === c.value ? '0 0 0 2px var(--surface) inset' : undefined, cursor: 'pointer' }} />)}
+      </div>
+      <div className="row4 colour4" data-testid="custom-colour">
+        <label className={'colour4-pick' + (custom ? ' is-on' : '')} title="自定义颜色">
+          <input type="color" aria-label="自定义颜色" value={custom ? colour : hex || '#6b8fb5'} onChange={e => { setHex(e.target.value); applyHex(e.target.value); }} />
+          <span>自定义</span>
+        </label>
+        <input className="in4" style={{ width: 110 }} aria-label="颜色的十六进制值" placeholder="#6b8fb5" value={custom ? colour : hex}
+          onChange={e => { setHex(e.target.value); applyHex(e.target.value); }} />
+        {custom && <span className="r4-muted">已用自定义颜色 {colour}</span>}
       </div>
     </Field>
     <Field path="accessories.surface_finish"><OpenChoice path="accessories.surface_finish" options={finishOptions} /></Field>
     <Field path="frame.material_visual" hint="机臂看上去是什么材料。"><OpenChoice path="frame.material_visual" options={armMaterialOptions} /></Field>
+    <Field path="accessories.custom_prompt_additions" hint="选项里没有的，自己写：颜色的名字、分色、局部材质、纹理、标识位置……原样写进生成的文字，AI 不改这一栏。">
+      <textarea className="ta4" data-testid="cmf-note" rows={3} maxLength={200} value={note} placeholder="例如：主色雾霾蓝，机臂哑光黑，镜头圈拉丝银"
+        onChange={e => setNote(e.target.value)} onBlur={() => { if (note !== p.accessories.custom_prompt_additions) set('accessories.custom_prompt_additions', note.trim()); }} />
+    </Field>
   </>;
 }
 

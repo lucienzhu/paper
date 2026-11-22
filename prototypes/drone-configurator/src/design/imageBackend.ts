@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 export type ImageModel = 'MiniMax-H3-Image' | 'Qwen-Image-2.1';
-export interface ImageBackend { provider: 'minimax' | 'qwen-comfy'; model: ImageModel; endpoint: string; label: string }
+export interface ImageBackend { provider: 'minimax' | 'qwen-comfy'; model: ImageModel; endpoint: string; label: string; /** 软件夹具冒充后端接口，不出真图。 */ fixture?: boolean }
 export const minimaxBackend: ImageBackend = { provider: 'minimax', model: 'MiniMax-H3-Image', endpoint: '/v1/images/edits', label: 'MiniMax H3 Image' };
 export const qwenBackend: ImageBackend = { provider: 'qwen-comfy', model: 'Qwen-Image-2.1', endpoint: '/prompt', label: 'Qwen-Image 2.1（本机 ComfyUI）' };
 /** 一轮记录冻结时登记的模型决定了它该由哪个后端应答。 */
@@ -16,7 +16,9 @@ export function imageBackend(): Promise<ImageBackend> {
     try {
       const response = await fetch('/api/h3/backend', { cache: 'no-store', credentials: 'omit', signal: AbortSignal.timeout(10000) });
       const info = response.ok ? await response.json() : null;
-      return info?.provider === qwenBackend.provider && info?.model === qwenBackend.model ? qwenBackend : minimaxBackend;
+      const known = info?.provider === qwenBackend.provider && info?.model === qwenBackend.model ? qwenBackend : minimaxBackend;
+      // 走查用的软件夹具：标签照服务说的写（“软件夹具……不出真图”），别让截图看起来像真实回图。
+      return info?.fixture === true && typeof info.label === 'string' ? { ...known, label: info.label, fixture: true } : known;
     } catch { return minimaxBackend; }
   })();
   return current;

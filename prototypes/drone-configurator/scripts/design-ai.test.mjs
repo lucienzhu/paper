@@ -109,6 +109,38 @@ test('a reply from a different model version is refused, so both conditions stay
   } finally { await rm(logDir, { recursive: true, force: true }); }
 });
 
+test('a reply that does not name its model is refused, and the log keeps the requested and served versions apart', async () => {
+  const logDir = await mkdtemp(join(tmpdir(), 'ai-unnamed-'));
+  try {
+    const unnamed = async () => Response.json({ choices: [{ finish_reason: 'stop', message: { content: '{"reply":"x","prompt":null}' } }] });
+    const ai = await createDesignAI({ apiKey: 'k', region: 'global', model: 'MiniMax-M3.1-Flash', fetchImpl: unnamed, logDir });
+    await assert.rejects(ai.free({ messages: [{ role: 'user', content: '你好' }] }), /没有写模型名/);
+    const named = async () => Response.json({ model: 'MiniMax-M3.1-Flash', choices: [{ finish_reason: 'stop', message: { content: '{"reply":"好","prompt":null}' } }] });
+    const ok = await createDesignAI({ apiKey: 'k', region: 'global', model: 'MiniMax-M3.1-Flash', fetchImpl: named, logDir });
+    const reply = await ok.free({ messages: [{ role: 'user', content: '你好' }] });
+    assert.equal(reply.call.servedModel, 'MiniMax-M3.1-Flash');
+    const lines = (await readFile(join(logDir, (await readdir(logDir))[0]), 'utf8')).trim().split('\n').map(l => JSON.parse(l));
+    assert.equal(lines[0].requestedModel, 'MiniMax-M3.1-Flash');
+    assert.equal(lines[0].servedModel, null);
+    assert.equal(lines[1].servedModel, 'MiniMax-M3.1-Flash');
+  } finally { await rm(logDir, { recursive: true, force: true }); }
+});
+
+test('a use outside the two study cases is asked about, not silently compiled as aerial imaging', async () => {
+  const logDir = await mkdtemp(join(tmpdir(), 'ai-scope-'));
+  try {
+    const ai = await createDesignAI({ logDir });
+    const r = await ai.intent({ text: '做一台光伏巡检用的无人机，看起来要紧凑', taskId: 'consumer_camera' });
+    assert.equal(r.outOfScope, '光伏巡检');
+    assert.equal(r.taskId, 'consumer_camera', '任务先保持原样，等设计者选');
+    assert.match(r.question.text, /不在本研究的两个场景里/);
+    assert.deepEqual(r.question.options.map(o => o.value), ['task:consumer_camera', 'task:agricultural_spraying', 'task:neutral_design']);
+    const farm = await ai.intent({ text: '植保机要显得紧凑', taskId: 'consumer_camera' });
+    assert.equal(farm.outOfScope, null);
+    assert.equal(farm.taskId, 'agricultural_spraying');
+  } finally { await rm(logDir, { recursive: true, force: true }); }
+});
+
 test('the free assistant receives no evidence register and no parameter table', async () => {
   const logDir = await mkdtemp(join(tmpdir(), 'ai-free-'));
   let body;

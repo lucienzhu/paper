@@ -50,7 +50,7 @@ export interface AccessoriesParameters {
   /** 主色。空字符串表示留白。 */
   drone_primary_color: string;
   /** 表面处理。空字符串表示留白。 */
-  surface_finish: '' | 'matte' | 'satin';
+  surface_finish: '' | 'matte' | 'satin' | 'gloss' | 'metallic' | 'textured';
 }
 
 // 用户画像类型（早期版本的展示材料，现行界面不再用它推定颜色或材质）

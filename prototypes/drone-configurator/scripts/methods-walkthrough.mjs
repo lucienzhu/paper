@@ -34,7 +34,7 @@ const comfy = async (url, init = {}) => {
   return new Response('not found', { status: 404 });
 };
 const { chat, evidence } = await createDesignService({ apiKey: undefined, region: 'cn' });
-const jobs = createImageJobs({ backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 }, fetchImpl: comfy, directory: jobDirectory });
+const jobs = createImageJobs({ fixture: true, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 }, fetchImpl: comfy, directory: jobDirectory });
 const server = createDesignServer(chat, evidence, jobs);
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = 'http://127.0.0.1:' + server.address().port;

@@ -9,13 +9,11 @@ import { designStart } from '../src/design/defaults.ts';
 import { fields } from '../src/design/fields.ts';
 import { computeLayout } from '../src/design/design.ts';
 
-test('every parameter in the field register belongs to exactly one layer, except the free-text addition', () => {
+test('every parameter in the field register belongs to exactly one layer; the designer\'s own colour and material note sits in CMF', () => {
   const owned = layers.flatMap(l => layerFields[l]);
   assert.equal(new Set(owned).size, owned.length);
-  for (const f of fields) {
-    if (f.path === 'accessories.custom_prompt_additions') assert.equal(layerOf(f.path), null);
-    else assert.ok(layerOf(f.path), '没有归属：' + f.path);
-  }
+  for (const f of fields) assert.ok(layerOf(f.path), '没有归属：' + f.path);
+  assert.equal(layerOf('accessories.custom_prompt_additions'), 'cmf');
 });
 
 test('a new project starts from the real-product starting values on one direction', () => {

@@ -2,7 +2,7 @@
 // 确认以后，AI 可以提 2 到 3 个方向；放上画布的方向成为一条决定链。
 import { useEffect, useState } from 'react';
 import { Check, X, Sparkles, LoaderCircle, Search } from 'lucide-react';
-import { taskLabels } from '../../design/design';
+import type { TaskId } from '../../types/DroneParameters';
 import { wordPairs } from '../../design/fields';
 import { stateLabels } from '../../design/semantics/brief';
 import cardsEnvelope from '../../data/evidenceCards.json';
@@ -101,11 +101,18 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
 
   return <>
     <div className="r4-head" data-testid="intent-panel">
-      <span className="r4-kicker">意图 · {taskLabels[intent.taskId]}</span>
+      <span className="r4-kicker">意图</span>
       <h2 className="r4-title">这次想做什么</h2>
       <p className="r4-purpose">用你自己的话写。AI 会读出场景、观察状态和造型目标，配上用户原话；每一条由你确认。</p>
     </div>
     <section className="r4-sec">
+      <label className="row4" style={{ gap: 8 }}><span className="r4-muted" style={{ minWidth: 28 }}>任务</span>
+        <select className="in4" style={{ width: 'auto' }} data-testid="task-select" value={intent.taskId} onChange={e => st.setTask(e.target.value as TaskId)}>
+          <option value="consumer_camera">日常航拍（主案例）</option>
+          <option value="agricultural_spraying">农业植保（场景适配案例）</option>
+          <option value="neutral_design">中性外观比较（跨构型用）</option>
+        </select>
+        <span className="r4-muted">本研究只做这两个场景；跨构型比较用中性任务。</span></label>
       <textarea className="ta4" data-testid="intent-text" value={draft} placeholder="例如：一台日常随身带的航拍无人机，希望看起来小巧、紧凑，但不要像玩具"
         onChange={e => setDraft(e.target.value)} onBlur={() => { if (draft !== intent.text) st.setIntentText(draft); }} />
       <div className="row4">
@@ -119,7 +126,8 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
     {intent.question && <section className="r4-sec" aria-label="澄清">
       <h3>先确认一件事</h3>
       <p style={{ margin: 0, fontWeight: 600 }}>{intent.question.text}</p>
-      <div className="row4">{intent.question.options.map(o => <button key={o.value} type="button" className="b4" data-state={o.value} onClick={() => st.setIntentState(o.value)}>{o.label}</button>)}</div>
+      <div className="row4">{intent.question.options.map(o => <button key={o.value} type="button" className="b4" data-state={o.value}
+        onClick={() => o.value.startsWith('task:') ? st.setTask(o.value.slice(5) as TaskId) : st.setIntentState(o.value)}>{o.label}</button>)}</div>
     </section>}
     {!intent.question && intent.state !== 'unspecified' && <p className="r4-muted">观察状态：{stateLabels[intent.state] ?? intent.state}</p>}
 

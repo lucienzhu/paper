@@ -10,7 +10,8 @@ import { laneStore } from '../adapter';
 import { useAttempts } from '../attempts';
 import { describeAi, type AiDescribe } from '../ai';
 import { runLane } from '../run';
-import { exportWorkspace } from '../exportWorkspace';
+import { exportSessionBundle } from '../exportWorkspace';
+import { inProject, isFreeRound } from '../attempts';
 import { recoverDesignGenerations } from '../../design/generation';
 import Board4 from './Board4';
 import CommandBar from './CommandBar';
@@ -32,7 +33,7 @@ function TopBar({ onDrawer, aiInfo }: { onDrawer: () => void; aiInfo: AiDescribe
     <span className="t4-brand"><i aria-hidden="true"><Workflow size={15} /></i>多旋翼造型工作台</span>
     <span className="t4-sep" />
     {session.method !== 'free' ? <nav className="t4-lanes" aria-label="方向">{project.lanes.map(l => <button key={l.id} type="button" className="t4-lane" aria-pressed={l.id === project.activeLaneId}
-      data-lane={l.id} onClick={() => { st.setActiveLane(l.id); st.select({ kind: 'layer', laneId: l.id, layer: 'body' }); }}><span className="dot" />{l.name}</button>)}</nav>
+      data-lane={l.id} title={l.name} onClick={() => { st.setActiveLane(l.id); st.select({ kind: 'layer', laneId: l.id, layer: 'body' }); }}><span className="dot" /><span className="name">{l.name}</span></button>)}</nav>
       : <span className="t4-chip">AI 对话 + 自由提示</span>}
     <span className="t4-gap" />
     {session.lockedFrame && <span className="t4-chip is-warn" title="机架锁定为登记条件；在场次设置里解除">登记条件已锁定</span>}
@@ -91,14 +92,26 @@ export default function Studio4() {
     setFocusKey(node.id);
   };
 
-  if (session.method === 'free') return <div className="s4" data-testid="studio4" data-method="free">
+  // 研究记录抽屉：两种方式都有。自由提示那一场只看各轮记录（没有结构化的设计输入），且只列这一场的轮次。
+  const free = session.method === 'free';
+  const activeStore = laneStore(project.activeLaneId);
+  const drawerEl = drawer && <div style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'var(--paper)', overflow: 'auto' }} data-testid="records-drawer">
+    <div className="t4" style={{ position: 'sticky', top: 0, zIndex: 2 }}><b>研究记录与导出 · {free ? 'AI 对话 + 自由提示' : project.lanes.find(l => l.id === project.activeLaneId)?.name}</b><span className="t4-gap" />
+      <button type="button" className="t4-btn" data-testid="export-bundle-drawer" onClick={() => void exportSessionBundle().then(n => st.setNotice(n)).catch(e => st.setNotice(String(e)))}><Download size={14} />导出本场材料（ZIP）</button>
+      <button type="button" className="t4-btn" onClick={() => setDrawer(false)}><X size={14} />回到画布</button></div>
+    <DroneStoreContext.Provider value={activeStore as unknown as typeof taskStores.quad}>
+      <HandoffPage wide={window.innerWidth > 1180} allowNewRound={false} roundsOnly={free} filter={free ? a => isFreeRound(a) : a => inProject(a)} />
+    </DroneStoreContext.Provider>
+  </div>;
+
+  if (free) return <div className="s4" data-testid="studio4" data-method="free">
     <TopBar onDrawer={() => setDrawer(true)} aiInfo={aiInfo} />
     <FreeStudio attempts={attempts} urls={urls} />
     {notice && <div className="toast4" role="status">{notice}<button type="button" aria-label="关闭" onClick={() => st.setNotice('')}><X size={13} /></button></div>}
+    {drawerEl}
   </div>;
 
   const wide = valid?.kind === 'compare';
-  const activeStore = laneStore(project.activeLaneId);
   return <div className="s4" data-testid="studio4" data-method={session.method}>
     <TopBar onDrawer={() => setDrawer(true)} aiInfo={aiInfo} />
     <main className={'m4' + (wide ? ' is-wide' : '')}>
@@ -117,12 +130,7 @@ export default function Studio4() {
         {valid?.kind === 'compare' && <PanelCompare id={valid.id} attempts={attempts} urls={urls} />}
       </div></aside>
     </main>
-    {drawer && <div style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'var(--paper)', overflow: 'auto' }} data-testid="records-drawer">
-      <div className="t4" style={{ position: 'sticky', top: 0, zIndex: 2 }}><b>研究记录与导出 · {project.lanes.find(l => l.id === project.activeLaneId)?.name}</b><span className="t4-gap" />
-        <button type="button" className="t4-btn" onClick={() => void exportWorkspace().catch(e => st.setNotice(String(e)))}><Download size={14} />导出工作区记录</button>
-        <button type="button" className="t4-btn" onClick={() => setDrawer(false)}><X size={14} />回到画布</button></div>
-      <DroneStoreContext.Provider value={activeStore as unknown as typeof taskStores.quad}><HandoffPage wide={window.innerWidth > 1180} allowNewRound={false} /></DroneStoreContext.Provider>
-    </div>}
+    {drawerEl}
   </div>;
 }
 

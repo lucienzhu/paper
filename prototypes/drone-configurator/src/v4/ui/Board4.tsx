@@ -1,15 +1,15 @@
 // 画布：每条方向一行，从左到右是意图、机架、动力、机身、细节、色材、生成和候选。被几条方向共用的节点只画一次。
 // 节点位置按链计算，不靠手工摆放；平移、缩放、适应全图照常可用。
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ReactFlow, ReactFlowProvider, Handle, Position, useReactFlow, useStore, useViewport, type Edge, type Node, type NodeChange, type NodeProps } from '@xyflow/react';
+import { ReactFlow, ReactFlowProvider, Handle, Position, useReactFlow, useStore, useUpdateNodeInternals, useViewport, type Edge, type Node, type NodeChange, type NodeProps } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Check, Lock, Maximize2, Crosshair, LoaderCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { Check, Lock, Maximize2, Crosshair, LoaderCircle, AlertCircle, Sparkles, LayoutGrid } from 'lucide-react';
 import type { FrozenAttempt } from '../../design/candidateRecords';
 import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { candidateRetained } from '../../design/candidateRecords';
 import { boardRows, isDefault, laneParameters, lanePath, layerInfo, layers, pairLayers, sharedBy, staleFields, type Layer, type Project } from '../model';
-import type { CompareRecord, Selection, Suggestion } from '../store';
-import { candidateKey, laneScope } from '../attempts';
+import { useStudio, type CompareRecord, type Selection, type Suggestion } from '../store';
+import { candidateKey, inLane } from '../attempts';
 import MiniTop from './MiniTop';
 import { layerSummary as summaryOf } from './util';
 
@@ -33,7 +33,7 @@ const IntentNode = memo(({ data, selected }: NodeProps) => {
 
 const LayerCard = memo(({ data, selected }: NodeProps) => {
   const d = data as { layer: Layer; parameters: never; summary: string; shared: number; isDefault: boolean; suggestions: number; issues: number; locked: boolean; faint: boolean; inPath: boolean };
-  return <div className={'n4' + (selected ? ' is-selected' : '') + (d.locked ? ' is-locked' : '') + (d.faint ? ' is-faint' : '')} style={{ width: 156 }} data-node="layer" data-layer={d.layer} data-locked={d.locked ? 'yes' : undefined}>
+  return <div className={'n4' + (selected ? ' is-selected' : '') + (d.locked ? ' is-locked' : '') + (d.faint ? ' is-faint' : '')} style={{ width: 156 }} data-node="layer" data-layer={d.layer} data-lane={(d as unknown as { laneId: string }).laneId} data-locked={d.locked ? 'yes' : undefined}>
     {handles}
     <div className="n4-h">{layerInfo[d.layer].name}<span className="grow" />
       {d.locked && <span className="p4 lock" title="登记条件，已锁定"><Lock size={10} />锁定</span>}
@@ -48,11 +48,11 @@ const LayerCard = memo(({ data, selected }: NodeProps) => {
 });
 
 const RenderNode = memo(({ data, selected }: NodeProps) => {
-  const d = data as { laneId: string; rounds: number; running: boolean; issue: boolean; stale: number; locked: boolean; onRun: (laneId: string) => void; disabled: boolean; faint: boolean };
+  const d = data as { laneId: string; rounds: number; running: boolean; issue: boolean; failed: boolean; stale: number; locked: boolean; onRun: (laneId: string) => void; disabled: boolean; faint: boolean };
   return <div className={'n4' + (selected ? ' is-selected' : '') + (d.stale ? ' is-stale' : '') + (d.faint ? ' is-faint' : '')} style={{ width: 156 }} data-node="render" data-lane={d.laneId}>
     {handles}
     <div className="n4-h">生成<span className="grow" />
-      {d.running ? <span className="p4 gray"><LoaderCircle size={10} className="animate-spin" />生成中</span> : d.issue ? <span className="p4 warn"><AlertCircle size={10} />需处理</span>
+      {d.running ? <span className="p4 gray"><LoaderCircle size={10} className="animate-spin" />生成中</span> : d.failed ? <span className="p4 gray">上一轮未完成</span> : d.issue ? <span className="p4 warn"><AlertCircle size={10} />需处理</span>
         : d.stale ? <span className="p4 warn">已过时</span> : d.rounds ? <span className="p4 ok">已回图</span> : <span className="p4 gray">还没生成</span>}</div>
     <div className="n4-t">{d.stale ? `上游改了 ${d.stale} 项，按新设置再生成` : d.rounds ? `已生成 ${d.rounds} 轮` : '把这条方向送去出图'}</div>
     <div className="n4-s">条件图 + 由各层编译的文字</div>
@@ -132,7 +132,7 @@ function Inner(props: BoardProps) {
         const firstOwn = path.findIndex(n => rows.get(n.id) === row);
         const at = Math.max(0, firstOwn);
         nodes.push({ id: 'collapsed-' + lane.id, type: 'collapsed', position: { x: COL.layer0 + at * COL.step, y: top + 34 },
-          data: { name: lane.name, parameters: laneParameters(project, lane.id), detail: `${layers.length - at} 层与上面不同 · ${attempts.filter(a => a.variantScope === laneScope(lane.id)).length} 轮生成` } });
+          data: { name: lane.name, parameters: laneParameters(project, lane.id), detail: `${layers.length - at} 层与上面不同 · ${attempts.filter(a => inLane(a, lane.id, project)).length} 轮生成` } });
         if (at > 0) edges.push({ id: `e-${path[at - 1].id}-c-${lane.id}`, source: path[at - 1].id, target: 'collapsed-' + lane.id, className: 'is-fork' });
         return;
       }
@@ -147,13 +147,13 @@ function Inner(props: BoardProps) {
         const source = i === 0 ? 'intent' : path[i - 1].id;
         edges.push({ id: `e-${source}-${node.id}`, source, target: node.id, className: (activePath.has(node.id) ? 'is-path' : '') + (i > 0 && rows.get(path[i - 1].id) !== row ? ' is-fork' : '') });
       });
-      const laneAttempts = attempts.filter(a => a.variantScope === laneScope(lane.id)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+      const laneAttempts = attempts.filter(a => inLane(a, lane.id, project)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
       const latest = laneAttempts[laneAttempts.length - 1];
       const current = laneParameters(project, lane.id);
       const stale = latest ? staleFields(latest.config.parameters, current).length : 0;
       const running = starting.has(lane.id) || laneAttempts.some(a => a.h3 && !a.h3.issue && !['succeeded', 'failed'].includes(a.h3.status));
       nodes.push({ id: 'render-' + lane.id, type: 'render', position: { x: COL.render, y: top + 34 }, selected: selection?.kind === 'render' && selection.laneId === lane.id,
-        data: { laneId: lane.id, rounds: laneAttempts.length, running, issue: !!latest?.h3?.issue || latest?.h3?.status === 'failed', stale, onRun, disabled: false,
+        data: { laneId: lane.id, rounds: laneAttempts.length, running, issue: !!latest?.h3?.issue && latest?.h3?.status !== 'failed', failed: latest?.h3?.status === 'failed', stale, onRun, disabled: false,
           faint: lane.id !== active && project.lanes.length > 1 } });
       edges.push({ id: `e-${path[4].id}-render-${lane.id}`, source: path[4].id, target: 'render-' + lane.id, className: lane.id === active ? 'is-path' : '' });
       let k = 0;
@@ -164,8 +164,10 @@ function Inner(props: BoardProps) {
           data: { label: `第 ${round + 1} 轮` + (a.candidates.length > 1 ? ` · ${j + 1}` : ''), image: urls.get(key), attemptId: a.id, candidateId: c.id, firstShown: c.firstShown,
             retained: candidateRetained(a, c.id), comparing: comparing.includes(key), revision: !!a.parentImage, onCompare } });
         // 在某张候选上改出来的一轮，连线从那张候选出发，看得出是一步步改过来的。
-        const parentAttempt = a.parentId ? laneAttempts.find(x => x.candidates.some(pc => pc.id === a.parentId)) : undefined;
-        if (parentAttempt) edges.push({ id: `e-${a.parentId}-${key}`, source: 'cand-' + candidateKey(parentAttempt.id, a.parentId!), target: 'cand-' + key, className: 'is-revision' });
+        // 父图可能在另一条方向上（从一张旧候选另开方向修改时），一样从它连出。
+        const parentAttempt = a.parentId ? attempts.find(x => x.candidates.some(pc => pc.id === a.parentId)) : undefined;
+        if (parentAttempt) edges.push({ id: `e-${a.parentId}-${key}`, source: 'cand-' + candidateKey(parentAttempt.id, a.parentId!), target: 'cand-' + key,
+          className: 'is-revision' + (laneAttempts.includes(parentAttempt) ? '' : ' is-fork') });
         else edges.push({ id: `e-render-${lane.id}-${key}`, source: 'render-' + lane.id, target: 'cand-' + key });
         k++;
       }
@@ -180,13 +182,41 @@ function Inner(props: BoardProps) {
   }, [project, attempts, urls, selection, comparing, suggestions, compares, lockedFrame, starting, onRun, onCompare]);
 
   // 节点每次重算都是新对象；把量到的尺寸带回去，画布才不会把它们当成没量过而暂时不画连线。
+  // 节点可以单个拖动：拖动中的位置先放在本地，松手后存进工作区；“整理”清空存下的位置，回到按链排好的样子。
+  const layout = useStudio(st => st.layout);
   const [dims, setDims] = useState<Record<string, { width: number; height: number }>>({});
+  const [dragging, setDragging] = useState<Record<string, { x: number; y: number }>>({});
+  const lastDrag = useRef<Record<string, { x: number; y: number }>>({});
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     const next: Record<string, { width: number; height: number }> = {};
-    for (const c of changes) if (c.type === 'dimensions' && c.dimensions) next[c.id] = c.dimensions;
+    const moving: Record<string, { x: number; y: number }> = {};
+    const done: string[] = [];
+    for (const c of changes) {
+      if (c.type === 'dimensions' && c.dimensions) next[c.id] = c.dimensions;
+      if (c.type === 'position') {
+        if (c.position) { moving[c.id] = c.position; lastDrag.current[c.id] = c.position; }
+        if (c.dragging === false) done.push(c.id);
+      }
+    }
     if (Object.keys(next).length) setDims(d => ({ ...d, ...next }));
+    if (Object.keys(moving).length) setDragging(d => ({ ...d, ...moving }));
+    if (done.length) {
+      for (const id of done) { const at = lastDrag.current[id]; if (at) useStudio.getState().moveNode(id, at); delete lastDrag.current[id]; }
+      setDragging(d => { const n = { ...d }; for (const id of done) delete n[id]; return n; });
+    }
   }, []);
-  const sized = useMemo(() => nodes.map(n => dims[n.id] ? { ...n, measured: dims[n.id] } : n), [nodes, dims]);
+  const sized = useMemo(() => nodes.map(n => {
+    const position = dragging[n.id] ?? layout[n.id] ?? n.position;
+    return { ...n, position, ...(dims[n.id] ? { measured: dims[n.id] } : {}) };
+  }), [nodes, dims, layout, dragging]);
+  const moved = Object.keys(layout).some(id => nodes.some(n => n.id === id));
+  // 新节点刚量完尺寸、存进来之前又重算了一次时，画布会丢掉它的连接点位置；带回尺寸以后它不会再自己重量，连线就一直画不出来。
+  // 每次渲染后把丢了连接点位置的节点重量一次。
+  const updateNodeInternals = useUpdateNodeInternals();
+  useEffect(() => {
+    const missing = sized.filter(n => { const i = flow.getInternalNode(n.id); return i && !i.internals.handleBounds; }).map(n => n.id);
+    if (missing.length) { const t = requestAnimationFrame(() => updateNodeInternals(missing)); return () => cancelAnimationFrame(t); }
+  });
 
   // 画布的默认视图要看得清：能整体放下就居中放下；放不下时保持不小于 0.8 的缩放，从链的起点（左边）开始看。
   const width = useStore(s => s.width), height = useStore(s => s.height);
@@ -195,7 +225,7 @@ function Inner(props: BoardProps) {
     // 用节点自己的位置和量到的尺寸（还没量到时按节点类型估计）算外框。
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     for (const id of ids) {
-      const n = nodes.find(m => m.id === id);
+      const n = sized.find(m => m.id === id);
       if (!n) continue;
       const m = flow.getInternalNode(id)?.measured;
       const est = sizeEstimate[n.type as keyof typeof sizeEstimate] ?? { w: 160, h: 190 };
@@ -261,7 +291,7 @@ function Inner(props: BoardProps) {
   }, [selectedId]);
 
   return <>
-    <ReactFlow nodes={sized} edges={edges} nodeTypes={nodeTypes} onNodesChange={onNodesChange} nodesDraggable={false} nodesConnectable={false} elementsSelectable={false}
+    <ReactFlow nodes={sized} edges={edges} nodeTypes={nodeTypes} onNodesChange={onNodesChange} nodesDraggable nodeDragThreshold={4} nodesConnectable={false} elementsSelectable={false}
       minZoom={0.2} maxZoom={1.6} proOptions={{ hideAttribution: true }} panOnScroll zoomOnDoubleClick={false}
       onNodeClick={(_e, node) => {
         if (node.type === 'intent') onSelect({ kind: 'intent' });
@@ -275,6 +305,8 @@ function Inner(props: BoardProps) {
       <LaneLabels labels={labels} />
     </ReactFlow>
     <div className="c4-tools" role="toolbar" aria-label="画布">
+      <button type="button" title={moved ? '整理：把拖过的节点排回整齐的位置' : '整理：节点已经按链排好'} aria-label="整理" data-testid="tidy" aria-pressed={false}
+        className={moved ? 'is-on' : ''} onClick={() => { useStudio.getState().tidy(); setTimeout(() => frame(nodes.map(n => n.id), 0.72, true), 60); }}><LayoutGrid size={15} /><span className="c4-tool-label">整理</span></button>
       <button type="button" title="适应全图" aria-label="适应全图" onClick={() => flow.fitView({ padding: 0.16, maxZoom: 1, duration: 300 })}><Maximize2 size={15} /></button>
       <button type="button" title="看清正在编辑的方向" aria-label="看清正在编辑的方向" data-testid="frame-active" onClick={() => frame(activeIds(), 0.85, true)}><Crosshair size={15} /></button>
     </div>

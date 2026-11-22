@@ -6,7 +6,7 @@ import { useImageBackend } from '../../design/imageBackend';
 import { registryVersion } from '../../design/evidence/registry.mjs';
 import { useStudio, type SessionMethod } from '../store';
 import { describeAi, type AiDescribe } from '../ai';
-import { exportWorkspace } from '../exportWorkspace';
+import { exportSessionBundle, exportWorkspace } from '../exportWorkspace';
 
 const methods: { id: SessionMethod; label: string }[] = [{ id: 'open', label: '不限' }, { id: 'structured', label: '工作台' }, { id: 'free', label: 'AI 对话 + 自由提示' }];
 
@@ -16,6 +16,7 @@ export default function SessionSetup() {
   const backend = useImageBackend();
   const [aiInfo, setAiInfo] = useState<AiDescribe | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [endReason, setEndReason] = useState('');
   useEffect(() => { void describeAi().then(setAiInfo); }, []);
   return <details className="r4-sec" data-testid="session-setup">
     <summary style={{ cursor: 'pointer', fontSize: 12, fontWeight: 650, color: 'var(--ink-3)' }}>研究场次设置（主持人用）</summary>
@@ -35,8 +36,11 @@ export default function SessionSetup() {
         <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>文字模型</span><span data-testid="ai-label">{aiInfo?.label ?? '读取中'}</span></div>
         <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>证据登记</span><span>{registryVersion}</span></div>
       </div>
-      <div className="row4"><button type="button" className="b4 sm" data-testid="export-workspace" onClick={() => void exportWorkspace().catch(e => st.setNotice(String(e)))}><Download size={12} />导出工作区记录（JSON）</button>
-        <span className="r4-muted">方向、各层节点、AI 建议与处理、对话、比较、事件。生成原件在“研究记录与导出”里。</span></div>
+      <div className="row4"><button type="button" className="b4 sm pri" data-testid="export-bundle" onClick={() => void exportSessionBundle().then(n => st.setNotice(n)).catch(e => st.setNotice(String(e)))}><Download size={12} />导出本场材料（ZIP）</button>
+        <button type="button" className="b4 sm" data-testid="export-workspace" onClick={() => void exportWorkspace().catch(e => st.setNotice(String(e)))}>只导出工作区记录（JSON）</button></div>
+      <p className="r4-muted">本场材料是一个 ZIP：工作区记录、这个项目每一轮的冻结输入、回执和原图，以及本机服务日志里这一场的 AI 调用。</p>
+      <div className="row4"><input className="in4" style={{ flex: 1 }} data-testid="session-end-reason" value={endReason} placeholder="结束本场的原因（例如：到 15 分钟；设计者说定稿了）" onChange={e => setEndReason(e.target.value)} />
+        <button type="button" className="b4 sm" data-testid="session-end" disabled={!endReason.trim()} onClick={() => { st.logEvent({ kind: 'session-end', text: '结束本场：' + endReason.trim() }); setEndReason(''); st.setNotice('已记下结束本场。'); }}>记下结束本场</button></div>
       {confirmReset ? <div className="row4"><span className="r4-muted">新建会清空画布上的方向、意图和对话（生成过的图和记录仍在本机）。</span>
         <button type="button" className="b4 sm pri" onClick={() => { st.reset(); setConfirmReset(false); }}>确定新建</button><button type="button" className="b4 sm quiet" onClick={() => setConfirmReset(false)}>取消</button></div>
         : <button type="button" className="b4 sm" onClick={() => setConfirmReset(true)}><Plus size={12} />新建项目</button>}

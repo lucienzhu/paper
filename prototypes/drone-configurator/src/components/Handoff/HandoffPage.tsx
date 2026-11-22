@@ -2,6 +2,7 @@
 // 设计者的主流程在画布上完成，这里保留研究所需的完整记录。
 import React, { useCallback, useMemo, useState } from 'react';
 import CandidateWorkspace from './CandidateWorkspace';
+import type { FrozenAttempt } from '../../design/candidateRecords';
 import { useDroneStore } from '../../store/droneStore';
 import { computeLayout, topologyOf } from '../../design/design';
 import { GuideView } from '../Studio/Stage';
@@ -11,9 +12,10 @@ import './generation.css';
 
 export interface HandoffEntry { attemptId?: string; parentCandidateId?: string; candidates?: boolean }
 
-const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry; allowNewRound?: boolean }> = ({ wide, entry, allowNewRound = true }) => {
+/** 4.0 用到的三项：allowNewRound=false 不在这里另起一轮；roundsOnly 只看各轮记录（自由提示那一场没有结构化的设计输入）；filter 只列当前项目或这一场的轮次。 */
+const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry; allowNewRound?: boolean; roundsOnly?: boolean; filter?: (a: FrozenAttempt) => boolean }> = ({ wide, entry, allowNewRound = true, roundsOnly = false, filter }) => {
   const { parameters } = useDroneStore();
-  const [panel, setPanel] = useState<'inputs'|'candidates'>(entry?.candidates ? 'candidates' : 'inputs');
+  const [panel, setPanel] = useState<'inputs'|'candidates'>(entry?.candidates || roundsOnly ? 'candidates' : 'inputs');
   const [initialParent,setInitialParent]=useState(entry?.parentCandidateId);
   const consumeParent=useCallback(()=>setInitialParent(undefined),[]);
   const layout = useMemo(() => computeLayout(parameters), [parameters]);
@@ -22,7 +24,7 @@ const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry; allowNewRound
       <header className="generation-title"><h1>研究详情与导出</h1>
         <p>核对当前方向将要提交的条件图、文字和规格，导出原件；或查看每一轮的冻结输入、回执、取舍与历史回放。</p></header>
       <section className="generation-advanced" data-testid="handoff-advanced">
-      <div className="flex w-fit gap-1 rounded-full border border-line bg-white p-1" aria-label="交付内容">{([['inputs','设计输入'],['candidates','候选与记录']] as const).map(([id,label])=><button key={id} data-handoff-tab={id} aria-pressed={panel===id} className={panel===id?'btn-dark':'btn-ghost'} onClick={()=>setPanel(id)}>{label}</button>)}</div>
+      {!roundsOnly && <div className="flex w-fit gap-1 rounded-full border border-line bg-white p-1" aria-label="交付内容">{([['inputs','设计输入'],['candidates','候选与记录']] as const).map(([id,label])=><button key={id} data-handoff-tab={id} aria-pressed={panel===id} className={panel===id?'btn-dark':'btn-ghost'} onClick={()=>setPanel(id)}>{label}</button>)}</div>}
       {panel==='inputs' ? <div className={`mt-4 gap-4 ${wide ? 'grid min-h-0 flex-1 grid-cols-[minmax(0,0.9fr)_minmax(0,1.25fr)_minmax(0,1fr)]' : 'space-y-4'}`}>
         <section className="panel flex min-h-0 flex-col p-5" aria-label="条件图" data-testid="guide-card">
           <div className="flex items-baseline gap-2">
@@ -40,7 +42,7 @@ const HandoffPage: React.FC<{ wide: boolean; entry?: HandoffEntry; allowNewRound
 
         <PromptGenerator />
         <ParameterOverview />
-      </div> : <div className="mt-4"><CandidateWorkspace initialAttempt={entry?.attemptId} initialParent={initialParent} onParentConsumed={consumeParent} allowNewRound={allowNewRound}/></div>}
+      </div> : <div className="mt-4"><CandidateWorkspace initialAttempt={entry?.attemptId} initialParent={initialParent} onParentConsumed={consumeParent} allowNewRound={allowNewRound} filter={filter}/></div>}
       </section>
     </div>
   );

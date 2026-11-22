@@ -31,7 +31,7 @@ const comfy = async (url, init = {}) => {
   return new Response('not found', { status: 404 });
 };
 const { chat, evidence } = await createDesignService({ apiKey: undefined, region: 'cn' });
-const jobs = createImageJobs({ backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 }, fetchImpl: comfy, directory: await mkdtemp(join(tmpdir(), 'studio4-jobs-')) });
+const jobs = createImageJobs({ fixture: true, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 }, fetchImpl: comfy, directory: await mkdtemp(join(tmpdir(), 'studio4-jobs-')) });
 const logDir = await mkdtemp(join(tmpdir(), 'studio4-ai-'));
 const ai = await createDesignAI({ logDir });
 const server = createDesignServer(chat, evidence, jobs, ai);
@@ -56,8 +56,30 @@ try {
     const rows = await new Promise(resolve => { const q = db.transaction('attempts').objectStore('attempts').getAll(); q.onsuccess = () => resolve(q.result); });
     db.close();
     return rows.sort((a, b) => a.createdAt.localeCompare(b.createdAt)).map(a => ({ id: a.id, scope: a.variantScope, condition: a.condition, text: a.confirmedText,
-      status: a.h3?.status, candidates: a.candidates.length, parent: !!a.parentImage, keep: a.keep, path: a.decisionPath?.map(d => d.layer) }));
+      status: a.h3?.status, candidates: a.candidates.length, parent: !!a.parentImage, keep: a.keep, path: a.decisionPath?.map(d => d.layer),
+      finish: a.config?.parameters?.accessories?.surface_finish, length: a.config?.parameters?.fuselage?.fuselage_dimensions_mm?.length,
+      decisions: a.decisions.map(d => ({ kind: d.kind, reason: d.reason })) }));
   });
+  // 某条方向某一层节点里的值：沿 leafId 往上找。
+  const layerValues = (state, laneId, layer) => {
+    const lane = state.project.lanes.find(l => l.id === laneId);
+    let node = state.project.nodes[lane.leafId];
+    while (node && node.layer !== layer) node = state.project.nodes[node.parentId];
+    return node?.values ?? {};
+  };
+  // 画布上的节点可能在可视范围外；用派发的点击代替鼠标点，不受视口限制。
+  const tap = locator => locator.dispatchEvent('click');
+  const unzip = bytes => {
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength), end = bytes.length - 22, out = new Map(), dec = new TextDecoder();
+    let at = view.getUint32(end + 16, true);
+    for (let i = 0; i < view.getUint16(end + 10, true); i++) {
+      const size = view.getUint32(at + 24, true), nameLen = view.getUint16(at + 28, true), local = view.getUint32(at + 42, true);
+      const name = dec.decode(bytes.slice(at + 46, at + 46 + nameLen)), localName = view.getUint16(local + 26, true);
+      out.set(name, bytes.slice(local + 30 + localName, local + 30 + localName + size));
+      at += 46 + nameLen;
+    }
+    return out;
+  };
   // Esc 回到总览（焦点在输入框里时 Esc 不起作用，先移开焦点）。
   const overview = async () => { await page.evaluate(() => document.activeElement?.blur?.()); await page.keyboard.press('Escape'); await page.getByTestId('overview-panel').waitFor(); };
   const setup = async () => { const box = page.getByTestId('session-setup'); if (!await box.evaluate(d => d.open)) await box.locator('summary').click(); return box; };
@@ -103,8 +125,27 @@ try {
   assert.equal(await page.locator('[data-node=layer][data-layer=body]').count(), 2);
   await shot('03-两条方向.png');
 
+  // 3b. 单个节点可以拖动，别的节点不动；位置存下；“整理”排回去
+  const frameNode = page.locator('.react-flow__node:has([data-node=layer][data-layer=frame])').first();
+  const frameId = await frameNode.getAttribute('data-id');
+  const transforms = () => page.evaluate(() => Object.fromEntries([...document.querySelectorAll('.react-flow__node')].map(n => [n.dataset.id, n.style.transform])));
+  const before = await transforms();
+  const box = await frameNode.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + 20);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + 40, box.y + 140, { steps: 8 });
+  await page.mouse.up();
+  const after = await transforms();
+  assert.notEqual(after[frameId], before[frameId], '拖动的节点移动了');
+  for (const id of Object.keys(before)) if (id !== frameId) assert.equal(after[id], before[id], '其余节点不动：' + id);
+  assert.ok((await saved()).layout[frameId], '拖过的位置存进了工作区');
+  await page.getByTestId('tidy').click();
+  await page.waitForFunction(id => !JSON.parse(localStorage.getItem('multirotor-studio/v4/project')).layout[id], frameId);
+  assert.equal((await transforms())[frameId], before[frameId], '整理以后回到按链排好的位置');
+
   // 4. 对机身说话：建议标“统计相关”，默认动作是开分支；开分支后跟到新的方向上
-  assert.equal(await page.getByTestId('layer-panel').getAttribute('data-layer'), 'body');
+  await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=body])').last());
+  await page.waitForFunction(() => document.querySelector('[data-testid=layer-panel]')?.dataset.layer === 'body');
   await say('再紧凑一点');
   const suggestion = page.locator('[data-suggestion]').first();
   await suggestion.waitFor();
@@ -119,30 +160,67 @@ try {
   assert.match(branch.name, /^利落工具感 · 试/);
   assert.deepEqual(state.selection, { kind: 'layer', laneId: branch.id, layer: 'body' });
 
-  // 5. 生成一轮：候选出现在这一行后面；记录里有这一轮的决定链
-  await page.locator(`[data-node=render][data-lane="${branch.id}"] [data-testid=node-run]`).click();
+  // 4b. 在动力处分叉以后马上改护圈：改动落在新方向上，原方向不变（Codex 第 05 条）
+  const laneA = state.project.lanes[0].id;
+  await tap(page.locator(`.react-flow__node:has([data-node=layer][data-layer=propulsion][data-lane="${laneA}"])`));
+  await page.waitForFunction(() => document.querySelector('[data-testid=layer-panel]')?.dataset.layer === 'propulsion');
+  await page.getByTestId('fork-here').click();
+  state = await saved();
+  const forked = state.project.lanes.find(l => l.id === state.project.activeLaneId);
+  assert.notEqual(forked.id, laneA);
+  assert.deepEqual(state.selection, { kind: 'layer', laneId: forked.id, layer: 'propulsion' }, '面板跟到了新方向');
+  await page.locator('aside.r4').getByRole('radio', { name: '环形护圈' }).click();
+  state = await saved();
+  assert.equal(layerValues(state, forked.id, 'propulsion')['propulsion.prop_guard'], 'ring');
+  assert.notEqual(layerValues(state, laneA, 'propulsion')['propulsion.prop_guard'], 'ring', '原方向没有被改');
+
+  // 5. 在“试机身宽”那条方向生成一轮；保留时写一句理由（Codex 第 12 条）
+  await tap(page.locator(`[data-node=render][data-lane="${branch.id}"] [data-testid=node-run]`));
   await page.locator('[data-node=candidate]').first().waitFor({ timeout: 20000 });
-  await page.locator('[data-node=candidate]').first().click();
+  await tap(page.locator('.react-flow__node-candidate').first());
   await page.getByTestId('candidate-panel').waitFor();
+  await page.getByTestId('decision-reason').fill('先留着，机身比例对了');
+  await page.getByTestId('keep').click();
+  await page.waitForFunction(() => document.querySelector('[data-testid=keep]')?.textContent.includes('已保留'));
   await shot('05-候选.png');
-  // 在候选上改：AI 只改机身长，其余层写成“保持不动”，父图是这张候选
+  let rounds = await attempts();
+  assert.equal(rounds.length, 1);
+  assert.deepEqual(rounds[0].decisions, [{ kind: 'accept', reason: '先留着，机身比例对了' }]);
+  assert.equal(rounds[0].finish, 'matte');
+
+  // 5b. 生成之后把这条方向的表面处理改成缎面，再回到那张旧图说“机身短一点，其他别动”：
+  //     这一轮从旧图的规格出发，放进新方向，表面处理仍是细砂哑光；原方向保留缎面（Codex 第 06 条）
+  await tap(page.locator(`.react-flow__node:has([data-node=layer][data-layer=cmf][data-lane="${branch.id}"])`));
+  await page.waitForFunction(() => document.querySelector('[data-testid=layer-panel]')?.dataset.layer === 'cmf');
+  await page.locator('aside.r4').getByRole('radio', { name: '缎面' }).click();
+  assert.equal(layerValues(await saved(), branch.id, 'cmf')['accessories.surface_finish'], 'satin');
+  await tap(page.locator('.react-flow__node-candidate').first());
+  await page.getByTestId('candidate-panel').waitFor();
   await page.getByTestId('revise-text').fill('机身短一点，其他别动');
   await page.getByTestId('revise-ask').click();
   await page.getByTestId('revision').waitFor();
+  assert.match(await page.getByTestId('revise-drift').textContent(), /又改了 1 项/);
   await page.getByTestId('revise-run').click();
   await page.waitForFunction(() => document.querySelectorAll('[data-node=candidate]').length >= 2, null, { timeout: 20000 });
   // 新节点量好尺寸后画布才画它的连线，所以等连线出现。
   await page.locator('.react-flow__edge.is-revision').first().waitFor({ state: 'attached', timeout: 10000 });
-  const rounds = await attempts();
+  state = await saved();
+  const revisedLane = state.project.lanes.find(l => l.name.endsWith('由第 1 轮改'));
+  assert.ok(revisedLane, '另开了一条方向');
+  rounds = await attempts();
   assert.equal(rounds.length, 2);
-  assert.ok(rounds.every(r => r.scope === 'v4/' + branch.id && r.condition === 'structured'));
-  assert.deepEqual(rounds[0].path, ['frame', 'propulsion', 'body', 'details', 'cmf']);
+  assert.ok(rounds.every(r => r.condition === 'structured' && r.scope.startsWith(`v4/${state.project.id}/`)));
+  assert.equal(rounds[1].scope, `v4/${state.project.id}/${revisedLane.id}`);
+  assert.equal(rounds[1].finish, 'matte', '没要求改的表面处理保持旧图的细砂哑光');
+  assert.equal(rounds[1].length, rounds[0].length - 15, '只改了机身长');
   assert.equal(rounds[1].parent, true);
   assert.match(rounds[1].keep, /机架/);
+  assert.deepEqual(rounds[0].path, ['frame', 'propulsion', 'body', 'details', 'cmf']);
+  assert.equal(layerValues(state, branch.id, 'cmf')['accessories.surface_finish'], 'satin', '原方向的缎面原样保留');
 
-  // 6. 两张并排比较，选定一张并写下理由
-  for (let i = 0; i < 2; i++) await page.locator('[data-node=candidate] .n4-check').nth(i).click();
-  await page.locator('[data-node=candidate]').first().click();
+  // 6. 两张并排比较，选定一张并写下理由；再把选中的那张定为终稿
+  for (let i = 0; i < 2; i++) await tap(page.locator('[data-node=candidate] .n4-check').nth(i));
+  await tap(page.locator('.react-flow__node-candidate').first());
   await page.getByTestId('open-compare').click();
   await page.getByTestId('compare-panel').waitFor();
   assert.match(await page.getByTestId('compare-panel').locator('.r4-title').textContent(), /差在 1 项决定/);
@@ -151,12 +229,18 @@ try {
   await page.getByTestId('compare-save').click();
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('multirotor-studio/v4/project')).compares[0]?.chosen);
   await shot('06-比较.png');
+  await tap(page.locator('.react-flow__node-candidate').nth(1));
+  await page.getByTestId('candidate-panel').waitFor();
+  await page.getByTestId('decision-reason').fill('就这张');
+  await page.getByTestId('final').click();
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('multirotor-studio/v4/project')).events.some(e => e.kind === 'final'));
+  assert.ok((await attempts())[1].decisions.some(d => d.reason === '定为终稿：就这张'));
 
   // 7. 每次 AI 调用都记了日志：任务、规则回退、发出的消息和核对后的结果
   const files = (await readdir(logDir)).filter(f => f.endsWith('.jsonl'));
   const calls = (await Promise.all(files.map(f => readFile(join(logDir, f), 'utf8')))).join('').trim().split('\n').map(line => JSON.parse(line));
   assert.deepEqual([...new Set(calls.map(c => c.task))].sort(), ['directions', 'intent', 'layer', 'revise']);
-  assert.ok(calls.every(c => c.provider === 'rules' && c.model === null && c.messages.length && c.result));
+  assert.ok(calls.every(c => c.provider === 'rules' && c.model === null && c.servedModel === null && c.messages.length && c.result));
 
   // 8. “AI 对话 + 自由提示”那一场：同一个文字模型、同一个出图后端；发出去的就是确认的原文
   await overview();
@@ -171,12 +255,29 @@ try {
   await page.locator('[data-free-candidate]').first().waitFor({ timeout: 20000 });
   const free = (await attempts()).find(r => r.condition === 'free');
   assert.equal(free.text, words.trim());
-  assert.equal(free.scope, 'v4free');
+  assert.equal(free.scope, `v4free/${(await saved()).project.id}`);
   // 记下了发出的文字来自 AI 起草、没有改过
   const freeEvent = (await saved()).events.find(e => e.kind === 'free-run');
   assert.equal(freeEvent.source, 'draft');
   assert.equal(freeEvent.attemptId, free.id);
+  // 自由提示这一场的取舍也能写理由
+  await page.getByTestId('free-decision-reason').fill('构图和比例都还行');
+  await page.locator('[data-free-candidate]').first().getByRole('button', { name: '保留' }).click();
+  await page.waitForFunction(async id => {
+    const db = await new Promise(r => { const q = indexedDB.open('multirotor-studio-design-records-v1'); q.onsuccess = () => r(q.result); });
+    const row = await new Promise(r => { const q = db.transaction('attempts').objectStore('attempts').get(id); q.onsuccess = () => r(q.result); });
+    db.close(); return row?.decisions?.some(d => d.reason === '构图和比例都还行');
+  }, free.id);
   await shot('07-自由提示.png');
+  // 自由提示这一场也能打开研究记录，且只列这一场的轮次（Codex 第 08 条）
+  await page.getByTestId('open-records').click();
+  await page.getByTestId('records-drawer').waitFor();
+  await page.getByTestId('candidate-workspace').waitFor();
+  await page.locator('[data-testid=candidate-workspace] select[data-attempt] option').first().waitFor({ state: 'attached' });
+  const listed = await page.locator('[data-testid=candidate-workspace] select[data-attempt] option').allTextContents();
+  assert.equal(listed.length, 1);
+  assert.match(listed[0], /自由提示/);
+  await page.getByTestId('records-drawer').getByRole('button', { name: '回到画布' }).click();
 
   // 9. 回到工作台，载入登记条件：每条方向的机架都锁定，改动被挡下
   await (await setup()).locator('[data-session-method=structured]').click();
@@ -184,34 +285,63 @@ try {
   await overview();
   await (await setup()).getByTestId('load-condition').click();
   await page.locator('.t4-chip', { hasText: '登记条件已锁定' }).waitFor();
-  assert.equal(await page.locator('[data-node=layer][data-layer=frame][data-locked=yes]').count(), 3);
-  await page.locator('[data-node=layer][data-layer=frame]').first().click();
-  await page.getByTestId('locked-note').waitFor();
   state = await saved();
-  for (const lane of state.project.lanes) {
-    const frame = (function find(id) { const n = state.project.nodes[id]; return n.layer === 'frame' ? n : find(n.parentId); })(lane.leafId);
-    assert.equal(frame.values.span_ratio_wl ?? frame.values['frame.span_ratio_wl'], 1);
-  }
+  assert.equal(await page.locator('[data-node=layer][data-layer=frame][data-locked=yes]').count(), state.project.lanes.length);
+  await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=frame])').first());
+  await page.getByTestId('locked-note').waitFor();
+  for (const lane of state.project.lanes) assert.equal(layerValues(state, lane.id, 'frame')['frame.span_ratio_wl'], 1);
   await shot('08-登记条件.png');
 
-  // 导出工作区记录：建议连着调用编号和处理结果，比较带着取舍理由
+  // 10. 本场材料打成一个 ZIP：工作区记录、每一轮的冻结输入与回执和原图、这一场的 AI 调用（Codex 第 13 条）
   await overview();
-  const [download] = await Promise.all([page.waitForEvent('download'), (await setup()).getByTestId('export-workspace').click()]);
-  const exported = JSON.parse(await readFile(await download.path(), 'utf8'));
-  assert.equal(exported.schema, 'workbench/v4-export');
-  assert.equal(exported.textModel.mode, 'fixture');
-  assert.ok(exported.suggestions.some(x => x.status === 'branched' && x.callId && calls.some(c => c.id === x.callId)));
-  assert.equal(exported.compares[0].reason, '短一些更像随身带的东西');
+  const [download] = await Promise.all([page.waitForEvent('download'), (await setup()).getByTestId('export-bundle').click()]);
+  const bundle = unzip(new Uint8Array(await readFile(await download.path())));
+  const manifest = JSON.parse(new TextDecoder().decode(bundle.get('manifest.json')));
+  const workspace = JSON.parse(new TextDecoder().decode(bundle.get('workspace.json')));
+  assert.equal(manifest.schema, 'workbench/v4-session-bundle');
+  assert.equal(manifest.rounds, 3);
+  assert.equal([...bundle.keys()].filter(n => n.startsWith('rounds/') && n.endsWith('.json')).length, 3);
+  assert.equal([...bundle.keys()].filter(n => n.endsWith('.png')).length, manifest.candidates);
+  const bundled = new TextDecoder().decode(bundle.get('ai-calls.jsonl')).trim().split('\n').map(l => JSON.parse(l));
+  assert.equal(bundled.length, manifest.aiCalls.found);
+  assert.deepEqual(manifest.aiCalls.missing, []);
+  assert.ok(workspace.suggestions.some(x => x.status === 'branched' && bundled.some(c => c.id === x.callId)));
+  assert.equal(workspace.compares[0].reason, '短一些更像随身带的东西');
+  assert.ok(bundle.has('说明.txt'));
 
-  // 10. 研究记录抽屉：看记录、取舍和导出；新的一轮只从画布上的生成节点发出
+  // 11. 研究记录抽屉：看记录、取舍和导出；新的一轮只从画布上的生成节点发出
   await page.getByTestId('open-records').click();
   await page.getByTestId('records-drawer').waitFor();
   await page.getByRole('button', { name: '候选与记录' }).click();
   await page.getByTestId('candidate-workspace').waitFor();
   assert.equal(await page.locator('[data-attempt-goal]').count(), 0);
+  await page.getByTestId('records-drawer').getByRole('button', { name: '回到画布' }).click();
+
+  // 12. 新建项目以后，上一个项目的图不再出现，也不能当父图（Codex 第 09 条）
+  await overview();
+  let setupBox = await setup();
+  await setupBox.getByRole('button', { name: '新建项目' }).click();
+  await setupBox.getByRole('button', { name: '确定新建' }).click();
+  await (await setup()).locator('[data-session-method=free]').click();
+  await page.getByTestId('free-studio').waitFor();
+  assert.equal(await page.locator('[data-free-candidate]').count(), 0);
+  setupBox = await setup();
+  await setupBox.locator('[data-session-method=structured]').click();
+  await page.getByTestId('v4-canvas').waitFor();
+  assert.equal(await page.locator('[data-node=candidate]').count(), 0);
+
+  // 13. 用途不在两个场景里：AI 先问按哪一个做，不悄悄当成航拍（Codex 第 01 条）
+  await say('做一台光伏巡检用的无人机，看起来要紧凑');
+  await page.getByTestId('intent-panel').waitFor();
+  await page.locator('[data-state="task:consumer_camera"]').click();
+  state = await saved();
+  assert.equal(state.project.intent.taskId, 'consumer_camera');
+  assert.ok(!state.project.intent.question, '问题答完就收起');
+  assert.ok(state.events.some(e => e.text === '任务定为：日常航拍'));
+  assert.match(await page.locator('.t4').first().textContent(), /软件夹具/, '顶栏写明出图是软件夹具（Codex 第 11 条）');
 
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ ok: true, lanes: state.project.lanes.map(l => l.name), rounds: (await attempts()).length, aiCalls: calls.length, realModelCalls: 0 }));
+  console.log(JSON.stringify({ ok: true, bundleRounds: manifest.rounds, aiCallsInBundle: bundled.length, realModelCalls: 0 }));
 } catch (error) {
   // 出错时留一张当时的画面，便于看清卡在哪一步。
   if (capture) for (const page of browser.contexts().flatMap(c => c.pages())) await page.screenshot({ path: join(capture, '失败时的画面.png') }).catch(() => {});

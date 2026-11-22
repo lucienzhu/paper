@@ -1,9 +1,9 @@
 // 生成之后的三个面板：这一轮会发什么；一张候选来自哪几项决定、怎样在它上面直接改；几张候选并排比较、取舍。
-import { useMemo, useState } from 'react';
-import { Sparkles, LoaderCircle, Check, X, ArrowLeftRight, CornerDownLeft, Send } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Sparkles, LoaderCircle, Check, X, ArrowLeftRight, CornerDownLeft, Send, Flag } from 'lucide-react';
 import type { FrozenAttempt } from '../../design/candidateRecords';
-import { candidateRetained, recordDecision } from '../../design/candidateRecords';
-import { generationStatus, retryCollection, structuredText } from '../../design/generation';
+import { candidateRetained, recordDecision, updateH3Record } from '../../design/candidateRecords';
+import { generationStatus, isGenerationPending, retryCollection, structuredText } from '../../design/generation';
 import { computeLayout } from '../../design/design';
 import { diffParameters } from '../../design/fields';
 import { useImageBackend } from '../../design/imageBackend';
@@ -12,7 +12,7 @@ import { GuideView } from '../../components/Studio/Stage';
 import { laneIntent, laneParameters, laneTouched, layerInfo, layers, sharedBy, laneNode, newId, staleFields, type Layer, type Project } from '../model';
 import { useStudio, type CompareRecord } from '../store';
 import { ai, type AiChange } from '../ai';
-import { candidateKey, laneScope } from '../attempts';
+import { candidateKey, inLane } from '../attempts';
 import { runLane } from '../run';
 import { TierBadge } from './Evidence';
 import { fieldLabel, formatValue, layerSummary, relTime } from './util';
@@ -20,13 +20,32 @@ import type { EvidenceTier } from '../../design/evidence/registry.mjs';
 
 type Props = { attempts: FrozenAttempt[]; urls: Map<string, string> };
 
+/**
+ * 一轮迟迟不回图，或者回图出了问题时的出路：重新取回，或者放弃这一轮。
+ * 放弃只在本机把这一轮记为未完成并写明原因；服务端已收到的请求和回执原样保留，照样计一次机会。
+ */
+export function RoundRecovery({ a }: { a: FrozenAttempt }) {
+  const [now, setNow] = useState(() => Date.now());
+  const pending = isGenerationPending(a);
+  useEffect(() => { if (!pending) return; const t = setInterval(() => setNow(Date.now()), 5000); return () => clearInterval(t); }, [pending]);
+  const waited = Math.round((now - Date.parse(a.createdAt)) / 1000);
+  const stuck = pending && waited > 60;
+  if (!stuck && !(a.h3?.issue && a.h3.status !== 'failed')) return null;
+  const giveUp = () => void updateH3Record(a.id, { status: 'failed', issue: `设计者等了约 ${waited} 秒后放弃这一轮；服务端已收到的请求和回执原样保留。` });
+  return <div className="row4" data-testid="round-recovery">
+    {stuck && <span className="r4-muted">已经等了 {waited} 秒。</span>}
+    <button type="button" className="b4 sm" onClick={() => void retryCollection(a.id)}>重新取回</button>
+    <button type="button" className="b4 sm quiet" data-testid="give-up" onClick={giveUp}>放弃这一轮</button>
+  </div>;
+}
+
 export function PanelRender({ laneId, attempts, urls }: Props & { laneId: string }) {
   const { project } = useStudio();
   const st = useStudio.getState();
   const backend = useImageBackend();
   const lane = project.lanes.find(l => l.id === laneId);
   const parameters = laneParameters(project, laneId);
-  const mine = attempts.filter(a => a.variantScope === laneScope(laneId)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  const mine = attempts.filter(a => inLane(a, laneId, project)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const latest = mine[mine.length - 1];
   const stale = latest ? staleFields(latest.config.parameters, parameters) : [];
   const [goal, setGoal] = useState('');
@@ -71,9 +90,9 @@ export function PanelRender({ laneId, attempts, urls }: Props & { laneId: string
       <details><summary style={{ cursor: 'pointer', fontSize: 12.5 }}>完整文字</summary><p lang="en" style={{ whiteSpace: 'pre-wrap', fontSize: 12, color: 'var(--ink-2)', marginTop: 8 }} data-testid="round-text">{text}</p></details>
     </section>
     {mine.length > 0 && <section className="r4-sec"><h3>这条方向的各轮</h3>
-      {[...mine].reverse().map((a, i) => { const s = generationStatus(a); return <div key={a.id} className="el4">
+      {[...mine].reverse().map((a, i) => { const s = generationStatus(a); return <div key={a.id} className="el4" data-round-status={a.h3?.status}>
         <div className="el4-main"><b>第 {mine.length - i} 轮 · {s.title}</b><span>{relTime(a.createdAt)} · {a.goal}</span>
-          {a.h3?.issue && a.h3.status !== 'failed' && <button type="button" className="b4 sm" onClick={() => void retryCollection(a.id)}>恢复这一轮</button>}</div>
+          <RoundRecovery a={a} /></div>
         <div className="el4-acts">{a.candidates.map(c => urls.get(candidateKey(a.id, c.id)) &&
           <button key={c.id} type="button" className="b4 sm quiet" style={{ padding: 0 }} onClick={() => st.select({ kind: 'candidate', attemptId: a.id, candidateId: c.id })}>
             <img src={urls.get(candidateKey(a.id, c.id))} alt="" width={44} height={44} style={{ borderRadius: 6 }} /></button>)}</div>
@@ -95,6 +114,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
   const [revision, setRevision] = useState<Revision | null>(null);
   const [issue, setIssue] = useState('');
   const [issueLayer, setIssueLayer] = useState<Layer>('body');
+  const [reason, setReason] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   if (!attempt || !candidate) return <p className="r4-muted">这张候选的记录还没读出来。</p>;
@@ -103,9 +123,15 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
   const frozen = attempt.config.parameters;
   const current = lane ? laneParameters(project, laneId) : null;
   const drift = current ? staleFields(frozen, current) : [];
-  const decide = async (kind: 'accept' | 'reject') => {
-    try { await recordDecision(attemptId, kind, kind === 'accept' ? '设计者保留这张候选。' : '设计者不要这张候选。', candidateId); }
-    catch (e) { setError(e instanceof Error ? e.message : String(e)); }
+  // 每一次取舍都可以写一句为什么；没写时记一句默认的话，并在记录里看得出是默认的。
+  const decide = async (kind: 'accept' | 'reject' | 'final') => {
+    const why = reason.trim();
+    const text = kind === 'final' ? '定为终稿' + (why ? '：' + why : '。') : kind === 'accept' ? (why || '设计者保留这张候选（没写理由）。') : (why || '设计者不要这张候选（没写理由）。');
+    try {
+      await recordDecision(attemptId, kind === 'final' ? 'accept' : kind, text, candidateId);
+      if (kind === 'final') st.logEvent({ kind: 'final', attemptId, laneId, text: `定为终稿：${lane?.name ?? ''} 第 ${index} 轮` + (why ? '，' + why : '') });
+      setReason('');
+    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
   };
   async function ask() {
     if (!message.trim() || !lane) return;
@@ -122,12 +148,21 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
     if (!revision || !lane) return;
     setBusy(true); setError('');
     try {
-      // 这一轮只改这条方向：改到的最上游一层若被共用，先让这条方向有自己的一份。
-      const first = layers.find(l => revision.changes.some(c => c.layer === l));
-      if (first && sharedBy(useStudio.getState().project, laneNode(useStudio.getState().project, laneId, first).id).length > 1) st.ownLayer(laneId, first);
-      if (revision.changes.length) st.setMany(laneId, revision.changes.map(c => [c.field, c.value] as [string, unknown]), '在候选上修改：' + message);
-      await runLane(laneId, { goal: revision.goal, parentCandidateId: candidateId, keep: '保持：' + revision.keep.map(l => layerInfo[l].name).join('、') });
-      setRevision(null); setMessage(''); st.setNotice('已按修改提交新一轮，父图是这张候选。');
+      const keep = '保持：' + revision.keep.map(l => layerInfo[l].name).join('、');
+      if (drift.length) {
+        // 这张图之后方向又改过：从这张图冻结时的规格出发另开一条方向，没要求改的部分才真正保持原样；原方向不动。
+        const target = st.reviseFrom(laneId, frozen, revision.changes.map(c => ({ field: c.field, value: c.value })), `${lane.name} · 由第 ${index} 轮改`, message.trim());
+        await runLane(target, { goal: revision.goal, parentCandidateId: candidateId, keep });
+        st.setNotice(`这张图之后方向改过 ${drift.length} 项，这一轮从这张图的规格出发，放在新方向里；原方向不动。`);
+      } else {
+        // 这一轮只改这条方向：改到的最上游一层若被共用，先让这条方向有自己的一份。
+        const first = layers.find(l => revision.changes.some(c => c.layer === l));
+        if (first && sharedBy(useStudio.getState().project, laneNode(useStudio.getState().project, laneId, first).id).length > 1) st.ownLayer(laneId, first);
+        if (revision.changes.length) st.setMany(laneId, revision.changes.map(c => [c.field, c.value] as [string, unknown]), '在候选上修改：' + message);
+        await runLane(laneId, { goal: revision.goal, parentCandidateId: candidateId, keep });
+        st.setNotice('已按修改提交新一轮，父图是这张候选。');
+      }
+      setRevision(null); setMessage('');
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(false); }
   }
@@ -143,9 +178,11 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
       <p className="r4-muted">{relTime(attempt.createdAt)} · {attempt.h3?.model ?? ''}{attempt.keep ? ' · 保持不动：' + attempt.keep : ''}</p>
     </div>
     <WorkflowImage className="img4" node={{ id: candidateId, image: urls.get(key), firstShown: candidate.firstShown, candidateId, attemptId }} alt="候选图" />
+    <input className="in4" data-testid="decision-reason" value={reason} maxLength={200} placeholder="为什么保留或不要（选填，写进这一轮的记录）" onChange={e => setReason(e.target.value)} />
     <div className="row4">
       <button type="button" className={'b4' + (retained ? '' : ' pri')} data-testid="keep" disabled={retained || !candidate.firstShown} onClick={() => void decide('accept')}><Check size={14} />{retained ? '已保留' : '保留'}</button>
-      <button type="button" className="b4" onClick={() => void decide('reject')}><X size={14} />不要</button>
+      <button type="button" className="b4" data-testid="reject" disabled={!candidate.firstShown} onClick={() => void decide('reject')}><X size={14} />不要</button>
+      <button type="button" className="b4" data-testid="final" disabled={!candidate.firstShown} title="这张作为这次的终稿（锁稿），写进记录" onClick={() => void decide('final')}><Flag size={14} />定为终稿</button>
       <button type="button" className="b4" aria-pressed={comparing.includes(key)} onClick={() => st.toggleCompare(key)}><ArrowLeftRight size={14} />{comparing.includes(key) ? '已加入比较' : '加入比较'}</button>
       {comparing.length >= 2 && <button type="button" className="b4 ai" data-testid="open-compare" onClick={() => {
         const id = newId('cmp');
@@ -167,6 +204,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
         {revision.reply && <p className="sg4-why">{revision.reply}</p>}
         {revision.changes.length > 0 && <div className="diff4" data-num>{revision.changes.map(c => <div key={c.field} style={{ display: 'contents' }}><span>{fieldLabel(c.field)}</span><b><em>{formatValue(c.field, c.from)} → </em>{formatValue(c.field, c.value)}</b></div>)}</div>}
         <p className="r4-muted">保持不动：{revision.keep.map(l => layerInfo[l].name).join('、') || '无'}。父图是这张候选。</p>
+        {drift.length > 0 && <p className="r4-note" data-testid="revise-drift">这张图之后，这条方向又改了 {drift.length} 项（{drift.slice(0, 3).map(d => d.label).join('、')}{drift.length > 3 ? '……' : ''}）。按这张图的规格改，没要求改的部分才保持原样，所以这一轮会放进一条新方向；原方向不动。</p>}
         <div className="row4"><button type="button" className="b4 pri" data-testid="revise-run" disabled={busy} onClick={() => void applyRevision()}><Sparkles size={14} />按此改并生成</button>
           <button type="button" className="b4 quiet" onClick={() => setRevision(null)}>不用</button></div>
       </article>}

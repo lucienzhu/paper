@@ -29,8 +29,8 @@ const comfyFixture = async (url, init = {}) => {
   return new Response('not found', { status: 404 });
 };
 const jobs = values['image-backend'] === 'qwen-comfy'
-  ? createImageJobs({ backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 50 }, fetchImpl: comfyFixture, directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')) })
-  : createImageJobs({ apiKey: 'fixture', directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')),
+  ? createImageJobs({ fixture: true, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 50 }, fetchImpl: comfyFixture, directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')) })
+  : createImageJobs({ fixture: true, apiKey: 'fixture', directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')),
   fetchImpl: async (_url, init) => {
     const body = JSON.parse(init.body);
     await new Promise(resolve => setTimeout(resolve, delay));

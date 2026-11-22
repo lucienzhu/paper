@@ -3,7 +3,7 @@
 // 证据强弱由登记表决定，模型不能改。没有配置密钥时用规则回退（标为“未连模型”），便于开发和走查。
 // 每次调用的输入、输出、模型名、耗时都写进本机的调用记录，供场次登记和复核。
 import { randomUUID } from 'node:crypto';
-import { appendFile, mkdir, readFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, readdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { frameRules, taskLabels } from '../src/design/design.ts';
@@ -46,7 +46,8 @@ const fieldSpec = {
   'accessories.camera_mount': { kind: 'enum', values: ['', ...enumOf(cameraMountOptions)] },
   'landing_gear.landing_gear_style': { kind: 'enum', values: enumOf(gearOptions) },
   'landing_gear.landing_gear_height_mm': { kind: 'number', min: 20, max: 100, step: 5 },
-  'accessories.drone_primary_color': { kind: 'enum', values: ['', ...colourSwatches.map(c => c.value)] },
+  // 主色可以是色板里的，也可以是设计者自定的任意 #rrggbb。
+  'accessories.drone_primary_color': { kind: 'colour' },
   'accessories.surface_finish': { kind: 'enum', values: ['', ...enumOf(finishOptions)] },
   'frame.material_visual': { kind: 'enum', values: ['', ...enumOf(armMaterialOptions)] },
 };
@@ -58,6 +59,7 @@ export function legalValue(field, value) {
   const spec = fieldSpec[field];
   if (!spec) return undefined;
   if (spec.kind === 'boolean') return typeof value === 'boolean' ? value : undefined;
+  if (spec.kind === 'colour') return value === '' ? '' : typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value.trim()) ? value.trim().toLowerCase() : undefined;
   if (spec.kind === 'enum') {
     if (typeof value !== 'string') return undefined;
     const hit = spec.values.find(v => v.toLowerCase() === value.toLowerCase());
@@ -90,7 +92,11 @@ function laneSummary(parameters, locked) {
     locked: locked.includes(layer),
     fields: layerFields[layer].map(f => {
       const spec = fieldSpec[f];
-      return { field: f, label: fieldByPath[f]?.label ?? f, current: parameters ? getPath(parameters, f) : null,
+      const base = { field: f, label: fieldByPath[f]?.label ?? f, current: parameters ? getPath(parameters, f) : null };
+      // 没有取值规则的（设计者自己写的色材说明）只给模型看，不让它改。
+      if (!spec) return { ...base, designerOnly: true };
+      if (spec.kind === 'colour') return { ...base, options: ['', ...colourSwatches.map(c => c.value)].map(v => ({ value: v, zh: optionLabel[v] ?? (v || '不指定') })), alsoAny: '#rrggbb' };
+      return { ...base,
         ...(spec.kind === 'number' ? { min: spec.min, max: spec.max, step: spec.step } : spec.kind === 'enum' ? { options: spec.values.map(v => ({ value: v, zh: optionLabel[v] ?? (v || '不指定') })) } : { options: [true, false] }) };
     }),
   }]));
@@ -117,7 +123,8 @@ const prompts = {
   intent: `你是多旋翼无人机工业设计工作台里的设计助手。设计者写了一段设计意图，请把它读成结构化的意图，供设计者逐条确认。
 ${rules}
 输出结构：
-{"taskId":"consumer_camera|agricultural_spraying|neutral_design","state":"unfolded_top|folded|carrying|with_accessory|unspecified",
+本研究只做两个场景：日常航拍（consumer_camera）和农业植保（agricultural_spraying）；不谈用途、只比外观时是中性外观比较（neutral_design）。原话的用途不在这里面时（例如光伏巡检、电力巡线、物流、测绘、消防），taskFit 填 out，taskMention 写原话里的用途；不要把它悄悄当成航拍。
+{"taskId":"consumer_camera|agricultural_spraying|neutral_design","taskFit":"in|out","taskMention":"原话里的用途（taskFit 为 out 时）","state":"unfolded_top|folded|carrying|with_accessory|unspecified",
  "question":{"text":"最关键的一个澄清问题","options":[{"label":"选项说法","value":"状态值"}]} 或 null,
  "targets":[{"text":"原话里的说法","pair":"compact|simple|integrated|visible","pole":"left|right","cards":["卡号"],"why":"为什么这样读"}],
  "interpretations":[{"text":"原话里没有直接对应的说法","why":"为什么需要设计者来理解","options":[{"text":"一种理解","pair":"词对","pole":"left|right"}]}],
@@ -200,7 +207,9 @@ function fixtureIntent(input) {
     options: [{ label: '展开时看起来小', value: 'unfolded_top' }, { label: '折叠后小', value: 'folded' }, { label: '泛指随身带着方便', value: 'carrying' }],
   } : null;
   if (negative && !interpretations.length) notes.push({ text: negative });
-  return { taskId: has(t, /植保|农业|喷洒/) ? 'agricultural_spraying' : 'consumer_camera', state, question, targets, interpretations, notes, cards };
+  const agricultural = has(t, /植保|农业|喷洒|打药|施肥/);
+  const mention = agricultural ? null : (t.match(/(?:光伏|电力|输电|电网|管道|桥梁|建筑|森林|河道|风电)?(?:巡检|巡线)|测绘|测量|物流|快递|配送|消防|救援|安防|警用|竞速|穿越机|表演|灯光秀|喷涂|清洗|勘探/) ?? [null])[0];
+  return { taskId: agricultural ? 'agricultural_spraying' : 'consumer_camera', taskFit: mention ? 'out' : 'in', taskMention: mention, state, question, targets, interpretations, notes, cards };
 }
 function fixtureDirections(input) {
   const wantsLow = (input.intent?.targets ?? []).some(t => t.pair === 'visible' && t.pole === 'left');
@@ -314,12 +323,14 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       if (response.status === 402 || Number(code) === 1008) throw new AiError(402, 'insufficient_balance', '文字模型账户余额不足。');
       throw new AiError(response.status === 429 ? 429 : 502, 'upstream_error', `文字模型没有完成这次请求（状态 ${code ?? response.status}）。`);
     }
-    // 锁定版本：回执里的模型名必须与请求的一致，否则不用这次回答。
-    if (typeof payload?.model === 'string' && payload.model.toLowerCase() !== model.toLowerCase())
-      throw new AiError(502, 'unexpected_model', `服务返回的模型（${payload.model}）与锁定的版本不一致。`);
+    // 锁定版本：回执里必须写明模型名，并与请求的一致；没写或不一致都不用这次回答，日志里记下服务实际报的名字。
+    const servedModel = typeof payload?.model === 'string' && payload.model.trim() ? payload.model.trim() : null;
+    if (!servedModel) throw Object.assign(new AiError(502, 'model_unconfirmed', '服务回执里没有写模型名，无法确认这次用的是锁定的版本。'), { servedModel: null });
+    if (servedModel.toLowerCase() !== model.toLowerCase())
+      throw Object.assign(new AiError(502, 'unexpected_model', `服务返回的模型（${servedModel}）与锁定的版本不一致。`), { servedModel });
     const choice = payload?.choices?.[0];
     if (!choice || (choice.finish_reason && choice.finish_reason !== 'stop')) throw new AiError(502, 'incomplete_generation', '文字模型没有返回完整回答。');
-    return { content: choice.message?.content, usage: payload?.usage ?? null, requestId: payload?.id ?? response.headers.get('x-request-id') ?? null };
+    return { content: choice.message?.content, usage: payload?.usage ?? null, requestId: payload?.id ?? response.headers.get('x-request-id') ?? null, servedModel };
   }
 
   async function run(task, input, context, signal) {
@@ -328,32 +339,49 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       ? [{ role: 'system', content: prompts.free }, ...(context.brief ? [{ role: 'system', content: '任务简报：' + context.brief }] : []), ...input.messages]
       : [{ role: 'system', content: prompts[task] }, { role: 'system', content: JSON.stringify(context) },
         ...(input.history ?? []), { role: 'user', content: input.text ?? input.message ?? '' }];
-    let raw, rawText = null, usage = null, requestId = null;
+    let raw, rawText = null, usage = null, requestId = null, servedModel = null;
     try {
       if (mode === 'fixture') raw = structuredClone(fixtures[task](input));
       else {
         const reply = await callModel(messages, signal);
-        rawText = reply.content; usage = reply.usage; requestId = reply.requestId;
+        rawText = reply.content; usage = reply.usage; requestId = reply.requestId; servedModel = reply.servedModel;
         raw = parseJson(rawText);
       }
     } catch (error) {
-      await log({ id, at, task, mode, provider, model: mode === 'model' ? model : null, latencyMs: Date.now() - started, messages, error: error.message });
+      await log({ id, at, task, mode, provider, model: mode === 'model' ? model : null, requestedModel: mode === 'model' ? model : null,
+        servedModel: error.servedModel ?? servedModel ?? null, latencyMs: Date.now() - started, messages, error: error.message });
       if (error instanceof AiError) { error.metadata = { callId: id }; throw error; }
       throw new AiError(500, 'ai_error', 'AI 服务没能处理这次请求。', { callId: id });
     }
-    const call = { id, at, mode, model: mode === 'model' ? model : null, latencyMs: Date.now() - started, registry: registryVersion };
+    // model 是锁定（请求）的版本；servedModel 是服务回执里写的版本，两者一致才会走到这里。规则回退两项都是 null。
+    const call = { id, at, mode, model: mode === 'model' ? model : null, servedModel, latencyMs: Date.now() - started, registry: registryVersion };
     return { raw, rawText, usage, requestId, messages, call, finish: async (result, dropped) => {
-      const entry = { ...call, task, provider: mode === 'model' ? provider : 'rules', messages, rawText, raw, result, dropped, usage, requestId };
+      const entry = { ...call, requestedModel: call.model, task, provider: mode === 'model' ? provider : 'rules', messages, rawText, raw, result, dropped, usage, requestId };
       await log(entry);
       return { ...result, call: { ...call, ...(entry.logFailed ? { logFailed: true } : {}) } };
     } };
   }
 
   function lockedLayers(input) { return (Array.isArray(input.locked) ? input.locked : []).filter(l => layers.includes(l)); }
-  function editable(locked, only) { return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]); }
+  // 设计者自己写的色材补充只由设计者改，不交给模型。
+  function editable(locked, only) { return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]).filter(f => fieldSpec[f]); }
+
+  /** 按调用编号读回日志行（最多 2000 个编号）；找不到的编号单列出来。 */
+  async function readLog(ids) {
+    const wanted = new Set(ids.filter(id => typeof id === 'string' && /^[0-9a-f-]{36}$/i.test(id)).slice(0, 2000));
+    const entries = [];
+    let files = [];
+    try { files = (await readdir(logDir)).filter(f => /^ai-calls-\d{8}\.jsonl$/.test(f)).sort(); } catch { /* 还没有日志 */ }
+    for (const f of files) for (const line of (await readFile(path.join(logDir, f), 'utf8')).split('\n')) {
+      if (!line.trim()) continue;
+      try { const entry = JSON.parse(line); if (wanted.has(entry.id)) entries.push(entry); } catch { /* 跳过坏行，不影响其余 */ }
+    }
+    const found = new Set(entries.map(e => e.id));
+    return { entries, missing: [...wanted].filter(id => !found.has(id)), logDir: path.basename(logDir) };
+  }
 
   return {
-    describe,
+    describe, readLog,
     async intent(input, { signal } = {}) {
       const t = userText(input?.text, 600);
       const taskId = Object.hasOwn(taskLabels, input?.taskId) ? input.taskId : 'consumer_camera';
@@ -373,10 +401,17 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         text: text(r.question.text, 120),
         options: (Array.isArray(r.question.options) ? r.question.options : []).filter(o => states.includes(o?.value)).slice(0, 4).map(o => ({ label: text(o.label, 30), value: o.value })),
       } : null;
+      // 用途不在两个场景里：先问设计者按哪一个做，任务先保持原样，不替设计者归类。
+      const outOfScope = r.taskFit === 'out' ? text(r.taskMention, 30, '原话里的用途') : null;
+      const taskQuestion = outOfScope ? {
+        text: `“${outOfScope}”不在本研究的两个场景里（日常航拍、农业植保）。按哪一个来做？`,
+        options: [{ label: '按日常航拍做', value: 'task:consumer_camera' }, { label: '按农业植保做', value: 'task:agricultural_spraying' }, { label: '只比外观（中性任务）', value: 'task:neutral_design' }],
+      } : null;
       const result = {
-        taskId: Object.hasOwn(taskLabels, r.taskId) ? r.taskId : taskId,
+        taskId: outOfScope ? taskId : Object.hasOwn(taskLabels, r.taskId) ? r.taskId : taskId,
+        outOfScope,
         state: states.includes(r.state) ? r.state : 'unspecified',
-        question: question?.options.length ? question : null,
+        question: taskQuestion ?? (question?.options.length ? question : null),
         targets, interpretations,
         notes: (Array.isArray(r.notes) ? r.notes : []).map(n => ({ text: text(n?.text, 120) })).filter(n => n.text).slice(0, 4),
         cards: (Array.isArray(r.cards) ? r.cards : []).filter(c => cardIds.has(c?.id)).slice(0, 6).map(c => ({ id: c.id, why: text(c.why, 120) })),

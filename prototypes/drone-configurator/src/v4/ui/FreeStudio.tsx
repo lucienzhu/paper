@@ -1,7 +1,7 @@
 // “AI 对话 + 自由提示”那一场：和同一个文字模型对话、写提示词、出图、取舍。没有用户依据、参数和条件图。
 // 出图后端、生成设置、候选管理和记录与工作台那一场相同。
 import { useState } from 'react';
-import { Send, LoaderCircle, Sparkles, Check, ArrowLeftRight, X, CornerUpLeft } from 'lucide-react';
+import { Send, LoaderCircle, Sparkles, Check, ArrowLeftRight, X, CornerUpLeft, Flag } from 'lucide-react';
 import type { FrozenAttempt } from '../../design/candidateRecords';
 import { candidateRetained, recordDecision } from '../../design/candidateRecords';
 import { useImageBackend } from '../../design/imageBackend';
@@ -10,7 +10,7 @@ import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { newId } from '../model';
 import { useStudio } from '../store';
 import { ai } from '../ai';
-import { candidateKey, FREE_SCOPE } from '../attempts';
+import { candidateKey, isFreeRound } from '../attempts';
 import { runFree } from '../run';
 import { PanelCompare } from './PanelRound';
 import { relTime } from './util';
@@ -20,7 +20,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
   const { turns, comparing, selection } = useStudio();
   const st = useStudio.getState();
   const backend = useImageBackend();
-  const rounds = attempts.filter(a => a.variantScope === FREE_SCOPE).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  const rounds = attempts.filter(a => isFreeRound(a)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const talk = turns.filter(t => t.scope.kind === 'free');
   const [message, setMessage] = useState('');
   const [prompt, setPrompt] = useState('');
@@ -29,6 +29,17 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
   const [error, setError] = useState('');
   // 最近一次“用这段作提示词”的来源，用来记下发出的文字是不是 AI 起草的、改没改过。
   const [draftSource, setDraftSource] = useState<{ turnId: string; text: string } | null>(null);
+  // 和工作台那一场一样：每次取舍可以写一句为什么；也可以把一张定为终稿。
+  const [reason, setReason] = useState('');
+  async function decide(attemptId: string, candidateId: string, kind: 'accept' | 'reject' | 'final', round: number) {
+    const why = reason.trim();
+    const text = kind === 'final' ? '定为终稿' + (why ? '：' + why : '。') : kind === 'accept' ? (why || '设计者保留这张候选（没写理由）。') : (why || '设计者不要这张候选（没写理由）。');
+    try {
+      await recordDecision(attemptId, kind === 'final' ? 'accept' : kind, text, candidateId);
+      if (kind === 'final') st.logEvent({ kind: 'final', attemptId, text: `定为终稿：自由提示第 ${round} 轮` + (why ? '，' + why : '') });
+      setReason('');
+    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
+  }
   async function chat() {
     const text = message.trim();
     if (!text) return;
@@ -69,6 +80,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
             st.clearCompare(); st.select({ kind: 'compare', id });
           }}><ArrowLeftRight size={14} />比较已选的 {comparing.length} 张</button>}
         </div>
+        {rounds.length > 0 && <input className="in4" data-testid="free-decision-reason" value={reason} maxLength={200} placeholder="为什么保留、不要或定稿（选填，写进下一次取舍的记录）" onChange={e => setReason(e.target.value)} />}
         {!rounds.length && <div className="el4"><div className="el4-main"><b>还没有生成</b><span>在右边和 AI 聊想法，写好提示词后生成。</span></div></div>}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
           {rounds.flatMap((a, i) => a.candidates.length ? a.candidates.map(c => { const key = candidateKey(a.id, c.id); const kept = candidateRetained(a, c.id);
@@ -77,8 +89,9 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
               <WorkflowImage className="cand" node={{ id: c.id, image: urls.get(key), firstShown: c.firstShown, candidateId: c.id, attemptId: a.id }} alt={'第 ' + (i + 1) + ' 轮'} />
               <div className="n4-s n4-clamp">{a.confirmedText}</div>
               <div className="row4">
-                <button type="button" className="b4 sm" disabled={kept || !c.firstShown} onClick={() => void recordDecision(a.id, 'accept', '设计者保留这张候选。', c.id).catch(e => setError(String(e)))}><Check size={12} />保留</button>
-                <button type="button" className="b4 sm quiet" onClick={() => void recordDecision(a.id, 'reject', '设计者不要这张候选。', c.id).catch(e => setError(String(e)))}><X size={12} /></button>
+                <button type="button" className="b4 sm" disabled={kept || !c.firstShown} onClick={() => void decide(a.id, c.id, 'accept', i + 1)}><Check size={12} />保留</button>
+                <button type="button" className="b4 sm quiet" title="不要" aria-label="不要" disabled={!c.firstShown} onClick={() => void decide(a.id, c.id, 'reject', i + 1)}><X size={12} /></button>
+                <button type="button" className="b4 sm quiet" title="定为终稿" aria-label="定为终稿" data-testid="free-final" disabled={!c.firstShown} onClick={() => void decide(a.id, c.id, 'final', i + 1)}><Flag size={12} /></button>
                 <button type="button" className="b4 sm" aria-pressed={comparing.includes(key)} onClick={() => st.toggleCompare(key)}><ArrowLeftRight size={12} />{comparing.includes(key) ? '已选' : '比较'}</button>
                 <button type="button" className="b4 sm quiet" title="以此为父图" onClick={() => setParent(c.id)}><CornerUpLeft size={12} /></button>
               </div>

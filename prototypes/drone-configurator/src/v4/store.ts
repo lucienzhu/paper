@@ -6,8 +6,10 @@ import type { EvidenceTier } from '../design/evidence/registry.mjs';
 import { study } from '../design/defaults';
 import {
   applyLayer, clearValue, forkAt, laneNode, laneParameters, layerOf, layers, migrate, newId, newProject, privatize, removeLane,
-  setValue, type IntentElement, type Layer, type Project,
+  setValue, staleFields, type IntentElement, type Layer, type Project,
 } from './model';
+import { getPath } from '../design/fields';
+import type { DroneParameters } from '../types/DroneParameters';
 
 export interface Change { field: string; value: unknown; from: unknown; label: string; layer: Layer; why?: string }
 export interface Suggestion {
@@ -36,8 +38,16 @@ interface Saved {
   project: Project; suggestions: Suggestion[]; directions: Direction[]; turns: Turn[]; compares: CompareRecord[]; events: ProjectEvent[];
   session: { method: SessionMethod; lockedFrame?: string };
 }
+/** 画布上被设计者拖过的节点位置。不进撤销历史，“整理”清空。 */
+export type Layout = Record<string, { x: number; y: number }>;
 interface Studio extends Saved {
   selection: Selection;
+  layout: Layout;
+  moveNode: (id: string, position: { x: number; y: number }) => void;
+  tidy: () => void;
+  setTask: (taskId: TaskId) => void;
+  /** 在一张旧候选上改：从那张图冻结时的规格出发另开一条方向，再加上这次的改动；方向此后的决定原样保留。 */
+  reviseFrom: (laneId: string, frozen: DroneParameters, changes: { field: string; value: unknown }[], name: string, reason: string) => string;
   comparing: string[];
   notice: string;
   past: Saved[];
@@ -110,9 +120,12 @@ function load(): Saved {
   } catch { /* 没有可用的本机存储时从空白项目开始。 */ }
   return initial();
 }
-/** 重新打开页面时回到上次选中的节点；节点已不在时由画布退回总览。 */
+/** 重新打开页面时回到上次选中的节点（节点已不在时由画布退回总览），以及拖过的节点位置。 */
 function loadSelection(): Selection {
   try { return (JSON.parse(localStorage.getItem(KEY) || 'null')?.selection ?? null) as Selection; } catch { return null; }
+}
+function loadLayout(): Layout {
+  try { const raw = JSON.parse(localStorage.getItem(KEY) || 'null')?.layout; return raw && typeof raw === 'object' ? raw as Layout : {}; } catch { return {}; }
 }
 const pick = (s: Studio): Saved => ({ project: s.project, suggestions: s.suggestions, directions: s.directions, turns: s.turns,
   compares: s.compares, events: s.events, session: s.session });
@@ -130,7 +143,27 @@ export const useStudio = create<Studio>((set, get) => {
 
   return {
     ...load(),
-    selection: loadSelection(), comparing: [], notice: '', past: [], future: [],
+    selection: loadSelection(), layout: loadLayout(), comparing: [], notice: '', past: [], future: [],
+    moveNode: (id, position) => set(s => ({ layout: { ...s.layout, [id]: { x: Math.round(position.x), y: Math.round(position.y) } } })),
+    tidy: () => set({ layout: {} }),
+    setTask: taskId => commit(d => {
+      d.project.intent.taskId = taskId;
+      if (d.project.intent.question?.options.some(o => o.value.startsWith('task:'))) d.project.intent.question = undefined;
+      d.project.intent.confirmedAt = undefined;
+    }, { kind: 'intent', text: '任务定为：' + ({ consumer_camera: '日常航拍', agricultural_spraying: '农业植保', neutral_design: '中性外观比较' } as const)[taskId] }),
+    reviseFrom: (laneId, frozen, changes, name, reason) => {
+      let id = '';
+      commit(d => {
+        const drift = staleFields(frozen, laneParameters(d.project, laneId)).map(x => x.path);
+        const paths = [...new Set([...drift, ...changes.map(c => c.field)])];
+        const earliest = layers.find(l => paths.some(p => layerOf(p) === l)) ?? 'cmf';
+        id = forkAt(d.project, laneId, earliest, name, reason).id;
+        d.project.activeLaneId = id;
+        for (const path of drift) setValue(d.project, id, path, getPath(frozen, path));
+        for (const c of changes) setValue(d.project, id, c.field, c.value);
+      }, { kind: 'revise-from', laneId, text: '从一张旧候选另开方向修改：' + reason });
+      return id;
+    },
     select: selection => set(selection && (selection.kind === 'layer' || selection.kind === 'render') && get().project.lanes.some(l => l.id === selection.laneId)
       ? { selection, project: { ...get().project, activeLaneId: selection.laneId } } : { selection }),
     setNotice: notice => set({ notice }),
@@ -138,7 +171,10 @@ export const useStudio = create<Studio>((set, get) => {
       set({ ...prev, past: past.slice(0, -1), future: [pick(get()), ...get().future].slice(0, 60) }); },
     redo: () => { const { future } = get(); if (!future.length) return; const next = future[0];
       set({ ...next, past: [...get().past, pick(get())].slice(-60), future: future.slice(1) }); },
-    reset: (taskId = 'consumer_camera') => commit(d => { Object.assign(d, initial()); d.project = newProject(taskId); }, { kind: 'reset', text: '新建项目' }),
+    reset: (taskId = 'consumer_camera') => {
+      commit(d => { Object.assign(d, initial()); d.project = newProject(taskId); }, { kind: 'reset', text: '新建项目' });
+      set({ selection: null, layout: {}, comparing: [] });
+    },
 
     setIntentText: text => commit(d => { d.project.intent.text = text; d.project.intent.confirmedAt = undefined; }),
     applyReading: r => commit(d => {
@@ -199,10 +235,12 @@ export const useStudio = create<Studio>((set, get) => {
       let id = '';
       commit(d => { id = forkAt(d.project, laneId, layer, name, reason).id; d.project.activeLaneId = id; },
         { kind: 'fork', laneId, layer, text: `在${layerName[layer]}处分叉` + (reason ? '：' + reason : '') });
+      // 分出来以后，面板跟到新方向的这一层：接下来的改动落在新方向上。
+      set({ selection: { kind: 'layer', laneId: id, layer } });
       return id;
     },
     applyFrom: (fromLane, toLane, layer) => commit(d => { applyLayer(d.project, fromLane, toLane, layer); },
-      { kind: 'apply', laneId: toLane, layer, text: `把${fromLane}的${layerName[layer]}套用过来` }),
+      { kind: 'apply', laneId: toLane, layer, text: `把“${get().project.lanes.find(l => l.id === fromLane)?.name ?? fromLane}”的${layerName[layer]}套用过来` }),
     ownLayer: (laneId, layer) => commit(d => { privatize(d.project, laneId, layer); },
       { kind: 'own', laneId, layer, text: `让这条方向从${layerName[layer]}起有自己的节点` }),
     dropLane: laneId => commit(d => { removeLane(d.project, laneId); }, { kind: 'lane', laneId, text: '删去一条方向' }),
@@ -235,6 +273,7 @@ export const useStudio = create<Studio>((set, get) => {
         d.suggestions = d.suggestions.map(x => x.id === id ? { ...x, status: action === 'apply' ? 'applied' : action === 'branch' ? 'branched' : 'rejected',
           resultLaneId: action === 'reject' ? undefined : laneId as string, reason } : x);
       }, { kind: 'ai-' + action, laneId: s.laneId, layer: s.layer, text: ({ apply: '采纳', branch: '开分支试', reject: '不用' })[action] + ' AI 建议：' + s.title });
+      if (action === 'branch' && laneId) set({ selection: { kind: 'layer', laneId, layer: s.layer } });
       return action === 'reject' ? null : laneId;
     },
     setDirections: list => commit(d => { d.directions = [...d.directions.filter(x => x.status !== 'pending'), ...list]; }, { kind: 'ai-directions', text: `AI 提了 ${list.length} 个方向` }),
@@ -288,7 +327,7 @@ export const useStudio = create<Studio>((set, get) => {
 if (typeof window !== 'undefined') {
   let warned = false;
   useStudio.subscribe(s => {
-    try { localStorage.setItem(KEY, JSON.stringify({ ...pick(s), selection: s.selection })); warned = false; }
+    try { localStorage.setItem(KEY, JSON.stringify({ ...pick(s), selection: s.selection, layout: s.layout })); warned = false; }
     catch { if (!warned) { warned = true; useStudio.setState({ notice: '浏览器没能保存当前项目，请导出规格。' }); } }
   });
 }

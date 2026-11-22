@@ -91,6 +91,11 @@ export function createDesignServer(chat, evidence, imageJobs, ai) {
       } else if (ai && pathname === '/api/ai/describe') {
         if (req.method !== 'GET') fail(405, 'method_not_allowed', '仅支持 GET。');
         sendJson(res, 200, { ...ai.describe(), evidence: evidenceForClient() });
+      } else if (ai && pathname === '/api/ai/log') {
+        // 主持人打包一场的材料时，按调用编号取回这一场的日志行；只读本机日志目录，不调用模型。
+        if (req.method !== 'POST') fail(405, 'method_not_allowed', '仅支持 POST。');
+        const input = await readInput(req);
+        sendJson(res, 200, await ai.readLog(Array.isArray(input?.ids) ? input.ids : []));
       } else if (ai && /^\/api\/ai\/(intent|directions|layer|revise|free)$/.test(pathname)) {
         if (req.method !== 'POST') fail(405, 'method_not_allowed', 'AI 请求仅支持 POST。');
         const task = pathname.slice('/api/ai/'.length);

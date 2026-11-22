@@ -64,15 +64,33 @@ function providerMessage(status, code, detail) {
   return 'MiniMax 未完成本轮图像生成。' + (detail ? ' '+String(detail).replace(/sk-[\w-]+|Bearer\s+\S+|https?:\/\/\S+/gi,'[已隐藏]').slice(0,280) : '');
 }
 
+/**
+ * 用临时文件替换记录。Windows 上目标文件正被读取（工作台每隔一两秒查一次进度）或被杀毒软件打开时，
+ * rename 会报 EPERM、EACCES 或 EBUSY；这时稍等再试，最多约 6 秒，不把这一轮卡在“等待回图”。
+ */
+export async function replaceFile(tmp, target, attempts = 30) {
+  for (let i = 0; ; i++) {
+    try { await rename(tmp, target); return; }
+    catch (error) {
+      if (!['EPERM', 'EACCES', 'EBUSY'].includes(error.code) || i >= attempts - 1) { await unlink(tmp).catch(() => {}); throw error; }
+      await new Promise(resolve => setTimeout(resolve, Math.min(400, 20 * (i + 1))));
+    }
+  }
+}
+
 // The provider edits endpoint is synchronous and non-idempotent. Reserve a durable local job before calling it.
-export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fetch,backend,
+// fixture: true 表示后端由软件夹具冒充，只在标签上写明，其余流程不变。
+export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fetch,backend,fixture=false,
   directory=path.join(process.env.LOCALAPPDATA || homedir(),'Freeloop','multirotor-workbench','image-jobs')}={}) {
   if (!Object.hasOwn(origins,region)) throw new Error('图像服务区域设置无效。');
   // backend 为 {provider:'qwen-comfy', url} 时走本机 ComfyUI 上的 Qwen；否则走 MiniMax H3（开发用）。
   const comfy=backend?.provider==='qwen-comfy' ? {...comfyDefaults,...Object.fromEntries(Object.entries(backend).filter(([,v])=>v!==undefined && v!==''))} : null;
   const ident=comfy ? {provider:'qwen-comfy',model:qwenModel} : {provider:'minimax',model:imageModel};
   const baseRecord=id=>({attemptId:id,jobId:id,...ident});
-  const describe=()=>({...ident,endpoint:comfy ? '/prompt' : '/v1/images/edits',label:comfy ? 'Qwen-Image 2.1（本机 ComfyUI）' : 'MiniMax H3 Image',configured:comfy ? !!comfy.url : !!apiKey});
+  // 软件夹具冒充后端接口时，标签直说不出真图，免得把走查截图当成真实回图。
+  const realLabel=comfy ? 'Qwen-Image 2.1（本机 ComfyUI）' : 'MiniMax H3 Image';
+  const describe=()=>({...ident,endpoint:comfy ? '/prompt' : '/v1/images/edits',label:fixture ? '软件夹具（接口同 '+realLabel.replace(/（.*?）/,'')+'，不出真图）' : realLabel,
+    configured:comfy ? !!comfy.url : !!apiKey,...(fixture ? {fixture:true} : {})});
   const active=new Map();
   const filename=id=>path.join(directory,id+'.json');
   const read=async id=>{
@@ -82,7 +100,7 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
   async function save(record) {
     const tmp=filename(record.jobId)+'.'+randomUUID()+'.tmp';
     await writeFile(tmp,JSON.stringify(record),{mode:0o600});
-    await rename(tmp,filename(record.jobId));
+    await replaceFile(tmp,filename(record.jobId));
   }
   async function executeComfy(record, refs) {
     const req=record.evidence.request, base=String(comfy.url).replace(/\/+$/,'');

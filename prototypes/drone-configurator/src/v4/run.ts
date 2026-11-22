@@ -2,7 +2,7 @@
 import { startDesignGeneration } from '../design/generation';
 import { laneIntent, laneParameters, lanePath, laneTouched, newProject } from './model';
 import { useStudio } from './store';
-import { FREE_SCOPE, laneScope } from './attempts';
+import { freeScope, laneScope } from './attempts';
 
 export async function runLane(laneId: string, options: { goal?: string; parentCandidateId?: string; keep?: string } = {}) {
   const project = useStudio.getState().project;
@@ -31,7 +31,7 @@ export async function runFree(text: string, parentCandidateId?: string) {
   await startDesignGeneration({
     id, task: 'quad', method: 'free', text, parentCandidateId,
     context: { state: { parameters: laneParameters(blank, blank.lanes[0].id), touched: {}, intent: laneIntent(blank) },
-      variantId: 'free', variantName: '自由提示', variantScope: FREE_SCOPE },
+      variantId: 'free', variantName: '自由提示', variantScope: freeScope() },
   });
   return id;
 }

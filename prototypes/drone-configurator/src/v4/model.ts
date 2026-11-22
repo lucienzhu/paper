@@ -14,7 +14,7 @@ export const layerInfo: Record<Layer, { name: string; question: string; generati
   propulsion: { name: '动力', question: '桨多大、几叶、要不要护圈。', generation: '生成时写成桨与护圈句。' },
   body: { name: '机身', question: '机身的体量、轮廓和顶盖分件。', generation: '生成时写成机身尺寸句、轮廓句和顶盖句。' },
   details: { name: '细节', question: '臂根怎样过渡、相机怎样安装、起落架。', generation: '生成时写成臂根句、相机句和起落架句。' },
-  cmf: { name: '色材', question: '主色、表面处理和机臂材料。', generation: '生成时写成色材句。' },
+  cmf: { name: '色材', question: '主色、表面处理、机臂材料，以及设计者自己写的色材说明。', generation: '生成时写成色材句；自己写的说明原样写进文字。' },
 };
 
 /** 每个参数归哪一层管。补充文字不属于任何一层，放在生成那一步。 */
@@ -24,7 +24,7 @@ export const layerFields: Record<Layer, string[]> = {
   body: ['fuselage.fuselage_dimensions_mm.length', 'fuselage.fuselage_dimensions_mm.width', 'fuselage.fuselage_dimensions_mm.height',
     'fuselage.fuselage_style', 'fuselage.top_cover'],
   details: ['frame.arm_root', 'accessories.has_camera_gimbal', 'accessories.camera_mount', 'landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm'],
-  cmf: ['accessories.drone_primary_color', 'accessories.surface_finish', 'frame.material_visual'],
+  cmf: ['accessories.drone_primary_color', 'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
 };
 const owner = new Map<string, Layer>(layers.flatMap(layer => layerFields[layer].map(path => [path, layer] as [string, Layer])));
 export function layerOf(path: string): Layer | null { return owner.get(path) ?? null; }

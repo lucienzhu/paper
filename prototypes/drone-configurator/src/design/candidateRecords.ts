@@ -241,7 +241,8 @@ async function material(blob:Blob) {
   const data=await new Promise<string>((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(r.error);r.readAsDataURL(blob);});
   return {sha256:await hashBlob(blob),bytes:blob.size,data};
 }
-export async function exportRecord(a:FrozenAttempt){
+/** 一轮的完整记录（含原件），供导出或打包。exportRecord 把它存成文件。 */
+export async function attemptRecord(a:FrozenAttempt){
   const originals:{[key:string]:Awaited<ReturnType<typeof material>>}={};
   async function asset(b?:Blob){if(!b)return null;const v=await material(b);originals[v.sha256]=v;return {sha256:v.sha256,bytes:v.bytes};}
   const guide=await asset(a.guide),parentImage=await asset(a.parentImage);
@@ -251,6 +252,8 @@ export async function exportRecord(a:FrozenAttempt){
   const decisions=await Promise.all(a.decisions.map(async d=>({...d,manualFile:d.manualFile?{name:d.manualFile.name,asset:await asset(d.manualFile)}:null})));
   const failure=a.failure?{...a.failure,history:await asset(a.failure.history)}:null;
   const h3=a.h3?{...a.h3,request:await asset(a.h3.request),acknowledgement:await asset(a.h3.acknowledgement),result:await asset(a.h3.result)}:undefined;
-  const record={schema:'design-studio/attempt-v1',...a,h3,guide,parentImage,dispatch,receipt,failure,candidates,decisions,originals};
-  download('studio-attempt-'+a.id+'.json',JSON.stringify(record),'application/json');
+  return {schema:'design-studio/attempt-v1',...a,h3,guide,parentImage,dispatch,receipt,failure,candidates,decisions,originals};
+}
+export async function exportRecord(a:FrozenAttempt){
+  download('studio-attempt-'+a.id+'.json',JSON.stringify(await attemptRecord(a)),'application/json');
 }

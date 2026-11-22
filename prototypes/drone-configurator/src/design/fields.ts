@@ -44,6 +44,9 @@ export const cameraMountOptions: Option<DroneParameters['accessories']['camera_m
 export const finishOptions: Option<DroneParameters['accessories']['surface_finish']>[] = [
   { value: 'matte', zh: '细砂哑光', en: 'Shell surface finish: fine matte.' },
   { value: 'satin', zh: '缎面', en: 'Shell surface finish: smooth satin.' },
+  { value: 'gloss', zh: '高光', en: 'Shell surface finish: high gloss with crisp reflections.' },
+  { value: 'metallic', zh: '金属漆', en: 'Shell surface finish: metallic paint with a fine flake sheen.' },
+  { value: 'textured', zh: '细纹理', en: 'Shell surface finish: a fine textured grain.' },
 ];
 export const gearOptions: Option<DroneParameters['landing_gear']['landing_gear_style']>[] = [
   { value: '无独立起落架', zh: '无独立起落架', hint: '以机腹或臂端着地' },
@@ -60,6 +63,11 @@ export const colourSwatches: { value: string; zh: string; en: string }[] = [
   { value: '#7c3aed', zh: '深紫', en: 'deep purple' },
   { value: '#f59e0b', zh: '金黄', en: 'golden yellow' },
   { value: '#ec4899', zh: '玫红', en: 'rose pink' },
+  { value: '#6b8fb5', zh: '雾霾蓝', en: 'dusty blue' },
+  { value: '#1e3a5f', zh: '深海蓝', en: 'navy blue' },
+  { value: '#c7cbd1', zh: '银灰', en: 'silver grey' },
+  { value: '#c8b48a', zh: '沙丘色', en: 'sand beige' },
+  { value: '#6b7a3a', zh: '橄榄绿', en: 'olive green' },
 ];
 export const colourName = (hex: string) => colourSwatches.find(c => c.value.toLowerCase() === hex.toLowerCase());
 

@@ -5,7 +5,7 @@ import { candidateRetained } from '../../design/candidateRecords';
 import { laneNode, laneParameters, layers, layerInfo, staleFields } from '../model';
 import { useStudio, type Selection } from '../store';
 import SessionSetup from './SessionSetup';
-import { laneScope } from '../attempts';
+import { inLane } from '../attempts';
 
 function nextStep(state: ReturnType<typeof useStudio.getState>, attempts: FrozenAttempt[]): { text: string; go?: Selection } {
   const { project } = state;
@@ -13,7 +13,7 @@ function nextStep(state: ReturnType<typeof useStudio.getState>, attempts: Frozen
   if (!intent.text.trim()) return { text: '先写一句这次想做什么，AI 会帮你读出来。', go: { kind: 'intent' } };
   if (intent.elements.some(e => e.status === 'pending')) return { text: 'AI 读出的意图还有几条等你确认。', go: { kind: 'intent' } };
   const lane = project.lanes.find(l => l.id === project.activeLaneId)!;
-  const mine = attempts.filter(a => a.variantScope === laneScope(lane.id)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  const mine = attempts.filter(a => inLane(a, lane.id, project)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const untouched = layers.every(l => Object.keys(laneNode(project, lane.id, l).touched).length === 0);
   if (untouched && !state.directions.some(d => d.status === 'placed')) return { text: '可以让 AI 按意图提几个方向，也可以直接从机架开始改。', go: { kind: 'intent' } };
   if (!mine.length) return { text: `${lane.name}还没生成过，生成第一轮看看。`, go: { kind: 'render', laneId: lane.id } };
@@ -42,7 +42,7 @@ export default function PanelOverview({ attempts, onOpen }: { attempts: FrozenAt
     <section className="r4-sec" aria-label="方向">
       <h3>方向</h3>
       {project.lanes.map(lane => {
-        const rounds = attempts.filter(a => a.variantScope === laneScope(lane.id));
+        const rounds = attempts.filter(a => inLane(a, lane.id, project));
         const kept = rounds.filter(a => a.candidates.some(c => candidateRetained(a, c.id))).length;
         return <div key={lane.id} className={'lane4' + (lane.id === project.activeLaneId ? ' is-active' : '')} data-lane={lane.id}>
           <div className="row4" style={{ justifyContent: 'space-between' }}>
