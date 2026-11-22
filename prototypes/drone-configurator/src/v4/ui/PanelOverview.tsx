@@ -6,10 +6,13 @@ import { laneNode, laneParameters, layers, layerInfo, staleFields } from '../mod
 import { useStudio, type Selection } from '../store';
 import SessionSetup from './SessionSetup';
 import { inLane } from '../attempts';
+import { briefOf } from '../sessions';
 
 function nextStep(state: ReturnType<typeof useStudio.getState>, attempts: FrozenAttempt[]): { text: string; go?: Selection } {
   const { project } = state;
   const intent = project.intent;
+  const brief = briefOf(state.sessions.find(s => s.id === state.currentSessionId && !s.endedAt));
+  if (!intent.text.trim() && brief) return { text: `这一场的委托是“${brief.label}”。把委托原文放进意图，或用自己的话写，AI 会帮你读出来。`, go: { kind: 'intent' } };
   if (!intent.text.trim()) return { text: '先写一句这次想做什么，AI 会帮你读出来。', go: { kind: 'intent' } };
   if (intent.elements.some(e => e.status === 'pending')) return { text: 'AI 读出的意图还有几条等你确认。', go: { kind: 'intent' } };
   const lane = project.lanes.find(l => l.id === project.activeLaneId)!;

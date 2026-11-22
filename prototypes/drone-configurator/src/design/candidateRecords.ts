@@ -15,6 +15,8 @@ export interface FrozenAttempt {
   h3?: H3Archive;
   /** 4.0：这一轮用到的各层节点及其版本，供追溯“这张图来自哪几项决定”。 */
   decisionPath?: { nodeId: string; layer: string; version: number }[];
+  /** 4.2：这一轮属于哪一场。导出“本场材料”按它认轮次。 */
+  sessionId?: string;
   dispatch?: {request: Blob; hash: string; ack?: Blob; error?: string; server?: string; at: string; updatedAt: string};
   receipt?: {request: Blob; ack: Blob; history: Blob; at: string; inputVerification: string; runId:string};
   failure?: {history:Blob;runId:string;at:string;status:string};
@@ -67,7 +69,7 @@ export async function listAttempts(): Promise<FrozenAttempt[]> {
     tx.onabort=()=>{db.close();reject(tx.error);};
   });
 }
-export async function freezeAttempt(state: ExportState, details: Pick<FrozenAttempt,'condition'|'goal'|'keep'|'variantId'|'variantName'|'variantScope'|'workflowOrigin'|'h3'> & Partial<Pick<FrozenAttempt,'decisionPath'>>,
+export async function freezeAttempt(state: ExportState, details: Pick<FrozenAttempt,'condition'|'goal'|'keep'|'variantId'|'variantName'|'variantScope'|'workflowOrigin'|'h3'> & Partial<Pick<FrozenAttempt,'decisionPath'|'sessionId'>>,
   freeText: string, parent?: {id:string; file:Blob}, structuredText?:string, id: string = crypto.randomUUID()) {
   if (!details.goal.trim()) throw new Error('请写下本轮的设计目标。');
   const guideBytes=canvasPngBytes(guideCanvas(computeLayout(state.parameters)));

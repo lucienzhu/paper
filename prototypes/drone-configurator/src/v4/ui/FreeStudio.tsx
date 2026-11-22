@@ -10,18 +10,22 @@ import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { newId } from '../model';
 import { useStudio } from '../store';
 import { ai } from '../ai';
-import { candidateKey, isFreeRound } from '../attempts';
+import { candidateKey } from '../attempts';
+import { briefOf, roundsOfSession } from '../sessions';
 import { runFree } from '../run';
 import { PanelCompare } from './PanelRound';
+import { BriefCard } from './PanelIntent';
 import { relTime } from './util';
 import SessionSetup from './SessionSetup';
 
 export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt[]; urls: Map<string, string> }) {
-  const { turns, comparing, selection } = useStudio();
+  const { turns, comparing, selection, sessions, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const backend = useImageBackend();
-  const rounds = attempts.filter(a => isFreeRound(a)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-  const talk = turns.filter(t => t.scope.kind === 'free');
+  // 只看这一场：同一个项目里早先的自由提示场次另有自己的记录和 ZIP。编号也按这一场数，和导出的文件名一致。
+  const current = sessions.find(s => s.id === currentSessionId && !s.endedAt);
+  const rounds = current ? roundsOfSession(current, attempts).rounds : [];
+  const talk = current ? turns.filter(t => t.scope.kind === 'free' && t.sessionId === current.id) : [];
   const [message, setMessage] = useState('');
   const [prompt, setPrompt] = useState('');
   const [parent, setParent] = useState('');
@@ -80,6 +84,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
             st.clearCompare(); st.select({ kind: 'compare', id });
           }}><ArrowLeftRight size={14} />比较已选的 {comparing.length} 张</button>}
         </div>
+        <BriefCard onUse={() => { const b = briefOf(current); if (b) setMessage(b.text); }} label="把委托原文放进对话框" />
         {rounds.length > 0 && <input className="in4" data-testid="free-decision-reason" value={reason} maxLength={200} placeholder="为什么保留、不要或定稿（选填，写进下一次取舍的记录）" onChange={e => setReason(e.target.value)} />}
         {!rounds.length && <div className="el4"><div className="el4-main"><b>还没有生成</b><span>在右边和 AI 聊想法，写好提示词后生成。</span></div></div>}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>

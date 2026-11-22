@@ -31,8 +31,47 @@ export function cameraView(p: DroneParameters, layout: Layout) {
   return { apex, half, intrusions };
 }
 
-/** 桨盘到机身包络的最小距离；负值表示俯视下桨盘伸到了机身上方。 */
+/**
+ * 机身在顶视示意里的角：流线舱是大圆角，方壳和多面体是倒角，不指定时是小圆角。示意图（Stage 的 bodyPath）和下面的间距核对共用这一份，
+ * 核对量的就是画出来的那个形状。
+ */
+export function bodyCorner(style: DroneParameters['fuselage']['fuselage_style'], width: number, length: number): { kind: 'round' | 'chamfer'; size: number } {
+  const m = Math.min(width, length);
+  if (style === 'Aerodynamic Pod') return { kind: 'round', size: m * 0.48 };
+  if (style === 'Boxy Enclosure') return { kind: 'chamfer', size: m * 0.1 };
+  if (style === 'Faceted Compact') return { kind: 'chamfer', size: m * 0.28 };
+  return { kind: 'round', size: m * 0.12 };
+}
+
+/** 点到线段的距离。 */
+const toSegment = (px: number, py: number, ax: number, ay: number, bx: number, by: number) => {
+  const dx = bx - ax, dy = by - ay, t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
+  return Math.hypot(px - ax - t * dx, py - ay - t * dy);
+};
+
+/** 桨盘到机身外形的最小距离（按示意图画出的圆角或倒角）；负值表示俯视下桨盘伸到了机身上方。 */
 export function bodyClearance(p: DroneParameters, layout: Layout) {
+  const { length, width } = p.fuselage.fuselage_dimensions_mm;
+  const r = layout.prop_diameter_mm / 2, hw = width / 2, hl = length / 2;
+  const corner = bodyCorner(p.fuselage.fuselage_style, width, length);
+  return Math.min(...layout.hubs.map(h => {
+    const x = Math.abs(h.x_mm), y = Math.abs(h.y_mm);
+    // 轴心落在机身外形之内时直接算作重叠。
+    if (x <= hw && y <= hl) return -r;
+    let d: number;
+    if (corner.kind === 'round') {
+      const c = Math.min(corner.size, hw, hl), cx = hw - c, cy = hl - c;
+      d = x > cx && y > cy ? Math.hypot(x - cx, y - cy) - c : Math.hypot(Math.max(x - hw, 0), Math.max(y - hl, 0));
+    } else {
+      const c = Math.min(corner.size, hw, hl);
+      d = Math.min(toSegment(x, y, hw - c, hl, hw, hl - c), toSegment(x, y, 0, hl, hw - c, hl), toSegment(x, y, hw, 0, hw, hl - c));
+    }
+    return d - r;
+  }));
+}
+
+/** 按矩形包络（不计圆角和倒角）量的距离：只用来说明“只在包络的直角上相交”这种情况。 */
+export function envelopeClearance(p: DroneParameters, layout: Layout) {
   const { length, width } = p.fuselage.fuselage_dimensions_mm;
   const r = layout.prop_diameter_mm / 2;
   return Math.min(...layout.hubs.map(h => Math.hypot(Math.max(Math.abs(h.x_mm) - width / 2, 0), Math.max(Math.abs(h.y_mm) - length / 2, 0)) - r));

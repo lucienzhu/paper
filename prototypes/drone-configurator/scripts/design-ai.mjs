@@ -9,7 +9,7 @@ import path from 'node:path';
 import { frameRules, taskLabels } from '../src/design/design.ts';
 import {
   armMaterialOptions, armRootOptions, cameraMountOptions, colourSwatches, fieldByPath, finishOptions, fuselageStyleOptions,
-  gearOptions, getPath, topCoverOptions, wordPairs,
+  gearOptions, getPath, sprayTankOptions, spraySystemOptions, topCoverOptions, wordPairs,
 } from '../src/design/fields.ts';
 import { suggestFields } from '../src/design/semantics/brief.ts';
 import { states, topics } from '../src/design/semantics/topics.mjs';
@@ -50,9 +50,15 @@ const fieldSpec = {
   'accessories.drone_primary_color': { kind: 'colour' },
   'accessories.surface_finish': { kind: 'enum', values: ['', ...enumOf(finishOptions)] },
   'frame.material_visual': { kind: 'enum', values: ['', ...enumOf(armMaterialOptions)] },
+  // 农业植保才有：只在规格里有这两个键（植保六旋的起始值）时交给模型、允许它提。
+  'accessories.spray_tank': { kind: 'enum', values: ['', ...enumOf(sprayTankOptions)], agricultural: true },
+  'accessories.spray_system': { kind: 'enum', values: ['', ...enumOf(spraySystemOptions)], agricultural: true },
 };
-const optionLabel = { ...Object.fromEntries([fuselageStyleOptions, topCoverOptions, armRootOptions, cameraMountOptions, finishOptions, armMaterialOptions]
+const studioTaskIds = ['consumer_camera', 'agricultural_spraying'];
+const optionLabel = { ...Object.fromEntries([fuselageStyleOptions, topCoverOptions, armRootOptions, cameraMountOptions, finishOptions, armMaterialOptions, sprayTankOptions, spraySystemOptions]
   .flat().map(o => [o.value, o.zh])), ...Object.fromEntries(colourSwatches.map(c => [c.value, c.zh])) };
+/** 这一项对这份规格有没有意义：植保才有的两项，只在规格里带着它们时才算。 */
+const applies = (field, parameters) => !fieldSpec[field]?.agricultural || (parameters && getPath(parameters, field) !== undefined);
 
 /** 把模型给的值规整成合法取值；不合法返回 undefined。 */
 export function legalValue(field, value) {
@@ -90,7 +96,7 @@ function userText(value, max) {
 function laneSummary(parameters, locked) {
   return Object.fromEntries(layers.map(layer => [layer, {
     locked: locked.includes(layer),
-    fields: layerFields[layer].map(f => {
+    fields: layerFields[layer].filter(f => applies(f, parameters)).map(f => {
       const spec = fieldSpec[f];
       const base = { field: f, label: fieldByPath[f]?.label ?? f, current: parameters ? getPath(parameters, f) : null };
       // 没有取值规则的（设计者自己写的色材说明）只给模型看，不让它改。
@@ -123,8 +129,8 @@ const prompts = {
   intent: `你是多旋翼无人机工业设计工作台里的设计助手。设计者写了一段设计意图，请把它读成结构化的意图，供设计者逐条确认。
 ${rules}
 输出结构：
-本研究只做两个场景：日常航拍（consumer_camera）和农业植保（agricultural_spraying）；不谈用途、只比外观时是中性外观比较（neutral_design）。原话的用途不在这里面时（例如光伏巡检、电力巡线、物流、测绘、消防），taskFit 填 out，taskMention 写原话里的用途；不要把它悄悄当成航拍。
-{"taskId":"consumer_camera|agricultural_spraying|neutral_design","taskFit":"in|out","taskMention":"原话里的用途（taskFit 为 out 时）","state":"unfolded_top|folded|carrying|with_accessory|unspecified",
+本研究的工作台只做两个场景：日常随行航拍四旋（consumer_camera，主案例）和农业植保六旋（agricultural_spraying，场景适配案例）。原话的用途不在这两个里面时（例如光伏巡检、电力巡线、物流、测绘、消防），taskFit 填 out，taskMention 写原话里的用途；不要把它悄悄当成航拍。
+{"taskId":"consumer_camera|agricultural_spraying","taskFit":"in|out","taskMention":"原话里的用途（taskFit 为 out 时）","state":"unfolded_top|folded|carrying|with_accessory|unspecified",
  "question":{"text":"最关键的一个澄清问题","options":[{"label":"选项说法","value":"状态值"}]} 或 null,
  "targets":[{"text":"原话里的说法","pair":"compact|simple|integrated|visible","pole":"left|right","cards":["卡号"],"why":"为什么这样读"}],
  "interpretations":[{"text":"原话里没有直接对应的说法","why":"为什么需要设计者来理解","options":[{"text":"一种理解","pair":"词对","pole":"left|right"}]}],
@@ -290,10 +296,13 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
   const cardContext = cardTable(cards);
   const mode = apiKey ? 'model' : 'fixture';
   const provider = baseUrl ? 'openai-compatible' : 'minimax';
+  const url = baseUrl ? baseUrl.replace(/\/+$/, '') + '/chat/completions' : endpoints[region];
+  // 记下发到哪个服务（只记主机名）：同一个模型名在国内站和国际站是两个服务，登记要写明是哪一个。
+  const endpoint = mode === 'model' ? new URL(url).host : null;
 
   function describe() {
-    return { mode, provider: mode === 'model' ? provider : 'rules', model: mode === 'model' ? model : null, registry: registryVersion,
-      label: mode === 'model' ? model : '规则回退（未连模型）' };
+    return { mode, provider: mode === 'model' ? provider : 'rules', model: mode === 'model' ? model : null, endpoint, registry: registryVersion,
+      label: mode === 'model' ? `${model}（${endpoint}）` : '规则回退（未连模型）' };
   }
 
   async function log(entry) {
@@ -305,7 +314,6 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
   }
 
   async function callModel(messages, signal) {
-    const url = baseUrl ? baseUrl.replace(/\/+$/, '') + '/chat/completions' : endpoints[region];
     const body = { model, messages, stream: false, max_tokens: 4096, response_format: { type: 'json_object' }, ...(effort ? { reasoning_effort: effort } : {}) };
     let response, payload;
     try {
@@ -348,7 +356,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         raw = parseJson(rawText);
       }
     } catch (error) {
-      await log({ id, at, task, mode, provider, model: mode === 'model' ? model : null, requestedModel: mode === 'model' ? model : null,
+      await log({ id, at, task, mode, provider, endpoint, model: mode === 'model' ? model : null, requestedModel: mode === 'model' ? model : null,
         servedModel: error.servedModel ?? servedModel ?? null, latencyMs: Date.now() - started, messages, error: error.message });
       if (error instanceof AiError) { error.metadata = { callId: id }; throw error; }
       throw new AiError(500, 'ai_error', 'AI 服务没能处理这次请求。', { callId: id });
@@ -356,7 +364,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
     // model 是锁定（请求）的版本；servedModel 是服务回执里写的版本，两者一致才会走到这里。规则回退两项都是 null。
     const call = { id, at, mode, model: mode === 'model' ? model : null, servedModel, latencyMs: Date.now() - started, registry: registryVersion };
     return { raw, rawText, usage, requestId, messages, call, finish: async (result, dropped) => {
-      const entry = { ...call, requestedModel: call.model, task, provider: mode === 'model' ? provider : 'rules', messages, rawText, raw, result, dropped, usage, requestId };
+      const entry = { ...call, requestedModel: call.model, task, provider: mode === 'model' ? provider : 'rules', endpoint, messages, rawText, raw, result, dropped, usage, requestId };
       await log(entry);
       return { ...result, call: { ...call, ...(entry.logFailed ? { logFailed: true } : {}) } };
     } };
@@ -364,7 +372,9 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
 
   function lockedLayers(input) { return (Array.isArray(input.locked) ? input.locked : []).filter(l => layers.includes(l)); }
   // 设计者自己写的色材补充只由设计者改，不交给模型。
-  function editable(locked, only) { return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]).filter(f => fieldSpec[f]); }
+  function editable(locked, only, parameters) {
+    return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]).filter(f => fieldSpec[f] && applies(f, parameters));
+  }
 
   /** 按调用编号读回日志行（最多 2000 个编号）；找不到的编号单列出来。 */
   async function readLog(ids) {
@@ -405,10 +415,11 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const outOfScope = r.taskFit === 'out' ? text(r.taskMention, 30, '原话里的用途') : null;
       const taskQuestion = outOfScope ? {
         text: `“${outOfScope}”不在本研究的两个场景里（日常航拍、农业植保）。按哪一个来做？`,
-        options: [{ label: '按日常航拍做', value: 'task:consumer_camera' }, { label: '按农业植保做', value: 'task:agricultural_spraying' }, { label: '只比外观（中性任务）', value: 'task:neutral_design' }],
+        options: [{ label: '按日常航拍做', value: 'task:consumer_camera' }, { label: '按农业植保做', value: 'task:agricultural_spraying' }],
       } : null;
       const result = {
-        taskId: outOfScope ? taskId : Object.hasOwn(taskLabels, r.taskId) ? r.taskId : taskId,
+        // 工作台只做两个任务；读出别的（包括中性外观比较）时保持原任务。读出的任务和现在的不同，由界面先问设计者，不直接换。
+        taskId: outOfScope ? taskId : studioTaskIds.includes(r.taskId) ? r.taskId : taskId,
         outOfScope,
         state: states.includes(r.state) ? r.state : 'unspecified',
         question: taskQuestion ?? (question?.options.length ? question : null),
@@ -428,7 +439,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const pairs = intent.targets.map(x => x.pair);
       const directions = (Array.isArray(run1.raw?.directions) ? run1.raw.directions : []).slice(0, 3).map(d => {
         const changes = (Array.isArray(d?.changes) ? d.changes : []).flatMap(c => {
-          const checked = checkChanges([c], { allowed: editable(locked), parameters });
+          const checked = checkChanges([c], { allowed: editable(locked, undefined, parameters), parameters });
           dropped.push(...checked.dropped);
           return checked.accepted.map(a => ({ ...a, ...withEvidence(c, [a], cardIds, pairs) }));
         });
@@ -450,7 +461,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const r = run1.raw ?? {};
       const dropped = [];
       const suggestions = locked.includes(layer) ? [] : (Array.isArray(r.suggestions) ? r.suggestions : []).slice(0, 2).map(s => {
-        const checked = checkChanges(s?.changes, { allowed: editable(locked, layer), parameters });
+        const checked = checkChanges(s?.changes, { allowed: editable(locked, layer, parameters), parameters });
         dropped.push(...checked.dropped);
         return { title: text(s?.title, 40, '建议'), why: text(s?.why, 200), changes: checked.accepted, ...withEvidence(s ?? {}, checked.accepted, cardIds, pairs) };
       }).filter(s => s.changes.length);
@@ -464,7 +475,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const run1 = await run('revise', { message, candidate: { parameters } },
         { task: 'revise', intent: input?.intent ?? null, candidate: laneSummary(parameters, locked), evidence: evidenceTable }, signal);
       const r = run1.raw ?? {};
-      const checked = checkChanges(r.changes, { allowed: editable(locked), parameters });
+      const checked = checkChanges(r.changes, { allowed: editable(locked, undefined, parameters), parameters });
       const changedLayers = new Set(checked.accepted.map(c => c.layer));
       // 保持项由实际改动推出：没改的层都保持，不采信模型自报的保持项。
       const keep = layers.filter(l => !changedLayers.has(l));

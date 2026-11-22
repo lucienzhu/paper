@@ -6,12 +6,39 @@ import type { TaskId } from '../../types/DroneParameters';
 import { wordPairs } from '../../design/fields';
 import { stateLabels } from '../../design/semantics/brief';
 import cardsEnvelope from '../../data/evidenceCards.json';
-import { laneParameters, layerInfo, pairLayers, type IntentElement } from '../model';
+import { isBlankProject, laneParameters, layerInfo, pairLayers, studioTasks, type IntentElement } from '../model';
 import { useStudio, type Direction } from '../store';
 import { ai } from '../ai';
 import { newId } from '../model';
+import { briefOf } from '../sessions';
 import { Quote, TierBadge } from './Evidence';
 import { fieldLabel, formatValue } from './util';
+
+/** 这一场的委托：两种方式看到的是同一段原文。 */
+export function BriefCard({ onUse, label = '把委托原文放进意图' }: { onUse?: () => void; label?: string }) {
+  const { sessions, currentSessionId } = useStudio();
+  const brief = briefOf(sessions.find(s => s.id === currentSessionId && !s.endedAt));
+  if (!brief) return null;
+  return <section className="r4-sec brief4" aria-label="这一场的委托" data-testid="brief-card" data-brief={brief.id}>
+    <h3>这一场的委托 · {brief.label}</h3>
+    <p style={{ margin: 0, lineHeight: 1.6 }}>{brief.text}</p>
+    <span className="r4-muted">要看：{brief.target}；要保持：{brief.keep}。机架按 C2 登记条件锁定（真 X、W/L 1.00、对角轴距 250 mm）。</span>
+    {onUse && <div className="row4"><button type="button" className="b4 sm" data-testid="use-brief" onClick={onUse}>{label}</button></div>}
+  </section>;
+}
+
+/** 换任务：项目还空白就原地换；已经有决定或生成，就先确认，再另开一个项目（这一场随之结束）。 */
+function useTaskSwitch() {
+  const [pending, setPending] = useState<TaskId | null>(null);
+  const request = (taskId: TaskId) => {
+    const s = useStudio.getState();
+    // 选的就是现在的任务：只记下设计者的选择（并收起 AI 关于任务的提问）。
+    if (taskId === s.project.intent.taskId) { s.setTask(taskId); return; }
+    const busy = !isBlankProject(s.project) || s.events.some(e => e.kind === 'run' || e.kind === 'free-run');
+    if (!busy) s.setTask(taskId); else setPending(taskId);
+  };
+  return { pending, request, cancel: () => setPending(null), confirm: () => { if (pending) useStudio.getState().reset(pending); setPending(null); } };
+}
 
 const pairText = (e: Pick<IntentElement, 'pair' | 'pole'>) => {
   const w = wordPairs.find(x => x.id === e.pair);
@@ -55,9 +82,11 @@ function DirectionCard({ d, onPlace, onDismiss }: { d: Direction; onPlace: () =>
 }
 
 export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) => void }) {
-  const { project, directions, session } = useStudio();
+  const { project, directions, session, sessions, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const intent = project.intent;
+  const brief = briefOf(sessions.find(s => s.id === currentSessionId && !s.endedAt));
+  const taskSwitch = useTaskSwitch();
   const [draft, setDraft] = useState(intent.text);
   const [busy, setBusy] = useState<'' | 'read' | 'dirs'>('');
   const [error, setError] = useState('');
@@ -105,15 +134,17 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
       <h2 className="r4-title">这次想做什么</h2>
       <p className="r4-purpose">用你自己的话写。AI 会读出场景、观察状态和造型目标，配上用户原话；每一条由你确认。</p>
     </div>
+    <BriefCard onUse={() => { setDraft(brief!.text); st.setIntentText(brief!.text); st.logEvent({ kind: 'intent-from-brief', text: '意图用了委托原文：' + brief!.label }); }} />
     <section className="r4-sec">
       <label className="row4" style={{ gap: 8 }}><span className="r4-muted" style={{ minWidth: 28 }}>任务</span>
-        <select className="in4" style={{ width: 'auto' }} data-testid="task-select" value={intent.taskId} onChange={e => st.setTask(e.target.value as TaskId)}>
-          <option value="consumer_camera">日常航拍（主案例）</option>
-          <option value="agricultural_spraying">农业植保（场景适配案例）</option>
-          <option value="neutral_design">中性外观比较（跨构型用）</option>
+        <select className="in4" style={{ width: 'auto' }} data-testid="task-select" value={intent.taskId} disabled={!!brief} onChange={e => taskSwitch.request(e.target.value as TaskId)}>
+          {studioTasks.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+          {!studioTasks.some(t => t.id === intent.taskId) && <option value={intent.taskId}>中性外观比较（旧项目）</option>}
         </select>
-        <span className="r4-muted">本研究只做这两个场景；跨构型比较用中性任务。</span></label>
-      <textarea className="ta4" data-testid="intent-text" value={draft} placeholder="例如：一台日常随身带的航拍无人机，希望看起来小巧、紧凑，但不要像玩具"
+        <span className="r4-muted">{brief ? '这一场按委托做日常航拍。' : '先做主实验的日常航拍；植保六旋看药箱、喷洒部件与机架的整合。其他构型不在这里做。'}</span></label>
+      {taskSwitch.pending && <p className="r4-note" data-testid="task-switch-confirm">项目里已经有决定或生成。换成“{studioTasks.find(t => t.id === taskSwitch.pending)?.label}”会另开一个空白项目，这一场随之结束（材料仍可在场次设置里导出）。
+        <span className="row4" style={{ marginTop: 6 }}><button type="button" className="b4 sm pri" onClick={taskSwitch.confirm}>另开项目</button><button type="button" className="b4 sm quiet" onClick={taskSwitch.cancel}>不换</button></span></p>}
+      <textarea className="ta4" data-testid="intent-text" value={draft} placeholder={brief ? '用你自己的话写，或把上面的委托原文放进来再补充' : '例如：一台日常随身带的航拍无人机，希望看起来小巧、紧凑，但不要像玩具'}
         onChange={e => setDraft(e.target.value)} onBlur={() => { if (draft !== intent.text) st.setIntentText(draft); }} />
       <div className="row4">
         <button type="button" className="b4 pri" data-testid="intent-read" disabled={busy !== ''} onClick={() => void read()}>
@@ -126,8 +157,8 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
     {intent.question && <section className="r4-sec" aria-label="澄清">
       <h3>先确认一件事</h3>
       <p style={{ margin: 0, fontWeight: 600 }}>{intent.question.text}</p>
-      <div className="row4">{intent.question.options.map(o => <button key={o.value} type="button" className="b4" data-state={o.value}
-        onClick={() => o.value.startsWith('task:') ? st.setTask(o.value.slice(5) as TaskId) : st.setIntentState(o.value)}>{o.label}</button>)}</div>
+      <div className="row4">{intent.question.options.filter(o => !o.value.startsWith('task:') || studioTasks.some(t => 'task:' + t.id === o.value)).map(o => <button key={o.value} type="button" className="b4" data-state={o.value}
+        onClick={() => o.value.startsWith('task:') ? taskSwitch.request(o.value.slice(5) as TaskId) : st.setIntentState(o.value)}>{o.label}</button>)}</div>
     </section>}
     {!intent.question && intent.state !== 'unspecified' && <p className="r4-muted">观察状态：{stateLabels[intent.state] ?? intent.state}</p>}
 

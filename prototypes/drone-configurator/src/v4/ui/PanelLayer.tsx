@@ -7,30 +7,31 @@ import { Choice, Field, OpenChoice, Slider } from '../../components/controls/con
 import { computeLayout, frameRules, usesConsumerReferences, type FrameType } from '../../design/design';
 import { designStart, realQuadrotors, study } from '../../design/defaults';
 import {
-  armMaterialOptions, armRootOptions, cameraMountOptions, colourSwatches, finishOptions, fuselageStyleOptions, gearOptions, topCoverOptions,
+  armMaterialOptions, armRootOptions, cameraMountOptions, colourSwatches, finishOptions, fuselageStyleOptions, gearOptions, sprayTankOptions, spraySystemOptions, topCoverOptions,
 } from '../../design/fields';
 import type { ParameterGroup } from '../../types/DroneParameters';
-import { isDefault, laneNode, laneParameters, layerInfo, layers, sharedBy, type Layer } from '../model';
+import { isDefault, laneNode, laneParameters, layerInfo, layers, sharedBy, studioTask, type Layer } from '../model';
 import { laneStore } from '../adapter';
 import { useStudio } from '../store';
 import { SuggestionCard } from './Evidence';
 import { layerChecks, relTime } from './util';
 
 const stagePart: Record<Layer, ParameterGroup> = { frame: 'frame', propulsion: 'propulsion', body: 'fuselage', details: 'accessories', cmf: 'accessories' };
-const quadTypes: FrameType[] = ['Wide X', 'True X', 'Stretch X', 'H-Frame', 'Deadcat', '+ Configuration'];
 
 function FrameControls({ laneId }: { laneId: string }) {
   const project = useStudio(s => s.project);
   const p = laneParameters(project, laneId);
   const rule = frameRules[p.frame.frame_type];
-  const [more, setMore] = useState(!quadTypes.includes(p.frame.frame_type));
   const consumer = usesConsumerReferences(p.frame.frame_type, project.intent.taskId);
-  const types = more ? (Object.keys(frameRules) as FrameType[]) : quadTypes;
+  // 工作台只给这个任务的构型：日常航拍是四旋的几种排法，农业植保是平面六旋。八旋、共轴等迁移检验另走 GPU 请求管线。
+  const allowed = studioTask(project.intent.taskId).frames as FrameType[];
+  const types = allowed.includes(p.frame.frame_type) ? allowed : [...allowed, p.frame.frame_type];
   return <>
     <Field path="frame.frame_type" value={rule.zh} hint={rule.desc}>
-      <Choice<FrameType> options={types.map(t => ({ value: t, zh: frameRules[t].zh }))} value={p.frame.frame_type}
+      {types.length > 1 ? <Choice<FrameType> options={types.map(t => ({ value: t, zh: frameRules[t].zh }))} value={p.frame.frame_type}
         onChange={v => useStudio.getState().setMany(laneId, [['frame.frame_type', v], ['frame.span_ratio_wl', frameRules[v].wl.value]], '换构型')} label="构型" />
-      <button type="button" className="b4 quiet sm" onClick={() => setMore(m => !m)}>{more ? '只看四旋' : '其他构型（三旋、六旋、八旋、共轴）'}</button>
+        : <p className="r4-muted" style={{ margin: 0 }}>{rule.zh}：农业植保案例沿用既有六旋实验的构型。</p>}
+      <p className="r4-muted" style={{ margin: 0 }} data-testid="other-configs-note">八旋、共轴等其他构型不在工作台里做：迁移检验按登记直接在 GPU 上跑请求管线，配四旋参照。</p>
     </Field>
     {rule.wl.adjustable ? <Field path="frame.span_ratio_wl" value={p.frame.span_ratio_wl.toFixed(2)} hint="电机左右跨度 ÷ 前后跨度。越大越宽扁。">
       <Slider path="frame.span_ratio_wl" min={rule.wl.min} max={rule.wl.max} step={0.01} unit="" digits={2}
@@ -74,21 +75,27 @@ function PropulsionControls({ laneId }: { laneId: string }) {
 }
 
 function BodyControls({ laneId }: { laneId: string }) {
-  const p = laneParameters(useStudio(s => s.project), laneId);
+  const project = useStudio(s => s.project);
+  const p = laneParameters(project, laneId);
   const size = p.fuselage.fuselage_dimensions_mm;
+  const agricultural = project.intent.taskId === 'agricultural_spraying';
   return <>
     <Field path="fuselage.fuselage_dimensions_mm.length" value={`${size.length} mm`}><Slider path="fuselage.fuselage_dimensions_mm.length" min={50} max={300} step={5} unit="mm" /></Field>
     <Field path="fuselage.fuselage_dimensions_mm.width" value={`${size.width} mm`}><Slider path="fuselage.fuselage_dimensions_mm.width" min={30} max={200} step={5} unit="mm" /></Field>
     <Field path="fuselage.fuselage_dimensions_mm.height" value={`${size.height} mm`} hint="从上面看不到，侧面会用到。"><Slider path="fuselage.fuselage_dimensions_mm.height" min={20} max={150} step={5} unit="mm" /></Field>
     <Field path="fuselage.fuselage_style" hint="不指定就不写进文字，留给模型和后面的修改。"><OpenChoice path="fuselage.fuselage_style" options={fuselageStyleOptions} /></Field>
     <Field path="fuselage.top_cover"><OpenChoice path="fuselage.top_cover" options={topCoverOptions} /></Field>
+    {agricultural && <Field path="accessories.spray_tank" hint="药箱和机身怎样结合。起始值沿用既有六旋 39 张；选项旁写着这一句出过多少图。"><OpenChoice path="accessories.spray_tank" options={sprayTankOptions} /></Field>}
   </>;
 }
 
 function DetailsControls({ laneId }: { laneId: string }) {
-  const p = laneParameters(useStudio(s => s.project), laneId);
+  const project = useStudio(s => s.project);
+  const p = laneParameters(project, laneId);
+  const agricultural = project.intent.taskId === 'agricultural_spraying';
   return <>
     <Field path="frame.arm_root" hint="机臂与机身怎样接上。"><OpenChoice path="frame.arm_root" options={armRootOptions} /></Field>
+    {agricultural && <Field path="accessories.spray_system" hint="喷洒部件的布置。起始值沿用既有六旋 39 张；机尾横杆在开发批里 0/3，没有列出。"><OpenChoice path="accessories.spray_system" options={spraySystemOptions} /></Field>}
     <Field path="accessories.has_camera_gimbal" value={p.accessories.has_camera_gimbal ? '装相机' : '不装相机'}>
       <Choice options={[{ value: 'yes', zh: '装前视相机' }, { value: 'no', zh: '不装相机' }]} value={p.accessories.has_camera_gimbal ? 'yes' : 'no'}
         onChange={v => useStudio.getState().setField(laneId, 'accessories.has_camera_gimbal', v === 'yes')} label="前视相机" />

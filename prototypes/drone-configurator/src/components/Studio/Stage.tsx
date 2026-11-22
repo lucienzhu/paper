@@ -3,7 +3,7 @@
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useDroneStore } from '../../store/droneStore';
 import { computeLayout, frameRules, usesConsumerReferences, sideRotorAxes, type Layout } from '../../design/design';
-import { cameraView } from '../../design/checks';
+import { bodyCorner, cameraView } from '../../design/checks';
 import { realRanges } from '../../data/aircraft';
 import type { DroneParameters, ParameterGroup } from '../../types/DroneParameters';
 
@@ -35,13 +35,12 @@ function useTween(target: number[], immediate: boolean, ms = 260) {
 }
 
 function bodyPath(style: DroneParameters['fuselage']['fuselage_style'], w: number, l: number) {
-  const hw = w / 2, hl = l / 2, m = Math.min(w, l);
+  const hw = w / 2, hl = l / 2;
   const chamfer = (c: number) => `M${-hw + c},${-hl} H${hw - c} L${hw},${-hl + c} V${hl - c} L${hw - c},${hl} H${-hw + c} L${-hw},${hl - c} V${-hl + c} Z`;
   const round = (r: number) => `M${-hw + r},${-hl} H${hw - r} A${r},${r} 0 0 1 ${hw},${-hl + r} V${hl - r} A${r},${r} 0 0 1 ${hw - r},${hl} H${-hw + r} A${r},${r} 0 0 1 ${-hw},${hl - r} V${-hl + r} A${r},${r} 0 0 1 ${-hw + r},${-hl} Z`;
-  if (style === 'Aerodynamic Pod') return round(m * 0.48);
-  if (style === 'Boxy Enclosure') return chamfer(m * 0.1);
-  if (style === 'Faceted Compact') return chamfer(m * 0.28);
-  return round(m * 0.12);
+  // 角的大小和间距核对共用 bodyCorner：核对量的就是这里画出来的形状。
+  const corner = bodyCorner(style, w, l);
+  return corner.kind === 'round' ? round(Math.min(corner.size, hw, hl)) : chamfer(Math.min(corner.size, hw, hl));
 }
 
 type Drag = { kind: 'hub'; index: number; startD: number; startR: number } | { kind: 'bodyW' } | { kind: 'bodyL' } | { kind: 'prop'; index: number };

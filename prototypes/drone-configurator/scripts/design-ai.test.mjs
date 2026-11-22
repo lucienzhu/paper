@@ -119,10 +119,12 @@ test('a reply that does not name its model is refused, and the log keeps the req
     const ok = await createDesignAI({ apiKey: 'k', region: 'global', model: 'MiniMax-M3.1-Flash', fetchImpl: named, logDir });
     const reply = await ok.free({ messages: [{ role: 'user', content: '你好' }] });
     assert.equal(reply.call.servedModel, 'MiniMax-M3.1-Flash');
+    assert.equal(ok.describe().label, 'MiniMax-M3.1-Flash（api.minimax.io）', '标签写明发到哪个服务');
     const lines = (await readFile(join(logDir, (await readdir(logDir))[0]), 'utf8')).trim().split('\n').map(l => JSON.parse(l));
     assert.equal(lines[0].requestedModel, 'MiniMax-M3.1-Flash');
     assert.equal(lines[0].servedModel, null);
     assert.equal(lines[1].servedModel, 'MiniMax-M3.1-Flash');
+    assert.ok(lines.every(l => l.endpoint === 'api.minimax.io'), '每条日志都记了服务的主机名');
   } finally { await rm(logDir, { recursive: true, force: true }); }
 });
 
@@ -134,10 +136,39 @@ test('a use outside the two study cases is asked about, not silently compiled as
     assert.equal(r.outOfScope, '光伏巡检');
     assert.equal(r.taskId, 'consumer_camera', '任务先保持原样，等设计者选');
     assert.match(r.question.text, /不在本研究的两个场景里/);
-    assert.deepEqual(r.question.options.map(o => o.value), ['task:consumer_camera', 'task:agricultural_spraying', 'task:neutral_design']);
+    // 4.2：工作台只做两个任务，提问里不再有“只比外观”。
+    assert.deepEqual(r.question.options.map(o => o.value), ['task:consumer_camera', 'task:agricultural_spraying']);
     const farm = await ai.intent({ text: '植保机要显得紧凑', taskId: 'consumer_camera' });
     assert.equal(farm.outOfScope, null);
     assert.equal(farm.taskId, 'agricultural_spraying');
+  } finally { await rm(logDir, { recursive: true, force: true }); }
+});
+
+test('a model reading of a task outside the two studio tasks keeps the current task', async () => {
+  const logDir = await mkdtemp(join(tmpdir(), 'ai-neutral-'));
+  try {
+    const ai = await createDesignAI({ apiKey: 'k', region: 'global', logDir,
+      fetchImpl: async () => reply({ taskId: 'neutral_design', taskFit: 'in', state: 'unfolded_top', question: null, targets: [], interpretations: [], notes: [], cards: [] }) });
+    const r = await ai.intent({ text: '只比较外观', taskId: 'consumer_camera' });
+    assert.equal(r.taskId, 'consumer_camera');
+  } finally { await rm(logDir, { recursive: true, force: true }); }
+});
+
+test('tank and spray options are offered to the model only for a plant-protection spec', async () => {
+  const logDir = await mkdtemp(join(tmpdir(), 'ai-spray-'));
+  const bodies = [];
+  try {
+    const ai = await createDesignAI({ apiKey: 'k', region: 'global', logDir, fetchImpl: async (_u, init) => {
+      bodies.push(JSON.parse(init.body));
+      return reply({ reply: '试试电机下方喷头', otherLayer: null, suggestions: [{ title: '换成电机下方喷头', why: '不要横杆', changes: [{ field: 'accessories.spray_system', value: 'motor-nozzles' }], evidence: [], cards: [] }] });
+    } });
+    const quad = baseParameters('consumer_camera'), hexa = baseParameters('agricultural_spraying');
+    const onQuad = await ai.layer({ layer: 'details', message: '喷洒部件换一种', lane: { parameters: quad }, locked: [] });
+    assert.equal(onQuad.suggestions.length, 0, '四旋的规格里没有喷洒部件，这条建议应被拿掉');
+    assert.ok(!JSON.stringify(bodies[0].messages).includes('accessories.spray_system'), '四旋的上下文里不给喷洒部件');
+    const onHexa = await ai.layer({ layer: 'details', message: '喷洒部件换一种', lane: { parameters: hexa }, locked: [] });
+    assert.equal(onHexa.suggestions[0]?.changes[0]?.value, 'motor-nozzles');
+    assert.ok(JSON.stringify(bodies[1].messages).includes('accessories.spray_system'));
   } finally { await rm(logDir, { recursive: true, force: true }); }
 });
 

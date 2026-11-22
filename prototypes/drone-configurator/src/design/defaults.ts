@@ -59,6 +59,35 @@ export const study = {
   }] as StudyCondition[],
 };
 
+export interface StudyBrief {
+  id: 'A' | 'B';
+  label: string;
+  /** 设计者收到的原文，两种方式一字不改。 */
+  text: string;
+  /** 这张委托要看的部位，以及要保持的部位。 */
+  target: string; keep: string;
+  /** 跟这张委托配套的登记条件（机架三项）。 */
+  condition: string;
+  source: string;
+}
+
+/**
+ * RQ3 两种方式对照用的两张委托（C2 作者预试与 C3 正式场次共用）。原文照抄研究资料库的预试页，不改字。
+ * 两张都是日常随行航拍四旋、展开顶视求紧凑，配套 C2 的机架三项（真 X、W/L 1.00、对角轴距 250 mm）。
+ * 两张卡难度是否接近，要作者两场实际走过后确认（预试记录约定）。
+ */
+export const studyBriefs: StudyBrief[] = [
+  { id: 'A', label: '委托 A · 机鼻', target: '前向相机与机鼻的衔接', keep: '四处机臂与机身的连接', condition: 'c2-pilot',
+    text: '为日常随行航拍设计一款四旋翼，展开俯视时希望整体显得紧凑。请让前向相机与机鼻衔接协调，并保持四处机臂与机身的连接。你可以保留、修订或回选候选，结束时指出所选方案与理由。',
+    source: 'planning/research-library/design/pilot.md（第四章四旋 C2 作者配对预试）' },
+  { id: 'B', label: '委托 B · 臂根', target: '四处臂根与机身轮廓的过渡', keep: '前向相机与机鼻的关系', condition: 'c2-pilot',
+    text: '为日常随行航拍设计一款四旋翼，展开俯视时希望整体显得紧凑。请让四处臂根与机身轮廓过渡协调，并保持前向相机与机鼻的关系。你可以保留、修订或回选候选，结束时指出所选方案与理由。',
+    source: 'planning/research-library/design/pilot.md（第四章四旋 C2 作者配对预试）' },
+];
+
+/** 登记的场次限额：每场 15 分钟主动操作、至多 9 次生成机会、至多 9 张回图（C1 登记，2026-11-22 修订后不变）。 */
+export const sessionLimits = { activeMinutes: 15, opportunities: 9, images: 9 } as const;
+
 /** 当前规格是否符合某个登记条件。 */
 export function meetsCondition(parameters: DroneParameters, condition: StudyCondition, wl: number) {
   return parameters.frame.frame_type === condition.frame.frame_type

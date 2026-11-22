@@ -7,7 +7,7 @@ import type { Layer } from './model';
 export interface AiCall { id: string; at: string; mode: 'model' | 'fixture'; model: string | null; latencyMs: number; registry: string; logFailed?: boolean }
 export interface AiChange { field: string; value: unknown; from: unknown; label: string; layer: Layer; why?: string }
 export interface AiSuggestion { title: string; why: string; changes: AiChange[]; evidence: string[]; tier: EvidenceTier; cards: string[] }
-export interface AiDescribe { mode: 'model' | 'fixture'; provider: string; model: string | null; registry: string; label: string; evidence: EvidenceItem[] }
+export interface AiDescribe { mode: 'model' | 'fixture'; provider: string; model: string | null; endpoint?: string | null; registry: string; label: string; evidence: EvidenceItem[] }
 
 export class AiRequestError extends Error {
   status: number;

@@ -1,6 +1,8 @@
 // 4.0 工作台走查：写意图 → AI 读出目标并逐条确认 → 补充一句不盖掉已确认的条目 → AI 提方向、放成两条方向（上游共用）
 // → 对机身说话，建议带依据分级、默认开分支 → 生成一轮 → 在候选上改 → 两张并排比较并取舍；
 // 再做一场“AI 对话 + 自由提示”（发出去的就是确认的原文），最后载入登记条件，核对机架锁定、研究记录抽屉和 AI 调用日志。
+// 4.2 起：按场次导出（同一个项目里换过方式，也是一场一个 ZIP，标签与内容一致）；按委托开一场（任务定为日常航拍、C2 机架锁定、两种方式看到同一段委托）；
+// C2 下机身间距按画出的圆角量；农业植保有药箱与喷洒部件，句子沿用 39 张的原文；已经有决定时换任务要另开项目。
 // 图像作业和文字模型都由软件夹具应答，不调用任何模型。运行前先执行 npm run build。可加一个目录参数保存截图。
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -82,7 +84,7 @@ try {
   };
   // Esc 回到总览（焦点在输入框里时 Esc 不起作用，先移开焦点）。
   const overview = async () => { await page.evaluate(() => document.activeElement?.blur?.()); await page.keyboard.press('Escape'); await page.getByTestId('overview-panel').waitFor(); };
-  const setup = async () => { const box = page.getByTestId('session-setup'); if (!await box.evaluate(d => d.open)) await box.locator('summary').click(); return box; };
+  const setup = async () => { const box = page.getByTestId('session-setup'); if (!await box.evaluate(d => d.open)) await box.locator(':scope > summary').click(); return box; };
 
   // 0. 旧版仍在 #v=3，顶栏有回到 4.0 的入口
   await page.goto(origin + '/#v=3');
@@ -292,22 +294,53 @@ try {
   for (const lane of state.project.lanes) assert.equal(layerValues(state, lane.id, 'frame')['frame.span_ratio_wl'], 1);
   await shot('08-登记条件.png');
 
-  // 10. 本场材料打成一个 ZIP：工作区记录、每一轮的冻结输入与回执和原图、这一场的 AI 调用（Codex 第 13 条）
+  // 10. 按场次导出：同一个项目里先用工作台（第 1 场）、再用自由提示（第 2 场）、又回到工作台（第 3 场），一场一个 ZIP（作者 11 月 23 日指出的问题）
   await overview();
-  const [download] = await Promise.all([page.waitForEvent('download'), (await setup()).getByTestId('export-bundle').click()]);
-  const bundle = unzip(new Uint8Array(await readFile(await download.path())));
-  const manifest = JSON.parse(new TextDecoder().decode(bundle.get('manifest.json')));
-  const workspace = JSON.parse(new TextDecoder().decode(bundle.get('workspace.json')));
-  assert.equal(manifest.schema, 'workbench/v4-session-bundle');
-  assert.equal(manifest.rounds, 3);
-  assert.equal([...bundle.keys()].filter(n => n.startsWith('rounds/') && n.endsWith('.json')).length, 3);
-  assert.equal([...bundle.keys()].filter(n => n.endsWith('.png')).length, manifest.candidates);
-  const bundled = new TextDecoder().decode(bundle.get('ai-calls.jsonl')).trim().split('\n').map(l => JSON.parse(l));
-  assert.equal(bundled.length, manifest.aiCalls.found);
-  assert.deepEqual(manifest.aiCalls.missing, []);
-  assert.ok(workspace.suggestions.some(x => x.status === 'branched' && bundled.some(c => c.id === x.callId)));
-  assert.equal(workspace.compares[0].reason, '短一些更像随身带的东西');
-  assert.ok(bundle.has('说明.txt'));
+  const exportSession = async id => {
+    const box = await setup();
+    const [download] = await Promise.all([page.waitForEvent('download'), box.locator(`[data-session="${id}"] [data-testid=export-session]`).click()]);
+    const bundle = unzip(new Uint8Array(await readFile(await download.path())));
+    const read = name => JSON.parse(new TextDecoder().decode(bundle.get(name)));
+    const calls = new TextDecoder().decode(bundle.get('ai-calls.jsonl')).trim().split('\n').filter(Boolean).map(l => JSON.parse(l));
+    return { name: download.suggestedFilename(), bundle, manifest: read('manifest.json'), workspace: read('workspace.json'), calls,
+      rounds: [...bundle.keys()].filter(n => n.startsWith('rounds/') && n.endsWith('.json')) };
+  };
+  state = await saved();
+  const [s1, s2, s3] = state.sessions;
+  assert.deepEqual([s1.method, s2.method, s3.method], ['open', 'free', 'structured']);
+  assert.ok(s1.endedAt && s2.endedAt && !s3.endedAt && state.currentSessionId === s3.id);
+  const first = await exportSession(s1.id);
+  assert.equal(first.manifest.schema, 'workbench/v4-session-bundle');
+  assert.equal(first.manifest.counts.rounds, 2);
+  assert.equal(first.rounds.length, 2);
+  assert.ok(first.rounds.every(n => !n.includes('自由提示')), '第 1 场只有工作台的轮次');
+  assert.ok(first.manifest.rounds.every(r => r.method === '工作台'));
+  assert.deepEqual(first.manifest.checks, { everyRoundThisSession: true, everyRoundThisMethod: true, roundsAttributedByTime: 0, decisionsAfterSessionEnd: 0 });
+  assert.equal([...first.bundle.keys()].filter(n => n.endsWith('.png')).length, first.manifest.counts.candidates);
+  assert.deepEqual(first.manifest.aiCalls.missing, []);
+  assert.deepEqual([...new Set(first.calls.map(c => c.task))].sort(), ['directions', 'intent', 'layer', 'revise'], '第 1 场只有工作台那一场的 AI 调用');
+  assert.ok(first.workspace.suggestions.some(x => x.status === 'branched' && first.calls.some(c => c.id === x.callId)));
+  assert.equal(first.workspace.compares[0].reason, '短一些更像随身带的东西');
+  assert.ok(first.workspace.events.every(e => e.sessionId === s1.id));
+  assert.match(first.name, /^workbench4-session01-workbench-open-trial-/);
+  assert.match(new TextDecoder().decode(first.bundle.get('说明.txt')), /^本场材料：第 1 场 · 工作台（未限定方式） · 自由试用/);
+  const second = await exportSession(s2.id);
+  assert.equal(second.manifest.counts.rounds, 1);
+  assert.match(second.rounds[0], /自由提示第1轮/);
+  assert.deepEqual(second.calls.map(c => c.task), ['free'], '第 2 场只有自由提示的对话');
+  assert.equal(second.workspace.project.lanes, undefined, '自由提示的一场不附工作台的方向和节点');
+  assert.ok(second.workspace.events.some(e => e.kind === 'free-run' && e.source === 'draft'));
+  assert.match(second.name, /^workbench4-session02-free-prompt-trial-/);
+  // 第 3 场在“试机身宽”那条方向上再生成一轮：这条方向跨过两场，画布上叫第 2 轮，第 3 场的 ZIP 里也叫第 2 轮，而且只装这一轮
+  await tap(page.locator(`[data-node=render][data-lane="${branch.id}"] [data-testid=node-run]`));
+  await page.waitForFunction(() => document.querySelectorAll('[data-node=candidate]').length >= 3, null, { timeout: 20000 });
+  assert.ok(await page.locator(`.react-flow__node-candidate:has-text("第 2 轮")`).count() >= 1);
+  await overview();
+  const third = await exportSession(s3.id);
+  assert.equal(third.manifest.counts.rounds, 1, '第 3 场只有它自己这一轮');
+  assert.ok(third.rounds[0].includes(branch.name + '第2轮'), '文件名照画布的叫法：' + third.rounds[0]);
+  assert.ok(third.bundle.has('说明.txt'));
+  const manifest = first.manifest, bundled = [...first.calls, ...second.calls];
 
   // 11. 研究记录抽屉：看记录、取舍和导出；新的一轮只从画布上的生成节点发出
   await page.getByTestId('open-records').click();
@@ -340,8 +373,123 @@ try {
   assert.ok(state.events.some(e => e.text === '任务定为：日常航拍'));
   assert.match(await page.locator('.t4').first().textContent(), /软件夹具/, '顶栏写明出图是软件夹具（Codex 第 11 条）');
 
+  // 14. 按委托开一场：任务定为日常航拍，机架按 C2 载入并锁定，委托原文出现在意图面板；项目里已有内容，另开空白项目
+  await overview();
+  let box14 = await setup();
+  await box14.getByTestId('session-brief').selectOption('A');
+  await box14.locator('[data-setup-method=structured]').click();
+  await box14.getByTestId('session-participant').fill('P01');
+  await box14.getByTestId('session-order').selectOption('1');
+  await box14.getByTestId('session-start').click();
+  await page.getByTestId('session-chip').filter({ hasText: '委托 A' }).waitFor();
+  state = await saved();
+  const registered = state.sessions.find(x => x.id === state.currentSessionId);
+  assert.deepEqual([registered.kind, registered.method, registered.briefId, registered.participant, registered.order], ['registered', 'structured', 'A', 'P01', 1]);
+  assert.equal(state.project.intent.text, '', '另开了空白项目');
+  assert.equal(state.project.intent.taskId, 'consumer_camera');
+  assert.equal(state.session.lockedFrame, 'c2-pilot');
+  assert.ok(await page.locator('.t4-btn[title=撤销]').isDisabled(), '新的一场从空的撤销历史开始，撤销撤不掉登记的锁定');
+  // 轴距 250 mm 与起始值相同，不另存；构型和 W/L 存在机架节点上。
+  assert.deepEqual(layerValues(state, state.project.lanes[0].id, 'frame'), { 'frame.frame_type': 'True X', 'frame.span_ratio_wl': 1 });
+  await tap(page.locator('[data-node=intent]'));
+  await page.getByTestId('brief-card').waitFor();
+  assert.ok(await page.getByTestId('task-select').isDisabled(), '这一场按委托做，任务不能换');
+  await page.getByTestId('use-brief').click();
+  await page.waitForFunction(() => document.querySelector('[data-testid=intent-text]')?.value.startsWith('为日常随行航拍设计一款四旋翼'));
+  assert.ok((await saved()).events.some(e => e.kind === 'intent-from-brief' && e.sessionId === registered.id));
+  await shot('09-委托与登记条件.png');
+  // C2 下机身按画出的圆角量，不报“桨盘伸到机身上方”，只说明矩形包络的四角（作者第 4 点）
+  await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=body])').first());
+  await page.waitForFunction(() => document.querySelector('[data-testid=layer-panel]')?.dataset.layer === 'body');
+  const bodyChecks = await page.locator('aside.r4 [aria-label=核对]').textContent();
+  assert.match(bodyChecks, /按画出的圆角量/);
+  assert.match(bodyChecks, /条件图里没有机身，这一点不影响出图/);
+  assert.doesNotMatch(bodyChecks, /桨盘伸到机身上方/);
+  await page.locator('aside.r4 [aria-label=核对]').scrollIntoViewIfNeeded();
+  await shot('11-C2机身核对.png');
+
+  // 15. 这一场生成一轮，再直接换成自由提示：另起一场，委托沿用，委托原文在自由提示那边也看得到；两场各导各的
+  await tap(page.locator('[data-node=render] [data-testid=node-run]').first());
+  await page.locator('[data-node=candidate]').first().waitFor({ timeout: 20000 });
+  await overview();
+  await (await setup()).locator('[data-session-method=free]').click();
+  await page.getByTestId('free-studio').waitFor();
+  await page.getByTestId('brief-card').waitFor();
+  assert.equal(await page.locator('[data-free-candidate]').count(), 0, '上一场工作台的图不在这一场里');
+  await page.getByTestId('use-brief').click();
+  assert.match(await page.getByTestId('free-chat').inputValue(), /^为日常随行航拍设计一款四旋翼/);
+  await page.getByTestId('free-prompt').fill('A compact everyday camera quadcopter, strict top view, nose up.');
+  await page.getByTestId('free-run').click();
+  await page.locator('[data-free-candidate]').first().waitFor({ timeout: 20000 });
+  state = await saved();
+  const freeSession = state.sessions.find(x => x.id === state.currentSessionId);
+  assert.deepEqual([freeSession.method, freeSession.briefId, freeSession.participant, freeSession.order], ['free', 'A', 'P01', undefined], '换方式时委托和参与者沿用，次序不沿用');
+  const freeZip = await exportSession(freeSession.id);
+  assert.match(freeZip.manifest.session.title, /^第 \d+ 场 · AI 对话 \+ 自由提示 · 委托 A · 机鼻 · P01/);
+  assert.equal(freeZip.manifest.counts.rounds, 1);
+  assert.match(freeZip.rounds[0], /自由提示第1轮/);
+  assert.equal(freeZip.manifest.session.brief.id, 'A');
+  const regZip = await exportSession(registered.id);
+  assert.equal(regZip.manifest.counts.rounds, 1);
+  assert.ok(regZip.manifest.rounds.every(r => r.method === '工作台'));
+  assert.match(regZip.manifest.session.title, /工作台 · 委托 A · 机鼻 · P01 · 该参与者第 1 场/);
+  assert.match(new TextDecoder().decode(regZip.bundle.get('说明.txt')), /委托原文：为日常随行航拍设计一款四旋翼/);
+  assert.equal(regZip.workspace.lockedFrame, 'c2-pilot');
+  await (await setup()).getByTestId('session-list').scrollIntoViewIfNeeded();
+  await shot('12-场次列表.png');
+
+  // 16. 农业植保六旋：药箱和喷洒部件可选，起始值沿用 39 张的设定；冻结的文字里是 39 张用过的原句
+  await (await setup()).locator('[data-session-method=structured]').click();
+  await page.getByTestId('v4-canvas').waitFor();
+  await overview();
+  let box16 = await setup();
+  await box16.getByTestId('session-brief').selectOption('');
+  await box16.getByTestId('session-start').click();
+  await tap(page.locator('[data-node=intent]'));
+  await page.getByTestId('task-select').selectOption('agricultural_spraying');
+  state = await saved();
+  assert.equal(state.project.intent.taskId, 'agricultural_spraying', '空白项目里原地换任务');
+  await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=frame])').first());
+  await page.getByTestId('other-configs-note').waitFor();
+  assert.equal(await page.locator('aside.r4 [role=radiogroup][aria-label=构型]').count(), 0, '植保只有平面六旋，不给其他构型');
+  await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=body])').first());
+  await page.locator('aside.r4 [role=radiogroup][aria-label=药箱]').waitFor();
+  assert.equal(await page.locator('aside.r4 [aria-label=药箱] [aria-checked=true]').getAttribute('data-option'), 'half-embedded');
+  await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=details])').first());
+  await page.locator('aside.r4 [role=radiogroup][aria-label=喷洒部件]').waitFor();
+  await page.locator('aside.r4 [aria-label=喷洒部件] [data-option=motor-nozzles]').click();
+  await page.locator('aside.r4 [aria-label=核对]', { hasText: '记“不可判”' }).waitFor();
+  await page.waitForTimeout(300); // 等按钮颜色过渡完再截图
+  await shot('10-植保药箱与喷洒.png');
+  await tap(page.locator('[data-node=render] [data-testid=node-run]').first());
+  await page.locator('[data-node=candidate]').first().waitFor({ timeout: 20000 });
+  const hexRound = (await page.evaluate(async () => {
+    const db = await new Promise(r => { const q = indexedDB.open('multirotor-studio-design-records-v1'); q.onsuccess = () => r(q.result); });
+    const rows = await new Promise(r => { const q = db.transaction('attempts').objectStore('attempts').getAll(); q.onsuccess = () => r(q.result); });
+    db.close(); return rows.sort((a, b) => a.createdAt.localeCompare(b.createdAt)).at(-1);
+  }));
+  assert.equal(hexRound.config.parameters.frame.frame_type, 'Radial Hex');
+  assert.equal(hexRound.config.parameters.propulsion.prop_blade_count, '2叶');
+  assert.match(hexRound.confirmedText, /A square spray tank sits half-embedded in the central frame: the frame wraps the lower half of the tank, while the tank top and its round filler cap stay exposed\./);
+  assert.match(hexRound.confirmedText, /one small round spray nozzle is mounted directly below each of the six motors/);
+  assert.doesNotMatch(hexRound.confirmedText, /transverse spray boom/);
+  assert.equal(hexRound.workflowOrigin.task, 'hexa');
+
+  // 17. 已经有决定和生成时换任务：先确认，另开一个项目，这一场随之结束
+  await tap(page.locator('[data-node=intent]'));
+  const sessionBefore = (await saved()).currentSessionId;
+  await page.getByTestId('task-select').selectOption('consumer_camera');
+  await page.getByTestId('task-switch-confirm').waitFor();
+  assert.equal((await saved()).project.intent.taskId, 'agricultural_spraying', '确认之前不换');
+  await page.getByTestId('task-switch-confirm').getByRole('button', { name: '另开项目' }).click();
+  state = await saved();
+  assert.equal(state.project.intent.taskId, 'consumer_camera');
+  assert.ok(state.sessions.find(x => x.id === sessionBefore).endedAt, '上一场结束了');
+  assert.notEqual(state.currentSessionId, sessionBefore);
+  assert.equal(await page.locator('[data-node=candidate]').count(), 0);
+
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ ok: true, bundleRounds: manifest.rounds, aiCallsInBundle: bundled.length, realModelCalls: 0 }));
+  console.log(JSON.stringify({ ok: true, sessions: (await saved()).sessions.length, firstBundleRounds: manifest.counts.rounds, aiCallsInBundles: bundled.length, realModelCalls: 0 }));
 } catch (error) {
   // 出错时留一张当时的画面，便于看清卡在哪一步。
   if (capture) for (const page of browser.contexts().flatMap(c => c.pages())) await page.screenshot({ path: join(capture, '失败时的画面.png') }).catch(() => {});

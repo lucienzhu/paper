@@ -191,6 +191,8 @@ export interface GenerationOptions {
     decisionPath?: { nodeId: string; layer: string; version: number }[];
     /** 这一轮保持不动的层，写进记录。 */
     keep?: string;
+    /** 4.2：这一轮属于哪一场。 */
+    sessionId?: string;
   };
   /** 画布上的参考图：编号是它在画布上的节点，原件须为 PNG。 */
   reference?: { id: string; file: Blob };
@@ -248,7 +250,8 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
   const variantScope = context ? context.variantScope : task + '/' + (variant?.workflowKey ?? activeVariant);
   const workflowOrigin = context ? context.workflowOrigin : live!.workflowOrigin;
   const decisionPath = context?.decisionPath;
-  const goal = requestedGoal?.trim() || intent.note.trim() || name + ' · ' + taskLabels[intent.taskId ?? 'consumer_camera'] + ' · ' + frameRules[parameters.frame.frame_type].zh;
+  const sessionId = context?.sessionId;
+  const goal =requestedGoal?.trim() || intent.note.trim() || name + ' · ' + taskLabels[intent.taskId ?? 'consumer_camera'] + ' · ' + frameRules[parameters.frame.frame_type].zh;
   if (!await findAttempt(id)) {
     const candidate = parentCandidateId
       ? (await findAttempt(parentCandidateId.split('/')[0]))?.candidates.find(c => c.id === parentCandidateId)
@@ -260,13 +263,13 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
       const words = (freeText ?? '').trim();
       if (!words) throw new Error('先写下要发给模型的文字。');
       await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal: freeTitle(words), keep: '', condition: 'free',
-        h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath}, words, parent, undefined, id);
+        h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath, sessionId}, words, parent, undefined, id);
       ensureRunning(id);
       return id;
     }
     const text = structuredText(state.parameters, state.touched, state.intent, candidate ? 'candidate' : reference ? 'reference' : undefined, requestedGoal);
     await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal, keep: context?.keep ?? '', condition: 'structured',
-      h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath}, '', parent, text, id);
+      h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath, sessionId}, '', parent, text, id);
   }
   ensureRunning(id);
   return id;

@@ -216,3 +216,7 @@ fieldset.fs4:disabled * { cursor: not-allowed; }
 .colour4-pick input[type="color"] { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 6px; background: none; cursor: pointer; }
 .colour4-pick input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
 .colour4-pick input[type="color"]::-webkit-color-swatch { border: 1px solid var(--line-2); border-radius: 5px; }
+
+/* 4.2：这一场的委托。两种方式看到的是同一段原文，用左侧细线和浅底与普通段落分开。 */
+.s4 .brief4 { border-left: 3px solid var(--ink); background: var(--surface); padding: 10px 12px; border-radius: 0 10px 10px 0; }
+.s4 .brief4 h3 { margin: 0; }

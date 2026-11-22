@@ -254,22 +254,22 @@
     {
       "path": "prototypes/drone-configurator/package.json",
       "format": "text-lf",
-      "sha256": "928b2608eec396c09e6af3dfb75baef4c604048cc30febcd1310bbd2ee2bb7e1"
+      "sha256": "c5da2951e7254c5166aef1839fae86d91625cf73a2d391ca9ec34a51330b8c12"
     },
     {
       "path": "prototypes/drone-configurator/package-lock.json",
       "format": "text-lf",
-      "sha256": "7b459a2907a64d4b627872b865f92941d6b373f68dac6eee0376b0fa2e8cf695"
+      "sha256": "c78e2c0f1dad87a720cb0b88ce275f492af6215cb2a7751abb22bda2e8586be6"
     },
     {
       "path": "prototypes/drone-configurator/README.md",
       "format": "text-lf",
-      "sha256": "f96cb0d1fddf2da640176f51b19f258e28fa12ce91129371c1eb064e9ebdb0eb"
+      "sha256": "2cb6d579f962d460d3a1562450987c1b69f13d8bd1ac97a382e021cf161b8abe"
     },
     {
       "path": "prototypes/drone-configurator/configurator-offline.zip",
       "format": "binary",
-      "sha256": "3d41159f0024e9b09654930111afb9367d3e5ceaa73f91690de82a6a8a7017a8"
+      "sha256": "64e5c8054b31cc2a12f818c4cebad555e31313172c2313d7d7fa9f445dcff0da"
     },
     {
       "path": "prototypes/drone-configurator/src/data/evidenceCards.json",

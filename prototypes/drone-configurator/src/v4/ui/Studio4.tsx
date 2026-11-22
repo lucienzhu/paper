@@ -4,14 +4,14 @@ import { Undo2, Redo2, FileSearch, X, Workflow, History, Download } from 'lucide
 import { DroneStoreContext, taskStores } from '../../store/droneStore';
 import HandoffPage from '../../components/Handoff/HandoffPage';
 import { useImageBackend } from '../../design/imageBackend';
-import { lanePath } from '../model';
+import { lanePath, studioTask } from '../model';
 import { useStudio, type Selection } from '../store';
 import { laneStore } from '../adapter';
 import { useAttempts } from '../attempts';
 import { describeAi, type AiDescribe } from '../ai';
 import { runLane } from '../run';
 import { exportSessionBundle } from '../exportWorkspace';
-import { inProject, isFreeRound } from '../attempts';
+import { briefOf, roundsOfSession, sessionTitle } from '../sessions';
 import { recoverDesignGenerations } from '../../design/generation';
 import Board4 from './Board4';
 import CommandBar from './CommandBar';
@@ -26,17 +26,22 @@ import './studio4.css';
 const short = (label: string) => label.replace(/[（(].*?[）)]/g, '').trim();
 
 function TopBar({ onDrawer, aiInfo }: { onDrawer: () => void; aiInfo: AiDescribe | null }) {
-  const { project, past, future, session } = useStudio();
+  const { project, past, future, session, sessions, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const backend = useImageBackend();
+  const current = sessions.find(s => s.id === currentSessionId && !s.endedAt);
+  const brief = briefOf(current);
   return <header className="t4">
     <span className="t4-brand"><i aria-hidden="true"><Workflow size={15} /></i>多旋翼造型工作台</span>
     <span className="t4-sep" />
+    <span className={'t4-chip' + (current?.kind === 'registered' ? ' is-ai' : '')} data-testid="session-chip" title={current ? sessionTitle(current) : '现在没有进行中的一场'}>
+      {current ? `第 ${current.no} 场 · ${brief ? brief.label : '自由试用'}` : '未开场'}</span>
+    <span className="t4-chip hide-narrow" title="这个项目的任务">{studioTask(project.intent.taskId).short}</span>
     {session.method !== 'free' ? <nav className="t4-lanes" aria-label="方向">{project.lanes.map(l => <button key={l.id} type="button" className="t4-lane" aria-pressed={l.id === project.activeLaneId}
       data-lane={l.id} title={l.name} onClick={() => { st.setActiveLane(l.id); st.select({ kind: 'layer', laneId: l.id, layer: 'body' }); }}><span className="dot" /><span className="name">{l.name}</span></button>)}</nav>
       : <span className="t4-chip">AI 对话 + 自由提示</span>}
     <span className="t4-gap" />
-    {session.lockedFrame && <span className="t4-chip is-warn" title="机架锁定为登记条件；在场次设置里解除">登记条件已锁定</span>}
+    {session.lockedFrame && session.method !== 'free' && <span className="t4-chip is-warn" title="机架锁定为登记条件；在场次设置里解除">登记条件已锁定</span>}
     <span className="t4-chip hide-narrow" title={'出图后端：' + backend.label}>出图 · {short(backend.label)}</span>
     <span className={'t4-chip hide-narrow' + (aiInfo?.mode === 'model' ? ' is-ai' : '')} title={'文字模型：' + (aiInfo?.label ?? '读取中')} data-testid="ai-chip">文字 · {short(aiInfo?.label ?? '…')}</span>
     <button type="button" className="t4-btn" title="撤销" disabled={!past.length} onClick={st.undo}><Undo2 size={14} /><span className="label">撤销</span></button>
@@ -92,15 +97,18 @@ export default function Studio4() {
     setFocusKey(node.id);
   };
 
-  // 研究记录抽屉：两种方式都有。自由提示那一场只看各轮记录（没有结构化的设计输入），且只列这一场的轮次。
+  // 研究记录抽屉：两种方式都有，只列这一场的轮次，和“导出本场材料”装进 ZIP 的一致。自由提示那一场只看各轮记录（没有结构化的设计输入）。
   const free = session.method === 'free';
   const activeStore = laneStore(project.activeLaneId);
+  const { sessions, currentSessionId } = useStudio();
+  const current = sessions.find(s => s.id === currentSessionId && !s.endedAt) ?? null;
   const drawerEl = drawer && <div style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'var(--paper)', overflow: 'auto' }} data-testid="records-drawer">
-    <div className="t4" style={{ position: 'sticky', top: 0, zIndex: 2 }}><b>研究记录与导出 · {free ? 'AI 对话 + 自由提示' : project.lanes.find(l => l.id === project.activeLaneId)?.name}</b><span className="t4-gap" />
-      <button type="button" className="t4-btn" data-testid="export-bundle-drawer" onClick={() => void exportSessionBundle().then(n => st.setNotice(n)).catch(e => st.setNotice(String(e)))}><Download size={14} />导出本场材料（ZIP）</button>
+    <div className="t4" style={{ position: 'sticky', top: 0, zIndex: 2 }}><b>研究记录与导出 · {current ? sessionTitle(current) : '现在没有进行中的一场'}</b><span className="t4-gap" />
+      <button type="button" className="t4-btn" data-testid="export-bundle-drawer" disabled={!current} onClick={() => void exportSessionBundle(current?.id).then(n => st.setNotice(n)).catch(e => st.setNotice(e instanceof Error ? e.message : String(e)))}><Download size={14} />导出本场材料（ZIP）</button>
       <button type="button" className="t4-btn" onClick={() => setDrawer(false)}><X size={14} />回到画布</button></div>
     <DroneStoreContext.Provider value={activeStore as unknown as typeof taskStores.quad}>
-      <HandoffPage wide={window.innerWidth > 1180} allowNewRound={false} roundsOnly={free} filter={free ? a => isFreeRound(a) : a => inProject(a)} />
+      <HandoffPage wide={window.innerWidth > 1180} allowNewRound={false} roundsOnly={free}
+        filter={a => !!current && roundsOfSession(current, [a]).rounds.length === 1} />
     </DroneStoreContext.Provider>
   </div>;
 

@@ -12,20 +12,32 @@ export const layers: Layer[] = ['frame', 'propulsion', 'body', 'details', 'cmf']
 export const layerInfo: Record<Layer, { name: string; question: string; generation: string }> = {
   frame: { name: '机架', question: '几个旋翼、怎么排、多大、机臂多粗。', generation: '生成时编译成条件图（点线图），这是唯一进条件图的一层。' },
   propulsion: { name: '动力', question: '桨多大、几叶、要不要护圈。', generation: '生成时写成桨与护圈句。' },
-  body: { name: '机身', question: '机身的体量、轮廓和顶盖分件。', generation: '生成时写成机身尺寸句、轮廓句和顶盖句。' },
-  details: { name: '细节', question: '臂根怎样过渡、相机怎样安装、起落架。', generation: '生成时写成臂根句、相机句和起落架句。' },
+  body: { name: '机身', question: '机身的体量、轮廓和顶盖分件；农业植保还有药箱。', generation: '生成时写成机身尺寸句、轮廓句和顶盖句（植保另有药箱句）。' },
+  details: { name: '细节', question: '臂根怎样过渡、相机怎样安装、起落架；农业植保还有喷洒部件。', generation: '生成时写成臂根句、相机句和起落架句（植保另有喷洒句）。' },
   cmf: { name: '色材', question: '主色、表面处理、机臂材料，以及设计者自己写的色材说明。', generation: '生成时写成色材句；自己写的说明原样写进文字。' },
 };
 
-/** 每个参数归哪一层管。补充文字不属于任何一层，放在生成那一步。 */
+/** 每个参数归哪一层管。补充文字不属于任何一层，放在生成那一步。药箱和喷洒部件只在农业植保的规格里出现。 */
 export const layerFields: Record<Layer, string[]> = {
   frame: ['frame.frame_type', 'frame.wheelbase_mm', 'frame.span_ratio_wl', 'frame.arm_width_mm', 'frame.arm_thickness_mm'],
   propulsion: ['propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree', 'propulsion.prop_guard'],
   body: ['fuselage.fuselage_dimensions_mm.length', 'fuselage.fuselage_dimensions_mm.width', 'fuselage.fuselage_dimensions_mm.height',
-    'fuselage.fuselage_style', 'fuselage.top_cover'],
-  details: ['frame.arm_root', 'accessories.has_camera_gimbal', 'accessories.camera_mount', 'landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm'],
+    'fuselage.fuselage_style', 'fuselage.top_cover', 'accessories.spray_tank'],
+  details: ['frame.arm_root', 'accessories.has_camera_gimbal', 'accessories.camera_mount', 'landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm',
+    'accessories.spray_system'],
   cmf: ['accessories.drone_primary_color', 'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
 };
+
+/**
+ * 工作台只做两个任务（2026-11-23 作者定：先围绕主实验，其他旋翼以后直接在 GPU 上跑请求管线）。
+ * 日常随行航拍四旋是主案例，RQ3 的两种方式对照在这里；农业植保六旋是场景适配案例。
+ * 中性外观比较（neutral_design）只留给跨构型的请求管线和 3.6 版读旧文件，工作台里不再提供。
+ */
+export const studioTasks: { id: TaskId; label: string; short: string; frames: string[] }[] = [
+  { id: 'consumer_camera', label: '日常随行航拍四旋（主案例）', short: '日常航拍', frames: ['True X', 'Wide X', 'Stretch X', 'H-Frame', 'Deadcat', '+ Configuration'] },
+  { id: 'agricultural_spraying', label: '农业植保六旋（场景适配案例）', short: '农业植保', frames: ['Radial Hex'] },
+];
+export const studioTask = (id: TaskId) => studioTasks.find(t => t.id === id) ?? studioTasks[0];
 const owner = new Map<string, Layer>(layers.flatMap(layer => layerFields[layer].map(path => [path, layer] as [string, Layer])));
 export function layerOf(path: string): Layer | null { return owner.get(path) ?? null; }
 
@@ -34,19 +46,29 @@ export const pairLayers: Record<WordPairId, Layer[]> = {
   compact: ['body', 'propulsion'], integrated: ['details', 'body'], simple: ['body', 'details'], visible: ['cmf'],
 };
 
-/** 起始值。日常航拍四旋取真实产品中位数（见 design/defaults.ts）；农业六旋沿用原来的起始值。 */
+/**
+ * 起始值。日常航拍四旋取真实产品中位数（见 design/defaults.ts）。
+ * 农业植保六旋的起始值对齐既有六旋 39 张的请求（cases.json 里的 HEXA3-wl1.00-r01）：双叶桨、不加护圈、
+ * 折叠铰接的臂根、半嵌入机身的方形药箱、机身下方的横向喷杆。设计者可以改；改过的才记为“你的选择”。
+ */
 export function baseParameters(taskId: TaskId): DroneParameters {
   const hexa = taskId === 'agricultural_spraying';
   return {
     frame: {
       frame_type: hexa ? 'Radial Hex' : designStart.frame_type, wheelbase_mm: hexa ? 1400 : designStart.wheelbase_mm,
-      span_ratio_wl: hexa ? 1.1547 : designStart.span_ratio_wl, arm_thickness_mm: '4mm', arm_width_mm: '15mm', material_visual: '', arm_root: '',
+      span_ratio_wl: hexa ? 1.1547 : designStart.span_ratio_wl, arm_thickness_mm: '4mm', arm_width_mm: '15mm', material_visual: '', arm_root: hexa ? 'hinge' : '',
     },
-    propulsion: { prop_diameter_inch: hexa ? 20 : 5, prop_blade_count: hexa ? '3叶' : quadBladeCount, motor_tilt_degree: 0, prop_guard: 'none' },
+    propulsion: { prop_diameter_inch: hexa ? 20 : 5, prop_blade_count: hexa ? '2叶' : quadBladeCount, motor_tilt_degree: 0, prop_guard: 'none' },
     fuselage: { fuselage_style: '', top_cover: '', fuselage_dimensions_mm: hexa ? { ...legacyStart.fuselage_dimensions_mm } : { ...designStart.fuselage_dimensions_mm } },
     landing_gear: { landing_gear_style: '低矮滑撬/支腿', landing_gear_height_mm: 40 },
-    accessories: { has_camera_gimbal: !hexa, camera_mount: '', custom_prompt_additions: '', drone_primary_color: '', surface_finish: '' },
+    accessories: { has_camera_gimbal: !hexa, camera_mount: '', custom_prompt_additions: '', drone_primary_color: '', surface_finish: '',
+      ...(hexa ? { spray_tank: 'half-embedded' as const, spray_system: 'boom' as const } : {}) },
   };
+}
+
+/** 一个项目是否还是空白：没有改过任何一层。换任务时据此决定原地换还是另开项目。 */
+export function isBlankProject(project: Project) {
+  return Object.values(project.nodes).every(n => Object.keys(n.touched).length === 0) && project.lanes.length === 1;
 }
 
 export interface Issue { id: string; text: string; fromCandidate?: string; at: string; resolved?: boolean }
