@@ -61,15 +61,16 @@ function AttemptView({attempt,onParent}:{attempt:FrozenAttempt;onParent:(id:stri
 }
 
 /** allowNewRound=false：4.0 的轮次从画布上的生成节点发出，这里只看记录、取舍和导出。 */
-export default function CandidateWorkspace({initialAttempt, initialParent,onParentConsumed,allowNewRound=true}: {initialAttempt?:string; initialParent?:string;onParentConsumed?:()=>void;allowNewRound?:boolean} = {}){
+export default function CandidateWorkspace({initialAttempt, initialParent,onParentConsumed,allowNewRound=true,filter}: {initialAttempt?:string; initialParent?:string;onParentConsumed?:()=>void;allowNewRound?:boolean;filter?:(a:FrozenAttempt)=>boolean} = {}){
   const {task,workflowOrigin,parameters,touched,intent,designChatAudit,activeVariant,variants}=useDroneStore();
+  const filterRef=useRef(filter); filterRef.current=filter;
   const [attempts,setAttempts]=useState<FrozenAttempt[]>([]),[selected,setSelected]=useState(initialAttempt ?? '');
   const [condition,setCondition]=useState<'free'|'structured'>('structured'),[text,setText]=useState(''),[editText,setEditText]=useState<string|null>(null);
   const [goal,setGoal]=useState(''),[keep,setKeep]=useState(''),[parentId,setParentId]=useState('');
   const [error,setError]=useState(''),[busy,setBusy]=useState(false);
   const form=useRef<HTMLFormElement>(null);
   const compiled=compilePrompt(parameters,touched,intent,computeLayout(parameters)).text;
-  useEffect(()=>{let active=true;let serial=0;const load=async()=>{const current=++serial;try{const data=await listAttempts();if(active&&current===serial)setAttempts(data);}catch(e){if(active)setError(String(e));}};void load();window.addEventListener('candidate-record-change',load);return()=>{active=false;window.removeEventListener('candidate-record-change',load);};},[]);
+  useEffect(()=>{let active=true;let serial=0;const load=async()=>{const current=++serial;try{const data=await listAttempts();if(active&&current===serial)setAttempts(filterRef.current ? data.filter(filterRef.current) : data);}catch(e){if(active)setError(String(e));}};void load();window.addEventListener('candidate-record-change',load);return()=>{active=false;window.removeEventListener('candidate-record-change',load);};},[]);
   const variant = variants.find(v => v.id === activeVariant);
   // The original A draft retains its storage key. Reused B/C display letters must not inherit a deleted draft's parent.
   const parentKey = task === 'quad' && activeVariant === 'A' && !variant?.workflowKey

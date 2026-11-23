@@ -9,13 +9,11 @@ import { designStart } from '../src/design/defaults.ts';
 import { fields } from '../src/design/fields.ts';
 import { computeLayout } from '../src/design/design.ts';
 
-test('every parameter in the field register belongs to exactly one layer, except the free-text addition', () => {
+test('every parameter in the field register belongs to exactly one layer; the designer\'s own colour and material note sits in CMF', () => {
   const owned = layers.flatMap(l => layerFields[l]);
   assert.equal(new Set(owned).size, owned.length);
-  for (const f of fields) {
-    if (f.path === 'accessories.custom_prompt_additions') assert.equal(layerOf(f.path), null);
-    else assert.ok(layerOf(f.path), '没有归属：' + f.path);
-  }
+  for (const f of fields) assert.ok(layerOf(f.path), '没有归属：' + f.path);
+  assert.equal(layerOf('accessories.custom_prompt_additions'), 'cmf');
 });
 
 test('a new project starts from the real-product starting values on one direction', () => {
@@ -134,4 +132,146 @@ test('a stored project survives a round trip and a broken one is refused', () =>
   const broken = JSON.parse(JSON.stringify(p));
   delete broken.nodes[lanePath(p, 'lane-A')[1].id];
   assert.equal(migrate(broken), null);
+});
+
+// ---------- 4.2：主实验在前、植保六旋的药箱与喷洒部件、C2 的机身间距、按场次认轮次 ----------
+import { baseParameters, studioTasks } from '../src/v4/model.ts';
+import { compilePrompt } from '../src/design/partPrompt.ts';
+import { bodyClearance, envelopeClearance } from '../src/design/checks.ts';
+import { study, studyBriefs } from '../src/design/defaults.ts';
+import { roundsOfSession, sessionStem, sessionTitle } from '../src/v4/sessions.ts';
+import { readFileSync } from 'node:fs';
+
+const archivedHex = JSON.parse(readFileSync(new URL('../src/data/history/cases.json', import.meta.url), 'utf8')).hex.prompt;
+
+test('the workbench offers only the two study tasks; aerial is quad-only and plant protection is the flat hex', () => {
+  assert.deepEqual(studioTasks.map(t => t.id), ['consumer_camera', 'agricultural_spraying']);
+  assert.ok(studioTasks[0].frames.every(f => computeLayout({ ...baseParameters('consumer_camera'), frame: { ...baseParameters('consumer_camera').frame, frame_type: f } }).hubs.length === 4));
+  assert.deepEqual(studioTasks[1].frames, ['Radial Hex']);
+});
+
+test('the plant-protection start matches the archived hex request: two blades, folding hinge, half-embedded tank, transverse boom', () => {
+  const p = baseParameters('agricultural_spraying');
+  assert.equal(p.propulsion.prop_blade_count, '2叶');
+  assert.equal(p.frame.arm_root, 'hinge');
+  assert.equal(p.accessories.spray_tank, 'half-embedded');
+  assert.equal(p.accessories.spray_system, 'boom');
+  const text = compilePrompt(p, {}, { taskId: 'agricultural_spraying', targets: {}, note: '', cards: [], log: [] }, computeLayout(p)).text;
+  // 药箱句和喷杆句与 39 张用的请求一字不差。
+  const structural = archivedHex.split('\n').filter(s => s.startsWith('A square spray tank') || s.startsWith('A transverse spray boom'));
+  assert.equal(structural.length, 2);
+  for (const sentence of structural) assert.ok(text.includes(sentence), '缺少原句：' + sentence);
+  assert.equal(layerOf('accessories.spray_tank'), 'body');
+  assert.equal(layerOf('accessories.spray_system'), 'details');
+});
+
+test('tank and spray sentences appear only in the plant-protection task, and the nozzle option keeps the archived wording', () => {
+  const quad = { ...baseParameters('consumer_camera') };
+  quad.accessories = { ...quad.accessories, spray_tank: 'half-embedded', spray_system: 'boom' };
+  const quadText = compilePrompt(quad, {}, { taskId: 'consumer_camera', targets: {}, note: '', cards: [], log: [] }, computeLayout(quad)).text;
+  assert.ok(!/spray/i.test(quadText));
+  const hexa = baseParameters('agricultural_spraying');
+  hexa.accessories = { ...hexa.accessories, spray_system: 'motor-nozzles' };
+  const out = compilePrompt(hexa, { 'accessories.spray_system': true }, { taskId: 'agricultural_spraying', targets: {}, note: '', cards: [], log: [] }, computeLayout(hexa));
+  const s = out.sentences.find(x => x.id === 'spray_system');
+  assert.equal(s.text, 'There is no spray boom. Instead, one small round spray nozzle is mounted directly below each of the six motors, its dark nozzle tip just visible beside the motor from above.');
+  assert.equal(s.source, 'chosen');
+  assert.equal(out.sentences.find(x => x.id === 'spray_tank').source, 'default');
+});
+
+test('under C2 the drawn body clears the props; only the sharp-cornered envelope touches them', () => {
+  const p = baseParameters('consumer_camera');
+  Object.assign(p.frame, study.conditions.find(c => c.id === 'c2-pilot').frame);
+  const layout = computeLayout(p);
+  assert.ok(envelopeClearance(p, layout) < 0 && envelopeClearance(p, layout) > -1.5, '矩形包络在四角相交约 1.1 mm');
+  assert.ok(bodyClearance(p, layout) >= 0, '按画出的圆角量不相交');
+  for (const style of ['Aerodynamic Pod', 'Boxy Enclosure', 'Faceted Compact'])
+    assert.ok(bodyClearance({ ...p, fuselage: { ...p.fuselage, fuselage_style: style } }, layout) >= 0, style);
+  // 明显放不下时仍然报重叠。
+  assert.ok(bodyClearance({ ...p, fuselage: { ...p.fuselage, fuselage_dimensions_mm: { length: 200, width: 120, height: 30 } } }, layout) < 0);
+});
+
+test('the two registered briefs are the pilot texts and both pair with the C2 frame', () => {
+  assert.deepEqual(studyBriefs.map(b => b.id), ['A', 'B']);
+  for (const b of studyBriefs) { assert.equal(b.condition, 'c2-pilot'); assert.match(b.text, /^为日常随行航拍设计一款四旋翼，展开俯视时希望整体显得紧凑。/); }
+});
+
+test('rounds are attributed to their own session, and old untagged rounds only by project, method and time window', () => {
+  const s1 = { id: 'session-1', no: 1, projectId: 'project-x', projectCreatedAt: '2026-11-23T01:00:00Z', method: 'structured', kind: 'registered', briefId: 'A', participant: 'P01', order: 1,
+    startedAt: '2026-11-23T01:00:00Z', endedAt: '2026-11-23T01:20:00Z' };
+  const s2 = { ...s1, id: 'session-2', no: 2, method: 'free', briefId: 'A', startedAt: '2026-11-23T01:20:00Z', endedAt: undefined };
+  const round = (id, scope, at, sessionId) => ({ id, variantScope: scope, createdAt: at, sessionId, candidates: [], decisions: [] });
+  const rows = [
+    round('a', 'v4/project-x/lane-A', '2026-11-23T01:05:00Z', 'session-1'),
+    round('b', 'v4free/project-x', '2026-11-23T01:25:00Z', 'session-2'),
+    round('c', 'v4/project-x/lane-B', '2026-11-23T01:10:00Z', undefined),      // 4.1 留下的工作台轮次
+    round('d', 'v4free/project-x', '2026-11-23T01:12:00Z', undefined),        // 4.1 留下的自由提示轮次，时间在第 1 场里，但方式不对
+    round('e', 'v4/project-y/lane-A', '2026-11-23T01:06:00Z', undefined),     // 别的项目
+  ];
+  assert.deepEqual(roundsOfSession(s1, rows).rounds.map(r => r.id), ['a', 'c']);
+  assert.deepEqual(roundsOfSession(s1, rows).legacy, ['c']);
+  assert.deepEqual(roundsOfSession(s2, rows).rounds.map(r => r.id), ['b']);
+  assert.match(sessionTitle(s1), /第 1 场 · 工作台 · 委托 A · 机鼻 · P01/);
+  assert.equal(sessionStem(s2), 'session02-free-prompt-briefA-P01');
+});
+
+test('a session clock keeps active work, model and queue waiting, moderator handoff, technical pause and unknown waiting apart (overlaps counted once)', async () => {
+  const { sessionTiming, sessionEventsCsv, eventColumns } = await import('../src/v4/timing.ts');
+  const t0 = Date.parse('2026-11-23T10:00:00.000Z');
+  const at = s => new Date(t0 + s * 1000).toISOString();
+  const session = { id: 'session-x', no: 3, kind: 'registered', method: 'structured', briefId: 'A', participant: 'P01', order: 1, startedAt: at(0), endedAt: at(600), endReason: '到 10 分钟' };
+  const events = [
+    { at: at(30), kind: 'ai-call', task: 'intent', callId: 'c1', ok: true, startedAt: at(30), endedAt: at(50), text: '' },
+    { at: at(180), kind: 'moderator-start', mark: 'handoff', note: '帮设计者粘贴委托', text: '' },
+    { at: at(240), kind: 'moderator-end', text: '' },
+    { at: at(360), kind: 'moderator-start', mark: 'pause', note: 'GPU 断线', text: '' },
+    { at: at(390), kind: 'moderator-end', text: '' },
+    { at: at(400), kind: 'final', attemptId: 'r1', candidateId: 'r1/1', text: '定为终稿' },
+  ];
+  const round = (id, sent, shown, status = 'succeeded') => ({ attemptId: id, label: id, condition: 'structured', frozenAt: at(sent - 2), sentAt: at(sent),
+    enqueuedAt: at(sent + 1), executionStart: at(sent + 5), executionEnd: at(sent + 40), receivedAt: shown === null ? undefined : at(shown - 1),
+    status, candidates: shown === null ? [] : [{ id: id + '/1', firstShown: at(shown) }], decisions: shown === null ? [] : [{ at: at(shown + 5), kind: 'accept', candidate: id + '/1', reason: '留着' }] });
+  // 第 1 轮 1:00 发出、2:00 显示；第 2 轮 3:30 发出、4:30 显示（前半段与主持人交接重叠）；第 3 轮 9:00 发出，本场结束时还没回图
+  const rounds = [round('r1', 60, 120), round('r2', 210, 270), round('r3', 540, null, 'running')];
+  const t = sessionTiming(session, events, rounds);
+  assert.equal(t.waiting.ms, (20 + 60 + 30) * 1000, '文字模型 20 秒 + 第 1 轮 60 秒 + 第 2 轮交接之后的 30 秒');
+  assert.equal(t.moderator.ms, 60000);
+  assert.equal(t.moderator.pauseMs, 30000);
+  assert.equal(t.unknownWaitMs, 60000, '第 3 轮从发出到本场结束');
+  assert.equal(t.activeMs, null, '有未知等待时不补数');
+  assert.deepEqual(t.activeBounds, { low: 340000, high: 400000 });
+  assert.deepEqual(t.used, { opportunities: 3, images: 2, requests: 3, enqueueRequests: 0 });
+  assert.equal(t.over.opportunities, false);
+  assert.ok(t.missing.some(m => /r3 的首次显示时间/.test(m.what)));
+  assert.equal(t.waiting.image[0].runMs, 35000, '执行时长两端都是 GPU 主机的钟');
+  // 登记的场次事件表：列名照原表，取不到的时间留空写原因
+  const csv = sessionEventsCsv(session, '委托A·依据摘要v0', events, rounds);
+  const [header, ...lines] = csv.trim().split('\n');
+  assert.equal(header, eventColumns.join(','));
+  const registered = new URL('../../../planning/research-library/design/session_events.csv', import.meta.url);
+  const { existsSync, readFileSync } = await import('node:fs');
+  if (existsSync(registered)) assert.equal(header, readFileSync(registered, 'utf8').split(/\r?\n/)[0], '与研究资料库里登记的空表同列');
+  assert.ok(lines.some(l => l.includes('moderator_handoff_start') && l.includes('moderator') && l.includes('帮设计者粘贴委托')));
+  assert.ok(lines.some(l => l.includes('technical_pause_start')));
+  assert.ok(lines.some(l => l.startsWith('P01,3,委托A·依据摘要v0,S,r1,first_shown,' + at(120) + ',browser,r1/1,r1,')));
+  assert.ok(lines.some(l => l.includes(',r3,first_shown,,browser,') === false && l.includes(',r3,return,,browser,') && l.endsWith('页面还没有收到回图或结论')));
+  assert.ok(lines.some(l => l.includes(',run_start,' + at(65) + ',comfyui,')));
+});
+
+test('a session has one current final: a later one replaces the earlier, rejecting it withdraws it, and "nothing acceptable" is its own outcome', async () => {
+  const { currentFinal, registrable, sessionTitle, sessionStem } = await import('../src/v4/sessions.ts');
+  const e = (kind, attemptId) => ({ at: new Date().toISOString(), kind, attemptId, candidateId: attemptId && attemptId + '/1', text: kind });
+  assert.equal(currentFinal([e('final', 'a'), e('final', 'b')]).current.attemptId, 'b');
+  const withdrawn = currentFinal([e('final', 'a'), e('final', 'b'), e('final-withdrawn')]);
+  assert.equal(withdrawn.current, null, '不退回更早的那张');
+  assert.equal(withdrawn.history.length, 3);
+  assert.equal(currentFinal([e('final', 'a'), e('final-none')]).current.kind, 'none-acceptable');
+  assert.equal(currentFinal([e('edit'), e('run')]).current, null);
+  // 登记场次四项齐全：委托、方式（工作台或自由提示）、匿名编号、次序
+  assert.equal(registrable({ briefId: 'A', method: 'structured', participant: 'P01', order: 1 }), true);
+  for (const missing of [{ briefId: undefined }, { method: 'open' }, { participant: ' ' }, { order: undefined }])
+    assert.equal(registrable({ briefId: 'A', method: 'free', participant: 'P01', order: 2, ...missing }), false, JSON.stringify(missing));
+  const trial = { id: 'session-1', no: 5, projectId: 'p', projectCreatedAt: '', method: 'free', kind: 'trial', briefId: 'A', startedAt: '' };
+  assert.match(sessionTitle(trial), /委托 A · 机鼻 · 试用/);
+  assert.equal(sessionStem(trial), 'session05-free-prompt-briefA-trial');
 });

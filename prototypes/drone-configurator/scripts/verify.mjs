@@ -8,6 +8,7 @@ import { compilePrompt, diffSentences, auditPrompt } from '../src/design/partPro
 import { openDecisions } from '../src/design/fields.ts';
 import { buildExport, parseImported } from '../src/design/exporters.ts';
 import { designStart, legacyStart, meetsCondition, realQuadrotors, study } from '../src/design/defaults.ts';
+import { bodyClearance as drawnClearance } from '../src/design/checks.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const results = [];
@@ -179,8 +180,11 @@ check('载入 C2 预试条件不改机身尺寸（登记的只有布局三项）
 const pilotGuide = guides.find(x => x.wl === 1.0 && x.dd === 0.5);
 check('C2 预试条件的轴心与研究条件图 ' + pilotGuide.file + ' 相差不超过 1 px',
   Math.max(...pl.hubs.map(h => Math.min(...pilotGuide.centers_px.map(([u, v]) => Math.hypot(h.x_px - u, h.y_px - v))))) <= 1);
+check('C2 预试条件下，按示意图画出的机身外形（圆角）不与桨盘相交；只有不计圆角的矩形包络在四角相交（条件图不含机身）',
+  drawnClearance(pilot, pl) >= 0 && bodyClearance(pl, pilot.fuselage.fuselage_dimensions_mm) < 0,
+  `画出的外形 ${drawnClearance(pilot, pl).toFixed(1)} mm，矩形包络 ${bodyClearance(pl, pilot.fuselage.fuselage_dimensions_mm).toFixed(1)} mm`);
 check('旧起始值（真 X、机身 100 × 80）仍可照原样复算', near(computeLayout(base()).body_width_over_D, legacyStart.fuselage_dimensions_mm.width / 250, 1e-9) && near(computeLayout(base()).body_length_over_width, 1.25, 1e-9));
-console.log(`\n说明：C2 预试条件（W/L 1.00）下，起始机身包络到桨盘的最近距离是 ${bodyClearance(pl, pilot.fuselage.fuselage_dimensions_mm).toFixed(1)} mm；旧起始机身（100 × 80）是 ${bodyClearance(computeLayout(base()), base().fuselage.fuselage_dimensions_mm).toFixed(1)} mm。负数表示包络四角伸进桨盘。`);
+console.log(`\n说明：C2 预试条件（W/L 1.00）下，起始机身按画出的圆角到桨盘的最近距离是 ${drawnClearance(pilot, pl).toFixed(1)} mm，按矩形包络是 ${bodyClearance(pl, pilot.fuselage.fuselage_dimensions_mm).toFixed(1)} mm；旧起始机身（100 × 80）是 ${bodyClearance(computeLayout(base()), base().fuselage.fuselage_dimensions_mm).toFixed(1)} mm。负数表示包络四角伸进桨盘。`);
 
 const failed = results.filter(r => !r.ok);
 console.log(`\n共 ${results.length} 项，通过 ${results.length - failed.length}，失败 ${failed.length}`);

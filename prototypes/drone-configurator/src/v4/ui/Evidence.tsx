@@ -36,7 +36,7 @@ export function SuggestionCard({ s, onAct, busy }: { s: Suggestion; onAct: (acti
   return <article className={'sg4' + (pending ? '' : ' is-done')} data-suggestion={s.id} data-tier={s.tier}>
     <div className="sg4-top"><TierBadge tier={s.tier} /><span className="grow" />
       {s.mode === 'fixture' && <span className="p4 gray" title="没有配置文字模型，这条来自规则回退">规则回退</span>}
-      {!pending && <span className="p4 gray">{({ applied: '已采纳', branched: '已开分支', rejected: '没有采用', pending: '' } as const)[s.status]}</span>}</div>
+      {!pending && <span className="p4 gray">{({ applied: '已采纳', branched: '已开分支', rejected: '没有采用', pending: '', late: '那一场结束后才到', expired: '那一场结束时没处理' } as const)[s.status]}</span>}</div>
     <h4 className="sg4-title">{s.title}</h4>
     {s.why && <p className="sg4-why">{s.why}</p>}
     <div className="diff4" data-num>{s.changes.map(c => <div key={c.field} style={{ display: 'contents' }}>

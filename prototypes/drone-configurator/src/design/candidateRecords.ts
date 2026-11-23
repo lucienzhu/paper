@@ -15,6 +15,8 @@ export interface FrozenAttempt {
   h3?: H3Archive;
   /** 4.0：这一轮用到的各层节点及其版本，供追溯“这张图来自哪几项决定”。 */
   decisionPath?: { nodeId: string; layer: string; version: number }[];
+  /** 4.2：这一轮属于哪一场。导出“本场材料”按它认轮次。 */
+  sessionId?: string;
   dispatch?: {request: Blob; hash: string; ack?: Blob; error?: string; server?: string; at: string; updatedAt: string};
   receipt?: {request: Blob; ack: Blob; history: Blob; at: string; inputVerification: string; runId:string};
   failure?: {history:Blob;runId:string;at:string;status:string};
@@ -26,8 +28,20 @@ export interface H3Archive {
   request?: Blob;
   acknowledgement?: Blob;
   result?: Blob;
+  /** 页面这一侧需要人来处理的情况（例如连不上本机服务）：不是失败，点“取回”再查。 */
   issue?: string;
   traceId?: string;
+  /** 4.3：第一次把请求交给本机服务的时间、一共交了几次、页面收到回图或结论的时间。 */
+  sentAt?: string; requests?: number; receivedAt?: string;
+  /**
+   * 4.3：结果还不知道（出图服务连不上），服务端在等核对；接上以后按原 prompt_id 取回。
+   * 4.3.1：enqueue 写明入队到了哪一步——confirmed 收到回执或在远端找到原作业；unknown 请求已发出、进没进队列不知道（只找，不重发）；not-sent 还没发出。
+   */
+  pending?: { since: string; reason: string; promptId: string | null; enqueue: 'confirmed' | 'unknown' | 'not-sent'; lost?: boolean };
+  /** 设计者放弃这一轮的时间：不是远端失败，服务端的请求和回执照样保留。 */
+  abandonedAt?: string;
+  /** 页面暂时连不上本机服务、正在自己重试（从什么时候起）。连上就清掉。 */
+  offline?: { since: string };
 }
 const DB = 'multirotor-studio-design-records-v1';
 const STORE = 'attempts';
@@ -67,7 +81,7 @@ export async function listAttempts(): Promise<FrozenAttempt[]> {
     tx.onabort=()=>{db.close();reject(tx.error);};
   });
 }
-export async function freezeAttempt(state: ExportState, details: Pick<FrozenAttempt,'condition'|'goal'|'keep'|'variantId'|'variantName'|'variantScope'|'workflowOrigin'|'h3'> & Partial<Pick<FrozenAttempt,'decisionPath'>>,
+export async function freezeAttempt(state: ExportState, details: Pick<FrozenAttempt,'condition'|'goal'|'keep'|'variantId'|'variantName'|'variantScope'|'workflowOrigin'|'h3'> & Partial<Pick<FrozenAttempt,'decisionPath'|'sessionId'>>,
   freeText: string, parent?: {id:string; file:Blob}, structuredText?:string, id: string = crypto.randomUUID()) {
   if (!details.goal.trim()) throw new Error('请写下本轮的设计目标。');
   const guideBytes=canvasPngBytes(guideCanvas(computeLayout(state.parameters)));
@@ -241,7 +255,8 @@ async function material(blob:Blob) {
   const data=await new Promise<string>((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(r.error);r.readAsDataURL(blob);});
   return {sha256:await hashBlob(blob),bytes:blob.size,data};
 }
-export async function exportRecord(a:FrozenAttempt){
+/** 一轮的完整记录（含原件），供导出或打包。exportRecord 把它存成文件。 */
+export async function attemptRecord(a:FrozenAttempt){
   const originals:{[key:string]:Awaited<ReturnType<typeof material>>}={};
   async function asset(b?:Blob){if(!b)return null;const v=await material(b);originals[v.sha256]=v;return {sha256:v.sha256,bytes:v.bytes};}
   const guide=await asset(a.guide),parentImage=await asset(a.parentImage);
@@ -251,6 +266,8 @@ export async function exportRecord(a:FrozenAttempt){
   const decisions=await Promise.all(a.decisions.map(async d=>({...d,manualFile:d.manualFile?{name:d.manualFile.name,asset:await asset(d.manualFile)}:null})));
   const failure=a.failure?{...a.failure,history:await asset(a.failure.history)}:null;
   const h3=a.h3?{...a.h3,request:await asset(a.h3.request),acknowledgement:await asset(a.h3.acknowledgement),result:await asset(a.h3.result)}:undefined;
-  const record={schema:'design-studio/attempt-v1',...a,h3,guide,parentImage,dispatch,receipt,failure,candidates,decisions,originals};
-  download('studio-attempt-'+a.id+'.json',JSON.stringify(record),'application/json');
+  return {schema:'design-studio/attempt-v1',...a,h3,guide,parentImage,dispatch,receipt,failure,candidates,decisions,originals};
+}
+export async function exportRecord(a:FrozenAttempt){
+  download('studio-attempt-'+a.id+'.json',JSON.stringify(await attemptRecord(a)),'application/json');
 }

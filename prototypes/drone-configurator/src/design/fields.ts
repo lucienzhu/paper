@@ -10,6 +10,26 @@ export const armRootOptions: Option<DroneParameters['frame']['arm_root']>[] = [
   { value: 'socket', zh: '外露承座', en: 'Each arm enters a distinct socket at the shell, with a visible transverse joint seam.' },
   { value: 'hinge', zh: '折叠铰接', en: 'Each arm is attached to the shell by a visible folding hinge with a pivot pin.' },
 ];
+/**
+ * 农业植保的药箱与喷洒部件。英文句子沿用已出过图的请求原文，hint 写明这一项在本研究里出过多少图：
+ * 半嵌入药箱和横向喷杆是六旋 39 张（HEXA3 等）用的原句；电机下方喷头是 11 月 15 日开发批 E6B-N 的原句（3 张，开发门 3/3）；
+ * 药箱收进机身的写法本研究还没出过图。机尾横杆在同一开发批里 0/3，没有放进来。
+ */
+export const sprayTankOptions: Option<NonNullable<DroneParameters['accessories']['spray_tank']>>[] = [
+  { value: 'half-embedded', zh: '方形药箱半嵌入机身', hint: '箱顶和圆形加注口外露。六旋 39 张用的就是这一句',
+    en: 'A square spray tank sits half-embedded in the central frame: the frame wraps the lower half of the tank, while the tank top and its round filler cap stay exposed.' },
+  { value: 'enclosed', zh: '药箱收进机身', hint: '顶上只露加注口。本研究还没出过图',
+    en: 'The spray tank is enclosed inside the central body shell; from above only its round filler cap shows on top of the body.' },
+];
+export const spraySystemOptions: Option<NonNullable<DroneParameters['accessories']['spray_system']>>[] = [
+  { value: 'boom', zh: '横向喷杆', hint: '机身下方横穿，两端伸出机架。六旋 39 张用的就是这一句',
+    en: 'A transverse spray boom runs across under the body and extends beyond both sides of the frame.' },
+  { value: 'motor-nozzles', zh: '电机下方喷头', hint: '不要喷杆，每个电机下一个喷头。开发批 3 张里 3 张可辨，还没做确认',
+    en: 'There is no spray boom. Instead, one small round spray nozzle is mounted directly below each of the six motors, its dark nozzle tip just visible beside the motor from above.' },
+];
+/** 药箱与喷洒部件只对农业植保有意义：其他任务既不显示，也不写进文字。 */
+export const agriculturalFields = ['accessories.spray_tank', 'accessories.spray_system'] as const;
+
 export const armMaterialOptions: Option<DroneParameters['frame']['material_visual']>[] = [
   { value: 'Carbon Fiber', zh: '碳纤维', en: 'Arms in exposed carbon fibre with a visible weave.' },
   { value: 'Aluminum', zh: '铝合金', en: 'Arms in brushed aluminium.' },
@@ -44,6 +64,9 @@ export const cameraMountOptions: Option<DroneParameters['accessories']['camera_m
 export const finishOptions: Option<DroneParameters['accessories']['surface_finish']>[] = [
   { value: 'matte', zh: '细砂哑光', en: 'Shell surface finish: fine matte.' },
   { value: 'satin', zh: '缎面', en: 'Shell surface finish: smooth satin.' },
+  { value: 'gloss', zh: '高光', en: 'Shell surface finish: high gloss with crisp reflections.' },
+  { value: 'metallic', zh: '金属漆', en: 'Shell surface finish: metallic paint with a fine flake sheen.' },
+  { value: 'textured', zh: '细纹理', en: 'Shell surface finish: a fine textured grain.' },
 ];
 export const gearOptions: Option<DroneParameters['landing_gear']['landing_gear_style']>[] = [
   { value: '无独立起落架', zh: '无独立起落架', hint: '以机腹或臂端着地' },
@@ -60,6 +83,11 @@ export const colourSwatches: { value: string; zh: string; en: string }[] = [
   { value: '#7c3aed', zh: '深紫', en: 'deep purple' },
   { value: '#f59e0b', zh: '金黄', en: 'golden yellow' },
   { value: '#ec4899', zh: '玫红', en: 'rose pink' },
+  { value: '#6b8fb5', zh: '雾霾蓝', en: 'dusty blue' },
+  { value: '#1e3a5f', zh: '深海蓝', en: 'navy blue' },
+  { value: '#c7cbd1', zh: '银灰', en: 'silver grey' },
+  { value: '#c8b48a', zh: '沙丘色', en: 'sand beige' },
+  { value: '#6b7a3a', zh: '橄榄绿', en: 'olive green' },
 ];
 export const colourName = (hex: string) => colourSwatches.find(c => c.value.toLowerCase() === hex.toLowerCase());
 
@@ -138,6 +166,15 @@ export const fields: FieldDef[] = [
   {
     path: 'accessories.camera_mount', group: 'accessories', label: '相机安装', kind: 'styling', visibility: 'occluded',
     format: p => opt(cameraMountOptions, p.accessories.camera_mount), relevant: p => p.accessories.has_camera_gimbal,
+  },
+  // 农业植保才有这两项：起始值里没有这两个键的规格（其他任务）不显示、不导出。
+  {
+    path: 'accessories.spray_tank', group: 'fuselage', label: '药箱', kind: 'styling', visibility: 'top',
+    format: p => opt(sprayTankOptions, p.accessories.spray_tank ?? ''), relevant: p => p.accessories.spray_tank !== undefined,
+  },
+  {
+    path: 'accessories.spray_system', group: 'accessories', label: '喷洒部件', kind: 'styling', visibility: 'top',
+    format: p => opt(spraySystemOptions, p.accessories.spray_system ?? ''), relevant: p => p.accessories.spray_system !== undefined,
   },
   { path: 'accessories.drone_primary_color', group: 'accessories', label: '主色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.drone_primary_color) },
   { path: 'accessories.surface_finish', group: 'accessories', label: '表面处理', kind: 'styling', visibility: 'text', format: p => opt(finishOptions, p.accessories.surface_finish) },

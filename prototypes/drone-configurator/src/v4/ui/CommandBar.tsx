@@ -5,9 +5,10 @@ import { Send, LoaderCircle } from 'lucide-react';
 import { laneIntent, laneParameters, layerInfo, newId } from '../model';
 import { useStudio, type Selection, type Suggestion } from '../store';
 import { ai } from '../ai';
+import { askAi } from '../aiSession';
 
 export default function CommandBar({ selection, onSelect }: { selection: Selection; onSelect: (s: Selection) => void }) {
-  const { project, session, turns } = useStudio();
+  const { project, session, turns, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
@@ -26,28 +27,36 @@ export default function CommandBar({ selection, onSelect }: { selection: Selecti
     if (!message || busy) return;
     setBusy(true); setStatus({ text: 'AI 在想……' });
     const at = () => new Date().toISOString();
+    const sentAt = at();
     try {
       if (!layer) {
         const full = appendIntent ? project.intent.text.trim() + '\n' + message : message;
         st.setIntentText(full);
-        const r = await ai.intent(full, project.intent.taskId);
-        st.applyReading({ ...r, callId: r.call.id, mode: r.call.mode });
-        st.addTurn({ id: newId('turn'), at: at(), role: 'user', text: message, scope: { kind: 'intent' } });
-        onSelect({ kind: 'intent' });
-        setStatus({ text: appendIntent ? '已补充进意图并重读，之前确认的条目保留。' : `读出 ${r.targets.length} 个目标，请在右侧逐条确认。` });
+        // 回答记回发出时的那一场；那一场已经结束（主持人换了场），回答不用在现在的项目里。
+        const { result: r, sessionId, late } = await askAi('intent', sid => ai.intent(full, project.intent.taskId, sid));
+        st.applyReading({ ...r, callId: r.call.id, mode: r.call.mode }, sessionId);
+        st.addTurn({ id: newId('turn'), at: sentAt, role: 'user', text: message, scope: { kind: 'intent' } }, sessionId);
+        if (late) setStatus({ text: '这次读意图的回答到的时候，那一场已经结束；回答记在那一场，没有用在这里。' });
+        else {
+          onSelect({ kind: 'intent' });
+          setStatus({ text: appendIntent ? '已补充进意图并重读，之前确认的条目保留。' : `读出 ${r.targets.length} 个目标，请在右侧逐条确认。` });
+        }
       } else {
-        const history = turns.filter(t => t.scope.kind === 'layer' && t.scope.laneId === layer.laneId && t.scope.layer === layer.layer).slice(-6).map(t => ({ role: t.role, content: t.text }));
+        // 只把这一场里在这一层说过的话交给模型，不带别的场次（换了人或换了方式）的对话。
+        const history = turns.filter(t => t.sessionId === currentSessionId && t.scope.kind === 'layer' && t.scope.laneId === layer.laneId && t.scope.layer === layer.layer)
+          .slice(-6).map(t => ({ role: t.role, content: t.text }));
         const intent = laneIntent(useStudio.getState().project);
-        const r = await ai.layer({ layer: layer.layer, message, lane: { parameters: laneParameters(useStudio.getState().project, layer.laneId) },
+        const { result: r, sessionId, late } = await askAi('layer', sid => ai.layer({ layer: layer.layer, message, lane: { parameters: laneParameters(useStudio.getState().project, layer.laneId) },
           intent: { targets: Object.entries(intent.targets).map(([pair, pole]) => ({ pair, pole })), note: intent.note },
-          locked: session.lockedFrame ? ['frame'] : [], history });
+          locked: session.lockedFrame ? ['frame'] : [], history }, sid));
         const list: Suggestion[] = r.suggestions.map(s => ({ id: newId('sg'), callId: r.call.id, mode: r.call.mode, at: at(), laneId: layer.laneId, layer: layer.layer,
           title: s.title, why: s.why, changes: s.changes, evidence: s.evidence, tier: s.tier, cards: s.cards, status: 'pending' }));
-        st.addSuggestions(list);
-        st.addTurn({ id: newId('turn'), at: at(), role: 'user', text: message, scope: { kind: 'layer', laneId: layer.laneId, layer: layer.layer } });
+        st.addSuggestions(list, sessionId);
+        st.addTurn({ id: newId('turn'), at: sentAt, role: 'user', text: message, scope: { kind: 'layer', laneId: layer.laneId, layer: layer.layer } }, sessionId);
         st.addTurn({ id: newId('turn'), at: at(), role: 'assistant', text: r.reply, scope: { kind: 'layer', laneId: layer.laneId, layer: layer.layer },
-          callId: r.call.id, mode: r.call.mode, suggestionIds: list.map(s => s.id), otherLayer: r.otherLayer ?? undefined });
-        setStatus({ text: list.length ? `AI 给了 ${list.length} 条建议，在右侧。` : 'AI 回答了，没有改动建议。看右侧的对话。' });
+          callId: r.call.id, mode: r.call.mode, suggestionIds: list.map(s => s.id), otherLayer: r.otherLayer ?? undefined }, sessionId);
+        setStatus({ text: late ? '这次回答到的时候，那一场已经结束；回答记在那一场，没有用在这里。'
+          : list.length ? `AI 给了 ${list.length} 条建议，在右侧。` : 'AI 回答了，没有改动建议。看右侧的对话。' });
       }
       setText('');
     } catch (e) { setStatus({ text: e instanceof Error ? e.message : String(e), error: true }); }

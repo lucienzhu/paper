@@ -15,7 +15,9 @@ type ImageInput = {role: 'layout' | 'parent'; name: string; sha256: string; data
 interface H3Request { attemptId: string; prompt: string; inputs: ImageInput[]; condition?: 'free' }
 interface H3Job {
   provider: string; model: string; jobId: string; attemptId: string;
-  status?: 'queued' | 'running' | 'succeeded' | 'failed';
+  status?: 'queued' | 'running' | 'unconfirmed' | 'succeeded' | 'failed';
+  /** enqueue：confirmed 收到入队回执或在远端找到原作业；unknown 请求已发出、进没进队列不知道；not-sent 连不上，还没发出。 */
+  pending?: { since: string; reason: string; promptId: string | null; enqueue: 'confirmed' | 'unknown' | 'not-sent'; lost?: boolean };
   inputHashes?: string[];
   outputs?: {name: string; mimeType: string; sha256: string; dataUrl: string}[];
   error?: string;
@@ -92,7 +94,7 @@ async function storeResult(row: FrozenAttempt, request: Blob, raw: Blob, job: H3
     sent.inputs.some((image,index) => evidence.images?.[index]?.role !== image.role || evidence.images[index].sha256 !== image.sha256))
     throw new Error('供应商请求记录中的文字、图片或模型与本轮不符。');
   if (job.status === 'failed') {
-    await updateH3Record(row.id, {status:'failed', result:raw, traceId, issue:job.error || backend.label + ' 未完成本轮。'});
+    await updateH3Record(row.id, {status:'failed', result:raw, traceId, issue:job.error || backend.label + ' 未完成本轮。', pending:undefined, receivedAt:new Date().toISOString()});
     return;
   }
   if (!job.evidence?.request || !job.evidence?.response || !Array.isArray(job.outputs) || job.outputs.length !== 1)
@@ -103,10 +105,32 @@ async function storeResult(row: FrozenAttempt, request: Blob, raw: Blob, job: H3
     throw new Error('H3 回图与服务记录的 PNG 摘要不一致。');
   const decoded = await createImageBitmap(file);
   decoded.close();
-  await updateH3Record(row.id,{status:'succeeded',result:raw,traceId,issue:undefined},
+  await updateH3Record(row.id,{status:'succeeded',result:raw,traceId,issue:undefined,pending:undefined,receivedAt:new Date().toISOString()},
     [{id:row.id+'/1', name:item.name, hash:item.sha256, file}]);
 }
 
+/** 页面到本机服务一时连不上时，先自己重试一阵（约 45 秒，界面上同时给出“取回”），再请设计者处理。 */
+async function poll(path: string, id: string) {
+  for (const wait of [0, 1500, 3000, 5000, 8000, 12000, 15000]) {
+    if (wait) await sleep(wait);
+    try {
+      const reply = await call(path);
+      if ((await findAttempt(id))?.h3?.offline) await updateH3Record(id,{offline:undefined});
+      return reply;
+    } catch (error) {
+      if (!(error instanceof TypeError || (error instanceof DOMException && error.name === 'TimeoutError')) || wait === 15000) throw error;
+      const row = await findAttempt(id);
+      if (!row?.h3?.offline) await updateH3Record(id,{offline:{since:new Date().toISOString()}});
+    }
+  }
+  throw new Error('unreachable');
+}
+async function post(id: string, request: Blob) {
+  // 每一次交给本机服务都计数：同一次机会里实际发了几次请求，写进记录（预试记录约定“多步调用在同一机会下列实际请求数”）。
+  const row = await findAttempt(id);
+  await updateH3Record(id,{requests:(row?.h3?.requests ?? 0)+1, sentAt:row?.h3?.sentAt ?? new Date().toISOString()});
+  return call(endpoint,request);
+}
 async function run(id: string) {
   const row = await findAttempt(id);
   if (!row?.h3 || row.h3.status === 'succeeded' || row.h3.status === 'failed') return;
@@ -126,7 +150,7 @@ async function run(id: string) {
     }
     if (needsPost) {
       let ack;
-      try { ack = await call(endpoint,request); }
+      try { ack = await post(id,request); }
       catch (error) {
         // The service may have accepted the job before the response was lost.
         if (error instanceof ServiceError && error.status >= 400 && error.status < 500) throw error;
@@ -140,13 +164,22 @@ async function run(id: string) {
     }
     let interval = 1200;
     for (;;) {
-      const {raw,job} = await call(path);
+      const {raw,job} = await poll(path,id);
       verifyIdentity(row,job);
       if (job.status === 'succeeded' || job.status === 'failed') {
         await storeResult(row,request,raw,job);
         return;
       }
-      if (job.status !== 'queued' && job.status !== 'running') throw new Error('H3 服务未返回可识别的任务状态。');
+      if (job.status === 'unconfirmed' || (job.status === 'running' && job.pending)) {
+        // 结果还不知道：不算失败。服务端每次被查询时再试（已发出入队请求的只按本轮编号找，不重发）；远端已经找不到这一轮时等人决定。
+        // 服务端正在再查一次（running 且仍带着待核对）时照旧按待核对显示，找到原作业以前不写“已入队”。
+        if (job.status === 'unconfirmed' && job.pending?.lost) { await updateH3Record(id,{pending:job.pending,issue:job.pending.reason}); return; }
+        await updateH3Record(id,{pending:job.pending});
+        interval = 4000;
+      } else if (job.status === 'queued' || job.status === 'running') {
+        const current = await findAttempt(id);
+        if (current?.h3?.pending) await updateH3Record(id,{pending:undefined});
+      } else throw new Error('H3 服务未返回可识别的任务状态。');
       await sleep(interval);
       interval = Math.min(5000,interval * 1.4);
       const current = await findAttempt(id);
@@ -154,9 +187,9 @@ async function run(id: string) {
     }
   } catch (error) {
     const issue = error instanceof TypeError || (error instanceof DOMException && error.name === 'TimeoutError')
-      ? '无法连接图像生成服务。请检查本机工作台服务后恢复本轮。'
+      ? '页面连不上本机工作台服务，这一轮还不知道结果（不算失败）。服务恢复后点“取回”。'
       : error instanceof Error ? error.message : String(error);
-    await updateH3Record(id,{issue});
+    await updateH3Record(id,{issue,offline:undefined});
   }
 }
 
@@ -176,9 +209,19 @@ export function isGenerationPending(row: FrozenAttempt) {
 export async function recoverDesignGenerations() {
   for (const row of await listAttempts()) if (isGenerationPending(row)) ensureRunning(row.id);
 }
+/**
+ * “取回”：请本机服务马上再查一次，再接着等结果。已经发出入队请求的只按原作业找（回执丢了就按本轮编号在队列和历史里找），
+ * 不会重发；连不上而还没发出的，这时才发出。
+ */
 export async function retryCollection(id: string) {
+  try { await fetch(endpoint + '/' + encodeURIComponent(id) + '/resume', {method:'POST', cache:'no-store', credentials:'omit', signal:AbortSignal.timeout(15000)}); }
+  catch { /* 服务还连不上时照样开始等，等到了再取 */ }
   await updateH3Record(id,{issue:undefined});
   ensureRunning(id);
+}
+/** 放弃这一轮：只在本机记为未完成并写明原因，不是远端失败；服务端已收到的请求和回执原样保留，照样计一次机会。 */
+export async function abandonRound(id: string, reason: string) {
+  await updateH3Record(id,{status:'failed', issue:reason, abandonedAt:new Date().toISOString()});
 }
 export interface GenerationOptions {
   id: string; task: Task; goal?: string; parentCandidateId?: string;
@@ -191,6 +234,8 @@ export interface GenerationOptions {
     decisionPath?: { nodeId: string; layer: string; version: number }[];
     /** 这一轮保持不动的层，写进记录。 */
     keep?: string;
+    /** 4.2：这一轮属于哪一场。 */
+    sessionId?: string;
   };
   /** 画布上的参考图：编号是它在画布上的节点，原件须为 PNG。 */
   reference?: { id: string; file: Blob };
@@ -248,7 +293,8 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
   const variantScope = context ? context.variantScope : task + '/' + (variant?.workflowKey ?? activeVariant);
   const workflowOrigin = context ? context.workflowOrigin : live!.workflowOrigin;
   const decisionPath = context?.decisionPath;
-  const goal = requestedGoal?.trim() || intent.note.trim() || name + ' · ' + taskLabels[intent.taskId ?? 'consumer_camera'] + ' · ' + frameRules[parameters.frame.frame_type].zh;
+  const sessionId = context?.sessionId;
+  const goal =requestedGoal?.trim() || intent.note.trim() || name + ' · ' + taskLabels[intent.taskId ?? 'consumer_camera'] + ' · ' + frameRules[parameters.frame.frame_type].zh;
   if (!await findAttempt(id)) {
     const candidate = parentCandidateId
       ? (await findAttempt(parentCandidateId.split('/')[0]))?.candidates.find(c => c.id === parentCandidateId)
@@ -260,13 +306,13 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
       const words = (freeText ?? '').trim();
       if (!words) throw new Error('先写下要发给模型的文字。');
       await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal: freeTitle(words), keep: '', condition: 'free',
-        h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath}, words, parent, undefined, id);
+        h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath, sessionId}, words, parent, undefined, id);
       ensureRunning(id);
       return id;
     }
     const text = structuredText(state.parameters, state.touched, state.intent, candidate ? 'candidate' : reference ? 'reference' : undefined, requestedGoal);
     await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal, keep: context?.keep ?? '', condition: 'structured',
-      h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath}, '', parent, text, id);
+      h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath, sessionId}, '', parent, text, id);
   }
   ensureRunning(id);
   return id;
@@ -282,8 +328,15 @@ export function startDesignGeneration(options: GenerationOptions) {
 
 export function generationStatus(row: FrozenAttempt) {
   if (row.h3?.status === 'succeeded') return {title:'效果图已生成',detail:modelLabel(row.h3.model) + ' 已返回本轮效果图。'};
+  if (row.h3?.status === 'failed' && row.h3.abandonedAt) return {title:'已放弃这一轮',detail:row.h3.issue || '设计者放弃了这一轮。'};
   if (row.h3?.status === 'failed') return {title:'生成未完成',detail:row.h3.issue || '服务已保存本轮失败记录。'};
-  if (row.h3?.issue) return {title:'本轮生成需要恢复',detail:row.h3.issue};
+  if (row.h3?.issue) return {title:'待核对',detail:row.h3.issue};
+  if (row.h3?.offline) return {title:'待核对：页面暂时连不上本机服务',detail:'正在自己重试；也可以点“取回”。这一轮不算失败。'};
+  // 收到入队回执、或者在出图服务的队列和历史里找到原作业以后，才写“已入队”。
+  const pending = row.h3?.pending;
+  if (pending?.enqueue === 'confirmed') return {title:'待核对：已入队，等出图服务接上',detail:pending.reason + (pending.promptId ? '；作业号 ' + pending.promptId : '') + '。接上以后按原作业取回，不会重新入队。'};
+  if (pending?.enqueue === 'unknown') return {title:'待确认入队',detail:pending.reason + '。正在按本轮编号在出图服务的队列和历史里找原作业，找到就接着等；不会再发一次入队请求。'};
+  if (pending) return {title:'待核对：还没发到出图服务',detail:pending.reason + '。出图服务接上以后发出；这一轮只入队一次。'};
   if (row.h3?.status === 'running') return {title:'等待回图',detail:'可以继续编辑，完成后效果图会自动保存。'};
   if (row.h3?.status === 'ready') return {title:'已准备设计输入',detail:'已冻结本轮规格和参考图。'};
   if (row.h3) return {title:'正在提交',detail:'本轮已保存当前设计输入。'};

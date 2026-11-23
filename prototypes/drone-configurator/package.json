@@ -1,7 +1,7 @@
 {
   "name": "drone_configurator_ui",
   "private": true,
-  "version": "4.0.0",
+  "version": "4.3.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,6 +19,8 @@
     "walkthrough:canvas": "node scripts/canvas-walkthrough.mjs",
     "walkthrough:methods": "node scripts/methods-walkthrough.mjs",
     "walkthrough:studio4": "node scripts/studio4-walkthrough.mjs",
+    "walkthrough:issues": "node scripts/studio4-issues.mjs",
+    "gpu:acceptance": "node scripts/gpu-acceptance.mjs",
     "ai:smoke": "node scripts/ai-smoke.mjs",
     "walkthrough:pr75": "node scripts/walkthrough.mjs"
   },

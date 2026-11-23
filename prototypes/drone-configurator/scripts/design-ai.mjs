@@ -3,13 +3,13 @@
 // 证据强弱由登记表决定，模型不能改。没有配置密钥时用规则回退（标为“未连模型”），便于开发和走查。
 // 每次调用的输入、输出、模型名、耗时都写进本机的调用记录，供场次登记和复核。
 import { randomUUID } from 'node:crypto';
-import { appendFile, mkdir, readFile } from 'node:fs/promises';
+import { appendFile, mkdir, readFile, readdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { frameRules, taskLabels } from '../src/design/design.ts';
 import {
   armMaterialOptions, armRootOptions, cameraMountOptions, colourSwatches, fieldByPath, finishOptions, fuselageStyleOptions,
-  gearOptions, getPath, topCoverOptions, wordPairs,
+  gearOptions, getPath, sprayTankOptions, spraySystemOptions, topCoverOptions, wordPairs,
 } from '../src/design/fields.ts';
 import { suggestFields } from '../src/design/semantics/brief.ts';
 import { states, topics } from '../src/design/semantics/topics.mjs';
@@ -18,11 +18,20 @@ import { layerFields, layerOf, layers } from '../src/v4/model.ts';
 
 export const defaultModel = 'MiniMax-M3.1-Flash';
 const endpoints = { cn: 'https://api.minimax.cn/v1/chat/completions', global: 'https://api.minimax.io/v1/chat/completions' };
+// MiniMax 文档（platform.minimax.io，OpenAI 兼容接口）：M3.1-Flash 的推理强度取 low、medium、high、xhigh、max，不写时就是 max；
+// 思考也算进输出上限，上限太小会以 finish_reason 为 length、回答为空收尾；max_completion_tokens 建议 131072，最大 524288。
+// 所以这里把推理强度和输出上限都写明，并记进每一条回执：4.2 的 4096 在 max 下会截断（Codex 11 月 23 日实测，放宽到 8192 仍截断）。
+export const efforts = ['low', 'medium', 'high', 'xhigh', 'max'];
+export const defaultEffort = 'max';
+export const defaultMaxTokens = 131072;
+export const defaultTimeoutMs = 300000;
 
 export class AiError extends Error {
   constructor(status, code, message, metadata = {}) { super(message); Object.assign(this, { status, code, metadata }); }
 }
 const bad = message => new AiError(400, 'invalid_input', message);
+/** 浏览器写在请求里的场次编号：只认工作台自己生成的样子，别的一律不记。 */
+const sessionOf = value => typeof value === 'string' && /^session-[\w-]{4,80}$/.test(value) ? value : null;
 
 // ---------- 参数的合法取值 ----------
 const enumOf = options => options.map(o => o.value);
@@ -46,18 +55,26 @@ const fieldSpec = {
   'accessories.camera_mount': { kind: 'enum', values: ['', ...enumOf(cameraMountOptions)] },
   'landing_gear.landing_gear_style': { kind: 'enum', values: enumOf(gearOptions) },
   'landing_gear.landing_gear_height_mm': { kind: 'number', min: 20, max: 100, step: 5 },
-  'accessories.drone_primary_color': { kind: 'enum', values: ['', ...colourSwatches.map(c => c.value)] },
+  // 主色可以是色板里的，也可以是设计者自定的任意 #rrggbb。
+  'accessories.drone_primary_color': { kind: 'colour' },
   'accessories.surface_finish': { kind: 'enum', values: ['', ...enumOf(finishOptions)] },
   'frame.material_visual': { kind: 'enum', values: ['', ...enumOf(armMaterialOptions)] },
+  // 农业植保才有：只在规格里有这两个键（植保六旋的起始值）时交给模型、允许它提。
+  'accessories.spray_tank': { kind: 'enum', values: ['', ...enumOf(sprayTankOptions)], agricultural: true },
+  'accessories.spray_system': { kind: 'enum', values: ['', ...enumOf(spraySystemOptions)], agricultural: true },
 };
-const optionLabel = { ...Object.fromEntries([fuselageStyleOptions, topCoverOptions, armRootOptions, cameraMountOptions, finishOptions, armMaterialOptions]
+const studioTaskIds = ['consumer_camera', 'agricultural_spraying'];
+const optionLabel = { ...Object.fromEntries([fuselageStyleOptions, topCoverOptions, armRootOptions, cameraMountOptions, finishOptions, armMaterialOptions, sprayTankOptions, spraySystemOptions]
   .flat().map(o => [o.value, o.zh])), ...Object.fromEntries(colourSwatches.map(c => [c.value, c.zh])) };
+/** 这一项对这份规格有没有意义：植保才有的两项，只在规格里带着它们时才算。 */
+const applies = (field, parameters) => !fieldSpec[field]?.agricultural || (parameters && getPath(parameters, field) !== undefined);
 
 /** 把模型给的值规整成合法取值；不合法返回 undefined。 */
 export function legalValue(field, value) {
   const spec = fieldSpec[field];
   if (!spec) return undefined;
   if (spec.kind === 'boolean') return typeof value === 'boolean' ? value : undefined;
+  if (spec.kind === 'colour') return value === '' ? '' : typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value.trim()) ? value.trim().toLowerCase() : undefined;
   if (spec.kind === 'enum') {
     if (typeof value !== 'string') return undefined;
     const hit = spec.values.find(v => v.toLowerCase() === value.toLowerCase());
@@ -88,9 +105,13 @@ function userText(value, max) {
 function laneSummary(parameters, locked) {
   return Object.fromEntries(layers.map(layer => [layer, {
     locked: locked.includes(layer),
-    fields: layerFields[layer].map(f => {
+    fields: layerFields[layer].filter(f => applies(f, parameters)).map(f => {
       const spec = fieldSpec[f];
-      return { field: f, label: fieldByPath[f]?.label ?? f, current: parameters ? getPath(parameters, f) : null,
+      const base = { field: f, label: fieldByPath[f]?.label ?? f, current: parameters ? getPath(parameters, f) : null };
+      // 没有取值规则的（设计者自己写的色材说明）只给模型看，不让它改。
+      if (!spec) return { ...base, designerOnly: true };
+      if (spec.kind === 'colour') return { ...base, options: ['', ...colourSwatches.map(c => c.value)].map(v => ({ value: v, zh: optionLabel[v] ?? (v || '不指定') })), alsoAny: '#rrggbb' };
+      return { ...base,
         ...(spec.kind === 'number' ? { min: spec.min, max: spec.max, step: spec.step } : spec.kind === 'enum' ? { options: spec.values.map(v => ({ value: v, zh: optionLabel[v] ?? (v || '不指定') })) } : { options: [true, false] }) };
     }),
   }]));
@@ -117,7 +138,8 @@ const prompts = {
   intent: `你是多旋翼无人机工业设计工作台里的设计助手。设计者写了一段设计意图，请把它读成结构化的意图，供设计者逐条确认。
 ${rules}
 输出结构：
-{"taskId":"consumer_camera|agricultural_spraying|neutral_design","state":"unfolded_top|folded|carrying|with_accessory|unspecified",
+本研究的工作台只做两个场景：日常随行航拍四旋（consumer_camera，主案例）和农业植保六旋（agricultural_spraying，场景适配案例）。原话的用途不在这两个里面时（例如光伏巡检、电力巡线、物流、测绘、消防），taskFit 填 out，taskMention 写原话里的用途；不要把它悄悄当成航拍。
+{"taskId":"consumer_camera|agricultural_spraying","taskFit":"in|out","taskMention":"原话里的用途（taskFit 为 out 时）","state":"unfolded_top|folded|carrying|with_accessory|unspecified",
  "question":{"text":"最关键的一个澄清问题","options":[{"label":"选项说法","value":"状态值"}]} 或 null,
  "targets":[{"text":"原话里的说法","pair":"compact|simple|integrated|visible","pole":"left|right","cards":["卡号"],"why":"为什么这样读"}],
  "interpretations":[{"text":"原话里没有直接对应的说法","why":"为什么需要设计者来理解","options":[{"text":"一种理解","pair":"词对","pole":"left|right"}]}],
@@ -200,7 +222,9 @@ function fixtureIntent(input) {
     options: [{ label: '展开时看起来小', value: 'unfolded_top' }, { label: '折叠后小', value: 'folded' }, { label: '泛指随身带着方便', value: 'carrying' }],
   } : null;
   if (negative && !interpretations.length) notes.push({ text: negative });
-  return { taskId: has(t, /植保|农业|喷洒/) ? 'agricultural_spraying' : 'consumer_camera', state, question, targets, interpretations, notes, cards };
+  const agricultural = has(t, /植保|农业|喷洒|打药|施肥/);
+  const mention = agricultural ? null : (t.match(/(?:光伏|电力|输电|电网|管道|桥梁|建筑|森林|河道|风电)?(?:巡检|巡线)|测绘|测量|物流|快递|配送|消防|救援|安防|警用|竞速|穿越机|表演|灯光秀|喷涂|清洗|勘探/) ?? [null])[0];
+  return { taskId: agricultural ? 'agricultural_spraying' : 'consumer_camera', taskFit: mention ? 'out' : 'in', taskMention: mention, state, question, targets, interpretations, notes, cards };
 }
 function fixtureDirections(input) {
   const wantsLow = (input.intent?.targets ?? []).some(t => t.pair === 'visible' && t.pole === 'left');
@@ -272,19 +296,31 @@ function fixtureFree(input) {
 const fixtures = { intent: fixtureIntent, directions: fixtureDirections, layer: fixtureLayer, revise: fixtureRevise, free: fixtureFree };
 
 // ---------- 服务 ----------
-export async function createDesignAI({ apiKey, region = 'cn', model = defaultModel, baseUrl, effort, fetchImpl = globalThis.fetch,
+export async function createDesignAI({ apiKey, region = 'cn', model = defaultModel, baseUrl, effort, maxTokens, timeoutMs, fetchImpl = globalThis.fetch,
   logDir = path.join(process.env.LOCALAPPDATA || homedir(), 'Freeloop', 'multirotor-workbench', 'ai-calls') } = {}) {
   if (!baseUrl && !Object.hasOwn(endpoints, region)) throw new Error('MINIMAX_REGION 仅支持 cn 或 global。');
+  // MiniMax 不写推理强度时按 max 跑；这里照样写明 max，回执里看得到。别的兼容服务只在配置了时才发这一项。
+  const reasoningEffort = effort?.trim() || (baseUrl ? undefined : defaultEffort);
+  if (!baseUrl && !efforts.includes(reasoningEffort)) throw new Error('推理强度只能是 ' + efforts.join('、') + '。');
+  const budget = Number(maxTokens) || defaultMaxTokens;
+  if (!Number.isInteger(budget) || budget < 1024 || budget > 524288) throw new Error('输出上限要在 1024 到 524288 之间。');
+  const waitMs = Number(timeoutMs) || defaultTimeoutMs;
   const envelope = JSON.parse(await readFile(new URL('../src/data/evidenceCards.json', import.meta.url), 'utf8'));
   const cards = envelope.cards;
   const cardIds = new Set(cards.map(c => c.id));
   const cardContext = cardTable(cards);
   const mode = apiKey ? 'model' : 'fixture';
   const provider = baseUrl ? 'openai-compatible' : 'minimax';
+  const url = baseUrl ? baseUrl.replace(/\/+$/, '') + '/chat/completions' : endpoints[region];
+  // 记下发到哪个服务（只记主机名）：同一个模型名在国内站和国际站是两个服务，登记要写明是哪一个。
+  const endpoint = mode === 'model' ? new URL(url).host : null;
 
+  const request = mode === 'model' ? { model, max_completion_tokens: budget, ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+    response_format: { type: 'json_object' }, stream: false, timeoutMs: waitMs } : null;
   function describe() {
-    return { mode, provider: mode === 'model' ? provider : 'rules', model: mode === 'model' ? model : null, registry: registryVersion,
-      label: mode === 'model' ? model : '规则回退（未连模型）' };
+    return { mode, provider: mode === 'model' ? provider : 'rules', model: mode === 'model' ? model : null, endpoint, registry: registryVersion,
+      effort: mode === 'model' ? reasoningEffort ?? null : null, maxTokens: mode === 'model' ? budget : null,
+      label: mode === 'model' ? `${model}（${endpoint}${reasoningEffort ? '，推理强度 ' + reasoningEffort : ''}）` : '规则回退（未连模型）' };
   }
 
   async function log(entry) {
@@ -295,69 +331,114 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
     } catch { /* 记录失败不影响设计者，但会在回执里标出 */ entry.logFailed = true; }
   }
 
+  /** 失败时把服务的回执（状态、用量、收尾原因、服务报的模型名）一并带出去，写进日志。 */
+  const failure = (status, code, message, receipt = {}) => Object.assign(new AiError(status, code, message), { receipt });
   async function callModel(messages, signal) {
-    const url = baseUrl ? baseUrl.replace(/\/+$/, '') + '/chat/completions' : endpoints[region];
-    const body = { model, messages, stream: false, max_tokens: 4096, response_format: { type: 'json_object' }, ...(effort ? { reasoning_effort: effort } : {}) };
+    const { timeoutMs: _wait, ...wire } = request;
+    void _wait;
+    const body = { ...wire, messages };
     let response, payload;
     try {
       response = await fetchImpl(url, { method: 'POST', redirect: 'error',
-        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(90000)]) : AbortSignal.timeout(90000),
+        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(waitMs)]) : AbortSignal.timeout(waitMs),
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       try { payload = await response.json(); } catch (error) { if (response.ok) throw error; }
     } catch (error) {
       const timedOut = error?.name === 'TimeoutError' || error?.name === 'AbortError';
-      throw new AiError(timedOut ? 504 : 502, timedOut ? 'upstream_timeout' : 'upstream_unavailable', timedOut ? '等待文字模型响应超时。' : '无法连接文字模型服务。');
+      throw failure(timedOut ? 504 : 502, timedOut ? 'upstream_timeout' : 'upstream_unavailable',
+        timedOut ? `等了 ${Math.round(waitMs / 1000)} 秒，文字模型还没有回答。` : '无法连接文字模型服务。');
     }
-    const code = payload?.base_resp?.status_code ?? payload?.error?.code;
-    if (!response.ok || payload?.error || (code != null && code !== 0)) {
-      if (response.status === 401 || payload?.error?.type === 'authentication_error') throw new AiError(401, 'authentication_failed', '文字模型服务没有接受这个密钥。');
-      if (response.status === 402 || Number(code) === 1008) throw new AiError(402, 'insufficient_balance', '文字模型账户余额不足。');
-      throw new AiError(response.status === 429 ? 429 : 502, 'upstream_error', `文字模型没有完成这次请求（状态 ${code ?? response.status}）。`);
-    }
-    // 锁定版本：回执里的模型名必须与请求的一致，否则不用这次回答。
-    if (typeof payload?.model === 'string' && payload.model.toLowerCase() !== model.toLowerCase())
-      throw new AiError(502, 'unexpected_model', `服务返回的模型（${payload.model}）与锁定的版本不一致。`);
+    const servedModel = typeof payload?.model === 'string' && payload.model.trim() ? payload.model.trim() : null;
     const choice = payload?.choices?.[0];
-    if (!choice || (choice.finish_reason && choice.finish_reason !== 'stop')) throw new AiError(502, 'incomplete_generation', '文字模型没有返回完整回答。');
-    return { content: choice.message?.content, usage: payload?.usage ?? null, requestId: payload?.id ?? response.headers.get('x-request-id') ?? null };
+    const receipt = { httpStatus: response.status, servedModel, finishReason: choice?.finish_reason ?? null, usage: payload?.usage ?? null,
+      requestId: payload?.id ?? response.headers.get('x-request-id') ?? null, providerCode: payload?.base_resp?.status_code ?? payload?.error?.code ?? null,
+      providerMessage: typeof (payload?.base_resp?.status_msg ?? payload?.error?.message) === 'string' ? scrub(String(payload?.base_resp?.status_msg ?? payload?.error?.message)).slice(0, 300) : null };
+    const code = receipt.providerCode;
+    if (!response.ok || payload?.error || (code != null && code !== 0)) {
+      if (response.status === 401 || payload?.error?.type === 'authentication_error') throw failure(401, 'authentication_failed', '文字模型服务没有接受这个密钥。', receipt);
+      if (response.status === 402 || Number(code) === 1008) throw failure(402, 'insufficient_balance', '文字模型账户余额不足。', receipt);
+      throw failure(response.status === 429 ? 429 : 502, 'upstream_error', `文字模型没有完成这次请求（状态 ${code ?? response.status}）。`, receipt);
+    }
+    // 锁定版本：回执里必须写明模型名，并与请求的一致；没写或不一致都不用这次回答，日志里记下服务实际报的名字。
+    if (!servedModel) throw failure(502, 'model_unconfirmed', '服务回执里没有写模型名，无法确认这次用的是锁定的版本。', receipt);
+    if (servedModel.toLowerCase() !== model.toLowerCase())
+      throw failure(502, 'unexpected_model', `服务返回的模型（${servedModel}）与锁定的版本不一致。`, receipt);
+    if (!choice || (choice.finish_reason && choice.finish_reason !== 'stop')) {
+      const used = payload?.usage?.completion_tokens;
+      throw failure(502, 'incomplete_generation', choice?.finish_reason === 'length'
+        ? `文字模型的回答没有写完：输出达到上限（${budget}${Number.isFinite(used) ? '，用了 ' + used : ''}），推理也算在里面。`
+        : `文字模型没有返回完整回答（收尾原因：${choice?.finish_reason ?? '没有回答'}）。`, receipt);
+    }
+    const reasoning = typeof choice.message?.reasoning_content === 'string' ? choice.message.reasoning_content : null;
+    return { content: choice.message?.content, reasoning, receipt };
   }
 
-  async function run(task, input, context, signal) {
+  async function run(task, input, context, signal, sessionId = null) {
     const id = randomUUID(), at = new Date().toISOString(), started = Date.now();
     const messages = task === 'free'
       ? [{ role: 'system', content: prompts.free }, ...(context.brief ? [{ role: 'system', content: '任务简报：' + context.brief }] : []), ...input.messages]
       : [{ role: 'system', content: prompts[task] }, { role: 'system', content: JSON.stringify(context) },
         ...(input.history ?? []), { role: 'user', content: input.text ?? input.message ?? '' }];
-    let raw, rawText = null, usage = null, requestId = null;
+    let raw, rawText = null, reasoning = null, receipt = null;
     try {
       if (mode === 'fixture') raw = structuredClone(fixtures[task](input));
       else {
         const reply = await callModel(messages, signal);
-        rawText = reply.content; usage = reply.usage; requestId = reply.requestId;
+        rawText = reply.content; reasoning = reply.reasoning; receipt = reply.receipt;
         raw = parseJson(rawText);
       }
     } catch (error) {
-      await log({ id, at, task, mode, provider, model: mode === 'model' ? model : null, latencyMs: Date.now() - started, messages, error: error.message });
-      if (error instanceof AiError) { error.metadata = { callId: id }; throw error; }
-      throw new AiError(500, 'ai_error', 'AI 服务没能处理这次请求。', { callId: id });
+      // 失败的调用也是这一场的原件：编号、入口、时间、场次、请求的设置、服务的回执和原因都记下，导出本场材料时按编号或场次取回。
+      const r = error.receipt ?? receipt ?? {};
+      const entry = { id, at, task, sessionId, mode, provider, endpoint, model: mode === 'model' ? model : null, requestedModel: mode === 'model' ? model : null,
+        servedModel: r.servedModel ?? null, request, finishReason: r.finishReason ?? null, usage: r.usage ?? null, requestId: r.requestId ?? null,
+        httpStatus: r.httpStatus ?? null, providerCode: r.providerCode ?? null, providerMessage: r.providerMessage ?? null,
+        latencyMs: Date.now() - started, messages, rawText, reasoning, error: error.message, code: error.code ?? 'ai_error' };
+      await log(entry);
+      if (error instanceof AiError) { error.metadata = { callId: id, sessionId, task }; throw error; }
+      throw new AiError(500, 'ai_error', 'AI 服务没能处理这次请求。', { callId: id, sessionId, task });
     }
-    const call = { id, at, mode, model: mode === 'model' ? model : null, latencyMs: Date.now() - started, registry: registryVersion };
-    return { raw, rawText, usage, requestId, messages, call, finish: async (result, dropped) => {
-      const entry = { ...call, task, provider: mode === 'model' ? provider : 'rules', messages, rawText, raw, result, dropped, usage, requestId };
+    // model 是锁定（请求）的版本；servedModel 是服务回执里写的版本，两者一致才会走到这里。规则回退两项都是 null。
+    const call = { id, at, mode, model: mode === 'model' ? model : null, servedModel: receipt?.servedModel ?? null, effort: request?.reasoning_effort ?? null,
+      finishReason: receipt?.finishReason ?? null, sessionId, latencyMs: Date.now() - started, registry: registryVersion };
+    return { raw, rawText, messages, call, finish: async (result, dropped) => {
+      const entry = { ...call, requestedModel: call.model, task, provider: mode === 'model' ? provider : 'rules', endpoint, request, messages, rawText, reasoning, raw, result, dropped,
+        usage: receipt?.usage ?? null, requestId: receipt?.requestId ?? null, httpStatus: receipt?.httpStatus ?? null };
       await log(entry);
       return { ...result, call: { ...call, ...(entry.logFailed ? { logFailed: true } : {}) } };
     } };
   }
 
   function lockedLayers(input) { return (Array.isArray(input.locked) ? input.locked : []).filter(l => layers.includes(l)); }
-  function editable(locked, only) { return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]); }
+  // 设计者自己写的色材补充只由设计者改，不交给模型。
+  function editable(locked, only, parameters) {
+    return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]).filter(f => fieldSpec[f] && applies(f, parameters));
+  }
+
+  /**
+   * 按调用编号读回日志行（最多 2000 个编号），也可以按场次编号取回这一场的全部调用（包括浏览器没来得及记下的，例如失败或页面关掉时的）。
+   * 找不到的编号单列出来。
+   */
+  async function readLog(ids, sessionId) {
+    const wanted = new Set((Array.isArray(ids) ? ids : []).filter(id => typeof id === 'string' && /^[0-9a-f-]{36}$/i.test(id)).slice(0, 2000));
+    const session = sessionOf(sessionId);
+    const entries = [];
+    let files = [];
+    try { files = (await readdir(logDir)).filter(f => /^ai-calls-\d{8}\.jsonl$/.test(f)).sort(); } catch { /* 还没有日志 */ }
+    for (const f of files) for (const line of (await readFile(path.join(logDir, f), 'utf8')).split('\n')) {
+      if (!line.trim()) continue;
+      try { const entry = JSON.parse(line); if (wanted.has(entry.id) || (session && entry.sessionId === session)) entries.push(entry); } catch { /* 跳过坏行，不影响其余 */ }
+    }
+    const found = new Set(entries.map(e => e.id));
+    return { entries, missing: [...wanted].filter(id => !found.has(id)), bySession: session ? entries.filter(e => e.sessionId === session && !wanted.has(e.id)).map(e => e.id) : [], logDir: path.basename(logDir) };
+  }
 
   return {
-    describe,
+    describe, readLog,
     async intent(input, { signal } = {}) {
       const t = userText(input?.text, 600);
       const taskId = Object.hasOwn(taskLabels, input?.taskId) ? input.taskId : 'consumer_camera';
-      const run1 = await run('intent', { text: t }, { task: 'intent', taskId, states, wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal);
+      const run1 = await run('intent', { text: t }, { task: 'intent', taskId, states, wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       const dropped = [];
       const targets = (Array.isArray(r.targets) ? r.targets : []).flatMap(x => {
@@ -373,10 +454,18 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         text: text(r.question.text, 120),
         options: (Array.isArray(r.question.options) ? r.question.options : []).filter(o => states.includes(o?.value)).slice(0, 4).map(o => ({ label: text(o.label, 30), value: o.value })),
       } : null;
+      // 用途不在两个场景里：先问设计者按哪一个做，任务先保持原样，不替设计者归类。
+      const outOfScope = r.taskFit === 'out' ? text(r.taskMention, 30, '原话里的用途') : null;
+      const taskQuestion = outOfScope ? {
+        text: `“${outOfScope}”不在本研究的两个场景里（日常航拍、农业植保）。按哪一个来做？`,
+        options: [{ label: '按日常航拍做', value: 'task:consumer_camera' }, { label: '按农业植保做', value: 'task:agricultural_spraying' }],
+      } : null;
       const result = {
-        taskId: Object.hasOwn(taskLabels, r.taskId) ? r.taskId : taskId,
+        // 工作台只做两个任务；读出别的（包括中性外观比较）时保持原任务。读出的任务和现在的不同，由界面先问设计者，不直接换。
+        taskId: outOfScope ? taskId : studioTaskIds.includes(r.taskId) ? r.taskId : taskId,
+        outOfScope,
         state: states.includes(r.state) ? r.state : 'unspecified',
-        question: question?.options.length ? question : null,
+        question: taskQuestion ?? (question?.options.length ? question : null),
         targets, interpretations,
         notes: (Array.isArray(r.notes) ? r.notes : []).map(n => ({ text: text(n?.text, 120) })).filter(n => n.text).slice(0, 4),
         cards: (Array.isArray(r.cards) ? r.cards : []).filter(c => cardIds.has(c?.id)).slice(0, 6).map(c => ({ id: c.id, why: text(c.why, 120) })),
@@ -388,12 +477,12 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const parameters = input?.lane?.parameters ?? null;
       const intent = { text: text(input?.intent?.text, 600), targets: (input?.intent?.targets ?? []).filter(x => pairIds.has(x?.pair) && validPole(x?.pole)),
         notes: (input?.intent?.notes ?? []).map(n => text(n, 120)).filter(Boolean) };
-      const run1 = await run('directions', { text: '请根据确认的意图提出造型方向。', intent }, { task: 'directions', intent, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal);
+      const run1 = await run('directions', { text: '请根据确认的意图提出造型方向。', intent }, { task: 'directions', intent, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal, sessionOf(input?.sessionId));
       const dropped = [];
       const pairs = intent.targets.map(x => x.pair);
       const directions = (Array.isArray(run1.raw?.directions) ? run1.raw.directions : []).slice(0, 3).map(d => {
         const changes = (Array.isArray(d?.changes) ? d.changes : []).flatMap(c => {
-          const checked = checkChanges([c], { allowed: editable(locked), parameters });
+          const checked = checkChanges([c], { allowed: editable(locked, undefined, parameters), parameters });
           dropped.push(...checked.dropped);
           return checked.accepted.map(a => ({ ...a, ...withEvidence(c, [a], cardIds, pairs) }));
         });
@@ -411,11 +500,11 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         .filter(h => ['user', 'assistant'].includes(h?.role) && typeof h.content === 'string').map(h => ({ role: h.role, content: scrub(h.content.slice(0, 800)) }));
       const pairs = (input?.intent?.targets ?? []).filter(x => pairIds.has(x?.pair)).map(x => x.pair);
       const run1 = await run('layer', { message, history, layer, lane: { parameters } },
-        { task: 'layer', layer, intent: input?.intent ?? null, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal);
+        { task: 'layer', layer, intent: input?.intent ?? null, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       const dropped = [];
       const suggestions = locked.includes(layer) ? [] : (Array.isArray(r.suggestions) ? r.suggestions : []).slice(0, 2).map(s => {
-        const checked = checkChanges(s?.changes, { allowed: editable(locked, layer), parameters });
+        const checked = checkChanges(s?.changes, { allowed: editable(locked, layer, parameters), parameters });
         dropped.push(...checked.dropped);
         return { title: text(s?.title, 40, '建议'), why: text(s?.why, 200), changes: checked.accepted, ...withEvidence(s ?? {}, checked.accepted, cardIds, pairs) };
       }).filter(s => s.changes.length);
@@ -427,9 +516,9 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const locked = lockedLayers(input);
       const parameters = input?.candidate?.parameters ?? input?.lane?.parameters ?? null;
       const run1 = await run('revise', { message, candidate: { parameters } },
-        { task: 'revise', intent: input?.intent ?? null, candidate: laneSummary(parameters, locked), evidence: evidenceTable }, signal);
+        { task: 'revise', intent: input?.intent ?? null, candidate: laneSummary(parameters, locked), evidence: evidenceTable }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
-      const checked = checkChanges(r.changes, { allowed: editable(locked), parameters });
+      const checked = checkChanges(r.changes, { allowed: editable(locked, undefined, parameters), parameters });
       const changedLayers = new Set(checked.accepted.map(c => c.layer));
       // 保持项由实际改动推出：没改的层都保持，不采信模型自报的保持项。
       const keep = layers.filter(l => !changedLayers.has(l));
@@ -443,7 +532,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         .map(m => ({ role: m.role, content: scrub(m.content.trim().slice(0, 1200)) }));
       if (!messages.length || messages[messages.length - 1].role !== 'user') throw bad('请先说一句话。');
       const brief = text(input?.brief, 1200);
-      const run1 = await run('free', { messages }, { brief }, signal);
+      const run1 = await run('free', { messages }, { brief }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       return run1.finish({ reply: text(r.reply, 1200, '（没有回答）'), prompt: typeof r.prompt === 'string' && r.prompt.trim() ? text(r.prompt, 1600) : null }, []);
     },

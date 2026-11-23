@@ -30,11 +30,12 @@ const comfy = async (url, init = {}) => {
   if (pathname === '/upload/image') { const file = init.body.get('image'); uploads.set(file.name, Buffer.from(await file.arrayBuffer())); return Response.json({ name: file.name, subfolder: '', type: 'input' }); }
   if (pathname === '/prompt') { const graph = JSON.parse(init.body).prompt; graphs.push(graph); output = tagPNG(graph['15'] ? uploads.get(graph['15'].inputs.image) : plain, graph); runs.set('fixture-' + graphs.length, graph); return Response.json({ prompt_id: 'fixture-' + graphs.length, node_errors: {} }); }
   if (pathname.startsWith('/history/')) { const id = decodeURIComponent(pathname.slice(9)); return Response.json(historyOf(id, runs.get(id))); }
+  if (pathname === '/queue') return Response.json({ queue_running: [], queue_pending: [] });
   if (pathname === '/view') return new Response(output, { headers: { 'Content-Type': 'image/png' } });
   return new Response('not found', { status: 404 });
 };
 const { chat, evidence } = await createDesignService({ apiKey: undefined, region: 'cn' });
-const jobs = createImageJobs({ backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 }, fetchImpl: comfy, directory: jobDirectory });
+const jobs = createImageJobs({ fixture: true, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 }, fetchImpl: comfy, directory: jobDirectory });
 const server = createDesignServer(chat, evidence, jobs);
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = 'http://127.0.0.1:' + server.address().port;

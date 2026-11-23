@@ -2,16 +2,55 @@
 // 确认以后，AI 可以提 2 到 3 个方向；放上画布的方向成为一条决定链。
 import { useEffect, useState } from 'react';
 import { Check, X, Sparkles, LoaderCircle, Search } from 'lucide-react';
-import { taskLabels } from '../../design/design';
+import type { TaskId } from '../../types/DroneParameters';
 import { wordPairs } from '../../design/fields';
 import { stateLabels } from '../../design/semantics/brief';
 import cardsEnvelope from '../../data/evidenceCards.json';
-import { laneParameters, layerInfo, pairLayers, type IntentElement } from '../model';
+import { isBlankProject, laneParameters, layerInfo, pairLayers, studioTasks, type IntentElement } from '../model';
 import { useStudio, type Direction } from '../store';
 import { ai } from '../ai';
+import { askAi } from '../aiSession';
 import { newId } from '../model';
+import { briefOf } from '../sessions';
+import { evidenceSummary } from '../../design/defaults';
 import { Quote, TierBadge } from './Evidence';
 import { fieldLabel, formatValue } from './util';
+
+/** 这一场的委托：两种方式看到的是同一段原文。 */
+/**
+ * 这一场的任务简报：委托原文和两组共用的用户依据摘要。工作台和自由提示两边用的是这同一个组件，显示同一个版本；
+ * 版本和摘要在开场时记进场次，导出本场材料时写进清单。
+ */
+export function BriefCard({ onUse, label = '把委托原文放进意图' }: { onUse?: () => void; label?: string }) {
+  const { sessions, currentSessionId } = useStudio();
+  const session = sessions.find(s => s.id === currentSessionId && !s.endedAt);
+  const brief = briefOf(session);
+  if (!brief) return null;
+  const version = session?.evidenceSummary?.version ?? evidenceSummary.version;
+  return <section className="r4-sec brief4" aria-label="这一场的委托" data-testid="brief-card" data-brief={brief.id}>
+    <h3>这一场的委托 · {brief.label}</h3>
+    <p style={{ margin: 0, lineHeight: 1.6 }}>{brief.text}</p>
+    <span className="r4-muted">要看：{brief.target}；要保持：{brief.keep}。机架按 C2 登记条件锁定（真 X、W/L 1.00、对角轴距 250 mm）。</span>
+    <div data-testid="evidence-summary" data-version={version} data-status={evidenceSummary.status} style={{ display: 'grid', gap: 4, borderTop: '1px solid var(--line)', paddingTop: 8 }}>
+      <b style={{ fontSize: 12.5 }}>{evidenceSummary.label} · {version}{evidenceSummary.status === 'draft' ? '（草稿，作者未确认）' : ''}</b>
+      <p style={{ margin: 0, lineHeight: 1.6, whiteSpace: 'pre-wrap', fontSize: 12.5 }}>{evidenceSummary.text}</p>
+    </div>
+    {onUse && <div className="row4"><button type="button" className="b4 sm" data-testid="use-brief" onClick={onUse}>{label}</button></div>}
+  </section>;
+}
+
+/** 换任务：项目还空白就原地换；已经有决定或生成，就先确认，再另开一个项目（这一场随之结束）。 */
+function useTaskSwitch() {
+  const [pending, setPending] = useState<TaskId | null>(null);
+  const request = (taskId: TaskId) => {
+    const s = useStudio.getState();
+    // 选的就是现在的任务：只记下设计者的选择（并收起 AI 关于任务的提问）。
+    if (taskId === s.project.intent.taskId) { s.setTask(taskId); return; }
+    const busy = !isBlankProject(s.project) || s.events.some(e => e.kind === 'run' || e.kind === 'free-run');
+    if (!busy) s.setTask(taskId); else setPending(taskId);
+  };
+  return { pending, request, cancel: () => setPending(null), confirm: () => { if (pending) useStudio.getState().reset(pending); setPending(null); } };
+}
 
 const pairText = (e: Pick<IntentElement, 'pair' | 'pole'>) => {
   const w = wordPairs.find(x => x.id === e.pair);
@@ -55,9 +94,11 @@ function DirectionCard({ d, onPlace, onDismiss }: { d: Direction; onPlace: () =>
 }
 
 export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) => void }) {
-  const { project, directions, session } = useStudio();
+  const { project, directions, session, sessions, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const intent = project.intent;
+  const brief = briefOf(sessions.find(s => s.id === currentSessionId && !s.endedAt));
+  const taskSwitch = useTaskSwitch();
   const [draft, setDraft] = useState(intent.text);
   const [busy, setBusy] = useState<'' | 'read' | 'dirs'>('');
   const [error, setError] = useState('');
@@ -66,20 +107,22 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
   const targets = intent.elements.filter(e => e.kind === 'target');
   const interpretations = intent.elements.filter(e => e.kind === 'interpretation');
   const notes = intent.elements.filter(e => e.kind === 'note');
-  const pendingDirs = directions.filter(d => d.status === 'pending');
+  const pendingDirs = directions.filter(d => d.status === 'pending' && d.sessionId === currentSessionId);
   const accepted = intent.elements.filter(e => e.status === 'accepted');
 
   async function read() {
     const text = draft.trim();
     if (!text) { setError('先写一句话。'); return; }
     setBusy('read'); setError('');
+    const sentAt = new Date().toISOString();
     try {
       if (text !== intent.text) st.setIntentText(text);
-      const r = await ai.intent(text, intent.taskId);
-      st.applyReading({ ...r, callId: r.call.id, mode: r.call.mode });
-      st.addTurn({ id: newId('turn'), at: new Date().toISOString(), role: 'user', text, scope: { kind: 'intent' } });
+      const { result: r, sessionId, late } = await askAi('intent', sid => ai.intent(text, intent.taskId, sid));
+      st.applyReading({ ...r, callId: r.call.id, mode: r.call.mode }, sessionId);
+      st.addTurn({ id: newId('turn'), at: sentAt, role: 'user', text, scope: { kind: 'intent' } }, sessionId);
       st.addTurn({ id: newId('turn'), at: new Date().toISOString(), role: 'assistant', scope: { kind: 'intent' }, callId: r.call.id, mode: r.call.mode,
-        text: `读出 ${r.targets.length} 个目标、${r.interpretations.length} 处需要你来理解的说法${r.question ? '，还有一个问题' : ''}。` });
+        text: `读出 ${r.targets.length} 个目标、${r.interpretations.length} 处需要你来理解的说法${r.question ? '，还有一个问题' : ''}。` }, sessionId);
+      if (late) setError('回答到的时候，发出它的那一场已经结束；回答记在那一场，没有用在这里。');
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(''); }
   }
@@ -87,13 +130,14 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
     setBusy('dirs'); setError('');
     try {
       const laneId = project.activeLaneId;
-      const r = await ai.directions({
+      const { result: r, sessionId, late } = await askAi('directions', sid => ai.directions({
         intent: { text: intent.text, targets: accepted.filter(e => e.pair && e.pole).map(e => ({ pair: e.pair!, pole: e.pole!, text: e.text })), notes: accepted.filter(e => e.kind === 'note').map(e => e.text) },
         lane: { parameters: laneParameters(project, laneId) }, locked: session.lockedFrame ? ['frame'] : [],
-      });
+      }, sid));
       st.setDirections(r.directions.map(d => ({ id: newId('dir'), callId: r.call.id, mode: r.call.mode, at: new Date().toISOString(), name: d.name, summary: d.summary,
-        changes: d.changes, status: 'pending' as const })));
-      if (!r.directions.length) setError('这次没有得到可用的方向。');
+        changes: d.changes, status: 'pending' as const })), sessionId);
+      if (late) setError('回答到的时候，发出它的那一场已经结束；方向记在那一场，没有放在这里。');
+      else if (!r.directions.length) setError('这次没有得到可用的方向。');
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(''); }
   }
@@ -101,12 +145,21 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
 
   return <>
     <div className="r4-head" data-testid="intent-panel">
-      <span className="r4-kicker">意图 · {taskLabels[intent.taskId]}</span>
+      <span className="r4-kicker">意图</span>
       <h2 className="r4-title">这次想做什么</h2>
       <p className="r4-purpose">用你自己的话写。AI 会读出场景、观察状态和造型目标，配上用户原话；每一条由你确认。</p>
     </div>
+    <BriefCard onUse={() => { setDraft(brief!.text); st.setIntentText(brief!.text); st.logEvent({ kind: 'intent-from-brief', text: '意图用了委托原文：' + brief!.label }); }} />
     <section className="r4-sec">
-      <textarea className="ta4" data-testid="intent-text" value={draft} placeholder="例如：一台日常随身带的航拍无人机，希望看起来小巧、紧凑，但不要像玩具"
+      <label className="row4" style={{ gap: 8 }}><span className="r4-muted" style={{ minWidth: 28 }}>任务</span>
+        <select className="in4" style={{ width: 'auto' }} data-testid="task-select" value={intent.taskId} disabled={!!brief} onChange={e => taskSwitch.request(e.target.value as TaskId)}>
+          {studioTasks.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+          {!studioTasks.some(t => t.id === intent.taskId) && <option value={intent.taskId}>中性外观比较（旧项目）</option>}
+        </select>
+        <span className="r4-muted">{brief ? '这一场按委托做日常航拍。' : '先做主实验的日常航拍；植保六旋看药箱、喷洒部件与机架的整合。其他构型不在这里做。'}</span></label>
+      {taskSwitch.pending && <p className="r4-note" data-testid="task-switch-confirm">项目里已经有决定或生成。换成“{studioTasks.find(t => t.id === taskSwitch.pending)?.label}”会另开一个空白项目，这一场随之结束（材料仍可在场次设置里导出）。
+        <span className="row4" style={{ marginTop: 6 }}><button type="button" className="b4 sm pri" onClick={taskSwitch.confirm}>另开项目</button><button type="button" className="b4 sm quiet" onClick={taskSwitch.cancel}>不换</button></span></p>}
+      <textarea className="ta4" data-testid="intent-text" value={draft} placeholder={brief ? '用你自己的话写，或把上面的委托原文放进来再补充' : '例如：一台日常随身带的航拍无人机，希望看起来小巧、紧凑，但不要像玩具'}
         onChange={e => setDraft(e.target.value)} onBlur={() => { if (draft !== intent.text) st.setIntentText(draft); }} />
       <div className="row4">
         <button type="button" className="b4 pri" data-testid="intent-read" disabled={busy !== ''} onClick={() => void read()}>
@@ -119,7 +172,8 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
     {intent.question && <section className="r4-sec" aria-label="澄清">
       <h3>先确认一件事</h3>
       <p style={{ margin: 0, fontWeight: 600 }}>{intent.question.text}</p>
-      <div className="row4">{intent.question.options.map(o => <button key={o.value} type="button" className="b4" data-state={o.value} onClick={() => st.setIntentState(o.value)}>{o.label}</button>)}</div>
+      <div className="row4">{intent.question.options.filter(o => !o.value.startsWith('task:') || studioTasks.some(t => 'task:' + t.id === o.value)).map(o => <button key={o.value} type="button" className="b4" data-state={o.value}
+        onClick={() => o.value.startsWith('task:') ? taskSwitch.request(o.value.slice(5) as TaskId) : st.setIntentState(o.value)}>{o.label}</button>)}</div>
     </section>}
     {!intent.question && intent.state !== 'unspecified' && <p className="r4-muted">观察状态：{stateLabels[intent.state] ?? intent.state}</p>}
 

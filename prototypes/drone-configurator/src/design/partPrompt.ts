@@ -5,7 +5,7 @@ import type { DesignIntent, DroneParameters, ParameterGroup } from '../types/Dro
 import { effectiveWl, frameRules, topologyOf, type Layout } from './design.ts';
 import {
   armMaterialOptions, armRootOptions, cameraMountOptions, colourName, finishOptions, fuselageStyleOptions,
-  legacyFuselageStyles, topCoverOptions, wordPairs,
+  legacyFuselageStyles, sprayTankOptions, spraySystemOptions, topCoverOptions, wordPairs,
 } from './fields.ts';
 
 /** fixed＝任务固定；default＝默认值；chosen＝含设计者的选择；adopted＝设计者采纳的意图；custom＝设计者补充的原话。 */
@@ -98,7 +98,8 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     fields: ['frame.arm_width_mm', 'frame.arm_thickness_mm'],
     text: `Each arm is ${armW} mm wide and ${armT} mm thick; seen from above it reads as a ${armW} mm wide beam.`,
   });
-  add({ id: 'arm_root', group: 'frame', source: 'chosen', zh: '臂根过渡', fields: ['frame.arm_root'], text: en(armRootOptions, frame.arm_root) });
+  // 臂根在农业植保的起始值里是折叠铰接（沿用六旋 39 张的设定），没改过时记为默认值。
+  add({ id: 'arm_root', group: 'frame', source: src('frame.arm_root'), zh: '臂根过渡', fields: ['frame.arm_root'], text: en(armRootOptions, frame.arm_root) });
   add({ id: 'arm_material', group: 'frame', source: 'chosen', zh: '机臂材料外观', fields: ['frame.material_visual'], text: en(armMaterialOptions, frame.material_visual) });
 
   const size = fuselage.fuselage_dimensions_mm;
@@ -115,6 +116,12 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
   });
   add({ id: 'top_cover', group: 'fuselage', source: 'chosen', zh: '顶盖分件', fields: ['fuselage.top_cover'], text: en(topCoverOptions, fuselage.top_cover) });
 
+  // 农业植保的药箱与喷洒部件：句子沿用已出过图的请求原文（见 fields.ts）；其他任务不写。
+  const agricultural = intent.taskId === 'agricultural_spraying';
+  if (agricultural && accessories.spray_tank)
+    add({ id: 'spray_tank', group: 'fuselage', source: src('accessories.spray_tank'), zh: '药箱与机身的结合', fields: ['accessories.spray_tank'],
+      text: en(sprayTankOptions, accessories.spray_tank) });
+
   add({
     id: 'camera', group: 'accessories', source: src('accessories.has_camera_gimbal'), zh: '前视相机：有无是选择，朝向是任务固定',
     fields: ['accessories.has_camera_gimbal'],
@@ -124,6 +131,11 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
   });
   if (accessories.has_camera_gimbal)
     add({ id: 'camera_mount', group: 'accessories', source: 'chosen', zh: '相机安装方式', fields: ['accessories.camera_mount'], text: en(cameraMountOptions, accessories.camera_mount) });
+  if (agricultural && accessories.spray_system) {
+    const motors = ({ 3: 'three', 4: 'four', 6: 'six', 8: 'eight' } as Record<number, string>)[layout.hubs.length * topology.layers_per_axis] ?? String(layout.hubs.length);
+    add({ id: 'spray_system', group: 'accessories', source: src('accessories.spray_system'), zh: '喷洒部件', fields: ['accessories.spray_system'],
+      text: en(spraySystemOptions, accessories.spray_system).replace('each of the six motors', `each of the ${motors} motors`) });
+  }
 
   add({
     id: 'landing', group: 'landing_gear', source: src('landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm'),

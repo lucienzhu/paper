@@ -5,15 +5,19 @@ import { candidateRetained } from '../../design/candidateRecords';
 import { laneNode, laneParameters, layers, layerInfo, staleFields } from '../model';
 import { useStudio, type Selection } from '../store';
 import SessionSetup from './SessionSetup';
-import { laneScope } from '../attempts';
+import FinalLine from './FinalLine';
+import { inLane } from '../attempts';
+import { briefOf } from '../sessions';
 
 function nextStep(state: ReturnType<typeof useStudio.getState>, attempts: FrozenAttempt[]): { text: string; go?: Selection } {
   const { project } = state;
   const intent = project.intent;
+  const brief = briefOf(state.sessions.find(s => s.id === state.currentSessionId && !s.endedAt));
+  if (!intent.text.trim() && brief) return { text: `这一场的委托是“${brief.label}”。把委托原文放进意图，或用自己的话写，AI 会帮你读出来。`, go: { kind: 'intent' } };
   if (!intent.text.trim()) return { text: '先写一句这次想做什么，AI 会帮你读出来。', go: { kind: 'intent' } };
   if (intent.elements.some(e => e.status === 'pending')) return { text: 'AI 读出的意图还有几条等你确认。', go: { kind: 'intent' } };
   const lane = project.lanes.find(l => l.id === project.activeLaneId)!;
-  const mine = attempts.filter(a => a.variantScope === laneScope(lane.id)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  const mine = attempts.filter(a => inLane(a, lane.id, project)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const untouched = layers.every(l => Object.keys(laneNode(project, lane.id, l).touched).length === 0);
   if (untouched && !state.directions.some(d => d.status === 'placed')) return { text: '可以让 AI 按意图提几个方向，也可以直接从机架开始改。', go: { kind: 'intent' } };
   if (!mine.length) return { text: `${lane.name}还没生成过，生成第一轮看看。`, go: { kind: 'render', laneId: lane.id } };
@@ -34,6 +38,10 @@ export default function PanelOverview({ attempts, onOpen }: { attempts: FrozenAt
       <h2 className="r4-title">逐层把方案搭出来</h2>
       <p className="r4-purpose">每条方向从意图出发，经机架、动力、机身、细节、色材五层，到生成和候选。点任何一个节点就在这里改它；在任何一层都可以分叉。</p>
     </div>
+    {attempts.length > 0 && <section className="r4-sec" aria-label="终稿"><FinalLine attempts={attempts} label={a => {
+      const n = attempts.filter(x => x.variantScope === a.variantScope).sort((x, y) => x.createdAt.localeCompare(y.createdAt)).findIndex(x => x.id === a.id) + 1;
+      return `${project.lanes.find(l => l.id === a.variantId)?.name ?? a.variantName} 第 ${n} 轮`;
+    }} /></section>}
     <section className="r4-sec" aria-label="下一步">
       <h3>下一步</h3>
       <div className="el4"><div className="el4-main"><b>{step.text}</b><span>按规则算出的提示，没有调用模型。</span></div>
@@ -42,7 +50,7 @@ export default function PanelOverview({ attempts, onOpen }: { attempts: FrozenAt
     <section className="r4-sec" aria-label="方向">
       <h3>方向</h3>
       {project.lanes.map(lane => {
-        const rounds = attempts.filter(a => a.variantScope === laneScope(lane.id));
+        const rounds = attempts.filter(a => inLane(a, lane.id, project));
         const kept = rounds.filter(a => a.candidates.some(c => candidateRetained(a, c.id))).length;
         return <div key={lane.id} className={'lane4' + (lane.id === project.activeLaneId ? ' is-active' : '')} data-lane={lane.id}>
           <div className="row4" style={{ justifyContent: 'space-between' }}>

@@ -1,14 +1,15 @@
 // 显示用的小工具：把取值写成设计者看得懂的话；按层算出核对结果。
 import type { DroneParameters } from '../../types/DroneParameters';
 import { computeLayout, effectiveWl, frameRules } from '../../design/design';
-import { bodyClearance, cameraView, CAMERA_FOV_DEG } from '../../design/checks';
+import { bodyClearance, cameraView, CAMERA_FOV_DEG, envelopeClearance } from '../../design/checks';
 import { realQuadrotors, study } from '../../design/defaults';
 import {
-  armMaterialOptions, armRootOptions, cameraMountOptions, colourName, fieldByPath, finishOptions, fuselageStyleOptions, gearOptions, topCoverOptions,
+  armMaterialOptions, armRootOptions, cameraMountOptions, colourName, fieldByPath, finishOptions, fuselageStyleOptions, gearOptions, sprayTankOptions, spraySystemOptions, topCoverOptions,
 } from '../../design/fields';
 import type { Layer } from '../model';
 
-const options = [...fuselageStyleOptions, ...topCoverOptions, ...armRootOptions, ...cameraMountOptions, ...finishOptions, ...armMaterialOptions, ...gearOptions];
+const options = [...fuselageStyleOptions, ...topCoverOptions, ...armRootOptions, ...cameraMountOptions, ...finishOptions, ...armMaterialOptions, ...gearOptions,
+  ...sprayTankOptions, ...spraySystemOptions];
 const units: Record<string, string> = {
   'frame.wheelbase_mm': ' mm', 'fuselage.fuselage_dimensions_mm.length': ' mm', 'fuselage.fuselage_dimensions_mm.width': ' mm',
   'fuselage.fuselage_dimensions_mm.height': ' mm', 'landing_gear.landing_gear_height_mm': ' mm', 'propulsion.prop_diameter_inch': ' 英寸', 'propulsion.motor_tilt_degree': '°',
@@ -55,9 +56,13 @@ export function layerChecks(layer: Layer, p: DroneParameters, consumerQuad: bool
     }
   }
   if (layer === 'body') {
-    const clear = bodyClearance(p, layout);
-    out.push(clear >= 0 ? { level: 'ok', basis: 'geometry', text: `机身离桨盘最近 ${clear.toFixed(1)} mm，放得下。` }
-      : { level: 'warn', basis: 'geometry', text: `俯视下桨盘伸到机身上方 ${(-clear).toFixed(1)} mm。` });
+    // 量的是示意图里画出来的机身外形（带圆角或倒角）。只在矩形包络的直角上相交时单独说明：
+    // 条件图里没有机身，机身尺寸只以文字进入，这么小的差别不会进到图里。
+    const clear = bodyClearance(p, layout), envelope = envelopeClearance(p, layout);
+    out.push(clear < 0 ? { level: 'warn', basis: 'geometry', text: `俯视下桨盘伸到机身上方 ${(-clear).toFixed(1)} mm。` }
+      : envelope < 0 ? { level: 'note', basis: 'geometry', text: `机身离桨盘最近 ${clear.toFixed(1)} mm（按画出的圆角量）；只有不计圆角的矩形包络会在四角与桨盘相交 ${(-envelope).toFixed(1)} mm。条件图里没有机身，这一点不影响出图。` }
+      : clear < 2 ? { level: 'note', basis: 'geometry', text: `机身离桨盘只有 ${clear.toFixed(1)} mm，顶视里几乎贴着。` }
+      : { level: 'ok', basis: 'geometry', text: `机身离桨盘最近 ${clear.toFixed(1)} mm，放得下。` });
     if (consumerQuad) {
       const bw = layout.body_width_over_D, lw = layout.body_length_over_width;
       out.push({ level: bw >= q.bodyWidthOverD.q1 && bw <= q.bodyWidthOverD.q3 ? 'ok' : 'note', basis: 'range', text: `机身宽 ÷ 轴距 ${bw.toFixed(2)}，真实产品的常见范围 ${q.bodyWidthOverD.q1.toFixed(2)}–${q.bodyWidthOverD.q3.toFixed(2)}。` });
@@ -66,6 +71,8 @@ export function layerChecks(layer: Layer, p: DroneParameters, consumerQuad: bool
     if (p.fuselage.fuselage_dimensions_mm.width > layout.W_mm && layout.hubs.length === 4)
       out.push({ level: 'warn', basis: 'geometry', text: '机身比电机的横向跨度还宽，会盖住电机。' });
   }
+  if (layer === 'details' && p.accessories.spray_system === 'motor-nozzles')
+    out.push({ level: 'note', basis: 'pipeline', text: '电机下方的喷头在顶视里常被电机和桨挡住；开发批 3 张里 3 张可辨，还没做确认。看不到时按方法章记“不可判”。' });
   if (layer === 'details' && p.accessories.has_camera_gimbal) {
     const cam = cameraView(p, layout);
     const worst = Math.max(0, ...cam.intrusions.map(i => i.deg));
@@ -90,3 +97,26 @@ export function layerSummary(layer: Layer, p: DroneParameters) {
   return `${f('accessories.drone_primary_color', p.accessories.drone_primary_color)} · ${f('accessories.surface_finish', p.accessories.surface_finish)}`;
 }
 
+
+/**
+ * 两段文字的逐词差别（英文按词，中文按字），给比较页用：same 两边都有，del 只在前一段，add 只在后一段。
+ * 文字很长时退回整段对比，免得卡住页面。
+ */
+export function diffWords(before: string, after: string): { text: string; kind: 'same' | 'add' | 'del' }[] {
+  const split = (t: string) => t.match(/[A-Za-z0-9_'’-]+|\s+|[^\sA-Za-z0-9_'’-]/g) ?? [];
+  const a = split(before), b = split(after);
+  if (a.length * b.length > 400000) return before === after ? [{ text: after, kind: 'same' }] : [{ text: before, kind: 'del' }, { text: after, kind: 'add' }];
+  const dp = Array.from({ length: a.length + 1 }, () => new Uint16Array(b.length + 1));
+  for (let i = a.length - 1; i >= 0; i--) for (let j = b.length - 1; j >= 0; j--) dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const out: { text: string; kind: 'same' | 'add' | 'del' }[] = [];
+  const push = (text: string, kind: 'same' | 'add' | 'del') => { const last = out[out.length - 1]; if (last?.kind === kind) last.text += text; else out.push({ text, kind }); };
+  let i = 0, j = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { push(a[i], 'same'); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { push(a[i], 'del'); i++; }
+    else { push(b[j], 'add'); j++; }
+  }
+  while (i < a.length) push(a[i++], 'del');
+  while (j < b.length) push(b[j++], 'add');
+  return out;
+}
