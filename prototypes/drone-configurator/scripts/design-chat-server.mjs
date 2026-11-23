@@ -95,7 +95,7 @@ export function createDesignServer(chat, evidence, imageJobs, ai) {
         // 主持人打包一场的材料时，按调用编号取回这一场的日志行；只读本机日志目录，不调用模型。
         if (req.method !== 'POST') fail(405, 'method_not_allowed', '仅支持 POST。');
         const input = await readInput(req);
-        sendJson(res, 200, await ai.readLog(Array.isArray(input?.ids) ? input.ids : []));
+        sendJson(res, 200, await ai.readLog(Array.isArray(input?.ids) ? input.ids : [], input?.sessionId));
       } else if (ai && /^\/api\/ai\/(intent|directions|layer|revise|free)$/.test(pathname)) {
         if (req.method !== 'POST') fail(405, 'method_not_allowed', 'AI 请求仅支持 POST。');
         const task = pathname.slice('/api/ai/'.length);
@@ -115,8 +115,20 @@ export function createDesignServer(chat, evidence, imageJobs, ai) {
         if (req.method!=='POST') fail(405,'method_not_allowed','图像生成仅支持 POST。');
         sendJson(res,202,await imageJobs.submit(await readInput(req,64*1024*1024)));
       } else if (imageJobs && pathname.startsWith('/api/h3/jobs/')) {
-        if (req.method!=='GET') fail(405,'method_not_allowed','生成状态仅支持 GET。');
-        sendJson(res,200,await imageJobs.get(pathname.slice('/api/h3/jobs/'.length)));
+        // /api/h3/jobs/<轮次>：查进度；…/resume：按原 prompt_id 接着取回（设计者点“取回”）；…/files：这一轮在服务端留下的原件（打包本场材料用）。
+        const [id, action] = pathname.slice('/api/h3/jobs/'.length).split('/');
+        if (action === 'resume') {
+          if (req.method!=='POST') fail(405,'method_not_allowed','取回仅支持 POST。');
+          if (typeof imageJobs.resume === 'function') await imageJobs.resume(id, { force: true });
+          sendJson(res,200,await imageJobs.get(id));
+        } else if (action === 'files') {
+          if (req.method!=='GET') fail(405,'method_not_allowed','仅支持 GET。');
+          if (typeof imageJobs.files !== 'function') fail(404,'not_found','这个后端不提供服务端原件。');
+          sendJson(res,200,await imageJobs.files(id));
+        } else if (action === undefined) {
+          if (req.method!=='GET') fail(405,'method_not_allowed','生成状态仅支持 GET。');
+          sendJson(res,200,await imageJobs.get(id));
+        } else missing();
       } else {
         await serveAsset(req, res, pathname);
       }
@@ -147,6 +159,7 @@ async function main() {
   const ai = await createDesignAI({ apiKey: (process.env.WORKBENCH_LLM_API_KEY ?? process.env.MINIMAX_API_KEY)?.trim(),
     region: process.env.MINIMAX_REGION ?? 'cn', model: process.env.WORKBENCH_LLM_MODEL?.trim() || defaultModel,
     baseUrl: process.env.WORKBENCH_LLM_BASE_URL?.trim() || undefined, effort: process.env.WORKBENCH_LLM_EFFORT?.trim() || undefined,
+    maxTokens: process.env.WORKBENCH_LLM_MAX_TOKENS?.trim() || undefined, timeoutMs: process.env.WORKBENCH_LLM_TIMEOUT_MS?.trim() || undefined,
     logDir: process.env.WORKBENCH_AI_LOG_DIR });
   const server = createDesignServer(chat, evidence, imageJobs, ai);
   server.on('error', () => { console.error('本机设计对话服务启动失败，请核对端口。'); process.exitCode = 1; });

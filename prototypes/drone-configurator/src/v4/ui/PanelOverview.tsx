@@ -5,6 +5,7 @@ import { candidateRetained } from '../../design/candidateRecords';
 import { laneNode, laneParameters, layers, layerInfo, staleFields } from '../model';
 import { useStudio, type Selection } from '../store';
 import SessionSetup from './SessionSetup';
+import FinalLine from './FinalLine';
 import { inLane } from '../attempts';
 import { briefOf } from '../sessions';
 
@@ -37,6 +38,10 @@ export default function PanelOverview({ attempts, onOpen }: { attempts: FrozenAt
       <h2 className="r4-title">逐层把方案搭出来</h2>
       <p className="r4-purpose">每条方向从意图出发，经机架、动力、机身、细节、色材五层，到生成和候选。点任何一个节点就在这里改它；在任何一层都可以分叉。</p>
     </div>
+    {attempts.length > 0 && <section className="r4-sec" aria-label="终稿"><FinalLine attempts={attempts} label={a => {
+      const n = attempts.filter(x => x.variantScope === a.variantScope).sort((x, y) => x.createdAt.localeCompare(y.createdAt)).findIndex(x => x.id === a.id) + 1;
+      return `${project.lanes.find(l => l.id === a.variantId)?.name ?? a.variantName} 第 ${n} 轮`;
+    }} /></section>}
     <section className="r4-sec" aria-label="下一步">
       <h3>下一步</h3>
       <div className="el4"><div className="el4-main"><b>{step.text}</b><span>按规则算出的提示，没有调用模型。</span></div>

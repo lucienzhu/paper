@@ -28,8 +28,17 @@ export interface H3Archive {
   request?: Blob;
   acknowledgement?: Blob;
   result?: Blob;
+  /** 页面这一侧需要人来处理的情况（例如连不上本机服务）：不是失败，点“取回”再查。 */
   issue?: string;
   traceId?: string;
+  /** 4.3：第一次把请求交给本机服务的时间、一共交了几次、页面收到回图或结论的时间。 */
+  sentAt?: string; requests?: number; receivedAt?: string;
+  /** 4.3：已入队但结果还不知道（出图服务连不上），服务端在等核对；接上以后按原 prompt_id 取回。 */
+  pending?: { since: string; reason: string; promptId: string | null; enqueue: string; lost?: boolean };
+  /** 设计者放弃这一轮的时间：不是远端失败，服务端的请求和回执照样保留。 */
+  abandonedAt?: string;
+  /** 页面暂时连不上本机服务、正在自己重试（从什么时候起）。连上就清掉。 */
+  offline?: { since: string };
 }
 const DB = 'multirotor-studio-design-records-v1';
 const STORE = 'attempts';

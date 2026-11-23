@@ -119,7 +119,7 @@ test('a reply that does not name its model is refused, and the log keeps the req
     const ok = await createDesignAI({ apiKey: 'k', region: 'global', model: 'MiniMax-M3.1-Flash', fetchImpl: named, logDir });
     const reply = await ok.free({ messages: [{ role: 'user', content: '你好' }] });
     assert.equal(reply.call.servedModel, 'MiniMax-M3.1-Flash');
-    assert.equal(ok.describe().label, 'MiniMax-M3.1-Flash（api.minimax.io）', '标签写明发到哪个服务');
+    assert.equal(ok.describe().label, 'MiniMax-M3.1-Flash（api.minimax.io，推理强度 max）', '标签写明发到哪个服务和推理强度');
     const lines = (await readFile(join(logDir, (await readdir(logDir))[0]), 'utf8')).trim().split('\n').map(l => JSON.parse(l));
     assert.equal(lines[0].requestedModel, 'MiniMax-M3.1-Flash');
     assert.equal(lines[0].servedModel, null);
@@ -192,5 +192,43 @@ test('pasted credentials and contact details never reach the model', async () =>
     const ai = await createDesignAI({ apiKey: 'k', region: 'global', logDir, fetchImpl: async (_u, init) => { body = init.body; return reply({ reply: '好', prompt: null }); } });
     await ai.free({ messages: [{ role: 'user', content: '我的邮箱 someone@example.com，密钥 sk-abcdefghijklmnop' }] });
     assert.ok(!body.includes('someone@example.com') && !body.includes('sk-abcdefghijklmnop'));
+  } finally { await rm(logDir, { recursive: true, force: true }); }
+});
+
+test('M3.1 runs at an explicit max effort with a budget that leaves room for thinking; a truncated answer is refused and logged with its receipt', async () => {
+  const logDir = await mkdtemp(join(tmpdir(), 'ai-budget-'));
+  const sent = [];
+  // 照 MiniMax 文档：思考也算进输出上限，上限不够时 finish_reason 为 length、回答为空。
+  const fetchImpl = async (_url, init) => {
+    const body = JSON.parse(init.body); sent.push(body);
+    const budget = body.max_completion_tokens ?? body.max_tokens, used = 12400, cut = used > budget;
+    return Response.json({ id: 'r-' + sent.length, model: 'MiniMax-M3.1-Flash', usage: { completion_tokens: cut ? budget : used },
+      choices: [{ finish_reason: cut ? 'length' : 'stop', message: { content: cut ? '' : '{"reply":"好","prompt":null}', reasoning_content: '想了一会儿' } }] });
+  };
+  try {
+    const ai = await createDesignAI({ apiKey: 'k', region: 'global', fetchImpl, logDir });
+    assert.equal(ai.describe().effort, 'max');
+    assert.equal(ai.describe().maxTokens, 131072);
+    const reply = await ai.free({ messages: [{ role: 'user', content: '你好' }], sessionId: 'session-abc123' });
+    assert.equal(sent[0].reasoning_effort, 'max', '推理强度写明 max（服务不写时也是 max）');
+    assert.equal(sent[0].max_completion_tokens, 131072);
+    assert.equal('max_tokens' in sent[0], false, '不再用已经弃用、会截断的 max_tokens 4096');
+    assert.deepEqual([reply.call.servedModel, reply.call.effort, reply.call.finishReason, reply.call.sessionId], ['MiniMax-M3.1-Flash', 'max', 'stop', 'session-abc123']);
+    // 上限太小：截断的回答不用，日志里留下请求的设置、收尾原因、用量和场次
+    const small = await createDesignAI({ apiKey: 'k', region: 'global', fetchImpl, logDir, maxTokens: 4096 });
+    await assert.rejects(small.free({ messages: [{ role: 'user', content: '你好' }], sessionId: 'session-abc123' }),
+      e => e.code === 'incomplete_generation' && /输出达到上限（4096/.test(e.message) && e.metadata.sessionId === 'session-abc123' && /^[0-9a-f-]{36}$/.test(e.metadata.callId));
+    const lines = (await readFile(join(logDir, (await readdir(logDir))[0]), 'utf8')).trim().split('\n').map(l => JSON.parse(l));
+    assert.equal(lines.length, 2);
+    assert.deepEqual([lines[0].request.reasoning_effort, lines[0].request.max_completion_tokens, lines[0].finishReason, lines[0].reasoning, lines[0].sessionId],
+      ['max', 131072, 'stop', '想了一会儿', 'session-abc123']);
+    assert.deepEqual([lines[1].finishReason, lines[1].usage.completion_tokens, lines[1].request.max_completion_tokens, lines[1].code, lines[1].servedModel],
+      ['length', 4096, 4096, 'incomplete_generation', 'MiniMax-M3.1-Flash']);
+    // 按场次取回：两条都在，包括浏览器没记下编号的那条失败
+    const bySession = await ai.readLog([lines[0].id], 'session-abc123');
+    assert.deepEqual(bySession.entries.map(e => e.id).sort(), lines.map(l => l.id).sort());
+    assert.deepEqual(bySession.bySession, [lines[1].id]);
+    assert.deepEqual((await ai.readLog([], 'not-a-session')).entries, [], '不认不像场次编号的值');
+    await assert.rejects(createDesignAI({ apiKey: 'k', region: 'global', fetchImpl, logDir, effort: 'none' }), /推理强度只能是/);
   } finally { await rm(logDir, { recursive: true, force: true }); }
 });

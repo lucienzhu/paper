@@ -18,11 +18,20 @@ import { layerFields, layerOf, layers } from '../src/v4/model.ts';
 
 export const defaultModel = 'MiniMax-M3.1-Flash';
 const endpoints = { cn: 'https://api.minimax.cn/v1/chat/completions', global: 'https://api.minimax.io/v1/chat/completions' };
+// MiniMax 文档（platform.minimax.io，OpenAI 兼容接口）：M3.1-Flash 的推理强度取 low、medium、high、xhigh、max，不写时就是 max；
+// 思考也算进输出上限，上限太小会以 finish_reason 为 length、回答为空收尾；max_completion_tokens 建议 131072，最大 524288。
+// 所以这里把推理强度和输出上限都写明，并记进每一条回执：4.2 的 4096 在 max 下会截断（Codex 11 月 23 日实测，放宽到 8192 仍截断）。
+export const efforts = ['low', 'medium', 'high', 'xhigh', 'max'];
+export const defaultEffort = 'max';
+export const defaultMaxTokens = 131072;
+export const defaultTimeoutMs = 300000;
 
 export class AiError extends Error {
   constructor(status, code, message, metadata = {}) { super(message); Object.assign(this, { status, code, metadata }); }
 }
 const bad = message => new AiError(400, 'invalid_input', message);
+/** 浏览器写在请求里的场次编号：只认工作台自己生成的样子，别的一律不记。 */
+const sessionOf = value => typeof value === 'string' && /^session-[\w-]{4,80}$/.test(value) ? value : null;
 
 // ---------- 参数的合法取值 ----------
 const enumOf = options => options.map(o => o.value);
@@ -287,9 +296,15 @@ function fixtureFree(input) {
 const fixtures = { intent: fixtureIntent, directions: fixtureDirections, layer: fixtureLayer, revise: fixtureRevise, free: fixtureFree };
 
 // ---------- 服务 ----------
-export async function createDesignAI({ apiKey, region = 'cn', model = defaultModel, baseUrl, effort, fetchImpl = globalThis.fetch,
+export async function createDesignAI({ apiKey, region = 'cn', model = defaultModel, baseUrl, effort, maxTokens, timeoutMs, fetchImpl = globalThis.fetch,
   logDir = path.join(process.env.LOCALAPPDATA || homedir(), 'Freeloop', 'multirotor-workbench', 'ai-calls') } = {}) {
   if (!baseUrl && !Object.hasOwn(endpoints, region)) throw new Error('MINIMAX_REGION 仅支持 cn 或 global。');
+  // MiniMax 不写推理强度时按 max 跑；这里照样写明 max，回执里看得到。别的兼容服务只在配置了时才发这一项。
+  const reasoningEffort = effort?.trim() || (baseUrl ? undefined : defaultEffort);
+  if (!baseUrl && !efforts.includes(reasoningEffort)) throw new Error('推理强度只能是 ' + efforts.join('、') + '。');
+  const budget = Number(maxTokens) || defaultMaxTokens;
+  if (!Number.isInteger(budget) || budget < 1024 || budget > 524288) throw new Error('输出上限要在 1024 到 524288 之间。');
+  const waitMs = Number(timeoutMs) || defaultTimeoutMs;
   const envelope = JSON.parse(await readFile(new URL('../src/data/evidenceCards.json', import.meta.url), 'utf8'));
   const cards = envelope.cards;
   const cardIds = new Set(cards.map(c => c.id));
@@ -300,9 +315,12 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
   // 记下发到哪个服务（只记主机名）：同一个模型名在国内站和国际站是两个服务，登记要写明是哪一个。
   const endpoint = mode === 'model' ? new URL(url).host : null;
 
+  const request = mode === 'model' ? { model, max_completion_tokens: budget, ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
+    response_format: { type: 'json_object' }, stream: false, timeoutMs: waitMs } : null;
   function describe() {
     return { mode, provider: mode === 'model' ? provider : 'rules', model: mode === 'model' ? model : null, endpoint, registry: registryVersion,
-      label: mode === 'model' ? `${model}（${endpoint}）` : '规则回退（未连模型）' };
+      effort: mode === 'model' ? reasoningEffort ?? null : null, maxTokens: mode === 'model' ? budget : null,
+      label: mode === 'model' ? `${model}（${endpoint}${reasoningEffort ? '，推理强度 ' + reasoningEffort : ''}）` : '规则回退（未连模型）' };
   }
 
   async function log(entry) {
@@ -313,58 +331,79 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
     } catch { /* 记录失败不影响设计者，但会在回执里标出 */ entry.logFailed = true; }
   }
 
+  /** 失败时把服务的回执（状态、用量、收尾原因、服务报的模型名）一并带出去，写进日志。 */
+  const failure = (status, code, message, receipt = {}) => Object.assign(new AiError(status, code, message), { receipt });
   async function callModel(messages, signal) {
-    const body = { model, messages, stream: false, max_tokens: 4096, response_format: { type: 'json_object' }, ...(effort ? { reasoning_effort: effort } : {}) };
+    const { timeoutMs: _wait, ...wire } = request;
+    void _wait;
+    const body = { ...wire, messages };
     let response, payload;
     try {
       response = await fetchImpl(url, { method: 'POST', redirect: 'error',
-        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(90000)]) : AbortSignal.timeout(90000),
+        signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(waitMs)]) : AbortSignal.timeout(waitMs),
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       try { payload = await response.json(); } catch (error) { if (response.ok) throw error; }
     } catch (error) {
       const timedOut = error?.name === 'TimeoutError' || error?.name === 'AbortError';
-      throw new AiError(timedOut ? 504 : 502, timedOut ? 'upstream_timeout' : 'upstream_unavailable', timedOut ? '等待文字模型响应超时。' : '无法连接文字模型服务。');
+      throw failure(timedOut ? 504 : 502, timedOut ? 'upstream_timeout' : 'upstream_unavailable',
+        timedOut ? `等了 ${Math.round(waitMs / 1000)} 秒，文字模型还没有回答。` : '无法连接文字模型服务。');
     }
-    const code = payload?.base_resp?.status_code ?? payload?.error?.code;
+    const servedModel = typeof payload?.model === 'string' && payload.model.trim() ? payload.model.trim() : null;
+    const choice = payload?.choices?.[0];
+    const receipt = { httpStatus: response.status, servedModel, finishReason: choice?.finish_reason ?? null, usage: payload?.usage ?? null,
+      requestId: payload?.id ?? response.headers.get('x-request-id') ?? null, providerCode: payload?.base_resp?.status_code ?? payload?.error?.code ?? null,
+      providerMessage: typeof (payload?.base_resp?.status_msg ?? payload?.error?.message) === 'string' ? scrub(String(payload?.base_resp?.status_msg ?? payload?.error?.message)).slice(0, 300) : null };
+    const code = receipt.providerCode;
     if (!response.ok || payload?.error || (code != null && code !== 0)) {
-      if (response.status === 401 || payload?.error?.type === 'authentication_error') throw new AiError(401, 'authentication_failed', '文字模型服务没有接受这个密钥。');
-      if (response.status === 402 || Number(code) === 1008) throw new AiError(402, 'insufficient_balance', '文字模型账户余额不足。');
-      throw new AiError(response.status === 429 ? 429 : 502, 'upstream_error', `文字模型没有完成这次请求（状态 ${code ?? response.status}）。`);
+      if (response.status === 401 || payload?.error?.type === 'authentication_error') throw failure(401, 'authentication_failed', '文字模型服务没有接受这个密钥。', receipt);
+      if (response.status === 402 || Number(code) === 1008) throw failure(402, 'insufficient_balance', '文字模型账户余额不足。', receipt);
+      throw failure(response.status === 429 ? 429 : 502, 'upstream_error', `文字模型没有完成这次请求（状态 ${code ?? response.status}）。`, receipt);
     }
     // 锁定版本：回执里必须写明模型名，并与请求的一致；没写或不一致都不用这次回答，日志里记下服务实际报的名字。
-    const servedModel = typeof payload?.model === 'string' && payload.model.trim() ? payload.model.trim() : null;
-    if (!servedModel) throw Object.assign(new AiError(502, 'model_unconfirmed', '服务回执里没有写模型名，无法确认这次用的是锁定的版本。'), { servedModel: null });
+    if (!servedModel) throw failure(502, 'model_unconfirmed', '服务回执里没有写模型名，无法确认这次用的是锁定的版本。', receipt);
     if (servedModel.toLowerCase() !== model.toLowerCase())
-      throw Object.assign(new AiError(502, 'unexpected_model', `服务返回的模型（${servedModel}）与锁定的版本不一致。`), { servedModel });
-    const choice = payload?.choices?.[0];
-    if (!choice || (choice.finish_reason && choice.finish_reason !== 'stop')) throw new AiError(502, 'incomplete_generation', '文字模型没有返回完整回答。');
-    return { content: choice.message?.content, usage: payload?.usage ?? null, requestId: payload?.id ?? response.headers.get('x-request-id') ?? null, servedModel };
+      throw failure(502, 'unexpected_model', `服务返回的模型（${servedModel}）与锁定的版本不一致。`, receipt);
+    if (!choice || (choice.finish_reason && choice.finish_reason !== 'stop')) {
+      const used = payload?.usage?.completion_tokens;
+      throw failure(502, 'incomplete_generation', choice?.finish_reason === 'length'
+        ? `文字模型的回答没有写完：输出达到上限（${budget}${Number.isFinite(used) ? '，用了 ' + used : ''}），推理也算在里面。`
+        : `文字模型没有返回完整回答（收尾原因：${choice?.finish_reason ?? '没有回答'}）。`, receipt);
+    }
+    const reasoning = typeof choice.message?.reasoning_content === 'string' ? choice.message.reasoning_content : null;
+    return { content: choice.message?.content, reasoning, receipt };
   }
 
-  async function run(task, input, context, signal) {
+  async function run(task, input, context, signal, sessionId = null) {
     const id = randomUUID(), at = new Date().toISOString(), started = Date.now();
     const messages = task === 'free'
       ? [{ role: 'system', content: prompts.free }, ...(context.brief ? [{ role: 'system', content: '任务简报：' + context.brief }] : []), ...input.messages]
       : [{ role: 'system', content: prompts[task] }, { role: 'system', content: JSON.stringify(context) },
         ...(input.history ?? []), { role: 'user', content: input.text ?? input.message ?? '' }];
-    let raw, rawText = null, usage = null, requestId = null, servedModel = null;
+    let raw, rawText = null, reasoning = null, receipt = null;
     try {
       if (mode === 'fixture') raw = structuredClone(fixtures[task](input));
       else {
         const reply = await callModel(messages, signal);
-        rawText = reply.content; usage = reply.usage; requestId = reply.requestId; servedModel = reply.servedModel;
+        rawText = reply.content; reasoning = reply.reasoning; receipt = reply.receipt;
         raw = parseJson(rawText);
       }
     } catch (error) {
-      await log({ id, at, task, mode, provider, endpoint, model: mode === 'model' ? model : null, requestedModel: mode === 'model' ? model : null,
-        servedModel: error.servedModel ?? servedModel ?? null, latencyMs: Date.now() - started, messages, error: error.message });
-      if (error instanceof AiError) { error.metadata = { callId: id }; throw error; }
-      throw new AiError(500, 'ai_error', 'AI 服务没能处理这次请求。', { callId: id });
+      // 失败的调用也是这一场的原件：编号、入口、时间、场次、请求的设置、服务的回执和原因都记下，导出本场材料时按编号或场次取回。
+      const r = error.receipt ?? receipt ?? {};
+      const entry = { id, at, task, sessionId, mode, provider, endpoint, model: mode === 'model' ? model : null, requestedModel: mode === 'model' ? model : null,
+        servedModel: r.servedModel ?? null, request, finishReason: r.finishReason ?? null, usage: r.usage ?? null, requestId: r.requestId ?? null,
+        httpStatus: r.httpStatus ?? null, providerCode: r.providerCode ?? null, providerMessage: r.providerMessage ?? null,
+        latencyMs: Date.now() - started, messages, rawText, reasoning, error: error.message, code: error.code ?? 'ai_error' };
+      await log(entry);
+      if (error instanceof AiError) { error.metadata = { callId: id, sessionId, task }; throw error; }
+      throw new AiError(500, 'ai_error', 'AI 服务没能处理这次请求。', { callId: id, sessionId, task });
     }
     // model 是锁定（请求）的版本；servedModel 是服务回执里写的版本，两者一致才会走到这里。规则回退两项都是 null。
-    const call = { id, at, mode, model: mode === 'model' ? model : null, servedModel, latencyMs: Date.now() - started, registry: registryVersion };
-    return { raw, rawText, usage, requestId, messages, call, finish: async (result, dropped) => {
-      const entry = { ...call, requestedModel: call.model, task, provider: mode === 'model' ? provider : 'rules', endpoint, messages, rawText, raw, result, dropped, usage, requestId };
+    const call = { id, at, mode, model: mode === 'model' ? model : null, servedModel: receipt?.servedModel ?? null, effort: request?.reasoning_effort ?? null,
+      finishReason: receipt?.finishReason ?? null, sessionId, latencyMs: Date.now() - started, registry: registryVersion };
+    return { raw, rawText, messages, call, finish: async (result, dropped) => {
+      const entry = { ...call, requestedModel: call.model, task, provider: mode === 'model' ? provider : 'rules', endpoint, request, messages, rawText, reasoning, raw, result, dropped,
+        usage: receipt?.usage ?? null, requestId: receipt?.requestId ?? null, httpStatus: receipt?.httpStatus ?? null };
       await log(entry);
       return { ...result, call: { ...call, ...(entry.logFailed ? { logFailed: true } : {}) } };
     } };
@@ -376,18 +415,22 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
     return (only ? [only] : layers).filter(l => !locked.includes(l)).flatMap(l => layerFields[l]).filter(f => fieldSpec[f] && applies(f, parameters));
   }
 
-  /** 按调用编号读回日志行（最多 2000 个编号）；找不到的编号单列出来。 */
-  async function readLog(ids) {
-    const wanted = new Set(ids.filter(id => typeof id === 'string' && /^[0-9a-f-]{36}$/i.test(id)).slice(0, 2000));
+  /**
+   * 按调用编号读回日志行（最多 2000 个编号），也可以按场次编号取回这一场的全部调用（包括浏览器没来得及记下的，例如失败或页面关掉时的）。
+   * 找不到的编号单列出来。
+   */
+  async function readLog(ids, sessionId) {
+    const wanted = new Set((Array.isArray(ids) ? ids : []).filter(id => typeof id === 'string' && /^[0-9a-f-]{36}$/i.test(id)).slice(0, 2000));
+    const session = sessionOf(sessionId);
     const entries = [];
     let files = [];
     try { files = (await readdir(logDir)).filter(f => /^ai-calls-\d{8}\.jsonl$/.test(f)).sort(); } catch { /* 还没有日志 */ }
     for (const f of files) for (const line of (await readFile(path.join(logDir, f), 'utf8')).split('\n')) {
       if (!line.trim()) continue;
-      try { const entry = JSON.parse(line); if (wanted.has(entry.id)) entries.push(entry); } catch { /* 跳过坏行，不影响其余 */ }
+      try { const entry = JSON.parse(line); if (wanted.has(entry.id) || (session && entry.sessionId === session)) entries.push(entry); } catch { /* 跳过坏行，不影响其余 */ }
     }
     const found = new Set(entries.map(e => e.id));
-    return { entries, missing: [...wanted].filter(id => !found.has(id)), logDir: path.basename(logDir) };
+    return { entries, missing: [...wanted].filter(id => !found.has(id)), bySession: session ? entries.filter(e => e.sessionId === session && !wanted.has(e.id)).map(e => e.id) : [], logDir: path.basename(logDir) };
   }
 
   return {
@@ -395,7 +438,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
     async intent(input, { signal } = {}) {
       const t = userText(input?.text, 600);
       const taskId = Object.hasOwn(taskLabels, input?.taskId) ? input.taskId : 'consumer_camera';
-      const run1 = await run('intent', { text: t }, { task: 'intent', taskId, states, wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal);
+      const run1 = await run('intent', { text: t }, { task: 'intent', taskId, states, wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       const dropped = [];
       const targets = (Array.isArray(r.targets) ? r.targets : []).flatMap(x => {
@@ -434,7 +477,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const parameters = input?.lane?.parameters ?? null;
       const intent = { text: text(input?.intent?.text, 600), targets: (input?.intent?.targets ?? []).filter(x => pairIds.has(x?.pair) && validPole(x?.pole)),
         notes: (input?.intent?.notes ?? []).map(n => text(n, 120)).filter(Boolean) };
-      const run1 = await run('directions', { text: '请根据确认的意图提出造型方向。', intent }, { task: 'directions', intent, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal);
+      const run1 = await run('directions', { text: '请根据确认的意图提出造型方向。', intent }, { task: 'directions', intent, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal, sessionOf(input?.sessionId));
       const dropped = [];
       const pairs = intent.targets.map(x => x.pair);
       const directions = (Array.isArray(run1.raw?.directions) ? run1.raw.directions : []).slice(0, 3).map(d => {
@@ -457,7 +500,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         .filter(h => ['user', 'assistant'].includes(h?.role) && typeof h.content === 'string').map(h => ({ role: h.role, content: scrub(h.content.slice(0, 800)) }));
       const pairs = (input?.intent?.targets ?? []).filter(x => pairIds.has(x?.pair)).map(x => x.pair);
       const run1 = await run('layer', { message, history, layer, lane: { parameters } },
-        { task: 'layer', layer, intent: input?.intent ?? null, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal);
+        { task: 'layer', layer, intent: input?.intent ?? null, lane: laneSummary(parameters, locked), wordPairs: pairTable, evidence: evidenceTable, cards: cardContext }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       const dropped = [];
       const suggestions = locked.includes(layer) ? [] : (Array.isArray(r.suggestions) ? r.suggestions : []).slice(0, 2).map(s => {
@@ -473,7 +516,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
       const locked = lockedLayers(input);
       const parameters = input?.candidate?.parameters ?? input?.lane?.parameters ?? null;
       const run1 = await run('revise', { message, candidate: { parameters } },
-        { task: 'revise', intent: input?.intent ?? null, candidate: laneSummary(parameters, locked), evidence: evidenceTable }, signal);
+        { task: 'revise', intent: input?.intent ?? null, candidate: laneSummary(parameters, locked), evidence: evidenceTable }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       const checked = checkChanges(r.changes, { allowed: editable(locked, undefined, parameters), parameters });
       const changedLayers = new Set(checked.accepted.map(c => c.layer));
@@ -489,7 +532,7 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
         .map(m => ({ role: m.role, content: scrub(m.content.trim().slice(0, 1200)) }));
       if (!messages.length || messages[messages.length - 1].role !== 'user') throw bad('请先说一句话。');
       const brief = text(input?.brief, 1200);
-      const run1 = await run('free', { messages }, { brief }, signal);
+      const run1 = await run('free', { messages }, { brief }, signal, sessionOf(input?.sessionId));
       const r = run1.raw ?? {};
       return run1.finish({ reply: text(r.reply, 1200, '（没有回答）'), prompt: typeof r.prompt === 'string' && r.prompt.trim() ? text(r.prompt, 1600) : null }, []);
     },

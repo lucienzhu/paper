@@ -97,3 +97,26 @@ export function layerSummary(layer: Layer, p: DroneParameters) {
   return `${f('accessories.drone_primary_color', p.accessories.drone_primary_color)} · ${f('accessories.surface_finish', p.accessories.surface_finish)}`;
 }
 
+
+/**
+ * 两段文字的逐词差别（英文按词，中文按字），给比较页用：same 两边都有，del 只在前一段，add 只在后一段。
+ * 文字很长时退回整段对比，免得卡住页面。
+ */
+export function diffWords(before: string, after: string): { text: string; kind: 'same' | 'add' | 'del' }[] {
+  const split = (t: string) => t.match(/[A-Za-z0-9_'’-]+|\s+|[^\sA-Za-z0-9_'’-]/g) ?? [];
+  const a = split(before), b = split(after);
+  if (a.length * b.length > 400000) return before === after ? [{ text: after, kind: 'same' }] : [{ text: before, kind: 'del' }, { text: after, kind: 'add' }];
+  const dp = Array.from({ length: a.length + 1 }, () => new Uint16Array(b.length + 1));
+  for (let i = a.length - 1; i >= 0; i--) for (let j = b.length - 1; j >= 0; j--) dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const out: { text: string; kind: 'same' | 'add' | 'del' }[] = [];
+  const push = (text: string, kind: 'same' | 'add' | 'del') => { const last = out[out.length - 1]; if (last?.kind === kind) last.text += text; else out.push({ text, kind }); };
+  let i = 0, j = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { push(a[i], 'same'); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { push(a[i], 'del'); i++; }
+    else { push(b[j], 'add'); j++; }
+  }
+  while (i < a.length) push(a[i++], 'del');
+  while (j < b.length) push(b[j++], 'add');
+  return out;
+}

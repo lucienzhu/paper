@@ -197,3 +197,108 @@ test('a record replace that hits a transient Windows lock is retried instead of 
   assert.equal(await readFile(target, 'utf8'), 'new');
   assert.equal(calls, 3);
 });
+
+test('a Qwen round that was queued survives a dropped connection, a lost receipt and a service restart: it is fetched by its prompt_id and queued only once', async () => {
+  const { writeFile: write, readFile: read } = await import('node:fs/promises');
+  const directory=await mkdtemp(join(tmpdir(),'qwen-resume-test-'));
+  const png=await readFile(new URL('../src/data/history/quad-guide.png',import.meta.url));
+  const digest=createHash('sha256').update(png).digest('hex');
+  const image={role:'layout',sha256:digest,dataUrl:'data:image/png;base64,'+png.toString('base64')};
+  // 可控的 ComfyUI：job 在 doneAt 之后才进历史；down 时一切请求都连不上；dropAck 时请求送到了、回执丢了。
+  const state={down:false,dropAck:false,prompts:[],jobs:new Map(),runMs:60};
+  const fetchImpl=async(url,init={})=>{
+    if(state.down) throw new TypeError('fetch failed');
+    const {pathname}=new URL(url);
+    if(pathname==='/upload/image') return Response.json({name:init.body.get('image').name,subfolder:'',type:'input'});
+    if(pathname==='/prompt'){ const body=JSON.parse(init.body); state.prompts.push(body);
+      const id=body.prompt_id ?? 'run-'+state.prompts.length; state.jobs.set(id,{clientId:body.client_id,doneAt:Date.now()+state.runMs,number:state.prompts.length,graph:body.prompt});
+      if(state.dropAck){ state.dropAck=false; throw new TypeError('connection reset'); }
+      return Response.json({prompt_id:id,number:state.prompts.length,node_errors:{}}); }
+    if(pathname==='/queue'){ const items=[...state.jobs].filter(([,j])=>Date.now()<j.doneAt).map(([id,j])=>[j.number,id,j.graph,{client_id:j.clientId},['12']]); return Response.json({queue_running:items,queue_pending:[]}); }
+    if(pathname==='/history' || pathname.startsWith('/history/')){ const want=pathname.slice('/history/'.length);
+      return Response.json(Object.fromEntries([...state.jobs].filter(([id,j])=>Date.now()>=j.doneAt && (!want || want===id)).map(([id,j])=>[id,{prompt:[j.number,id,j.graph,{client_id:j.clientId},['12']],
+        status:{completed:true,status_str:'success',messages:[['execution_start',{timestamp:j.doneAt-40}],['execution_success',{timestamp:j.doneAt}]]},outputs:{12:{images:[{filename:'studio-x_00001_.png',subfolder:'',type:'output'}]}}}]))); }
+    if(pathname==='/view') return new Response(png);
+    return new Response('',{status:404});
+  };
+  const backend={provider:'qwen-comfy',url:'http://gpu.test:8188',pollMs:5};
+  const settle=async(jobs,id,stop=s=>!['running'].includes(s))=>{ let job; for(let i=0;i<400;i++){ job=await jobs.get(id); if(stop(job.status)) return job; await new Promise(r=>setTimeout(r,10)); } return job; };
+  try {
+    // 1. 入队以后连不上：不记失败，记“待核对”，带着 prompt_id；接上以后按原作业取回
+    const jobs=createImageJobs({backend,fetchImpl,directory});
+    const a={attemptId:randomUUID(),prompt:'drop after enqueue',inputs:[image]};
+    state.runMs=200;
+    await jobs.submit(a);
+    for(let i=0;i<100 && !state.prompts.length;i++) await new Promise(r=>setTimeout(r,5));
+    state.down=true;
+    let job=await settle(jobs,a.attemptId,s=>s==='unconfirmed');
+    assert.equal(job.status,'unconfirmed');
+    assert.equal(job.pending.promptId,a.attemptId,'prompt_id 由工作台给定，回执丢了也知道该找哪一个');
+    assert.equal(job.pending.enqueue,'confirmed');
+    state.down=false;
+    await new Promise(r=>setTimeout(r,3100)); // 待核对的自动重试有 3 秒节流
+    job=await settle(jobs,a.attemptId,s=>s==='succeeded' || s==='failed');
+    assert.equal(job.status,'succeeded',job.error);
+    assert.equal(state.prompts.filter(p=>p.client_id==='studio-'+a.attemptId).length,1,'只入队一次');
+    assert.ok(job.comfy.executionStart && job.comfy.executionEnd && job.comfy.enqueuedAt,'记下了入队、开始和结束的时间');
+    // 2. 入队请求送到了、回执丢了：先在队列里按本轮编号找到，不再入队
+    const b={attemptId:randomUUID(),prompt:'lost acknowledgement',inputs:[image]};
+    state.runMs=400; state.dropAck=true;
+    await jobs.submit(b);
+    job=await settle(jobs,b.attemptId,s=>s==='unconfirmed');
+    assert.equal(job.pending.enqueue,'unknown');
+    await jobs.resume(b.attemptId,{force:true});
+    job=await settle(jobs,b.attemptId,s=>s==='succeeded' || s==='failed');
+    assert.equal(job.status,'succeeded',job.error);
+    assert.equal(state.prompts.filter(p=>p.client_id==='studio-'+b.attemptId).length,1,'回执丢了也只入队一次');
+    const filesB=await jobs.files(b.attemptId);
+    assert.ok(filesB.missing.includes('comfy-ack.json'),'没收到的入队回执列为缺失');
+    assert.match(filesB.notes.join(''),/在 ComfyUI 的队列里按本轮编号找到/);
+    // 3. 工作台服务在等回图时重启：新进程接手，按原 prompt_id 取回
+    const c={attemptId:randomUUID(),prompt:'service restarts',inputs:[image]};
+    state.runMs=300;
+    const hung={dead:false};
+    const old=createImageJobs({backend,fetchImpl:(u,i)=>hung.dead ? new Promise(()=>{}) : fetchImpl(u,i),directory});
+    await old.submit(c);
+    for(let i=0;i<100 && !state.prompts.some(p=>p.client_id==='studio-'+c.attemptId);i++) await new Promise(r=>setTimeout(r,5));
+    await new Promise(r=>setTimeout(r,30));
+    hung.dead=true;
+    const recordFile=join(directory,c.attemptId+'.json');
+    await write(recordFile,JSON.stringify({...JSON.parse(await read(recordFile,'utf8')),ownerPid:2147480000}));
+    const fresh=createImageJobs({backend,fetchImpl,directory});
+    job=await settle(fresh,c.attemptId,s=>s==='succeeded' || s==='failed');
+    assert.equal(job.status,'succeeded',job.error);
+    assert.equal(state.prompts.filter(p=>p.client_id==='studio-'+c.attemptId).length,1,'重启以后也只入队一次');
+    // 成功的一轮：服务端原件齐全
+    const filesC=await fresh.files(c.attemptId);
+    assert.deepEqual(filesC.files.map(f=>f.name).sort(),['QWEN-'+c.attemptId+'.png','comfy-ack.json','comfy-history.json','comfy-request.json','input-1-layout.png','job.json','prompt.txt','原名-studio-x_00001_.png'].sort());
+    assert.deepEqual(filesC.missing,[]);
+    // 4. ComfyUI 拒收（缺权重）：记失败，保留它报的节点和原因，原始回答另存
+    const refuse=createImageJobs({backend,directory,fetchImpl:async(url,init={})=>new URL(url).pathname==='/prompt'
+      ? Response.json({error:{type:'prompt_outputs_failed_validation',message:'Prompt outputs failed validation'},node_errors:{1:{class_type:'UNETLoader',errors:[{message:'Value not in list',details:"unet_name: 'qwen_image_2.1_bf16.safetensors' not in []"}]}}},{status:400})
+      : fetchImpl(url,init)});
+    const d={attemptId:randomUUID(),prompt:'missing weights',inputs:[image]};
+    await refuse.submit(d);
+    job=await settle(refuse,d.attemptId,s=>s==='failed' || s==='succeeded');
+    assert.equal(job.status,'failed');
+    assert.match(job.error,/HTTP 400.*Prompt outputs failed validation.*节点 1 UNETLoader：Value not in list：unet_name: 'qwen_image_2.1_bf16.safetensors' not in \[\]/);
+    const filesD=await refuse.files(d.attemptId);
+    assert.ok(filesD.files.some(f=>f.name==='comfy-error.json'));
+    assert.ok(!filesD.missing.length,filesD.missing.join());
+    // 5. 远端丢了这一轮（GPU 主机重启）：不自动重新入队，等人决定
+    const lost=createImageJobs({backend,directory,fetchImpl:async(url,init={})=>{ const p=new URL(url).pathname;
+      if(p==='/prompt'){ state.prompts.push(JSON.parse(init.body)); return Response.json({prompt_id:'gone-1',number:99,node_errors:{}}); }
+      if(p==='/queue') return Response.json({queue_running:[],queue_pending:[]});
+      if(p.startsWith('/history')) return Response.json({});
+      return fetchImpl(url,init); }});
+    const e={attemptId:randomUUID(),prompt:'lost on the GPU host',inputs:[image]};
+    await lost.submit(e);
+    job=await settle(lost,e.attemptId,s=>s==='unconfirmed');
+    assert.equal(job.pending.lost,true);
+    assert.match(job.pending.reason,/队列和历史里都找不到这一轮/);
+    const before=state.prompts.length;
+    await new Promise(r=>setTimeout(r,3100));
+    assert.equal((await lost.get(e.attemptId)).status,'unconfirmed','丢了的轮次不自动重试');
+    assert.equal(state.prompts.length,before,'也不重新入队');
+  } finally { await rm(directory,{recursive:true,force:true}); }
+});

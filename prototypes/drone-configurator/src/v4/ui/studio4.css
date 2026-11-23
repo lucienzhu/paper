@@ -220,3 +220,4 @@ fieldset.fs4:disabled * { cursor: not-allowed; }
 /* 4.2：这一场的委托。两种方式看到的是同一段原文，用左侧细线和浅底与普通段落分开。 */
 .s4 .brief4 { border-left: 3px solid var(--ink); background: var(--surface); padding: 10px 12px; border-radius: 0 10px 10px 0; }
 .s4 .brief4 h3 { margin: 0; }
+.s4 .chk4 b.is-warn { color: var(--warn); }

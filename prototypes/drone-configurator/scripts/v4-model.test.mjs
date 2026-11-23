@@ -214,3 +214,64 @@ test('rounds are attributed to their own session, and old untagged rounds only b
   assert.match(sessionTitle(s1), /第 1 场 · 工作台 · 委托 A · 机鼻 · P01/);
   assert.equal(sessionStem(s2), 'session02-free-prompt-briefA-P01');
 });
+
+test('a session clock keeps active work, model and queue waiting, moderator handoff, technical pause and unknown waiting apart (overlaps counted once)', async () => {
+  const { sessionTiming, sessionEventsCsv, eventColumns } = await import('../src/v4/timing.ts');
+  const t0 = Date.parse('2026-11-23T10:00:00.000Z');
+  const at = s => new Date(t0 + s * 1000).toISOString();
+  const session = { id: 'session-x', no: 3, kind: 'registered', method: 'structured', briefId: 'A', participant: 'P01', order: 1, startedAt: at(0), endedAt: at(600), endReason: '到 10 分钟' };
+  const events = [
+    { at: at(30), kind: 'ai-call', task: 'intent', callId: 'c1', ok: true, startedAt: at(30), endedAt: at(50), text: '' },
+    { at: at(180), kind: 'moderator-start', mark: 'handoff', note: '帮设计者粘贴委托', text: '' },
+    { at: at(240), kind: 'moderator-end', text: '' },
+    { at: at(360), kind: 'moderator-start', mark: 'pause', note: 'GPU 断线', text: '' },
+    { at: at(390), kind: 'moderator-end', text: '' },
+    { at: at(400), kind: 'final', attemptId: 'r1', candidateId: 'r1/1', text: '定为终稿' },
+  ];
+  const round = (id, sent, shown, status = 'succeeded') => ({ attemptId: id, label: id, condition: 'structured', frozenAt: at(sent - 2), sentAt: at(sent),
+    enqueuedAt: at(sent + 1), executionStart: at(sent + 5), executionEnd: at(sent + 40), receivedAt: shown === null ? undefined : at(shown - 1),
+    status, candidates: shown === null ? [] : [{ id: id + '/1', firstShown: at(shown) }], decisions: shown === null ? [] : [{ at: at(shown + 5), kind: 'accept', candidate: id + '/1', reason: '留着' }] });
+  // 第 1 轮 1:00 发出、2:00 显示；第 2 轮 3:30 发出、4:30 显示（前半段与主持人交接重叠）；第 3 轮 9:00 发出，本场结束时还没回图
+  const rounds = [round('r1', 60, 120), round('r2', 210, 270), round('r3', 540, null, 'running')];
+  const t = sessionTiming(session, events, rounds);
+  assert.equal(t.waiting.ms, (20 + 60 + 30) * 1000, '文字模型 20 秒 + 第 1 轮 60 秒 + 第 2 轮交接之后的 30 秒');
+  assert.equal(t.moderator.ms, 60000);
+  assert.equal(t.moderator.pauseMs, 30000);
+  assert.equal(t.unknownWaitMs, 60000, '第 3 轮从发出到本场结束');
+  assert.equal(t.activeMs, null, '有未知等待时不补数');
+  assert.deepEqual(t.activeBounds, { low: 340000, high: 400000 });
+  assert.deepEqual(t.used, { opportunities: 3, images: 2, requests: 3, enqueueRequests: 0 });
+  assert.equal(t.over.opportunities, false);
+  assert.ok(t.missing.some(m => /r3 的首次显示时间/.test(m.what)));
+  assert.equal(t.waiting.image[0].runMs, 35000, '执行时长两端都是 GPU 主机的钟');
+  // 登记的场次事件表：列名照原表，取不到的时间留空写原因
+  const csv = sessionEventsCsv(session, '委托A·依据摘要v0', events, rounds);
+  const [header, ...lines] = csv.trim().split('\n');
+  assert.equal(header, eventColumns.join(','));
+  const registered = new URL('../../../planning/research-library/design/session_events.csv', import.meta.url);
+  const { existsSync, readFileSync } = await import('node:fs');
+  if (existsSync(registered)) assert.equal(header, readFileSync(registered, 'utf8').split(/\r?\n/)[0], '与研究资料库里登记的空表同列');
+  assert.ok(lines.some(l => l.includes('moderator_handoff_start') && l.includes('moderator') && l.includes('帮设计者粘贴委托')));
+  assert.ok(lines.some(l => l.includes('technical_pause_start')));
+  assert.ok(lines.some(l => l.startsWith('P01,3,委托A·依据摘要v0,S,r1,first_shown,' + at(120) + ',browser,r1/1,r1,')));
+  assert.ok(lines.some(l => l.includes(',r3,first_shown,,browser,') === false && l.includes(',r3,return,,browser,') && l.endsWith('页面还没有收到回图或结论')));
+  assert.ok(lines.some(l => l.includes(',run_start,' + at(65) + ',comfyui,')));
+});
+
+test('a session has one current final: a later one replaces the earlier, rejecting it withdraws it, and "nothing acceptable" is its own outcome', async () => {
+  const { currentFinal, registrable, sessionTitle, sessionStem } = await import('../src/v4/sessions.ts');
+  const e = (kind, attemptId) => ({ at: new Date().toISOString(), kind, attemptId, candidateId: attemptId && attemptId + '/1', text: kind });
+  assert.equal(currentFinal([e('final', 'a'), e('final', 'b')]).current.attemptId, 'b');
+  const withdrawn = currentFinal([e('final', 'a'), e('final', 'b'), e('final-withdrawn')]);
+  assert.equal(withdrawn.current, null, '不退回更早的那张');
+  assert.equal(withdrawn.history.length, 3);
+  assert.equal(currentFinal([e('final', 'a'), e('final-none')]).current.kind, 'none-acceptable');
+  assert.equal(currentFinal([e('edit'), e('run')]).current, null);
+  // 登记场次四项齐全：委托、方式（工作台或自由提示）、匿名编号、次序
+  assert.equal(registrable({ briefId: 'A', method: 'structured', participant: 'P01', order: 1 }), true);
+  for (const missing of [{ briefId: undefined }, { method: 'open' }, { participant: ' ' }, { order: undefined }])
+    assert.equal(registrable({ briefId: 'A', method: 'free', participant: 'P01', order: 2, ...missing }), false, JSON.stringify(missing));
+  const trial = { id: 'session-1', no: 5, projectId: 'p', projectCreatedAt: '', method: 'free', kind: 'trial', briefId: 'A', startedAt: '' };
+  assert.match(sessionTitle(trial), /委托 A · 机鼻 · 试用/);
+  assert.equal(sessionStem(trial), 'session05-free-prompt-briefA-trial');
+});

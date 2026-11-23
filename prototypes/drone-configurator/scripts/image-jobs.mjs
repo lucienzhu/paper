@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { link, mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
+import { link, mkdir, readFile, rename, stat, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { homedir } from 'node:os';
 import { ChatError } from './design-chat.mjs';
@@ -102,63 +102,154 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
     await writeFile(tmp,JSON.stringify(record),{mode:0o600});
     await replaceFile(tmp,filename(record.jobId));
   }
-  async function executeComfy(record, refs) {
-    const req=record.evidence.request, base=String(comfy.url).replace(/\/+$/,'');
-    const call=async(route,init={})=>{
-      const response=await fetchImpl(base+route,{redirect:'error',signal:AbortSignal.timeout(60000),...init});
-      if(!response.ok) throw new Error('Qwen 服务返回 HTTP '+response.status+'。');
-      return response;
-    };
-    try {
-      const names=[];
-      for (const ref of refs) {
-        const form=new FormData();
-        form.append('image',new Blob([Buffer.from(ref.dataUrl.slice(dataHeader.length),'base64')],{type:'image/png'}),'studio-'+ref.sha256+'.png');
-        form.append('type','input'); form.append('overwrite','true');
-        const up=await (await call('/upload/image',{method:'POST',body:form})).json();
-        if(typeof up.name!=='string' || !up.name) throw new Error('Qwen 服务没有返回输入图的名称。');
-        names.push([up.subfolder,up.name].filter(Boolean).join('/'));
-      }
-      // 实际发出的请求、入队回执和运行历史原样存盘，供主持人登记场次时使用。
-      const body=JSON.stringify({client_id:'studio-'+record.jobId,prompt:comfyGraph(record.jobId,req.prompt,req.seed,names,comfy)});
-      await writeFile(path.join(directory,record.jobId+'.comfy-request.json'),body,{mode:0o600});
-      // 实际发给模型的文字另存一份纯文本（不加换行），主持人登记时直接引用。自由提示这一份就是设计者的原文。
-      await writeFile(path.join(directory,record.jobId+'.prompt.txt'),req.prompt,{mode:0o600});
-      const ackText=await (await call('/prompt',{method:'POST',headers:{'Content-Type':'application/json'},body})).text();
-      await writeFile(path.join(directory,record.jobId+'.comfy-ack.json'),ackText,{mode:0o600});
-      const ack=JSON.parse(ackText);
-      if(typeof ack.prompt_id!=='string' || !ack.prompt_id || Object.keys(ack.node_errors ?? {}).length)
-        throw new Error('Qwen 服务未确认入队。请核对工作流节点和权重文件名。');
-      record.evidence.response={httpStatus:200,traceId:ack.prompt_id,requestSha256:sha(body),inputNames:names};
-      await save(record);
-      const deadline=Date.now()+(comfy.timeoutMs ?? 600000); let run=null, historyText='';
-      while(Date.now()<deadline) {
-        historyText=await (await call('/history/'+encodeURIComponent(ack.prompt_id))).text();
-        run=JSON.parse(historyText)[ack.prompt_id];
-        if(run && (run.status?.completed || ['error','interrupted'].includes(run.status?.status_str))) break;
-        run=null; await new Promise(resolve=>setTimeout(resolve,comfy.pollMs ?? 2000));
-      }
-      if(!run) throw new Error('Qwen 服务在限定时间内没有完成本轮。');
-      await writeFile(path.join(directory,record.jobId+'.comfy-history.json'),historyText,{mode:0o600});
-      if(run.status?.status_str!=='success') throw new Error('Qwen 服务报告本轮运行失败，原始记录已保存。');
-      const images=Object.values(run.outputs ?? {}).flatMap(node=>node.images ?? []).filter(item=>item.type==='output');
-      if(images.length!==1) throw new Error('Qwen 服务返回了 '+images.length+' 张图，本轮只请求一张。');
-      const query=new URLSearchParams({filename:images[0].filename,subfolder:images[0].subfolder ?? '',type:'output'});
-      const png=Buffer.from(await (await call('/view?'+query)).arrayBuffer());
-      if(!checkedPng(png,false)) throw new Error('Qwen 回图未通过 1024 × 1024 PNG 校验。');
-      const hash=sha(png), name='QWEN-'+record.jobId+'.png';
-      await writeFile(path.join(directory,name),png,{mode:0o600});
-      // 主持人的登记工具要求回图以后端报告的原文件名附上，所以按原名再存一份（文件名里带轮次编号，不会相互覆盖）。
-      const original=path.basename(String(images[0].filename));
-      if(/^[\w.-]+\.png$/i.test(original) && original!==name) await writeFile(path.join(directory,original),png,{mode:0o600});
-      record.outputs=[{name,mimeType:'image/png',sha256:hash}];
-      Object.assign(record.evidence.response,{outputHashes:[hash],outputName:images[0].filename});
-      record.status='succeeded';
-    } catch(err) {
-      record.status='failed';
-      record.error=/^Qwen/.test(err.message) ? err.message : '无法连接 Qwen 图像服务，已保留本轮记录。请核对服务地址和 GPU 主机是否在线。';
+  // ---------- Qwen（ComfyUI）：上传与入队、等远端跑完、取回原图 ----------
+  // 4.3：入队以后连不上（断网、本机服务重启、超过等待时限）都不算失败，记成“待核对”（unconfirmed），之后按原 prompt_id 取回；
+  // 只有远端明确拒收（HTTP 4xx、节点错误）或报告运行失败时才记失败。每轮只入队一次：入队请求发出后没收到回执时，
+  // 先按 prompt_id 和 client_id 在 ComfyUI 的队列与历史里找，找到就接着等，确实不在才重新入队。
+  class Offline extends Error {}
+  class Lost extends Offline {}
+  class Refused extends Error {}
+  const base=()=>String(comfy.url).replace(/\/+$/,'');
+  const reach=async(route,init={})=>{
+    try { return await fetchImpl(base()+route,{redirect:'error',signal:AbortSignal.timeout(60000),...init}); }
+    catch(e){ throw new Offline(e?.name==='TimeoutError' ? '等 Qwen 服务回应超时' : '连不上 Qwen 服务'); }
+  };
+  const file=(id,suffix)=>path.join(directory,id+suffix);
+  /** ComfyUI 拒收时的回答：错误类型、出错的节点和原因（例如缺哪个权重文件），整理成一句话，原文另存。 */
+  function refusal(status,text){
+    let body=null; try { body=JSON.parse(text); } catch { /* 不是 JSON 就只报状态 */ }
+    const nodes=Object.entries(body?.node_errors ?? {}).flatMap(([node,v])=>(v?.errors ?? []).map(e=>`节点 ${node} ${v.class_type ?? ''}：${e.message ?? e.type ?? ''}${e.details ? '：'+e.details : ''}`));
+    const head=body?.error?.message || body?.error?.type || (typeof body?.error==='string' ? body.error : '');
+    const detail=[head,...nodes].filter(Boolean).join('；').replace(/https?:\/\/\S+/g,'[已隐藏]').slice(0,420);
+    return `Qwen 服务拒收了这一轮（HTTP ${status}）`+(detail ? '：'+detail : '。原始回答已保存。');
+  }
+  async function saveInputs(record, refs) {
+    for (const [i,ref] of refs.entries()) await writeFile(file(record.jobId,`.input-${i+1}-${ref.role}.png`),Buffer.from(ref.dataUrl.slice(dataHeader.length),'base64'),{mode:0o600});
+  }
+  async function loadInputs(record) {
+    const images=record.evidence?.request?.images ?? [];
+    return Promise.all(images.map(async (image,i)=>{
+      const bytes=await readFile(file(record.jobId,`.input-${i+1}-${image.role}.png`));
+      if(sha(bytes)!==image.sha256) throw new Refused('本机存的输入图与这一轮的摘要不符，不能重新入队。');
+      return {role:image.role,sha256:image.sha256,dataUrl:dataHeader+bytes.toString('base64')};
+    }));
+  }
+  /** 入队回执丢了的时候：这一轮是不是已经在 ComfyUI 的队列或历史里。 */
+  async function lookup(record) {
+    const mine=item=>Array.isArray(item) && (item[1]===record.jobId || item[1]===record.comfy?.promptId || item[3]?.client_id==='studio-'+record.jobId);
+    const queue=await reach('/queue');
+    if(!queue.ok) throw new Offline('Qwen 服务查询队列时返回 HTTP '+queue.status);
+    const q=await queue.json();
+    const queued=[...(q.queue_running ?? []),...(q.queue_pending ?? [])].find(mine);
+    if(queued) return {promptId:queued[1],number:queued[0],where:'queue'};
+    const history=await reach('/history?max_items=200');
+    if(!history.ok) throw new Offline('Qwen 服务查询历史时返回 HTTP '+history.status);
+    const done=Object.entries(await history.json()).find(([,v])=>mine(v?.prompt));
+    return done ? {promptId:done[0],number:done[1].prompt?.[0] ?? null,where:'history'} : null;
+  }
+  async function enqueue(record, refs) {
+    const names=[];
+    for (const ref of refs) {
+      const form=new FormData();
+      form.append('image',new Blob([Buffer.from(ref.dataUrl.slice(dataHeader.length),'base64')],{type:'image/png'}),'studio-'+ref.sha256+'.png');
+      form.append('type','input'); form.append('overwrite','true');
+      const res=await reach('/upload/image',{method:'POST',body:form});
+      const text=await res.text();
+      if(!res.ok){ await writeFile(file(record.jobId,'.comfy-error.json'),text,{mode:0o600}); throw new Refused(refusal(res.status,text).replace('拒收了这一轮','没有接收输入图')); }
+      let up; try { up=JSON.parse(text); } catch { up=null; }
+      if(typeof up?.name!=='string' || !up.name) throw new Refused('Qwen 服务没有返回输入图的名称。');
+      names.push([up.subfolder,up.name].filter(Boolean).join('/'));
     }
-    record.completedAt=new Date().toISOString();
+    // 实际发出的请求、入队回执和运行历史原样存盘，供主持人登记场次时使用。prompt_id 由工作台给定（ComfyUI 支持时沿用），回执丢了也知道该找哪一个。
+    const body=JSON.stringify({client_id:'studio-'+record.jobId,prompt_id:record.jobId,prompt:comfyGraph(record.jobId,record.evidence.request.prompt,record.evidence.request.seed,names,comfy)});
+    await writeFile(file(record.jobId,'.comfy-request.json'),body,{mode:0o600});
+    // 实际发给模型的文字另存一份纯文本（不加换行），主持人登记时直接引用。自由提示这一份就是设计者的原文。
+    await writeFile(file(record.jobId,'.prompt.txt'),record.evidence.request.prompt,{mode:0o600});
+    record.comfy={...record.comfy,clientId:'studio-'+record.jobId,enqueueRequests:(record.comfy?.enqueueRequests ?? 0)+1,enqueueSentAt:new Date().toISOString(),inputNames:names};
+    await save(record);
+    const res=await reach('/prompt',{method:'POST',headers:{'Content-Type':'application/json'},body});
+    const text=await res.text();
+    if(!res.ok){ await writeFile(file(record.jobId,'.comfy-error.json'),text,{mode:0o600}); throw new Refused(refusal(res.status,text)); }
+    await writeFile(file(record.jobId,'.comfy-ack.json'),text,{mode:0o600});
+    let ack; try { ack=JSON.parse(text); } catch { ack=null; }
+    if(typeof ack?.prompt_id!=='string' || !ack.prompt_id || Object.keys(ack.node_errors ?? {}).length){
+      await writeFile(file(record.jobId,'.comfy-error.json'),text,{mode:0o600});
+      throw new Refused(Object.keys(ack?.node_errors ?? {}).length ? refusal(200,text) : 'Qwen 服务未确认入队。请核对工作流节点和权重文件名。');
+    }
+    adopt(record,{promptId:ack.prompt_id,number:ack.number ?? null,where:'ack'},sha(body));
+    await save(record);
+  }
+  function adopt(record,found,requestSha256){
+    record.comfy={...record.comfy,promptId:found.promptId,number:found.number,enqueuedAt:record.comfy?.enqueuedAt ?? new Date().toISOString(),foundBy:found.where};
+    record.evidence.response={...record.evidence.response,httpStatus:200,traceId:found.promptId,
+      ...(requestSha256 ? {requestSha256} : {}),inputNames:record.comfy.inputNames ?? record.evidence.response?.inputNames ?? []};
+  }
+  async function waitRemote(record) {
+    const id=record.comfy.promptId, deadline=Date.now()+(comfy.timeoutMs ?? 600000);
+    for(let polls=1; Date.now()<deadline; polls++) {
+      const res=await reach('/history/'+encodeURIComponent(id));
+      if(!res.ok) throw new Offline('Qwen 服务查询进度时返回 HTTP '+res.status);
+      const text=await res.text(), run=JSON.parse(text)[id];
+      record.comfy.lastCheckAt=new Date().toISOString();
+      if(run && (run.status?.completed || ['error','interrupted'].includes(run.status?.status_str))) return {run,text};
+      // 隔一阵看一眼队列：历史里没有、队列里也没有，说明远端丢了这一轮（例如 GPU 主机重启）。不自动重新入队。
+      if(polls%15===0 && !(await lookup(record))) throw new Lost('ComfyUI 的队列和历史里都找不到这一轮（GPU 主机可能重启过）。可以放弃这一轮，或者另开一轮。');
+      await new Promise(resolve=>setTimeout(resolve,comfy.pollMs ?? 2000));
+    }
+    throw new Offline('等待时限内这一轮还没有跑完（远端可能仍在排队或运行）');
+  }
+  async function collect(record, run, historyText) {
+    await writeFile(file(record.jobId,'.comfy-history.json'),historyText,{mode:0o600});
+    const stamp=kind=>run.status?.messages?.find(m=>m[0]===kind)?.[1]?.timestamp;
+    const started=stamp('execution_start'), ended=stamp('execution_success') ?? stamp('execution_error') ?? stamp('execution_interrupted');
+    // ComfyUI 历史里的时间戳是 GPU 主机的钟，单独记，不和本机的钟混算。
+    record.comfy={...record.comfy,executionStart:Number.isFinite(started) ? new Date(started).toISOString() : null,executionEnd:Number.isFinite(ended) ? new Date(ended).toISOString() : null};
+    if(run.status?.status_str!=='success'){
+      const err=run.status?.messages?.find(m=>m[0]==='execution_error')?.[1];
+      throw new Refused('Qwen 服务报告本轮运行失败（'+(run.status?.status_str ?? '未知')+'）'+(err ? '：'+[err.node_type,err.exception_type,err.exception_message].filter(Boolean).join('：').slice(0,300) : '。原始记录已保存。'));
+    }
+    const images=Object.values(run.outputs ?? {}).flatMap(node=>node.images ?? []).filter(item=>item.type==='output');
+    if(images.length!==1) throw new Refused('Qwen 服务返回了 '+images.length+' 张图，本轮只请求一张。');
+    const query=new URLSearchParams({filename:images[0].filename,subfolder:images[0].subfolder ?? '',type:'output'});
+    const view=await reach('/view?'+query);
+    if(!view.ok) throw new Offline('Qwen 服务取图时返回 HTTP '+view.status);
+    const png=Buffer.from(await view.arrayBuffer());
+    if(!checkedPng(png,false)) throw new Refused('Qwen 回图未通过 1024 × 1024 PNG 校验。');
+    const hash=sha(png), name='QWEN-'+record.jobId+'.png';
+    await writeFile(path.join(directory,name),png,{mode:0o600});
+    // 主持人的登记工具要求回图以后端报告的原文件名附上，所以按原名再存一份（文件名里带轮次编号，不会相互覆盖）。
+    const original=path.basename(String(images[0].filename));
+    if(/^[\w.-]+\.png$/i.test(original) && original!==name) await writeFile(path.join(directory,original),png,{mode:0o600});
+    record.outputs=[{name,mimeType:'image/png',sha256:hash}];
+    record.comfy.outputOriginalName=original;
+    record.comfy.downloadedAt=new Date().toISOString();
+    Object.assign(record.evidence.response,{outputHashes:[hash],outputName:images[0].filename});
+  }
+  async function executeComfy(record, refs) {
+    try {
+      if(!record.comfy?.promptId){
+        // 上一次的入队请求发出去了却没收到回执：先找，找不到才重新入队。
+        const found=record.comfy?.enqueueSentAt ? await lookup(record) : null;
+        if(found){ adopt(record,found); await save(record); }
+        else await enqueue(record,refs);
+      }
+      const {run,text}=await waitRemote(record);
+      await collect(record,run,text);
+      record.status='succeeded'; delete record.pending;
+      record.completedAt=new Date().toISOString();
+    } catch(err) {
+      if(err instanceof Offline){
+        // 结果还不知道：不记失败。记下从什么时候、因为什么在等核对，接上以后按原作业取回。
+        const enqueued=!!record.comfy?.promptId;
+        record.status='unconfirmed';
+        record.pending={...record.pending,since:record.pending?.since ?? new Date().toISOString(),lastTryAt:new Date().toISOString(),reason:err.message,
+          promptId:record.comfy?.promptId ?? null,enqueue:enqueued ? 'confirmed' : record.comfy?.enqueueSentAt ? 'unknown' : 'not-sent',lost:err instanceof Lost};
+      } else {
+        record.status='failed'; delete record.pending;
+        record.error=err instanceof Refused ? err.message : '处理 Qwen 回执时出错，已保留本轮记录。';
+        record.completedAt=new Date().toISOString();
+      }
+    }
     await save(record);
   }
   async function execute(record, refs) {
@@ -225,25 +316,88 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
     } else if (comfy ? !comfy.url : !apiKey) {
       record.status='failed';record.error=comfy ? '尚未配置 Qwen 图像服务地址。' : '尚未配置 MiniMax 图像服务凭据。';await save(record);
     } else {
-      const work=execute(record,references).catch(err=>console.error('保存图像回执失败',err.code || err.name)).finally(()=>active.delete(attemptId));
+      // 输入图另存一份：待核对之后要重新入队（回执确实丢了、队列里也没有）时，服务重启过也拿得到原件。
+      // 先登记到 active 再等存盘，免得这段时间里的查询以为没人在管这一轮。
+      const work=(async()=>{ if(comfy) await saveInputs(record,references); await execute(record,references); })()
+        .catch(err=>console.error('保存图像回执失败',err.code || err.name)).finally(()=>active.delete(attemptId));
       active.set(attemptId,work);
     }
     return baseRecord(attemptId);
   }
-  async function get(id) {
+  const alive=pid=>{ if(pid===process.pid) return true; if(!Number.isSafeInteger(pid)) return false; try { process.kill(pid,0); return true; } catch { return false; } };
+  /**
+   * 接着取回一轮：只查 ComfyUI（按原 prompt_id；回执丢了就先在队列和历史里找），不会再入队一次已经入队的轮次。
+   * force：设计者点了“取回”，不等节流。另一个仍在运行的服务进程在管这一轮时不抢。
+   */
+  async function resume(id,{force=false}={}) {
     if(!uuid.test(id))fail(400,'轮次编号格式不正确。');
     const record=await read(id);
     if(!record)fail(404,'未找到这次图像生成记录。');
-    const {fingerprint,ownerPid,...visible}=record;
-    let ownerAlive=ownerPid===process.pid;
-    if(!ownerAlive && Number.isSafeInteger(ownerPid)) {
-      try {process.kill(ownerPid,0);ownerAlive=true;} catch { /* Owner ended before publishing a receipt. */ }
+    if(!comfy || ['succeeded','failed'].includes(record.status)) return false;
+    if(record.status==='running' && record.ownerPid!==process.pid && alive(record.ownerPid)) return false;
+    // 远端已经找不到这一轮（GPU 主机重启过）时不自动重试，等设计者或主持人决定；点了“取回”才再查一次。
+    if(!force && record.status==='unconfirmed' && (record.pending?.lost || Date.now()-Date.parse(record.pending?.lastTryAt ?? 0)<3000)) return false;
+    // 最后一个 await 之后才查 active 并登记：同时来的两次查询只会有一次接手。
+    if(active.has(id)) return false;
+    const work=(async()=>{
+      record.ownerPid=process.pid; record.status='running';
+      record.pending={...record.pending,lastTryAt:new Date().toISOString(),resumes:(record.pending?.resumes ?? 0)+1,lost:false};
+      await save(record);
+      let refs=[];
+      try { refs=record.comfy?.promptId ? [] : await loadInputs(record); }
+      catch(e){ record.status='failed'; record.error=e.message; record.completedAt=new Date().toISOString(); await save(record); return; }
+      await executeComfy(record,refs);
+    })().catch(err=>console.error('取回图像回执失败',err.code || err.name)).finally(()=>active.delete(id));
+    active.set(id,work);
+    return true;
+  }
+  /** 这一轮在服务端留下的原件：记录、实发请求、实发文字、入队回执、运行历史、拒收时的回答、输入图和原图。缺的单列。 */
+  async function files(id) {
+    if(!uuid.test(id))fail(400,'轮次编号格式不正确。');
+    const record=await read(id);
+    if(!record)fail(404,'未找到这次图像生成记录。');
+    const wanted=[['job.json',id+'.json',true]];
+    if(record.provider==='qwen-comfy'){
+      const sent=!!record.comfy?.enqueueSentAt, refused=record.status==='failed' && !record.comfy?.promptId;
+      wanted.push(['comfy-request.json',id+'.comfy-request.json',sent],['prompt.txt',id+'.prompt.txt',sent],
+        ['comfy-ack.json',id+'.comfy-ack.json',!!record.comfy?.promptId],
+        ['comfy-history.json',id+'.comfy-history.json',record.status==='succeeded' || (record.status==='failed' && !!record.comfy?.promptId)],
+        ['comfy-error.json',id+'.comfy-error.json',refused]);
+      for(const [i,image] of (record.evidence?.request?.images ?? []).entries()) wanted.push([`input-${i+1}-${image.role}.png`,`${id}.input-${i+1}-${image.role}.png`,true]);
+      if(record.comfy?.outputOriginalName && record.comfy.outputOriginalName!=='QWEN-'+id+'.png') wanted.push(['原名-'+record.comfy.outputOriginalName,record.comfy.outputOriginalName,record.status==='succeeded']);
     }
-    if(visible.status==='running' && (!ownerAlive || Date.now()-Date.parse(record.startedAt)>630000)){
+    for(const out of record.outputs ?? []) wanted.push([out.name,out.name,true]);
+    const found=[], missing=[];
+    for(const [name,disk,expected] of wanted){
+      try {
+        const info=await stat(path.join(directory,disk));
+        if(!info.isFile()) throw new Error();
+        const bytes=await readFile(path.join(directory,disk));
+        found.push({name,bytes:bytes.length,sha256:sha(bytes),base64:bytes.toString('base64')});
+      } catch { if(expected) missing.push(name); }
+    }
+    const notes=[];
+    if(record.comfy?.foundBy && record.comfy.foundBy!=='ack') notes.push(`入队回执没有收到；作业号 ${record.comfy.promptId} 是在 ComfyUI 的${record.comfy.foundBy==='queue' ? '队列' : '历史'}里按本轮编号找到的。`);
+    if((record.comfy?.enqueueRequests ?? 0)>1) notes.push(`这一轮发过 ${record.comfy.enqueueRequests} 次入队请求（前一次确认没有进入队列后才重发）。`);
+    if(record.status==='unconfirmed') notes.push('导出时这一轮仍在等核对：'+(record.pending?.reason ?? '')+'。');
+    return {attemptId:id,status:record.status,comfy:record.comfy ?? null,pending:record.pending ?? null,files:found,missing,notes};
+  }
+  async function get(id) {
+    if(!uuid.test(id))fail(400,'轮次编号格式不正确。');
+    let record=await read(id);
+    if(!record)fail(404,'未找到这次图像生成记录。');
+    // Qwen：管这一轮的服务进程已经不在（重启过），或者这一轮在等核对，就按原 prompt_id 接着取回，不再报失败、不再入队。
+    if(comfy && !active.has(id) && ((record.status==='running' && (!alive(record.ownerPid) || record.ownerPid===process.pid)) || record.status==='unconfirmed')) {
+      if(await resume(id)) record=await read(id);
+    }
+    const {fingerprint,ownerPid,...visible}=record;
+    const ownerAlive=alive(ownerPid);
+    // MiniMax 的改图接口不能重放：服务在收到回执前重启，这一轮只能记为未完成。
+    if(!comfy && visible.status==='running' && (!ownerAlive || Date.now()-Date.parse(record.startedAt)>630000)){
       visible.status='failed';visible.error='工作台服务在收到完整回执前重启。请核对该轮服务记录，当前请求已保留。';
     }
     if(visible.outputs)visible.outputs=await Promise.all(visible.outputs.map(async file=>({...file,dataUrl:dataHeader+(await readFile(path.join(directory,file.name))).toString('base64')})));
     return visible;
   }
-  return {submit,get,describe};
+  return {submit,get,resume,files,describe};
 }

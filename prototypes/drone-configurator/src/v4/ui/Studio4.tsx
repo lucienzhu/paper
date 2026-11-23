@@ -26,16 +26,20 @@ import './studio4.css';
 const short = (label: string) => label.replace(/[（(].*?[）)]/g, '').trim();
 
 function TopBar({ onDrawer, aiInfo }: { onDrawer: () => void; aiInfo: AiDescribe | null }) {
-  const { project, past, future, session, sessions, currentSessionId } = useStudio();
+  const { project, past, future, session, sessions, currentSessionId, events } = useStudio();
   const st = useStudio.getState();
   const backend = useImageBackend();
   const current = sessions.find(s => s.id === currentSessionId && !s.endedAt);
   const brief = briefOf(current);
+  // 主持人接手或技术暂停还开着：顶栏写明，这段不计入主动操作。
+  const marks = current ? events.filter(e => e.sessionId === current.id && (e.kind === 'moderator-start' || e.kind === 'moderator-end')) : [];
+  const openMark = marks.length && marks[marks.length - 1].kind === 'moderator-start' ? marks[marks.length - 1] : null;
   return <header className="t4">
     <span className="t4-brand"><i aria-hidden="true"><Workflow size={15} /></i>多旋翼造型工作台</span>
     <span className="t4-sep" />
     <span className={'t4-chip' + (current?.kind === 'registered' ? ' is-ai' : '')} data-testid="session-chip" title={current ? sessionTitle(current) : '现在没有进行中的一场'}>
-      {current ? `第 ${current.no} 场 · ${brief ? brief.label : '自由试用'}` : '未开场'}</span>
+      {current ? `第 ${current.no} 场 · ${brief ? brief.label : '自由试用'}${brief && current.kind === 'trial' ? ' · 试用' : ''}` : '未开场'}</span>
+    {openMark && <span className="t4-chip is-warn" data-testid="moderator-chip">{openMark.mark === 'pause' ? '技术暂停中' : '主持人接手中'}</span>}
     <span className="t4-chip hide-narrow" title="这个项目的任务">{studioTask(project.intent.taskId).short}</span>
     {session.method !== 'free' ? <nav className="t4-lanes" aria-label="方向">{project.lanes.map(l => <button key={l.id} type="button" className="t4-lane" aria-pressed={l.id === project.activeLaneId}
       data-lane={l.id} title={l.name} onClick={() => { st.setActiveLane(l.id); st.select({ kind: 'layer', laneId: l.id, layer: 'body' }); }}><span className="dot" /><span className="name">{l.name}</span></button>)}</nav>
@@ -52,7 +56,7 @@ function TopBar({ onDrawer, aiInfo }: { onDrawer: () => void; aiInfo: AiDescribe
 }
 
 export default function Studio4() {
-  const { project, selection, session, notice, comparing, suggestions, compares } = useStudio();
+  const { project, selection, session, notice, comparing, suggestions, compares, epoch } = useStudio();
   const st = useStudio.getState();
   const { attempts, urls } = useAttempts();
   const [drawer, setDrawer] = useState(false);
@@ -114,7 +118,8 @@ export default function Studio4() {
 
   if (free) return <div className="s4" data-testid="studio4" data-method="free">
     <TopBar onDrawer={() => setDrawer(true)} aiInfo={aiInfo} />
-    <FreeStudio attempts={attempts} urls={urls} />
+    {/* 按场次的分界重新挂载：上一场没发出的对话、提示词和选中的父图不带进下一场 */}
+    <FreeStudio key={epoch} attempts={attempts} urls={urls} />
     {notice && <div className="toast4" role="status">{notice}<button type="button" aria-label="关闭" onClick={() => st.setNotice('')}><X size={13} /></button></div>}
     {drawerEl}
   </div>;
@@ -126,10 +131,10 @@ export default function Studio4() {
       <div className="c4-wrap">
         <Board4 project={project} attempts={attempts} urls={urls} selection={valid} comparing={comparing} suggestions={suggestions} compares={compares}
           lockedFrame={!!session.lockedFrame} starting={starting} onSelect={select} onRun={id => void onRun(id)} onCompare={onCompare} onExpand={onExpand} focusKey={focusKey} />
-        <CommandBar selection={valid} onSelect={select} />
+        <CommandBar key={epoch} selection={valid} onSelect={select} />
         {notice && <div className="toast4" role="status">{notice}<button type="button" aria-label="关闭" onClick={() => st.setNotice('')}><X size={13} /></button></div>}
       </div>
-      <aside className="r4" aria-label="步骤面板"><div className="r4-scroll" key={JSON.stringify(valid)}>
+      <aside className="r4" aria-label="步骤面板"><div className="r4-scroll" key={epoch + JSON.stringify(valid)}>
         {!valid && <PanelOverview attempts={attempts} onOpen={select} />}
         {valid?.kind === 'intent' && <PanelIntent onPlaced={onPlaced} />}
         {valid?.kind === 'layer' && <PanelLayer laneId={valid.laneId} layer={valid.layer} onSelectLayer={layer => select({ kind: 'layer', laneId: valid.laneId, layer })} />}

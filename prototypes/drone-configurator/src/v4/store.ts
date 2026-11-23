@@ -1,6 +1,8 @@
 // 4.0 的工作区状态：项目（意图与决定链）、AI 的建议与方向、对话、比较、场次设置，以及撤销与重做。
 // 只存在本机浏览器里；候选图和生成回执另存（candidateRecords，IndexedDB）。
 // 4.2 起有“场次”：每条事件、对话、建议、方向、比较和每一轮生成都写下属于哪一场，导出本场材料只取这一场的。
+// 4.3：AI 的回答记回发出请求的那一场（晚到的不用在下一场里，补进那一场的存档）；每一场开始时清掉上一场没发出的文字和选中的父图；
+// 只有委托、方式、匿名编号、次序四项齐全才是登记场次；开场时记下出图后端和文字模型；一场只有一个当前终稿；主持人的交接和技术暂停单独记。
 import { create } from 'zustand';
 import type { TaskId } from '../types/DroneParameters';
 import type { EvidenceTier } from '../design/evidence/registry.mjs';
@@ -11,7 +13,11 @@ import {
 } from './model';
 import { getPath } from '../design/fields';
 import type { DroneParameters } from '../types/DroneParameters';
-import { methodLabel, saveArchive, type SessionInfo, type SessionMethod } from './sessions';
+import { appendArchive, methodLabel, registrable, saveArchive, summaryStamp, updateArchive, type SessionEnvironment, type SessionInfo, type SessionMethod } from './sessions';
+import { describeAi } from './ai';
+import { imageBackend } from '../design/imageBackend';
+import { registryVersion } from '../design/evidence/registry.mjs';
+import { STUDIO_NAME, STUDIO_VERSION } from './version';
 export type { SessionMethod } from './sessions';
 
 export interface Change { field: string; value: unknown; from: unknown; label: string; layer: Layer; why?: string }
@@ -19,13 +25,14 @@ export interface Suggestion {
   id: string; callId: string; mode: 'model' | 'fixture'; at: string;
   laneId: string; layer: Layer; title: string; why: string; changes: Change[];
   evidence: string[]; tier: EvidenceTier; cards: string[];
-  status: 'pending' | 'applied' | 'branched' | 'rejected'; resultLaneId?: string; reason?: string; sessionId?: string;
+  /** late：回答在发出它的那一场结束后才到，不显示、不能用；expired：那一场结束时还没处理。 */
+  status: 'pending' | 'applied' | 'branched' | 'rejected' | 'late' | 'expired'; resultLaneId?: string; reason?: string; sessionId?: string;
 }
 export interface DirectionChange extends Change { evidence: string[]; tier: EvidenceTier; cards: string[] }
 export interface Direction {
   id: string; callId: string; mode: 'model' | 'fixture'; at: string;
   name: string; summary: string; changes: DirectionChange[];
-  status: 'pending' | 'placed' | 'dismissed'; laneId?: string; sessionId?: string;
+  status: 'pending' | 'placed' | 'dismissed' | 'late' | 'expired'; laneId?: string; sessionId?: string;
 }
 export type Scope = { kind: 'intent' } | { kind: 'layer'; laneId: string; layer: Layer } | { kind: 'candidate'; laneId: string; attemptId: string; candidateId: string } | { kind: 'free' };
 export interface Turn { id: string; at: string; role: 'user' | 'assistant'; text: string; scope: Scope; callId?: string; mode?: 'model' | 'fixture'; suggestionIds?: string[]; otherLayer?: { layer: Layer; why: string }; /** 自由提示那一场：助手起草的提示词。 */ draft?: string; sessionId?: string }
@@ -34,7 +41,12 @@ export interface ProjectEvent { id: string; at: string; kind: string; text: stri
   /** 这件事对应的生成轮次。 */ attemptId?: string;
   /** 自由提示那一场：发出的文字是设计者自己写的、AI 起草后原样用的，还是起草后改过的。 */ source?: 'typed' | 'draft' | 'draft-edited'; draftTurnId?: string;
   /** 4.2：属于哪一场。 */ sessionId?: string;
-  /** 这件事对应的 AI 调用（例如读意图）。导出本场材料时按它找日志。 */ callId?: string }
+  /** 这件事对应的 AI 调用（例如读意图）。导出本场材料时按它找日志。 */ callId?: string;
+  /** 4.3：每一次 AI 调用（成功或失败）记一条 ai-call：入口、发出和回答的时间、是否完成、失败原因。 */
+  task?: string; ok?: boolean; error?: string; startedAt?: string; endedAt?: string;
+  /** 4.3：主持人交接（handoff）或技术暂停（pause）的开始；note 写主持人做了什么。 */
+  mark?: 'handoff' | 'pause'; note?: string;
+  /** 终稿事件指向的候选。 */ candidateId?: string }
 export type Selection = { kind: 'intent' } | { kind: 'layer'; laneId: string; layer: Layer } | { kind: 'render'; laneId: string }
   | { kind: 'candidate'; attemptId: string; candidateId: string } | { kind: 'compare'; id: string } | null;
 
@@ -67,6 +79,8 @@ interface Studio extends Saved {
   /** 本机的全部场次（不进撤销历史，新建项目也不清）。 */
   sessions: SessionInfo[];
   currentSessionId: string | null;
+  /** 每到场次的分界（一场结束、主持人开新的一场）加一：界面上没发出的文字、选中的父图等草稿按它重来。 */
+  epoch: number;
   /** 返回正在进行的这一场；没有就开一场自由试用。每条记录写下场次编号前都先调它。 */
   ensureSession: () => string;
   /** 主持人开一场：结束上一场；项目不是空白的就另开一个空白项目；有委托时任务定为日常航拍并载入锁定 C2 的机架。 */
@@ -90,7 +104,7 @@ interface Studio extends Saved {
   reset: (taskId?: TaskId) => void;
   // 意图
   setIntentText: (text: string) => void;
-  applyReading: (reading: IntentReading) => void;
+  applyReading: (reading: IntentReading, sessionId?: string) => void;
   setElement: (id: string, patch: Partial<IntentElement>) => void;
   addElement: (element: Omit<IntentElement, 'id'>) => void;
   setIntentState: (state: string) => void;
@@ -109,20 +123,27 @@ interface Studio extends Saved {
   setActiveLane: (laneId: string) => void;
   addIssue: (laneId: string, layer: Layer, text: string, fromCandidate?: string) => void;
   resolveIssue: (laneId: string, layer: Layer, issueId: string) => void;
-  // AI
-  addSuggestions: (list: Suggestion[]) => void;
+  // AI：sessionId 是发出请求时的那一场；那一场已经结束，回答只记下、不用在现在这一场里。
+  addSuggestions: (list: Suggestion[], sessionId?: string) => void;
   resolveSuggestion: (id: string, action: 'apply' | 'branch' | 'reject', reason?: string) => string | null;
-  setDirections: (list: Direction[]) => void;
+  setDirections: (list: Direction[], sessionId?: string) => void;
   placeDirection: (id: string) => string | null;
   dismissDirection: (id: string) => void;
-  addTurn: (turn: Turn) => void;
+  addTurn: (turn: Turn, sessionId?: string) => void;
   // 比较与场次
   toggleCompare: (key: string) => void;
   clearCompare: () => void;
   recordCompare: (record: CompareRecord) => void;
   setSession: (method: SessionMethod) => void;
-  /** 只记一笔，不进撤销历史。 */
-  logEvent: (event: Omit<ProjectEvent, 'id' | 'at'>) => void;
+  /** 只记一笔，不进撤销历史。给了 sessionId 就记在那一场（例如晚到的回答）。 */
+  logEvent: (event: Omit<ProjectEvent, 'id' | 'at'>, sessionId?: string) => void;
+  /** 终稿：定为终稿（替换这一场之前的终稿）、撤下、登记“没有可接受的候选”。 */
+  setFinal: (attemptId: string, candidateId: string, text: string, laneId?: string) => void;
+  withdrawFinal: (text: string) => void;
+  markNoneAcceptable: (text: string) => void;
+  /** 主持人接手（交接）或技术暂停，到交回为止。 */
+  markModerator: (mark: 'handoff' | 'pause', note: string) => void;
+  endModerator: () => void;
   loadCondition: (id: string) => void;
   unlockCondition: () => void;
 }
@@ -176,26 +197,52 @@ export const useStudio = create<Studio>((set, get) => {
   function ensure(): string {
     const { currentSessionId, sessions } = get();
     if (currentSessionId && sessions.some(s => s.id === currentSessionId && !s.endedAt)) return currentSessionId;
-    return begin({ method: get().session.method }, 'trial');
+    return begin({ method: get().session.method }, 'trial', false);
   }
-  function begin(input: SessionSetupInput, kind: SessionInfo['kind']): string {
+  /** 开一场。explicit：主持人开的或换了方式（不是有操作时自动开的试用），界面上的草稿随之清掉。 */
+  function begin(input: SessionSetupInput, kind: SessionInfo['kind'], explicit = true): string {
     const { sessions, project } = get();
     const info: SessionInfo = {
       id: newId('session'), no: sessions.reduce((m, s) => Math.max(m, s.no), 0) + 1, projectId: project.id, projectCreatedAt: project.createdAt,
       method: input.method, kind, briefId: input.briefId, participant: input.participant?.trim() || undefined, order: input.order, startedAt: now(),
+      evidenceSummary: summaryStamp(),
     };
     // 撤销不跨场：新的一场从空的撤销历史开始（否则开场后一撤销，登记的机架锁定也会被撤掉）。
-    set({ sessions: [...sessions, info].slice(-200), currentSessionId: info.id, past: [], future: [] });
+    set(s => ({ sessions: [...sessions, info].slice(-200), currentSessionId: info.id, past: [], future: [], ...(explicit ? { epoch: s.epoch + 1, comparing: [] } : {}) }));
+    recordEnvironment(info.id);
     return info.id;
   }
-  /** 结束这一场，并把这一场的工作区记录存进本机存档（导出旧场次时用）。 */
+  /** 开场时记下出图后端、文字模型和版本（异步，取到就写进这一场）。重新导出旧场次时清单写这一份。 */
+  function recordEnvironment(id: string) {
+    void Promise.all([describeAi(), imageBackend().catch(() => null)]).then(([ai, backend]) => {
+      const environment: SessionEnvironment = {
+        recordedAt: now(), app: { name: STUDIO_NAME, version: STUDIO_VERSION }, evidenceRegistry: registryVersion,
+        textModel: { mode: ai.mode, provider: ai.provider, model: ai.model, endpoint: ai.endpoint ?? null, effort: ai.effort ?? null, maxTokens: ai.maxTokens ?? null, label: ai.label },
+        imageBackend: backend ? { provider: backend.provider, model: backend.model, endpoint: backend.endpoint, label: backend.label, ...(backend.fixture ? { fixture: true } : {}) } : null,
+      };
+      set(s => ({ sessions: s.sessions.map(x => x.id === id && !x.environment ? { ...x, environment } : x) }));
+      // 这一场已经结束（环境晚一步才取到）：存档里的场次信息也补上。
+      if (get().sessions.some(x => x.id === id && x.endedAt))
+        void updateArchive(id, record => { record.session = { ...(record.session as SessionInfo), environment }; }).catch(() => {});
+    }).catch(() => { /* 取不到时导出按这一场的调用和轮次回执推出，并写明 */ });
+  }
+  /** 结束这一场，并把这一场的工作区记录存进本机存档（导出旧场次时用）。还没处理的 AI 建议和方向记为“这一场结束时未处理”。 */
   function finish(reason: string) {
     const { currentSessionId, sessions } = get();
     const current = sessions.find(s => s.id === currentSessionId && !s.endedAt);
     if (!current) { set({ currentSessionId: null }); return; }
     const ended: SessionInfo = { ...current, endedAt: now(), endReason: reason };
-    set({ sessions: sessions.map(s => s.id === ended.id ? ended : s), currentSessionId: null });
+    const expire = <T extends { status: string; sessionId?: string }>(list: T[]) => list.map(x => x.sessionId === ended.id && x.status === 'pending' ? { ...x, status: 'expired' } : x);
+    set(s => ({ sessions: sessions.map(x => x.id === ended.id ? ended : x), currentSessionId: null, epoch: s.epoch + 1, comparing: [],
+      suggestions: expire(s.suggestions), directions: expire(s.directions) }));
     void saveArchive(ended.id, sessionSlice(pick(get()), ended)).catch(() => set({ notice: '这一场的记录没能存进本机存档；导出时会从当前项目里取。' }));
+  }
+  /** 这一条记在哪一场：给了就用给的（发出请求时的那一场），没给就是正在进行的这一场。 */
+  const target = (sessionId?: string) => sessionId ?? ensure();
+  /** 那一场已经结束：晚到的记录照样记在那一场，并补进它的存档。 */
+  const late = (sessionId: string) => sessionId !== get().currentSessionId;
+  function archiveLate(sessionId: string, lists: Record<string, { id: string }[]>) {
+    if (get().sessions.some(s => s.id === sessionId && s.endedAt)) void appendArchive(sessionId, lists).catch(() => {});
   }
   /** 有正在进行的一场就记一笔“结束本场”再结束它。 */
   function close(reason: string) {
@@ -225,6 +272,7 @@ export const useStudio = create<Studio>((set, get) => {
     ...load(),
     ...loadSessions(),
     selection: loadSelection(), layout: loadLayout(), comparing: [], notice: '', past: [], future: [],
+    epoch: 0,
     ensureSession: ensure,
     startSession: input => {
       close('开始新的一场');
@@ -232,9 +280,11 @@ export const useStudio = create<Studio>((set, get) => {
       const brief = input.briefId ? studyBriefs.find(b => b.id === input.briefId) : undefined;
       const taskId: TaskId = brief ? 'consumer_camera' : s.project.intent.taskId;
       if (!isBlankProject(s.project) || hasRuns(s) || s.project.intent.text.trim() || s.project.intent.taskId !== taskId) freshProject(taskId);
-      set(st => ({ session: { ...st.session, method: input.method, lockedFrame: undefined } }));
-      begin(input, brief ? 'registered' : 'trial');
-      get().logEvent({ kind: 'session-start', text: `开始本场：${methodLabel[input.method]}` + (brief ? ' · ' + brief.label : ' · 自由试用')
+      set(st => ({ session: { ...st.session, method: input.method, lockedFrame: undefined }, selection: null }));
+      // 四项齐全才是登记场次；只选了委托的是带委托的试用。
+      const kind = registrable(input) ? 'registered' : 'trial';
+      begin(input, kind);
+      get().logEvent({ kind: 'session-start', text: `开始本场：${methodLabel[input.method]}` + (brief ? ' · ' + brief.label : ' · 自由试用') + (brief && kind === 'trial' ? ' · 试用' : '')
         + (input.participant?.trim() ? ' · ' + input.participant.trim() : '') + (input.order ? ` · 该参与者第 ${input.order} 场` : '') });
       if (brief) get().loadCondition(brief.condition);
       set({ past: [], future: [] });
@@ -278,12 +328,16 @@ export const useStudio = create<Studio>((set, get) => {
       // 新建项目就是另起一场：先结束这一场（它的记录存进本机存档），再开空白项目和一场自由试用。
       close('新建项目');
       freshProject(taskId);
-      begin({ method: get().session.method }, 'trial');
+      begin({ method: get().session.method }, 'trial', true);
       get().logEvent({ kind: 'reset', text: '新建项目：' + studioTask(taskId).short });
     },
 
     setIntentText: text => commit(d => { d.project.intent.text = text; d.project.intent.confirmedAt = undefined; }),
-    applyReading: r => commit(d => {
+    applyReading: (r, sessionId) => {
+      // 发出读意图的那一场已经结束：回答不用在现在的项目里（不改意图），只在那一场记一笔。
+      const sid = target(sessionId);
+      if (late(sid)) { get().logEvent({ kind: 'ai-late', callId: r.callId, text: '读意图的回答在这一场结束后才到，没有用上。' }, sid); return; }
+      commit(d => {
       const intent = d.project.intent;
       const before = intent.elements;
       // AI 读出的任务和现在的不同：不直接换（换任务会换掉起始值），先问设计者按哪一个做。
@@ -313,7 +367,8 @@ export const useStudio = create<Studio>((set, get) => {
       intent.elements = merged;
       if (merged.some(e => e.status === 'pending')) intent.confirmedAt = undefined;
       intent.cards = [...new Set([...intent.cards.filter(id => before.some(e => e.status === 'accepted' && e.cards.includes(id))), ...r.cards.map(c => c.id)])];
-    }, { kind: 'ai-intent', text: 'AI 读了意图', callId: r.callId }),
+    }, { kind: 'ai-intent', text: 'AI 读了意图', callId: r.callId });
+    },
     setElement: (id, patch) => commit(d => {
       d.project.intent.elements = d.project.intent.elements.map(e => e.id === id ? { ...e, ...patch } : e);
       d.project.intent.confirmedAt = undefined;
@@ -368,7 +423,12 @@ export const useStudio = create<Studio>((set, get) => {
       node.issues = node.issues.map(i => i.id === issueId ? { ...i, resolved: true } : i);
     }),
 
-    addSuggestions: list => { const sessionId = ensure(); set(s => ({ suggestions: [...s.suggestions, ...list.map(x => ({ ...x, sessionId }))].slice(-300) })); },
+    addSuggestions: (list, sessionId) => {
+      const sid = target(sessionId), lateOnes = late(sid);
+      const items = list.map(x => ({ ...x, sessionId: sid, ...(lateOnes ? { status: 'late' as const } : {}) }));
+      set(s => ({ suggestions: [...s.suggestions, ...items].slice(-300) }));
+      if (lateOnes && items.length) { archiveLate(sid, { suggestions: items }); get().logEvent({ kind: 'ai-late', callId: items[0].callId, text: `AI 的 ${items.length} 条建议在这一场结束后才到，没有显示。` }, sid); }
+    },
     resolveSuggestion: (id, action, reason) => {
       const s = get().suggestions.find(x => x.id === id);
       if (!s || s.status !== 'pending') return null;
@@ -388,8 +448,17 @@ export const useStudio = create<Studio>((set, get) => {
       if (action === 'branch' && laneId) set({ selection: { kind: 'layer', laneId, layer: s.layer } });
       return action === 'reject' ? null : laneId;
     },
-    setDirections: list => { const sessionId = ensure();
-      commit(d => { d.directions = [...d.directions.filter(x => x.status !== 'pending'), ...list.map(x => ({ ...x, sessionId }))]; }, { kind: 'ai-directions', text: `AI 提了 ${list.length} 个方向` }); },
+    setDirections: (list, sessionId) => {
+      const sid = target(sessionId);
+      if (late(sid)) {
+        const items = list.map(x => ({ ...x, sessionId: sid, status: 'late' as const }));
+        set(s => ({ directions: [...s.directions, ...items] }));
+        archiveLate(sid, { directions: items });
+        get().logEvent({ kind: 'ai-late', callId: list[0]?.callId, text: `AI 提的 ${list.length} 个方向在这一场结束后才到，没有显示。` }, sid);
+        return;
+      }
+      commit(d => { d.directions = [...d.directions.filter(x => x.status !== 'pending'), ...list.map(x => ({ ...x, sessionId: sid }))]; }, { kind: 'ai-directions', text: `AI 提了 ${list.length} 个方向` });
+    },
     placeDirection: id => {
       const dir = get().directions.find(x => x.id === id);
       if (!dir || dir.status !== 'pending') return null;
@@ -413,24 +482,42 @@ export const useStudio = create<Studio>((set, get) => {
       return laneId;
     },
     dismissDirection: id => commit(d => { d.directions = d.directions.map(x => x.id === id ? { ...x, status: 'dismissed' } : x); }),
-    addTurn: turn => { const sessionId = ensure(); set(s => ({ turns: [...s.turns, { ...turn, sessionId }].slice(-400) })); },
+    addTurn: (turn, sessionId) => {
+      const sid = target(sessionId), item = { ...turn, sessionId: sid };
+      set(s => ({ turns: [...s.turns, item].slice(-400) }));
+      if (late(sid)) archiveLate(sid, { turns: [item] });
+    },
 
     toggleCompare: key => set(s => ({ comparing: s.comparing.includes(key) ? s.comparing.filter(k => k !== key) : [...s.comparing, key].slice(-4) })),
     clearCompare: () => set({ comparing: [] }),
     recordCompare: record => { const sessionId = ensure();
       commit(d => { d.compares = [...d.compares.filter(c => c.id !== record.id), { ...record, sessionId: record.sessionId ?? sessionId }]; },
         { kind: 'compare', text: '比较并取舍' + (record.reason ? '：' + record.reason : '') }); },
-    // 换方式就是换一场：结束这一场，在同一个项目里开下一场。委托（设计者看到的就是它）和参与者编号沿用；
-    // 次序不沿用（换了方式多半是这个人的另一场），要记次序就用“开始本场”。
+    // 换方式就是换一场：结束这一场，在同一个项目里开下一场试用（委托沿用，便于练手）。登记场次不能这样换：
+    // 每人两场要用不同的委托和方式、记下次序，由主持人先结束本场，再在“开一场”里开下一场（Codex 11 月 23 日第 12 条）。
     setSession: method => {
       const current = get().sessions.find(s => s.id === get().currentSessionId && !s.endedAt);
       if (current && current.method === method) return;
+      if (current?.kind === 'registered') {
+        set({ notice: '登记场次不能直接换方式：先结束本场，再在“开一场”里按次序开这个人的下一场（另一份委托、另一种方式）。' });
+        return;
+      }
       const before = close(`切换为“${methodLabel[method]}”`);
-      set(s => ({ session: { ...s.session, method } }));
-      begin({ method, briefId: before?.briefId, participant: before?.participant }, before?.kind ?? 'trial');
-      get().logEvent({ kind: 'session-start', text: '开始本场：' + methodLabel[method] + (before ? '（由上一场切换方式而来）' : '') });
+      set(s => ({ session: { ...s.session, method }, selection: null }));
+      begin({ method, briefId: before?.briefId }, 'trial');
+      get().logEvent({ kind: 'session-start', text: '开始本场：' + methodLabel[method] + ' · 试用' + (before ? '（由上一场切换方式而来）' : '') });
     },
-    logEvent: event => { const sessionId = ensure(); set({ events: [...get().events, { id: newId('ev'), at: now(), sessionId, ...event }].slice(-500) }); },
+    logEvent: (event, sessionId) => {
+      const sid = target(sessionId), item = { id: newId('ev'), at: now(), sessionId: sid, ...event };
+      set({ events: [...get().events, item].slice(-500) });
+      if (late(sid)) archiveLate(sid, { events: [item] });
+    },
+    setFinal: (attemptId, candidateId, text, laneId) => get().logEvent({ kind: 'final', attemptId, candidateId, laneId, text }),
+    withdrawFinal: text => get().logEvent({ kind: 'final-withdrawn', text }),
+    markNoneAcceptable: text => get().logEvent({ kind: 'final-none', text }),
+    markModerator: (mark, note) => get().logEvent({ kind: 'moderator-start', mark, note: note.trim(),
+      text: (mark === 'pause' ? '技术暂停' : '主持人接手') + (note.trim() ? '：' + note.trim() : '') }),
+    endModerator: () => get().logEvent({ kind: 'moderator-end', text: '交回设计者' }),
     loadCondition: id => {
       const condition = study.conditions.find(c => c.id === id);
       if (!condition) return;

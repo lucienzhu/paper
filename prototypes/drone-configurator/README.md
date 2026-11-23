@@ -4,7 +4,7 @@
 
 [下载离线版 ZIP](configurator-offline.zip?raw=true)，完整解压后打开 `index.html`。画布上的目标、依据、造型、便签、参考图、保存版本和历史案例可离线使用。在线生成与设计对话使用下方本机服务。4.x 工作台只做两个任务：日常随行航拍四旋（主案例，RQ3 的两种方式对照在这里）和农业植保六旋（场景适配案例）。三旋、平面八旋、共轴六旋 Y6、共轴八旋 X8 和中性外观比较留在 3.6 版（`#v=3`）和请求管线里，迁移检验直接在 GPU 上跑（作者 2026-11-23 定）。
 
-## 4.0：每条方向是一串设计决定（默认打开，现为 4.2）
+## 4.0：每条方向是一串设计决定（默认打开，现为 4.3）
 
 打开页面看到的是 4.0。走查用的软件夹具冒充出图后端时，顶栏和面板写“软件夹具（……不出真图）”。画布上每条方向占一行，从左到右是：意图 → 机架 → 动力 → 机身 → 细节 → 色材 → 生成 → 候选与比较。每一层节点只管自己的决定，节点上画着累到这一层为止的顶视小图。点哪个节点，右侧面板就是那一步；画布下方的输入框跟着选中的节点走。为什么这样分层、和别的分法比过什么，见[界面设计说明](interface-design.md)第一节。
 
@@ -35,11 +35,15 @@
 
 档位取建议所引条目里与改动字段相关的最强一条。没有引用的建议一律算设计假设。登记表在 [registry.mjs](src/design/evidence/registry.mjs)，每条写明来源和适用范围。用户原话单独显示：它支撑意图，不支撑比例。两条依据方向相反时两边都列出来。分支比较时写下的观察记为设计者对这个方案的判断，不算研究数据。
 
-**轮次按项目归属，记录按场次归属。** 新建项目以后，上一个项目的图不再出现，也不能当父图。一场是一个人用一种方式的一段连续工作：每一轮、每条事件、对话和 AI 调用都写下属于哪一场（4.2）。
+**轮次按项目归属，记录按场次归属。** 新建项目以后，上一个项目的图不再出现，也不能当父图。一场是一个人用一种方式的一段连续工作：每一轮、每条事件、对话和 AI 调用都写下属于哪一场（4.2）。4.3 起：换场时界面上没发出的文字、选中的父图都清掉；AI 的回答记回发出它的那一场，晚到的不用在下一场；委托、方式、匿名编号、次序四项齐全才是登记场次，登记场次不能直接换方式；开场时记下出图后端和文字模型，重导旧场次照这一份写；一场只有一个当前终稿。
+
+**出图断线不算失败（4.3）。** Qwen 的一轮已经入队，之后连不上 GPU 主机、本机服务重启或等超时，都记“待核对”，接上以后按原 prompt_id 取回，不会重新入队；入队回执丢了时先在 ComfyUI 的队列和历史里按本轮编号找。只有 ComfyUI 明确拒收（例如缺权重，会写出节点和文件名）或报告运行失败才记失败。两种方式的页面都有“取回”和“放弃这一轮”。本场 ZIP 里每一轮附上服务端原件（实发请求、实发文字、入队回执、运行历史、拒收时的原始回答）。
+
+**计时（4.3）。** 主持人在场次面板上记“主持人接手”“技术暂停”。面板上的时钟和本场 ZIP 按登记口径分开算主动操作、模型与排队等待、主持人交接、技术暂停和未知等待，对照 15 分钟、9 次、9 张；ZIP 里另有按登记的场次事件表列出的每个时间点（`session-events.csv`）。
 
 **AI 的提议先经本机服务核对再给设计者看。** 字段和取值必须合法，锁定的层不能改，引用的条目必须存在且和改动的字段有关。不合格的条目被拿掉，并写进调用日志。
 
-**文字模型。** 工作台那一场和“AI 对话 + 自由提示”那一场用同一个文字模型，通过接口调用，不在本机部署。版本先锁定：服务回执里必须写明模型名，并且和锁定的一致，否则这次回答不用；日志里分开记请求的版本和服务报的版本。每次调用记一行到 `WORKBENCH_AI_LOG_DIR`（默认在用户数据目录的 `Freeloop/multirotor-workbench/ai-calls`）下的 `ai-calls-日期.jsonl`。每行包括调用编号、时间、任务、模型、耗时、实际发出的消息、原始回答、核对后的结果、被拿掉的条目、用量和服务的请求编号。没有配置密钥时由规则回退应答，界面上写“规则回退（未连模型）”。给自由提示那一场的助手不带证据登记，也不带参数表。
+**文字模型。** 工作台那一场和“AI 对话 + 自由提示”那一场用同一个文字模型，通过接口调用，不在本机部署。版本先锁定：服务回执里必须写明模型名，并且和锁定的一致，否则这次回答不用；日志里分开记请求的版本和服务报的版本。每次调用记一行到 `WORKBENCH_AI_LOG_DIR`（默认在用户数据目录的 `Freeloop/multirotor-workbench/ai-calls`）下的 `ai-calls-日期.jsonl`。每行包括调用编号、时间、任务、所属场次、模型、请求的推理强度和输出上限、耗时、实际发出的消息、原始回答、推理内容、核对后的结果、被拿掉的条目、收尾原因、用量和服务的请求编号；失败的调用也记，导出本场材料时按场次取回。没有配置密钥时由规则回退应答，界面上写“规则回退（未连模型）”。给自由提示那一场的助手不带证据登记，也不带参数表。
 
 | 环境变量 | 作用 |
 | --- | --- |
@@ -47,7 +51,9 @@
 | `MINIMAX_REGION` | `global` 或 `cn`，用 MiniMax 时选区域。作者现有的密钥是国际站的，用 `global`。日志和界面标签写明服务主机（国际站 `api.minimax.io`） |
 | `WORKBENCH_LLM_MODEL` | 锁定的模型名，默认 `MiniMax-M3.1-Flash`。作者 2026-11-23 定文字模型统一用 MiniMax M3.1，这就是官方接口里的名字；真实冒烟后把服务实际报的名字写进登记 |
 | `WORKBENCH_LLM_BASE_URL` | 改接其他兼容 OpenAI 接口的服务时填它的地址 |
-| `WORKBENCH_LLM_EFFORT` | 推理强度，接口支持时才填 |
+| `WORKBENCH_LLM_EFFORT` | 推理强度。用 MiniMax 时默认写明 `max`（服务不写时也是 max），可选 low、medium、high、xhigh、max；两组必须同一档，开场时记进场次 |
+| `WORKBENCH_LLM_MAX_TOKENS` | 输出上限，默认 131072（MiniMax 文档的建议值；思考也算在内，4.2 的 4096 在 max 下会截断） |
+| `WORKBENCH_LLM_TIMEOUT_MS` | 等一次回答的上限，默认 300000（5 分钟）；页面等 330 秒 |
 | `WORKBENCH_AI_LOG_DIR` | 调用日志目录 |
 
 ```powershell
@@ -181,6 +187,10 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 | 4.0：右侧面板（总览、意图、各层、生成、候选、比较）与语言输入 | [PanelOverview.tsx](src/v4/ui/PanelOverview.tsx)、[PanelIntent.tsx](src/v4/ui/PanelIntent.tsx)、[PanelLayer.tsx](src/v4/ui/PanelLayer.tsx)、[PanelRound.tsx](src/v4/ui/PanelRound.tsx)、[CommandBar.tsx](src/v4/ui/CommandBar.tsx) |
 | 4.0：AI 对话加自由提示那一场；研究场次设置；工作区导出 | [FreeStudio.tsx](src/v4/ui/FreeStudio.tsx)、[SessionSetup.tsx](src/v4/ui/SessionSetup.tsx)、[exportWorkspace.ts](src/v4/exportWorkspace.ts) |
 | 4.2：场次（哪些轮次属于哪一场、场次的说法、结束后的本机存档）；登记的委托与限额 | [sessions.ts](src/v4/sessions.ts)、[defaults.ts](src/design/defaults.ts) |
+| 4.3：AI 调用绑定发出它的那一场（成功、失败、晚到） | [aiSession.ts](src/v4/aiSession.ts) |
+| 4.3：计时（主动操作、模型与排队等待、主持人交接、技术暂停、未知等待）与登记的场次事件表 | [timing.ts](src/v4/timing.ts)、[roundTimes.ts](src/v4/roundTimes.ts) |
+| 4.3：一场一个当前终稿 | [useFinal.ts](src/v4/useFinal.ts)、[FinalLine.tsx](src/v4/ui/FinalLine.tsx) |
+| 4.3：Qwen 作业的待核对、按原 prompt_id 取回、服务端原件 | [image-jobs.mjs](scripts/image-jobs.mjs)、[generation.ts](src/design/generation.ts) |
 | 4.0：证据登记与分档 | [registry.mjs](src/design/evidence/registry.mjs)、[Evidence.tsx](src/v4/ui/Evidence.tsx) |
 | 4.0：AI 服务（提示、核对、锁定版本、调用日志、规则回退） | [design-ai.mjs](scripts/design-ai.mjs)、[design-ai.test.mjs](scripts/design-ai.test.mjs)、浏览器一侧 [ai.ts](src/v4/ai.ts) |
 | 应用外壳、地址栏入口、顶栏 | [App.tsx](src/App.tsx)、[WorkbenchShell.tsx](src/components/Graph/WorkbenchShell.tsx) |
@@ -229,7 +239,9 @@ npm run evidence -- --extra 路径/新增短引文.csv
 | `npm run build` | TypeScript 检查并生成 `dist/index.html` |
 | `npm run package-offline` | 重新构建并打包 `configurator-offline.zip` |
 | `npm run walkthrough:studio4` | 先 `npm run build`。4.0 的整条流程：写意图、AI 读目标、补充一句不盖掉已确认的条目、AI 提方向并放成两条方向（上游共用）、对机身说话（建议标统计相关、默认开分支）、生成、在候选上改、两张比较取舍；再做一场 AI 对话加自由提示（核对发出的就是确认的原文、记下来源），载入登记条件看机架锁定，核对 AI 调用日志；按场次导出三个 ZIP 并逐个核对内容；按委托开一场、换成自由提示、植保的药箱与喷洒、有决定时换任务（4.2）。文字模型和图像作业都由夹具应答，不调用模型。可加一个目录参数保存截图 |
-| `npm run ai:smoke` | 接上真实文字模型后的冒烟检查：读意图、提方向、对机身说话、在候选上改、自由提示的助手各调用一次，列出是否通过服务的核对、耗时和拿掉的条目。会产生 5 次真实调用；密钥只从环境变量读。加 `-- --fixture` 只检查脚本本身 |
+| `npm run walkthrough:issues` | 先 `npm run build`。Codex 11 月 23 日盲测的 12 条（第 7、14 条要真机）逐条复现与验收：换场不串、晚到的回答、Qwen 断线取回、推理强度与截断、失败调用进 ZIP、旧场次的环境、用户依据摘要、计时与事件表、终稿、服务端原件与拒收原因、登记场次、自由提示的比较。文字模型和 ComfyUI 都由可控夹具应答。加 `--probe` 只报告，`--shots=<目录>` 截图 |
+| `npm run gpu:acceptance` | 真机验收（第 7、14 条）：`-- --comfy-url <地址> --out <目录>`。两种方式各出首图和两次修订（只改机鼻、只改臂根），逐轮核对原图、输入图数、工作流、权重、采样设置、种子、prompt_id、运行历史、入队次数和事件表，与本场 ZIP 对上；另存匿名盲读材料。不给地址时用夹具演练 |
+| `npm run ai:smoke` | 接上真实文字模型后的冒烟检查：读意图、提方向、对机身说话、在候选上改、自由提示的助手各调用一次，列出是否通过服务的核对、耗时、服务报的模型名、推理强度、收尾原因和拿掉的条目。会产生 5 次真实调用；密钥只从环境变量读。加 `-- --fixture` 只检查脚本本身 |
 | `npm run walkthrough:canvas` | 先 `npm run build`。3.6 版（`#v=3`）。在隔离的浏览器里把画布上的每一步做一遍：目标、依据、造型拖动、生成、保留、以候选继续、参考图作输入、便签、新方向、留档、B2 案例和手机宽度。图像作业由软件夹具应答，不调用模型。可加一个目录参数保存截图 |
 | `npm run walkthrough:methods` | 先 `npm run build`。3.6 版（`#v=3`）。同一块画布、同一个 Qwen 后端（软件夹具），先做一场自由提示，再做一场结构化：核对起始值、载入 C2 登记条件、自由提示只发原文、两种方式的生成设置逐项相同、原始文件都存了盘、一场只显示一种方式。加两个目录参数可保存截图和留下作业文件，供 [登记工具试收](review/20261121-defaults-free-prompt/bridge-dry-run.sh) |
 | `npm run walkthrough` | 从离线包走一遍目标、造型和导出，保存农业六旋实际导出与桌面截图，命令会输出所在目录 |

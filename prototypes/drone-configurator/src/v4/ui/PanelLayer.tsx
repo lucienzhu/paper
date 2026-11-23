@@ -150,7 +150,7 @@ const controls: Record<Layer, (p: { laneId: string }) => React.ReactElement> = {
 };
 
 export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: string; layer: Layer; onSelectLayer: (layer: Layer) => void }) {
-  const { project, suggestions, events, session, turns } = useStudio();
+  const { project, suggestions, events, session, turns, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const lane = project.lanes.find(l => l.id === laneId);
   const node = laneNode(project, laneId, layer);
@@ -160,12 +160,13 @@ export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: s
   const locked = !!session.lockedFrame && layer === 'frame';
   const store = useMemo(() => laneStore(laneId), [laneId]);
   const mine = suggestions.filter(s => s.laneId === laneId && s.layer === layer);
-  const pending = mine.filter(s => s.status === 'pending').reverse();
-  const done = mine.filter(s => s.status !== 'pending').reverse();
+  // 待处理的只看这一场的；晚到的（发出它的那一场已经结束）不显示。
+  const pending = mine.filter(s => s.status === 'pending' && s.sessionId === currentSessionId).reverse();
+  const done = mine.filter(s => s.status !== 'pending' && s.status !== 'late').reverse();
   const checks = layerChecks(layer, parameters, consumer && project.intent.taskId === 'consumer_camera');
   const record = events.filter(e => e.laneId === laneId && (e.layer === layer || !e.layer)).slice(-6).reverse();
   const issues = node.issues.filter(i => !i.resolved);
-  const talk = turns.filter(t => t.scope.kind === 'layer' && t.scope.laneId === laneId && t.scope.layer === layer).slice(-4);
+  const talk = turns.filter(t => t.sessionId === currentSessionId && t.scope.kind === 'layer' && t.scope.laneId === laneId && t.scope.layer === layer).slice(-4);
   const [busy, setBusy] = useState(false);
   const Controls = controls[layer];
   const others = project.lanes.filter(l => l.id !== laneId);

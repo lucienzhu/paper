@@ -9,20 +9,32 @@ import cardsEnvelope from '../../data/evidenceCards.json';
 import { isBlankProject, laneParameters, layerInfo, pairLayers, studioTasks, type IntentElement } from '../model';
 import { useStudio, type Direction } from '../store';
 import { ai } from '../ai';
+import { askAi } from '../aiSession';
 import { newId } from '../model';
 import { briefOf } from '../sessions';
+import { evidenceSummary } from '../../design/defaults';
 import { Quote, TierBadge } from './Evidence';
 import { fieldLabel, formatValue } from './util';
 
 /** 这一场的委托：两种方式看到的是同一段原文。 */
+/**
+ * 这一场的任务简报：委托原文和两组共用的用户依据摘要。工作台和自由提示两边用的是这同一个组件，显示同一个版本；
+ * 版本和摘要在开场时记进场次，导出本场材料时写进清单。
+ */
 export function BriefCard({ onUse, label = '把委托原文放进意图' }: { onUse?: () => void; label?: string }) {
   const { sessions, currentSessionId } = useStudio();
-  const brief = briefOf(sessions.find(s => s.id === currentSessionId && !s.endedAt));
+  const session = sessions.find(s => s.id === currentSessionId && !s.endedAt);
+  const brief = briefOf(session);
   if (!brief) return null;
+  const version = session?.evidenceSummary?.version ?? evidenceSummary.version;
   return <section className="r4-sec brief4" aria-label="这一场的委托" data-testid="brief-card" data-brief={brief.id}>
     <h3>这一场的委托 · {brief.label}</h3>
     <p style={{ margin: 0, lineHeight: 1.6 }}>{brief.text}</p>
     <span className="r4-muted">要看：{brief.target}；要保持：{brief.keep}。机架按 C2 登记条件锁定（真 X、W/L 1.00、对角轴距 250 mm）。</span>
+    <div data-testid="evidence-summary" data-version={version} data-status={evidenceSummary.status} style={{ display: 'grid', gap: 4, borderTop: '1px solid var(--line)', paddingTop: 8 }}>
+      <b style={{ fontSize: 12.5 }}>{evidenceSummary.label} · {version}{evidenceSummary.status === 'draft' ? '（草稿，作者未确认）' : ''}</b>
+      <p style={{ margin: 0, lineHeight: 1.6, whiteSpace: 'pre-wrap', fontSize: 12.5 }}>{evidenceSummary.text}</p>
+    </div>
     {onUse && <div className="row4"><button type="button" className="b4 sm" data-testid="use-brief" onClick={onUse}>{label}</button></div>}
   </section>;
 }
@@ -95,20 +107,22 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
   const targets = intent.elements.filter(e => e.kind === 'target');
   const interpretations = intent.elements.filter(e => e.kind === 'interpretation');
   const notes = intent.elements.filter(e => e.kind === 'note');
-  const pendingDirs = directions.filter(d => d.status === 'pending');
+  const pendingDirs = directions.filter(d => d.status === 'pending' && d.sessionId === currentSessionId);
   const accepted = intent.elements.filter(e => e.status === 'accepted');
 
   async function read() {
     const text = draft.trim();
     if (!text) { setError('先写一句话。'); return; }
     setBusy('read'); setError('');
+    const sentAt = new Date().toISOString();
     try {
       if (text !== intent.text) st.setIntentText(text);
-      const r = await ai.intent(text, intent.taskId);
-      st.applyReading({ ...r, callId: r.call.id, mode: r.call.mode });
-      st.addTurn({ id: newId('turn'), at: new Date().toISOString(), role: 'user', text, scope: { kind: 'intent' } });
+      const { result: r, sessionId, late } = await askAi('intent', sid => ai.intent(text, intent.taskId, sid));
+      st.applyReading({ ...r, callId: r.call.id, mode: r.call.mode }, sessionId);
+      st.addTurn({ id: newId('turn'), at: sentAt, role: 'user', text, scope: { kind: 'intent' } }, sessionId);
       st.addTurn({ id: newId('turn'), at: new Date().toISOString(), role: 'assistant', scope: { kind: 'intent' }, callId: r.call.id, mode: r.call.mode,
-        text: `读出 ${r.targets.length} 个目标、${r.interpretations.length} 处需要你来理解的说法${r.question ? '，还有一个问题' : ''}。` });
+        text: `读出 ${r.targets.length} 个目标、${r.interpretations.length} 处需要你来理解的说法${r.question ? '，还有一个问题' : ''}。` }, sessionId);
+      if (late) setError('回答到的时候，发出它的那一场已经结束；回答记在那一场，没有用在这里。');
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(''); }
   }
@@ -116,13 +130,14 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
     setBusy('dirs'); setError('');
     try {
       const laneId = project.activeLaneId;
-      const r = await ai.directions({
+      const { result: r, sessionId, late } = await askAi('directions', sid => ai.directions({
         intent: { text: intent.text, targets: accepted.filter(e => e.pair && e.pole).map(e => ({ pair: e.pair!, pole: e.pole!, text: e.text })), notes: accepted.filter(e => e.kind === 'note').map(e => e.text) },
         lane: { parameters: laneParameters(project, laneId) }, locked: session.lockedFrame ? ['frame'] : [],
-      });
+      }, sid));
       st.setDirections(r.directions.map(d => ({ id: newId('dir'), callId: r.call.id, mode: r.call.mode, at: new Date().toISOString(), name: d.name, summary: d.summary,
-        changes: d.changes, status: 'pending' as const })));
-      if (!r.directions.length) setError('这次没有得到可用的方向。');
+        changes: d.changes, status: 'pending' as const })), sessionId);
+      if (late) setError('回答到的时候，发出它的那一场已经结束；方向记在那一场，没有放在这里。');
+      else if (!r.directions.length) setError('这次没有得到可用的方向。');
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(''); }
   }

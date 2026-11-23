@@ -2,6 +2,7 @@
 // 看回答能不能通过服务的核对、各花了多久、拿掉了几条。会产生 5 次真实调用，计入接口用量。
 // 密钥只从环境变量读（WORKBENCH_LLM_API_KEY 或 MINIMAX_API_KEY），不打印、不落盘；调用日志照常写进 WORKBENCH_AI_LOG_DIR。
 // 加 --fixture 时不连模型，只用规则回退检查本脚本自己。
+// 4.3：每一行写明服务报的模型名、请求的推理强度、收尾原因（stop 才算完整）和用掉的输出词元；回答被截断记为失败。
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createDesignAI, defaultModel } from './design-ai.mjs';
@@ -13,7 +14,8 @@ const apiKey = fixture ? undefined : (process.env.WORKBENCH_LLM_API_KEY ?? proce
 if (!fixture && !apiKey) { console.error('没有设置 WORKBENCH_LLM_API_KEY 或 MINIMAX_API_KEY，不调用。只检查脚本时加 --fixture。'); process.exit(2); }
 const logDir = process.env.WORKBENCH_AI_LOG_DIR;
 const ai = await createDesignAI({ apiKey, region: process.env.MINIMAX_REGION ?? 'cn', model: process.env.WORKBENCH_LLM_MODEL?.trim() || defaultModel,
-  baseUrl: process.env.WORKBENCH_LLM_BASE_URL?.trim() || undefined, effort: process.env.WORKBENCH_LLM_EFFORT?.trim() || undefined, ...(logDir ? { logDir } : {}) });
+  baseUrl: process.env.WORKBENCH_LLM_BASE_URL?.trim() || undefined, effort: process.env.WORKBENCH_LLM_EFFORT?.trim() || undefined,
+  maxTokens: process.env.WORKBENCH_LLM_MAX_TOKENS?.trim() || undefined, timeoutMs: process.env.WORKBENCH_LLM_TIMEOUT_MS?.trim() || undefined, ...(logDir ? { logDir } : {}) });
 
 // 用登记的委托 A 和 C2 的机架做冒烟：和正式场次的输入一样。
 const parameters = baseParameters('consumer_camera');
@@ -24,14 +26,17 @@ async function step(name, run, summarize) {
   const started = Date.now();
   try {
     const result = await run();
-    rows.push({ 任务: name, 结果: '通过', 秒: ((Date.now() - started) / 1000).toFixed(1), 调用编号: result.call.id.slice(0, 8), 摘要: summarize(result) });
+    rows.push({ 任务: name, 结果: '通过', 秒: ((Date.now() - started) / 1000).toFixed(1), 调用编号: result.call.id.slice(0, 8),
+      服务报的模型: result.call.servedModel ?? '（规则回退）', 推理强度: result.call.effort ?? '—', 收尾: result.call.finishReason ?? '—', 摘要: summarize(result) });
     return result;
   } catch (error) {
-    rows.push({ 任务: name, 结果: '失败', 秒: ((Date.now() - started) / 1000).toFixed(1), 调用编号: error.metadata?.callId?.slice(0, 8) ?? '', 摘要: error.message });
+    rows.push({ 任务: name, 结果: '失败', 秒: ((Date.now() - started) / 1000).toFixed(1), 调用编号: error.metadata?.callId?.slice(0, 8) ?? '',
+      服务报的模型: error.receipt?.servedModel ?? '—', 推理强度: described.effort ?? '—', 收尾: error.receipt?.finishReason ?? '—', 摘要: error.message });
     return null;
   }
 }
 
+const described = ai.describe();
 const reading = await step('读意图', () => ai.intent({ text: brief, taskId: 'consumer_camera' }),
   r => `${r.targets.length} 个目标，${r.interpretations.length} 句要设计者理解，${r.cards.length} 张用户原话`);
 const targets = (reading?.targets ?? []).filter(t => t.pair && t.pole);
@@ -46,7 +51,6 @@ await step('自由提示的助手', () => ai.free({ messages: [{ role: 'user', c
   r => r.prompt ? `起草了 ${r.prompt.length} 字的提示词` : '没有起草提示词');
 
 console.table(rows);
-const described = ai.describe();
 console.log(`文字模型：${described.label}（${described.mode === 'model' ? described.provider : '规则回退'}）；证据登记：${described.registry}`);
 if (logDir) {
   // 从日志里数一数服务核对时拿掉了几条（只读本次的调用编号）。
@@ -54,5 +58,6 @@ if (logDir) {
   const lines = (await Promise.all((await readdir(logDir)).filter(f => f.endsWith('.jsonl')).map(f => readFile(join(logDir, f), 'utf8')))).join('').trim().split('\n').filter(Boolean).map(l => JSON.parse(l));
   const mine = lines.filter(l => ids.has(String(l.id).slice(0, 8)));
   console.log(`日志里找到本次 ${mine.length} 条调用；核对时拿掉的条目共 ${mine.reduce((n, l) => n + (Array.isArray(l.dropped) ? l.dropped.length : 0), 0)} 条。`);
+  for (const l of mine) console.log(`  ${l.task}：请求 ${l.request?.model ?? '—'}，推理强度 ${l.request?.reasoning_effort ?? '—'}，上限 ${l.request?.max_completion_tokens ?? '—'}；服务报 ${l.servedModel ?? '—'}，收尾 ${l.finishReason ?? '—'}，输出词元 ${l.usage?.completion_tokens ?? '—'}，${l.latencyMs} 毫秒${l.error ? '；失败：' + l.error : ''}`);
 }
 process.exitCode = rows.every(r => r.结果 === '通过') ? 0 : 1;
