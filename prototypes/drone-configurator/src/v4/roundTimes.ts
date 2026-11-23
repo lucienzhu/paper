@@ -4,7 +4,7 @@ import type { RoundTimes } from './timing';
 
 /** 服务回执（本机服务给的作业记录）里和时间有关的几项。 */
 export interface ServiceJob { startedAt?: string; completedAt?: string; status?: string;
-  comfy?: { enqueuedAt?: string; executionStart?: string | null; executionEnd?: string | null; enqueueRequests?: number; promptId?: string; foundBy?: string } | null }
+  comfy?: { enqueuedAt?: string; executionStart?: string | null; executionEnd?: string | null; enqueueRequests?: number; promptId?: string; foundBy?: string; foundAt?: string } | null }
 
 export function roundStatus(a: FrozenAttempt) {
   if (a.h3?.abandonedAt) return 'abandoned';
@@ -17,6 +17,7 @@ export function roundTimes(a: FrozenAttempt, label: string, job?: ServiceJob | n
   return {
     attemptId: a.id, label, condition: a.condition, file,
     frozenAt: a.createdAt, sentAt: a.h3?.sentAt, serviceReceivedAt: job?.startedAt, enqueuedAt: job?.comfy?.enqueuedAt,
+    foundBy: job?.comfy?.foundBy, foundAt: job?.comfy?.foundAt,
     executionStart: job?.comfy?.executionStart ?? undefined, executionEnd: job?.comfy?.executionEnd ?? undefined,
     serviceCompletedAt: job?.completedAt, receivedAt: a.h3?.receivedAt,
     firstShownAt: a.candidates.map(c => c.firstShown).filter((x): x is string => !!x).sort()[0],

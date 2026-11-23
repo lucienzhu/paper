@@ -13,6 +13,8 @@ export interface RoundTimes {
   attemptId: string; label: string; condition: 'structured' | 'free'; file?: string;
   frozenAt: string;
   sentAt?: string; serviceReceivedAt?: string; enqueuedAt?: string;
+  /** 4.3.1：没收到入队回执、后来在 ComfyUI 的队列（queue）或历史（history）里按本轮编号找到原作业的，记找到的地方和时间；这时入队时间不知道。 */
+  foundBy?: string; foundAt?: string;
   /** ComfyUI 历史里的时间，用的是 GPU 主机的钟。 */
   executionStart?: string; executionEnd?: string;
   serviceCompletedAt?: string; receivedAt?: string; firstShownAt?: string;
@@ -144,7 +146,9 @@ export function sessionEventsCsv(session: SessionInfo, task: string, events: Tim
     point('confirm', r.frozenAt, 'browser', '');
     point('submit', r.sentAt, 'browser', '4.3 以前的轮次没有记发出时间');
     point('service_received', r.serviceReceivedAt, 'workbench-service', '服务回执里没有');
-    point('queue', r.enqueuedAt, 'workbench-service', r.status === 'failed' ? '没有入队（服务拒收或入队前失败）' : '服务回执里没有入队时间');
+    point('queue', r.enqueuedAt, 'workbench-service', r.foundBy === 'queue' || r.foundBy === 'history'
+      ? `没有收到入队回执；${r.foundAt ?? ''} 在 ComfyUI 的${r.foundBy === 'queue' ? '队列' : '历史'}里按本轮编号找到原作业，入队时间不知道`
+      : r.status === 'failed' ? '没有入队（服务拒收或入队前失败）' : '服务回执里没有入队时间');
     point('run_start', r.executionStart, 'comfyui', 'ComfyUI 历史里没有');
     point('run_end', r.executionEnd, 'comfyui', 'ComfyUI 历史里没有');
     point('return', r.receivedAt, 'browser', '页面还没有收到回图或结论');

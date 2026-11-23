@@ -16,7 +16,8 @@ interface H3Request { attemptId: string; prompt: string; inputs: ImageInput[]; c
 interface H3Job {
   provider: string; model: string; jobId: string; attemptId: string;
   status?: 'queued' | 'running' | 'unconfirmed' | 'succeeded' | 'failed';
-  pending?: { since: string; reason: string; promptId: string | null; enqueue: string; lost?: boolean };
+  /** enqueue：confirmed 收到入队回执或在远端找到原作业；unknown 请求已发出、进没进队列不知道；not-sent 连不上，还没发出。 */
+  pending?: { since: string; reason: string; promptId: string | null; enqueue: 'confirmed' | 'unknown' | 'not-sent'; lost?: boolean };
   inputHashes?: string[];
   outputs?: {name: string; mimeType: string; sha256: string; dataUrl: string}[];
   error?: string;
@@ -169,9 +170,10 @@ async function run(id: string) {
         await storeResult(row,request,raw,job);
         return;
       }
-      if (job.status === 'unconfirmed') {
-        // 已入队、结果还不知道：不算失败。服务端每次被查询时按原 prompt_id 再试；远端已经找不到这一轮时等人决定。
-        if (job.pending?.lost) { await updateH3Record(id,{pending:job.pending,issue:job.pending.reason}); return; }
+      if (job.status === 'unconfirmed' || (job.status === 'running' && job.pending)) {
+        // 结果还不知道：不算失败。服务端每次被查询时再试（已发出入队请求的只按本轮编号找，不重发）；远端已经找不到这一轮时等人决定。
+        // 服务端正在再查一次（running 且仍带着待核对）时照旧按待核对显示，找到原作业以前不写“已入队”。
+        if (job.status === 'unconfirmed' && job.pending?.lost) { await updateH3Record(id,{pending:job.pending,issue:job.pending.reason}); return; }
         await updateH3Record(id,{pending:job.pending});
         interval = 4000;
       } else if (job.status === 'queued' || job.status === 'running') {
@@ -207,7 +209,10 @@ export function isGenerationPending(row: FrozenAttempt) {
 export async function recoverDesignGenerations() {
   for (const row of await listAttempts()) if (isGenerationPending(row)) ensureRunning(row.id);
 }
-/** “取回”：请本机服务按原 prompt_id 马上再查一次（不会重新入队已经入队的一轮），再接着等结果。 */
+/**
+ * “取回”：请本机服务马上再查一次，再接着等结果。已经发出入队请求的只按原作业找（回执丢了就按本轮编号在队列和历史里找），
+ * 不会重发；连不上而还没发出的，这时才发出。
+ */
 export async function retryCollection(id: string) {
   try { await fetch(endpoint + '/' + encodeURIComponent(id) + '/resume', {method:'POST', cache:'no-store', credentials:'omit', signal:AbortSignal.timeout(15000)}); }
   catch { /* 服务还连不上时照样开始等，等到了再取 */ }
@@ -327,7 +332,11 @@ export function generationStatus(row: FrozenAttempt) {
   if (row.h3?.status === 'failed') return {title:'生成未完成',detail:row.h3.issue || '服务已保存本轮失败记录。'};
   if (row.h3?.issue) return {title:'待核对',detail:row.h3.issue};
   if (row.h3?.offline) return {title:'待核对：页面暂时连不上本机服务',detail:'正在自己重试；也可以点“取回”。这一轮不算失败。'};
-  if (row.h3?.pending) return {title:'待核对：已入队，等出图服务接上',detail:row.h3.pending.reason + (row.h3.pending.promptId ? '；作业号 ' + row.h3.pending.promptId : '') + '。接上以后按原作业取回，不会重新入队。'};
+  // 收到入队回执、或者在出图服务的队列和历史里找到原作业以后，才写“已入队”。
+  const pending = row.h3?.pending;
+  if (pending?.enqueue === 'confirmed') return {title:'待核对：已入队，等出图服务接上',detail:pending.reason + (pending.promptId ? '；作业号 ' + pending.promptId : '') + '。接上以后按原作业取回，不会重新入队。'};
+  if (pending?.enqueue === 'unknown') return {title:'待确认入队',detail:pending.reason + '。正在按本轮编号在出图服务的队列和历史里找原作业，找到就接着等；不会再发一次入队请求。'};
+  if (pending) return {title:'待核对：还没发到出图服务',detail:pending.reason + '。出图服务接上以后发出；这一轮只入队一次。'};
   if (row.h3?.status === 'running') return {title:'等待回图',detail:'可以继续编辑，完成后效果图会自动保存。'};
   if (row.h3?.status === 'ready') return {title:'已准备设计输入',detail:'已冻结本轮规格和参考图。'};
   if (row.h3) return {title:'正在提交',detail:'本轮已保存当前设计输入。'};

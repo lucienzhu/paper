@@ -38,8 +38,9 @@ export function RoundRecovery({ a }: { a: FrozenAttempt }) {
   const giveUp = () => void abandonRound(a.id, `设计者等了约 ${waited} 秒后放弃这一轮（不是出图服务报的失败）；服务端已收到的请求和回执原样保留。`);
   return <div className="row4" data-testid="round-recovery">
     {stuck && !a.h3?.pending && <span className="r4-muted">已经等了 {waited} 秒。</span>}
-    {a.h3?.pending && <span className="r4-muted">待核对{a.h3.pending.promptId ? ' · 作业号 ' + a.h3.pending.promptId.slice(0, 8) : ''}</span>}
-    <button type="button" className="b4 sm" data-testid="round-recover" title="按原作业再查一次，不会重新入队" onClick={() => void retryCollection(a.id)}>取回</button>
+    {a.h3?.pending && <span className="r4-muted">{a.h3.pending.enqueue === 'confirmed' ? '待核对' + (a.h3.pending.promptId ? ' · 作业号 ' + a.h3.pending.promptId.slice(0, 8) : '')
+      : a.h3.pending.enqueue === 'unknown' ? '待确认入队' : '还没发出'}</span>}
+    <button type="button" className="b4 sm" data-testid="round-recover" title="再查一次：已经发出的只按本轮编号找原作业，不会重发" onClick={() => void retryCollection(a.id)}>取回</button>
     <button type="button" className="b4 sm quiet" data-testid="give-up" onClick={giveUp}>放弃这一轮</button>
   </div>;
 }

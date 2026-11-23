@@ -30,6 +30,7 @@ const comfy = async (url, init = {}) => {
   if (pathname === '/upload/image') { const file = init.body.get('image'); uploads.set(file.name, Buffer.from(await file.arrayBuffer())); return Response.json({ name: file.name, subfolder: '', type: 'input' }); }
   if (pathname === '/prompt') { const graph = JSON.parse(init.body).prompt; graphs.push(graph); output = tagPNG(graph['15'] ? uploads.get(graph['15'].inputs.image) : plain, graph); runs.set('fixture-' + graphs.length, graph); return Response.json({ prompt_id: 'fixture-' + graphs.length, node_errors: {} }); }
   if (pathname.startsWith('/history/')) { const id = decodeURIComponent(pathname.slice(9)); return Response.json(historyOf(id, runs.get(id))); }
+  if (pathname === '/queue') return Response.json({ queue_running: [], queue_pending: [] });
   if (pathname === '/view') return new Response(output, { headers: { 'Content-Type': 'image/png' } });
   return new Response('not found', { status: 404 });
 };

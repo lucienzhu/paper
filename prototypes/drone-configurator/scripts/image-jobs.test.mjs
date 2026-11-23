@@ -66,6 +66,7 @@ test('a Qwen job runs the archived E3 workflow on ComfyUI, keeps the raw receipt
     const {pathname,searchParams}=new URL(url); seen.push(pathname);
     if(pathname==='/upload/image'){ const file=init.body.get('image'); assert.equal(file.name,'studio-'+digest+'.png');
       assert.equal(createHash('sha256').update(Buffer.from(await file.arrayBuffer())).digest('hex'),digest); return Response.json({name:file.name,subfolder:'',type:'input'}); }
+    if(pathname==='/queue') return Response.json({queue_running:[],queue_pending:[]});
     if(pathname==='/prompt'){ graph=JSON.parse(init.body).prompt; return Response.json({prompt_id:'run-1',node_errors:{}}); }
     if(pathname==='/history/run-1') return Response.json(++polls<2 ? {} : {'run-1':{status:{completed:true,status_str:'success'},
       outputs:{12:{images:[{filename:'studio-x_00001_.png',subfolder:'',type:'output'}]}}}});
@@ -78,7 +79,8 @@ test('a Qwen job runs the archived E3 workflow on ComfyUI, keeps the raw receipt
     assert.deepEqual(await jobs.submit(input),{attemptId:input.attemptId,jobId:input.attemptId,provider:'qwen-comfy',model:qwenModel});
     let job; for(let i=0;i<200 && (job=await jobs.get(input.attemptId)).status==='running';i++) await new Promise(r=>setTimeout(r,10));
     assert.equal(job.status,'succeeded',job.error);
-    assert.deepEqual(seen.filter(p=>p!=='/history/run-1'),['/upload/image','/prompt','/view']);
+    // 发出前先看一眼队列接口（4.3.1），确认服务在，再入队
+    assert.deepEqual(seen.filter(p=>p!=='/history/run-1'),['/upload/image','/queue','/prompt','/view']);
     // 与归档的 E3 请求同构：节点类别、权重文件名、采样设置、负面词、条件图接在 image_1
     assert.deepEqual(Object.fromEntries(Object.entries(graph).map(([k,v])=>[k,v.class_type])),
       {1:'UNETLoader',2:'CLIPLoader',3:'VAELoader',4:'TextEncodeQwenImage21',10:'KSampler',11:'VAEDecode',12:'SaveImage',15:'LoadImage'});
@@ -115,6 +117,7 @@ test('a free-prompt Qwen job sends only the designer text, with the same setting
   const fetchImpl=async(url,init={})=>{
     const {pathname}=new URL(url);
     if(pathname==='/upload/image'){ uploads++; return Response.json({name:init.body.get('image').name,subfolder:'',type:'input'}); }
+    if(pathname==='/queue') return Response.json({queue_running:[],queue_pending:[]});
     if(pathname==='/prompt'){ graphs.push(JSON.parse(init.body).prompt); return Response.json({prompt_id:'run-'+graphs.length,node_errors:{}}); }
     if(pathname.startsWith('/history/')){ const id=pathname.slice(9); return Response.json({[id]:{status:{completed:true,status_str:'success'},
       outputs:{12:{images:[{filename:'studio-x_00001_.png',subfolder:'',type:'output'}]}}}}); }
@@ -301,4 +304,120 @@ test('a Qwen round that was queued survives a dropped connection, a lost receipt
     assert.equal((await lost.get(e.attemptId)).status,'unconfirmed','丢了的轮次不自动重试');
     assert.equal(state.prompts.length,before,'也不重新入队');
   } finally { await rm(directory,{recursive:true,force:true}); }
+});
+
+test('GPT 复测三条：回执在远端校验时丢了、远端收下后报 502 或回执正文断开、发出前就连不上：每轮只入队一次，接上后取回原图；明确拒收和运行失败保留具体回执', async t => {
+  const { createServer } = await import('node:http');
+  const directory=await mkdtemp(join(tmpdir(),'qwen-ambiguous-test-'));
+  const png=await readFile(new URL('../src/data/history/quad-guide.png',import.meta.url));
+  // 冒充 ComfyUI 的 HTTP 服务：真的走网络，Node 的 fetch 按真实情况报错。next 是下一次入队时出的状况。
+  const s={prompts:[],jobs:new Map(),next:null,validateMs:0,runMs:150};
+  const entry=(id,j)=>[j.number,id,j.graph,{client_id:j.clientId},['12']];
+  const server=createServer((req,res)=>{
+    const chunks=[]; req.on('data',c=>chunks.push(c));
+    req.on('end',()=>{
+      const url=new URL(req.url,'http://comfy');
+      const send=(status,body,type='application/json')=>{ res.writeHead(status,{'Content-Type':type}); res.end(typeof body==='string' ? body : JSON.stringify(body)); };
+      if(url.pathname==='/prompt' && req.method==='POST'){
+        const body=JSON.parse(Buffer.concat(chunks).toString()); s.prompts.push(body);
+        const id=body.prompt_id, mode=s.next; s.next=null;
+        const queue=()=>s.jobs.set(id,{clientId:body.client_id,number:s.prompts.length,graph:body.prompt,doneAt:Date.now()+s.runMs,error:mode==='exec-error'});
+        if(mode==='refuse') return send(400,{error:{type:'prompt_outputs_failed_validation',message:'Prompt outputs failed validation'},
+          node_errors:{1:{class_type:'UNETLoader',errors:[{message:'Value not in list',details:"unet_name: 'qwen_image_2.1_bf16.safetensors' not in []"}]}}});
+        // 远端还在校验，连接就断了：校验完才进队列，这段时间里队列和历史都查不到这一轮。forget：校验没过或主机重启，始终不进队列。
+        if(mode==='drop-while-validating' || mode==='forget'){ if(mode!=='forget') setTimeout(queue,s.validateMs); req.socket.destroy(); return; }
+        queue();
+        const ack=JSON.stringify({prompt_id:id,number:s.prompts.length,node_errors:{}});
+        if(mode==='bad-gateway') return send(502,'<html><head><title>502 Bad Gateway</title></head><body><center><h1>502 Bad Gateway</h1></center></body></html>','text/html');
+        if(mode==='cut-body'){ res.writeHead(200,{'Content-Type':'application/json','Content-Length':String(Buffer.byteLength(ack))}); res.write(ack.slice(0,9)); setTimeout(()=>req.socket.destroy(),20); return; }
+        return send(200,ack);
+      }
+      if(url.pathname==='/queue'){ const now=Date.now(); return send(200,{queue_running:[...s.jobs].filter(([,j])=>now<j.doneAt).map(([id,j])=>entry(id,j)),queue_pending:[]}); }
+      if(url.pathname==='/history' || url.pathname.startsWith('/history/')){
+        const want=decodeURIComponent(url.pathname.slice('/history/'.length));
+        return send(200,Object.fromEntries([...s.jobs].filter(([id,j])=>Date.now()>=j.doneAt && (!want || want===id)).map(([id,j])=>[id,{prompt:entry(id,j),
+          status:j.error ? {status_str:'error',completed:false,messages:[['execution_start',{timestamp:j.doneAt-100}],['execution_error',{node_type:'KSampler',exception_type:'torch.OutOfMemoryError',exception_message:'CUDA out of memory',timestamp:j.doneAt}]]}
+            : {status_str:'success',completed:true,messages:[['execution_start',{timestamp:j.doneAt-100}],['execution_success',{timestamp:j.doneAt}]]},
+          outputs:j.error ? {} : {12:{images:[{filename:'studio-'+id+'_00001_.png',subfolder:'',type:'output'}]}}}])));
+      }
+      if(url.pathname==='/view'){ res.writeHead(200,{'Content-Type':'image/png'}); res.end(png); return; }
+      send(404,{error:'not found'});
+    });
+  });
+  await new Promise(r=>server.listen(0,'127.0.0.1',r));
+  const port=server.address().port;
+  // retryMs：待核对时自动再查的间隔；confirmWindowMs：入队结果不明、远端一直找不到时，多久以后停下来等人决定。测试里调短。
+  const jobs=createImageJobs({backend:{provider:'qwen-comfy',url:'http://127.0.0.1:'+port,pollMs:20,retryMs:200,confirmWindowMs:2500},directory});
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const sent=id=>s.prompts.filter(p=>p.client_id==='studio-'+id).length;
+  const until=async(id,stop,ms=12000)=>{ const end=Date.now()+ms; let job; do { job=await jobs.get(id); if(stop(job)) return job; await sleep(25); } while(Date.now()<end); return job; };
+  const over=j=>['succeeded','failed'].includes(j.status) || !!j.pending?.lost;
+  const state=j=>({status:j.status,enqueue:j.pending?.enqueue ?? null,promptId:j.pending?.promptId ?? null,lost:!!j.pending?.lost});
+  async function round(mode,{validateMs=0,poke=false}={}){
+    s.next=mode; s.validateMs=validateMs;
+    const id=randomUUID();
+    await jobs.submit({attemptId:id,condition:'free',prompt:'round with '+mode,inputs:[]});
+    const first=await until(id,j=>j.status!=='running');
+    let poked=null;
+    // 设计者马上点“取回”：这时远端还在校验，队列和历史里都没有这一轮
+    if(poke){ await jobs.resume(id,{force:true}); poked=await until(id,j=>j.status!=='running'); }
+    const last=await until(id,over);
+    return {id,first:state(first),...(poke ? {poked:{...state(poked),sent:sent(id)}} : {}),last:state(last),sent:sent(id),
+      enqueueRequests:last.comfy?.enqueueRequests ?? null,found:['queue','history'].includes(last.comfy?.foundBy) ? 'lookup' : last.comfy?.foundBy ?? null,job:last};
+  }
+  const unknown={status:'unconfirmed',enqueue:'unknown',promptId:null,lost:false};
+  const done={status:'succeeded',enqueue:null,promptId:null,lost:false};
+  try {
+    await t.test('1. 回执在远端校验时丢了，马上查队列和历史都还查不到：不重发，接着找，找到后取回原图', async () => {
+      const r=await round('drop-while-validating',{validateMs:1200,poke:true});
+      const {id,job,...seen}=r; void id; void job;
+      assert.deepEqual(seen,{first:unknown,poked:{...unknown,sent:1},last:done,sent:1,enqueueRequests:1,found:'lookup'});
+    });
+    await t.test('2a. 远端已经收下，中间的代理回 502：记待核对，找到原作业后取回原图；502 的原文留在服务端原件里', async () => {
+      const r=await round('bad-gateway');
+      const {id,job,...seen}=r;
+      assert.deepEqual(seen,{first:unknown,last:done,sent:1,enqueueRequests:1,found:'lookup'});
+      const kept=await jobs.files(id);
+      assert.ok(kept.files.some(f=>f.name==='comfy-enqueue-reply.txt' && Buffer.from(f.base64,'base64').toString().includes('502 Bad Gateway')),'502 的原文另存');
+      assert.match(kept.notes.join(''),/HTTP 502/);
+      assert.equal(job.comfy.enqueuedAt ?? null,null,'没有收到回执，就不把找到的时间当作入队时间');
+    });
+    await t.test('2b. 回执的响应头到了、正文传到一半断了：记待核对，找到原作业后取回原图', async () => {
+      const r=await round('cut-body');
+      const {id,job,...seen}=r; void id; void job;
+      assert.deepEqual(seen,{first:unknown,last:done,sent:1,enqueueRequests:1,found:'lookup'});
+    });
+    await t.test('2c. 明确拒收（HTTP 400、节点错误）和运行失败：记失败，保留具体回执', async () => {
+      const refused=await round('refuse');
+      assert.equal(refused.last.status,'failed');
+      assert.match(refused.job.error,/HTTP 400.*节点 1 UNETLoader：Value not in list/);
+      assert.ok((await jobs.files(refused.id)).files.some(f=>f.name==='comfy-error.json'));
+      const crashed=await round('exec-error');
+      assert.equal(crashed.last.status,'failed');
+      assert.match(crashed.job.error,/运行失败（error）：KSampler：torch\.OutOfMemoryError：CUDA out of memory/);
+      assert.ok((await jobs.files(crashed.id)).files.some(f=>f.name==='comfy-history.json'));
+      assert.equal(refused.sent+crashed.sent,2);
+    });
+    await t.test('2d. 发出后远端始终没有这一轮：过了等待时限停下来等人决定，不自动重发；点“取回”只再找一次', async () => {
+      const r=await round('forget');
+      const {id,job,...seen}=r;
+      assert.deepEqual(seen,{first:unknown,last:{...unknown,lost:true},sent:1,enqueueRequests:1,found:null});
+      assert.match(job.pending.reason,/不会自动重发/);
+      await jobs.resume(id,{force:true});
+      const again=await until(id,j=>j.status!=='running');
+      assert.deepEqual(state(again),{...unknown,lost:true});
+      assert.equal(sent(id),1,'取回只是再找一次');
+    });
+    await t.test('3. 发出前就连不上（服务没开）：记“还没发出”，不说已入队；接上以后照常发出，入队请求只计 1 次', async () => {
+      server.close(); server.closeAllConnections();
+      const id=randomUUID();
+      await jobs.submit({attemptId:id,condition:'free',prompt:'service is down at submission',inputs:[]});
+      const first=await until(id,j=>j.status!=='running');
+      await sleep(300);
+      await new Promise(r=>server.listen(port,'127.0.0.1',r));
+      const last=await until(id,over);
+      assert.deepEqual({first:state(first),last:state(last),sent:sent(id),enqueueRequests:last.comfy?.enqueueRequests ?? null},
+        {first:{status:'unconfirmed',enqueue:'not-sent',promptId:null,lost:false},last:done,sent:1,enqueueRequests:1});
+    });
+  } finally { server.close(); server.closeAllConnections(); await rm(directory,{recursive:true,force:true}); }
 });

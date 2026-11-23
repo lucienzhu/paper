@@ -3,7 +3,9 @@
 //   文字模型可以按住不回、报错，并按 MiniMax 文档写的规则截断（思考也算进输出上限，上限太小就 finish_reason 为 length、回答为空）；
 //   ComfyUI 可以在入队之后断开、在工作台服务“重启”之后再连、按缺权重报 HTTP 400 和节点错误。
 // 夹具里“max 要想多少”是假设的数（12000），只用来检查工作台怎样处理截断，真实用量要看冒烟检查的回执。
-// 用法：先 npm run build，再 node scripts/studio4-issues.mjs [--probe] [--only=1,2]。--probe 只报告、不以失败退出。
+// 11 月 23 日 GPT 复测 4.3 又提了三条（G1–G3）：入队回执在远端校验时丢了会重发；远端收下后代理回 502、回执正文传到一半断了会记失败；
+// 入队结果不明时页面写“已入队”。ComfyUI 夹具可以照这几种情况应答，也可以在发出前就拒绝连接（服务没开）。
+// 用法：先 npm run build，再 node scripts/studio4-issues.mjs [--probe] [--only=1,2,G1]。--probe 只报告、不以失败退出。
 import { createRequire } from 'node:module';
 import { mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -17,7 +19,7 @@ import { tagPNGFront as tagPNG } from './fixture-png.mjs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_CORE || 'playwright-core');
 const probe = process.argv.includes('--probe');
-const only = process.argv.find(a => a.startsWith('--only='))?.slice(7).split(',').map(Number);
+const only = process.argv.find(a => a.startsWith('--only='))?.slice(7).split(',');
 // --shots=<目录>：在几处停下来截图，给复核记录用。
 const shots = process.argv.find(a => a.startsWith('--shots='))?.slice(8);
 if (shots) await (await import('node:fs/promises')).mkdir(shots, { recursive: true });
@@ -31,12 +33,15 @@ async function until(test, timeout = 10000, what = '条件') {
 
 // ---------- 可控的 ComfyUI ----------
 const plain = await readFile(new URL('../src/data/history/quad-guide.png', import.meta.url));
-const comfy = { down: false, dropAfterEnqueue: false, downMs: 2500, runMs: 300, nodeError: false, prompts: [], uploads: new Map(), jobs: new Map(), files: new Map() };
+const comfy = { down: false, refuse: false, dropAfterEnqueue: false, downMs: 2500, runMs: 300, nodeError: false, next: null, validateMs: 0, prompts: [], uploads: new Map(), jobs: new Map(), files: new Map() };
+// 照 Node 的 fetch 在真实网络上报的错：连接没建立（服务没开）是 ECONNREFUSED；请求发出后对方断开是 UND_ERR_SOCKET。
+const netError = (code, message) => new TypeError('fetch failed', { cause: Object.assign(new Error(message), { code }) });
 const entryOf = (id, job) => ({ prompt: [job.number, id, job.graph, { client_id: job.clientId }, ['12']],
   outputs: { 12: { images: [{ filename: job.file, subfolder: '', type: 'output' }] } },
   status: { status_str: 'success', completed: true, messages: [['execution_start', { prompt_id: id, timestamp: job.startedAt }], ['execution_success', { prompt_id: id, timestamp: job.doneAt }]] } });
 async function comfyFetch(url, init = {}) {
   if (comfy.down) throw new TypeError('fetch failed');
+  if (comfy.refuse) throw netError('ECONNREFUSED', 'connect ECONNREFUSED 127.0.0.1:8188');
   const { pathname, searchParams } = new URL(url);
   if (pathname === '/upload/image') {
     const file = init.body.get('image'); comfy.uploads.set(file.name, Buffer.from(await file.arrayBuffer()));
@@ -47,13 +52,19 @@ async function comfyFetch(url, init = {}) {
     comfy.prompts.push(body);
     if (comfy.nodeError) return Response.json({ error: { type: 'prompt_outputs_failed_validation', message: 'Prompt outputs failed validation', details: '', extra_info: {} },
       node_errors: { 1: { errors: [{ type: 'value_not_in_list', message: 'Value not in list', details: "unet_name: 'qwen_image_2.1_bf16.safetensors' not in []", extra_info: {} }], dependent_outputs: ['12'], class_type: 'UNETLoader' } } }, { status: 400 });
-    const graph = body.prompt, id = typeof body.prompt_id === 'string' ? body.prompt_id : 'fixture-' + comfy.prompts.length, now = Date.now();
+    const graph = body.prompt, id = typeof body.prompt_id === 'string' ? body.prompt_id : 'fixture-' + comfy.prompts.length, number = comfy.prompts.length;
     const file = graph['12'].inputs.filename_prefix + '_00001_.png';
-    comfy.jobs.set(id, { graph, clientId: body.client_id, number: comfy.prompts.length, file, startedAt: now + 20, doneAt: now + comfy.runMs });
-    comfy.files.set(file, tagPNG(graph['15'] ? comfy.uploads.get(graph['15'].inputs.image) : plain, graph));
+    const queue = () => { const now = Date.now(); comfy.jobs.set(id, { graph, clientId: body.client_id, number, file, startedAt: now + 20, doneAt: now + comfy.runMs });
+      comfy.files.set(file, tagPNG(graph['15'] ? comfy.uploads.get(graph['15'].inputs.image) : plain, graph)); };
+    const mode = comfy.next; comfy.next = null;
+    // GPT 复测：远端还在校验时连接就断了（校验完才进队列，这段时间里队列和历史都查不到）；远端收下以后中间的代理回 502；回执正文传到一半断了。
+    if (mode === 'drop-while-validating') { setTimeout(queue, comfy.validateMs); throw netError('UND_ERR_SOCKET', 'other side closed'); }
+    queue();
+    if (mode === 'bad-gateway') return new Response('<html><head><title>502 Bad Gateway</title></head><body><center><h1>502 Bad Gateway</h1></center></body></html>', { status: 502, headers: { 'Content-Type': 'text/html' } });
+    if (mode === 'cut-body') return new Response(new ReadableStream({ start(c) { c.enqueue(new TextEncoder().encode('{"prompt_')); c.error(new TypeError('terminated')); } }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     // 回执发出以后连接断开：之后的查询一律连不上，过一阵恢复。远端照样跑完。
     if (comfy.dropAfterEnqueue) { comfy.dropAfterEnqueue = false; comfy.down = true; setTimeout(() => { comfy.down = false; }, comfy.downMs); }
-    return Response.json({ prompt_id: id, number: comfy.prompts.length, node_errors: {} });
+    return Response.json({ prompt_id: id, number, node_errors: {} });
   }
   if (pathname === '/queue') {
     const now = Date.now(), items = [...comfy.jobs].filter(([, j]) => now < j.doneAt).map(([id, j]) => [j.number, id, j.graph, { client_id: j.clientId }, ['12']]);
@@ -178,7 +189,7 @@ async function exportZip(page, sessionId) {
 // ---------- 逐条 ----------
 const results = [];
 async function check(item, title, fn) {
-  if (only && !only.includes(item)) return;
+  if (only && !only.includes(String(item))) return;
   const started = Date.now();
   try { const { pass, observed } = await fn(); results.push({ item, title, pass, observed, ms: Date.now() - started }); }
   catch (error) { results.push({ item, title, pass: false, observed: { error: error.message.split('\n')[0] }, ms: Date.now() - started }); }
@@ -516,6 +527,86 @@ await check(13, '自由提示的比较页写出两轮实发文字的差别和有
       && await page.locator('[data-testid=compare-sent] ins').count() > 0 && await page.locator('[data-testid=compare-sent] del').count() > 0;
     return { pass, observed };
   } finally { await context.close(); }
+});
+
+/**
+ * 自由提示页上的一轮：从点“生成”起，记下这一轮先后显示过的状态标题，直到回图显示、记了失败或超时。
+ * poke：“取回”一出现就点一次（远端还在校验的时候）。
+ */
+async function watchRound(page, before, { timeout = 25000, poke = false, during } = {}) {
+  await until(async () => (await rows(page)).length > before, 10000, '这一轮的记录');
+  const id = (await rows(page)).at(-1).id, titles = [], end = Date.now() + timeout;
+  let poked = false;
+  while (Date.now() < end) {
+    const title = await page.locator(`[data-free-round="${id}"] .n4-t`).textContent({ timeout: 200 }).catch(() => null);
+    if (title && titles.at(-1) !== title) titles.push(title);
+    if (poke && !poked && await page.locator(`[data-free-round="${id}"] [data-testid=round-recover]`).count()) {
+      await page.locator(`[data-free-round="${id}"] [data-testid=round-recover]`).click(); poked = true;
+    }
+    if (during) await during(titles);
+    const r = (await rows(page)).find(x => x.id === id);
+    if (r.candidates.some(c => c.shown) || r.h3.status === 'failed') break;
+    await sleep(200);
+  }
+  const r = (await rows(page)).find(x => x.id === id);
+  const job = JSON.parse(await readFile(join(jobsDir, id + '.json'), 'utf8'));
+  return { titles, poked, status: r.h3.status, issue: r.h3.issue ?? null, image: r.candidates.some(c => c.shown),
+    enqueues: comfy.prompts.filter(p => p.client_id === 'studio-' + id).length, enqueueRequests: job.comfy?.enqueueRequests ?? null, foundBy: job.comfy?.foundBy ?? null };
+}
+async function freeRun(page, text) {
+  const before = (await rows(page)).length;
+  await page.getByTestId('free-prompt').fill(text);
+  await page.getByTestId('free-run').click();
+  return before;
+}
+
+await check('G1', 'GPT 复测 1：入队回执在远端校验时丢了，这时队列和历史都查不到：不重发；找到原作业后取回原图', async () => {
+  const { context, page } = await open();
+  try {
+    await begin(page, { method: 'free' });
+    comfy.next = 'drop-while-validating'; comfy.validateMs = 6000; comfy.runMs = 600;
+    const before = await freeRun(page, 'the receipt is lost while ComfyUI is still validating');
+    const w = await watchRound(page, before, { poke: true });
+    return { pass: w.image && w.status === 'succeeded' && w.enqueues === 1 && w.enqueueRequests === 1, observed: w };
+  } finally { comfy.next = null; comfy.validateMs = 0; comfy.runMs = 300; await context.close(); }
+});
+
+await check('G2', 'GPT 复测 2：远端已经收下，代理回 502 或回执正文传到一半断了：记待核对，不记失败；找到原作业后取回原图', async () => {
+  const { context, page } = await open();
+  const observed = {};
+  try {
+    await begin(page, { method: 'free' });
+    let shotTaken = !shots;
+    for (const mode of ['bad-gateway', 'cut-body']) {
+      comfy.next = mode; comfy.runMs = 600;
+      const before = await freeRun(page, 'the gateway misbehaves after ComfyUI accepted the prompt: ' + mode);
+      observed[mode] = await watchRound(page, before, { during: async titles => { if (!shotTaken && titles.at(-1) === '待确认入队') { shotTaken = true; await shot(page, '18-代理回502以后待确认入队.png'); } } });
+    }
+    const pass = Object.values(observed).every(w => w.image && w.status === 'succeeded' && w.enqueues === 1 && w.enqueueRequests === 1);
+    return { pass, observed };
+  } finally { comfy.next = null; comfy.runMs = 300; await context.close(); }
+});
+
+await check('G3', 'GPT 复测 3：入队结果不明时写“待确认入队”，发出前就连不上时写“还没发出”，找到原作业或收到回执以前都不写“已入队”', async () => {
+  const { context, page } = await open();
+  const observed = {};
+  try {
+    await begin(page, { method: 'free' });
+    // a. 入队请求发出后连接断了，远端 4 秒后才进队列
+    comfy.next = 'drop-while-validating'; comfy.validateMs = 4000; comfy.runMs = 600;
+    let before = await freeRun(page, 'the connection drops after the prompt was sent');
+    observed.dropped = await watchRound(page, before);
+    // b. 发出前就连不上（服务没开），2.5 秒后服务开了
+    comfy.refuse = true;
+    setTimeout(() => { comfy.refuse = false; }, 2500);
+    before = await freeRun(page, 'the image service is not up yet at submission');
+    let shotTaken = !shots;
+    observed.notSent = await watchRound(page, before, { during: async titles => { if (!shotTaken && /还没发/.test(titles.at(-1) ?? '')) { shotTaken = true; await shot(page, '19-还没发到出图服务.png'); } } });
+    const says = (w, re) => w.titles.some(t => re.test(t));
+    const pass = says(observed.dropped, /待确认入队/) && !says(observed.dropped, /已入队/) && observed.dropped.image && observed.dropped.enqueues === 1
+      && says(observed.notSent, /还没发/) && !says(observed.notSent, /已入队/) && observed.notSent.image && observed.notSent.enqueues === 1 && observed.notSent.enqueueRequests === 1;
+    return { pass, observed };
+  } finally { comfy.next = null; comfy.validateMs = 0; comfy.runMs = 300; comfy.refuse = false; await context.close(); }
 });
 
 await browser.close();
