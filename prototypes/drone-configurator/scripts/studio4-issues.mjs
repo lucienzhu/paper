@@ -5,7 +5,10 @@
 // 夹具里“max 要想多少”是假设的数（12000），只用来检查工作台怎样处理截断，真实用量要看冒烟检查的回执。
 // 11 月 23 日 GPT 复测 4.3 又提了三条（G1–G3）：入队回执在远端校验时丢了会重发；远端收下后代理回 502、回执正文传到一半断了会记失败；
 // 入队结果不明时页面写“已入队”。ComfyUI 夹具可以照这几种情况应答，也可以在发出前就拒绝连接（服务没开）。
-// 用法：先 npm run build，再 node scripts/studio4-issues.mjs [--probe] [--only=1,2,G1]。--probe 只报告、不以失败退出。
+// 11 月 24 日作者提的工作台问题和 Codex 子代理走查的四条（R1–R8）：登记场次的 C2 由程序锁定；撤销不抹掉研究事件和计时；
+// 同一个人的登记冲突不开；两种方式开场看同一张任务卡；主持人用的入口不给参与者；值真的变了才记；另做一版与抄设置写明做的事；
+// 生成只按画布上的设置，选项和说明按作者的意见改。
+// 用法：先 npm run build，再 node scripts/studio4-issues.mjs [--probe] [--only=1,2,G1,R1]。--probe 只报告、不以失败退出。
 import { createRequire } from 'node:module';
 import { mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -15,6 +18,7 @@ import { createDesignServer } from './design-chat-server.mjs';
 import { createImageJobs } from './image-jobs.mjs';
 import { createDesignAI } from './design-ai.mjs';
 import { tagPNGFront as tagPNG } from './fixture-png.mjs';
+import { closeModerator, passTaskCard, sessionBox } from './moderator-helpers.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_CORE || 'playwright-core');
@@ -147,8 +151,8 @@ const rows = page => page.evaluate(async () => {
     h3: { status: a.h3?.status, issue: a.h3?.issue, traceId: a.h3?.traceId, model: a.h3?.model }, candidates: a.candidates.map(c => ({ id: c.id, shown: !!c.firstShown })),
     decisions: a.decisions.map(d => ({ kind: d.kind, candidate: d.candidate, reason: d.reason })) }));
 });
-const setup = async page => { const box = page.getByTestId('session-setup'); if (!await box.evaluate(d => d.open)) await box.locator(':scope > summary').click(); return box; };
-async function begin(page, { brief = '', method = 'free', participant = '', order = '' } = {}) {
+const setup = page => sessionBox(page);
+async function begin(page, { brief = '', method = 'free', participant = '', order = '', keepTaskCard = false } = {}) {
   const before = (await saved(page))?.currentSessionId ?? null;
   const box = await setup(page);
   await box.getByTestId('session-brief').selectOption(brief);
@@ -157,6 +161,8 @@ async function begin(page, { brief = '', method = 'free', participant = '', orde
   await box.getByTestId('session-order').selectOption(order);
   await box.getByTestId('session-start').click();
   await page.waitForFunction(id => { const s = JSON.parse(localStorage.getItem('multirotor-studio/v4/project') || 'null'); return s?.currentSessionId && s.currentSessionId !== id; }, before);
+  await closeModerator(page);
+  if (!keepTaskCard) await passTaskCard(page);
   await page.getByTestId(method === 'free' ? 'free-studio' : 'v4-canvas').waitFor();
   return (await saved(page)).currentSessionId;
 }
@@ -181,6 +187,7 @@ async function exportZip(page, sessionId) {
   const box = await setup(page);
   const [download] = await Promise.all([page.waitForEvent('download'), box.locator(`[data-session="${sessionId}"] [data-testid=export-session]`).click()]);
   const bundle = unzip(new Uint8Array(await readFile(await download.path())));
+  await closeModerator(page);
   const text = name => bundle.has(name) ? new TextDecoder().decode(bundle.get(name)) : null;
   return { name: download.suggestedFilename(), files: [...bundle.keys()], text, manifest: JSON.parse(text('manifest.json')), workspace: JSON.parse(text('workspace.json')),
     calls: (text('ai-calls.jsonl') ?? '').trim().split('\n').filter(Boolean).map(l => JSON.parse(l)) };
@@ -433,10 +440,11 @@ await check(9, '主动操作、模型与排队等待、主持人交接分开计�
       await box.getByTestId('mark-note').fill('帮设计者把委托原文粘进对话框');
       await box.getByTestId('mark-handoff').click(); await sleep(400); await box.getByTestId('mark-resume').click();
     }
+    await closeModerator(page);
     comfy.runMs = 600;
     await freeRound(page, 'a round to time');
     comfy.runMs = 300;
-    if (shots) { await (await setup(page)).getByTestId('session-clock').scrollIntoViewIfNeeded(); await shot(page, '15-场次计时与主持人交接.png'); }
+    if (shots) { await (await setup(page)).getByTestId('session-clock').scrollIntoViewIfNeeded(); await shot(page, '15-场次计时与主持人交接.png'); await closeModerator(page); }
     const zip = await exportZip(page, id);
     const timing = zip.manifest.timing ?? null;
     const csv = zip.text('session-events.csv');
@@ -499,6 +507,7 @@ await check(12, '登记场次不能用“直接换方式”开出缺次序的登
     const button = (await setup(page)).locator('[data-session-method=free]');
     const disabled = await button.isDisabled();
     if (!disabled) { await button.click(); await page.getByTestId('free-studio').waitFor(); }
+    await closeModerator(page);
     const st = await saved(page);
     const s = st.sessions.find(x => x.id === st.currentSessionId);
     const chip = await page.getByTestId('session-chip').textContent();
@@ -607,6 +616,224 @@ await check('G3', 'GPT 复测 3：入队结果不明时写“待确认入队”�
       && says(observed.notSent, /还没发/) && !says(observed.notSent, /已入队/) && observed.notSent.image && observed.notSent.enqueues === 1 && observed.notSent.enqueueRequests === 1;
     return { pass, observed };
   } finally { comfy.next = null; comfy.validateMs = 0; comfy.runMs = 300; comfy.refuse = false; await context.close(); }
+});
+
+// ---------- 4.4：作者 11 月 24 日的问题与 Codex 子代理走查 ----------
+const tap = locator => locator.dispatchEvent('click');
+async function openLayer(page, lane, layer) {
+  await tap(page.locator(`[data-node=layer][data-layer=${layer}][data-lane="${lane}"]`).first());
+  await page.locator(`[data-testid=layer-panel][data-layer=${layer}]`).waitFor();
+}
+const nodeValue = (st, lane, path) => {
+  // 沿方案的链从末端往上找最近一个写了这一项的节点
+  let id = st.project.lanes.find(l => l.id === lane)?.leafId;
+  while (id) { const n = st.project.nodes[id]; if (path in n.values) return n.values[path]; id = n.parentId; }
+  return undefined;
+};
+
+await check('R1', '子代理 1：登记场次的 C2 由程序锁定，没有“解除”；机架改不了、抄不了、另做一版的入口在其他层；撤销撤不掉锁定；任务卡、实际规格和导出一致', async () => {
+  const { context, page } = await open();
+  try {
+    const id = await begin(page, { brief: 'A', method: 'structured', participant: 'P71', order: '1' });
+    const box = await setup(page);
+    const unlock = await box.getByTestId('unlock-condition').count(), lockedNote = await box.getByTestId('condition-locked').count();
+    await closeModerator(page);
+    await openLayer(page, 'lane-A', 'frame');
+    await shot(page, 'R1-登记场次机架固定.png');
+    const frameDisabled = await page.locator('section[aria-label=这一层的控件] [data-field="frame.arm_width_mm"] [data-option="20mm"]').isDisabled();
+    const frameFork = await page.getByTestId('fork-here').count(), frameCopy = await page.getByTestId('copy-from').count();
+    await openLayer(page, 'lane-A', 'body');
+    await page.locator('[data-field="fuselage.top_cover"] [data-option="two"]').click();
+    await page.locator('button[title=撤销]').click();
+    const st = await saved(page);
+    await tap(page.locator('[data-node=intent]'));
+    const fixed = await page.getByTestId('fixed-conditions').first().innerText();
+    const zip = await exportZip(page, id);
+    // 等于起始值的项不写进节点（250 mm 就是起始值），这里只看写进去的两项；三项是否都成立看导出清单里程序算的核对。
+    const frame = ['frame.frame_type', 'frame.span_ratio_wl'].map(path => nodeValue(st, 'lane-A', path));
+    const observed = { unlock, lockedNote, frameDisabled, frameFork, frameCopy, lockedAfterUndo: st.session.lockedFrame ?? null, frame, fixed,
+      condition: zip.manifest.session.registrationCondition, complete: zip.manifest.session.registeredComplete };
+    const pass = unlock === 0 && lockedNote === 1 && frameDisabled && frameFork === 0 && frameCopy === 0 && observed.lockedAfterUndo === 'c2-pilot'
+      && JSON.stringify(frame) === JSON.stringify(['True X', 1]) && /W\/L：1\.00/.test(fixed) && /250 mm/.test(fixed)
+      && observed.condition?.ok === true && observed.condition?.mismatches?.length === 0 && observed.complete === true;
+    return { pass, observed };
+  } finally { await context.close(); }
+});
+
+await check('R2', '子代理 2：撤销只撤设计；修改事件、技术暂停与恢复都留着，另记一条“撤销：……”；暂停时长不变', async () => {
+  const { context, page } = await open();
+  try {
+    const id = await begin(page, { brief: 'A', method: 'structured', participant: 'P72', order: '1' });
+    await openLayer(page, 'lane-A', 'body');
+    await page.locator('[data-field="fuselage.top_cover"] [data-option="two"]').click();
+    const box = await setup(page);
+    await box.getByTestId('mark-note').fill('GPU 断线');
+    await box.getByTestId('mark-pause').click(); await sleep(1200); await box.getByTestId('mark-resume').click();
+    await closeModerator(page);
+    await page.locator('button[title=撤销]').click();
+    const st = await saved(page);
+    const mine = st.events.filter(e => e.sessionId === id);
+    const zip = await exportZip(page, id);
+    const kinds = mine.map(e => e.kind);
+    const observed = { kinds, edit: mine.find(e => e.kind === 'edit')?.text ?? null, undo: mine.find(e => e.kind === 'undo')?.text ?? null,
+      topCoverNow: nodeValue(st, 'lane-A', 'fuselage.top_cover') ?? '', pauseMs: zip.manifest.timing.moderator.pauseMs,
+      zipKinds: zip.workspace.events.map(e => e.kind) };
+    const pass = ['edit', 'moderator-start', 'moderator-end', 'undo'].every(k => kinds.includes(k) && observed.zipKinds.includes(k))
+      && observed.undo === '撤销：' + observed.edit && observed.topCoverNow === '' && observed.pauseMs >= 1000;
+    return { pass, observed };
+  } finally { await context.close(); }
+});
+
+await check('R3', '子代理 3：同一个人再登记一个第 1 场：开始按钮不可点、写明冲突；现在这一场照常继续，本机只有一个第 1 场', async () => {
+  const { context, page } = await open();
+  try {
+    const id = await begin(page, { brief: 'A', method: 'structured', participant: 'P73', order: '1' });
+    const box = await setup(page);
+    await box.getByTestId('session-brief').selectOption('B');
+    await box.locator('[data-setup-method=free]').click();
+    await box.getByTestId('session-participant').fill('P73');
+    await box.getByTestId('session-order').selectOption('1');
+    const disabled = await box.getByTestId('session-start').isDisabled();
+    const clash = await box.getByTestId('session-clash').textContent().catch(() => null);
+    await closeModerator(page);
+    const st = await saved(page);
+    const current = st.sessions.find(s => s.id === st.currentSessionId);
+    const ones = st.sessions.filter(s => s.kind === 'registered' && s.participant === 'P73' && s.order === 1).length;
+    const observed = { disabled, clash, currentIsSame: current?.id === id, ended: !!current?.endedAt, ones };
+    return { pass: disabled && /已经有第 1 场/.test(clash ?? '') && observed.currentIsSame && !observed.ended && ones === 1, observed };
+  } finally { await context.close(); }
+});
+
+await check('R4', '子代理 4：两种方式开场看到同一张任务卡（同一段委托、同一版依据、同样的固定条件和限额），计时都从开场算；自由提示页只说这一步怎么做', async () => {
+  const { context, page } = await open();
+  try {
+    const a = await begin(page, { brief: 'A', method: 'structured', participant: 'P74', order: '1', keepTaskCard: true });
+    const cardA = await page.getByTestId('task-card').innerText();
+    await shot(page, 'R4-开场任务卡.png');
+    await passTaskCard(page);
+    const zipA = await exportZip(page, a);
+    const b = await begin(page, { brief: 'A', method: 'free', participant: 'P75', order: '1', keepTaskCard: true });
+    const cardB = await page.getByTestId('task-card').innerText();
+    await passTaskCard(page);
+    const freeText = await page.getByTestId('free-studio').innerText();
+    const st = await saved(page);
+    const zips = [zipA, await exportZip(page, b)];
+    // 开第二场时另开了空白项目，第一场的事件在它结束时的存档里，按各自的 ZIP 看。
+    const started = [a, b].map((id, i) => !!st.sessions.find(s => s.id === id)?.taskStartedAt && zips[i].workspace.events.some(e => e.kind === 'task-start'));
+    const fromStart = zips.map(z => z.manifest.timing.wall.from === z.manifest.session.startedAt);
+    const compares = /和工作台|没有用户依据|同一个出图后端/.test(freeText);
+    const observed = { sameCard: cardA === cardB, cardLength: cardA.length, hasLimits: /15 分钟/.test(cardA) && /9 次生成/.test(cardA), hasEvidence: /依据/.test(cardA), started, fromStart, compares };
+    return { pass: observed.sameCard && observed.hasLimits && observed.hasEvidence && started.every(Boolean) && fromStart.every(Boolean) && !compares, observed };
+  } finally { await context.close(); }
+});
+
+await check('R5', '作者 6：登记场次里参与者看不到研究记录、旧版和场次设置，这几项在主持人面板里；打开主持人面板要先确认，并记一笔', async () => {
+  const { context, page } = await open();
+  try {
+    const trial = { records: await page.getByTestId('open-records').count(), old: await page.getByTestId('old-version').count() };
+    const a = await begin(page, { brief: 'A', method: 'structured', participant: 'P76', order: '1' });
+    const reg = { records: await page.getByTestId('open-records').count(), old: await page.getByTestId('old-version').count(), setup: await page.getByTestId('session-setup').count() };
+    await page.getByTestId('open-moderator').click();
+    const confirm = await page.getByTestId('moderator-confirm').count();
+    await shot(page, 'R5-主持人面板先确认.png');
+    await page.getByTestId('moderator-confirm-open').click(); await page.getByTestId('moderator-drawer').waitFor();
+    await shot(page, 'R5-主持人面板.png');
+    const drawer ={ records: await page.getByTestId('open-records-moderator').count(), old: await page.getByTestId('old-version-moderator').count(), setup: await page.getByTestId('session-setup').count() };
+    await closeModerator(page);
+    const logged = (await saved(page)).events.some(e => e.sessionId === a && e.kind === 'moderator-panel');
+    await begin(page, { brief: 'B', method: 'free', participant: 'P76', order: '2' });
+    const free = { records: await page.getByTestId('open-records').count(), old: await page.getByTestId('old-version').count(), setup: await page.getByTestId('session-setup').count() };
+    const observed = { trial, reg, confirm, drawer, logged, free };
+    const pass = trial.records === 1 && trial.old === 1 && Object.values(reg).every(n => n === 0) && confirm === 1 && Object.values(drawer).every(n => n === 1) && logged && Object.values(free).every(n => n === 0);
+    return { pass, observed };
+  } finally { await context.close(); }
+});
+
+await check('R6', '作者 3：点已经选中的 15 mm 不算修改；改成 20 mm 记成“机臂宽度 15 mm → 20 mm”；层面板不列原始记录', async () => {
+  const { context, page } = await open();
+  try {
+    await begin(page, { method: 'structured' });
+    await openLayer(page, 'lane-A', 'frame');
+    const before = (await saved(page)).events.length;
+    await page.locator('[data-field="frame.arm_width_mm"] [data-option="15mm"]').click();
+    await sleep(250);
+    const afterSame = (await saved(page)).events.length;
+    await page.locator('[data-field="frame.arm_width_mm"] [data-option="20mm"]').click();
+    await until(async () => (await saved(page)).events.length > afterSame, 3000, '修改事件');
+    const edit = (await saved(page)).events.filter(e => e.kind === 'edit').at(-1);
+    const observed = { sameClickLogged: afterSame - before, text: edit?.text ?? null, from: edit?.from ?? null, to: edit?.to ?? null,
+      rawList: await page.locator('[aria-label=这一层的记录]').count() };
+    return { pass: observed.sameClickLogged === 0 && observed.text === '机臂宽度 15 mm → 20 mm' && observed.from === '15mm' && observed.to === '20mm' && observed.rawList === 0, observed };
+  } finally { await context.close(); }
+});
+
+await check('R7', '作者 1、2：“从机身起另做一版”写明哪几层仍共用；“把方案 B 的机架设置抄过来”先列出会改的项；机架固定时另做一版的入口在其他层', async () => {
+  const { context, page } = await open();
+  try {
+    await begin(page, { method: 'structured' });
+    await openLayer(page, 'lane-A', 'body');
+    const label = (await page.getByTestId('fork-here').innerText()).trim(), hint = await page.getByTestId('fork-shared-hint').innerText();
+    if (shots) { await page.getByTestId('fork-here').scrollIntoViewIfNeeded(); await shot(page, 'R7-从机身起另做一版.png'); }
+    await openLayer(page, 'lane-A', 'frame');
+    await page.getByTestId('fork-here').click();
+    await page.locator('[data-testid=layer-panel][data-layer=frame]').waitFor();
+    const laneB = (await saved(page)).project.activeLaneId;
+    await page.locator('[data-field="frame.arm_width_mm"] [data-option="20mm"]').click();
+    await openLayer(page, 'lane-A', 'frame');
+    await page.getByTestId('copy-from').selectOption(laneB);
+    const preview = await page.getByTestId('copy-preview').innerText(), confirm = (await page.getByTestId('copy-confirm').innerText()).trim();
+    if (shots) { await page.getByTestId('copy-confirm').scrollIntoViewIfNeeded(); await shot(page, 'R7-抄设置前先列出会变的项.png'); }
+    const beforeCopy = nodeValue(await saved(page), 'lane-A', 'frame.arm_width_mm') ?? '15mm';
+    await page.getByTestId('copy-confirm').click();
+    await until(async () => nodeValue(await saved(page), 'lane-A', 'frame.arm_width_mm') === '20mm', 3000, '抄过来');
+    const copied = (await saved(page)).events.filter(e => e.kind === 'apply').at(-1)?.text ?? null;
+    await begin(page, { brief: 'A', method: 'structured', participant: 'P77', order: '1' });
+    await openLayer(page, 'lane-A', 'frame');
+    const locked = { fork: await page.getByTestId('fork-here').count(), note: await page.getByTestId('fork-frame-locked').count(), copy: await page.getByTestId('copy-from').count() };
+    await openLayer(page, 'lane-A', 'propulsion');
+    const propFork = await page.getByTestId('fork-here').count();
+    const observed = { label, hint, preview, confirm, beforeCopy, copied, locked, propFork };
+    const pass = label === '从机身起另做一版' && /机架、动力仍共用/.test(hint) && /机臂宽度/.test(preview) && /15 mm → 20 mm/.test(preview)
+      && confirm === '把方案 B的机架设置抄过来'.replace('B的', 'B 的') && beforeCopy === '15mm' && /把方案 B 的机架设置抄到方案 A：机臂宽度 15 mm → 20 mm/.test(copied ?? '')
+      && locked.fork === 0 && locked.note === 1 && locked.copy === 0 && propFork === 1;
+    return { pass, observed };
+  } finally { await context.close(); }
+});
+
+await check('R8', '作者 4、5、7—11：生成只按画布上的设置，没有“这一轮想看什么”和完整文字；臂端一体脚架画进侧视、写进请求；表面外观按样子起名；电机前倾收起；宽度可自定义、厚度在侧视；没有八旋共轴说明和“先做主实验”', async () => {
+  const { context, page } = await open();
+  try {
+    await begin(page, { method: 'structured' });
+    await openLayer(page, 'lane-A', 'frame');
+    const frame = { otherConfigs: await page.getByTestId('other-configs-note').count(), customWidth: await page.getByTestId('arm-width-custom').count(),
+      thicknessInSide: await page.locator('[data-testid=side-detail] [data-field="frame.arm_thickness_mm"]').count() };
+    await openLayer(page, 'lane-A', 'propulsion');
+    const tiltOpen = await page.getByTestId('tilt-more').evaluate(d => d.open);
+    await openLayer(page, 'lane-A', 'details');
+    await page.locator('[data-field="landing_gear.landing_gear_style"] [data-option="臂端一体脚架"]').click();
+    await page.locator('[data-side-gear=arm-tip]').waitFor();
+    // 选项换选中时有一段过渡，等它走完再截，不然新旧两个选项都是半深的。
+    if (shots) { await page.locator('[data-side-gear=arm-tip]').scrollIntoViewIfNeeded(); await sleep(500); await shot(page, 'R8-臂端一体脚架的侧视.png'); }
+    await openLayer(page, 'lane-A', 'cmf');
+    const materials = await page.locator('[data-field="frame.material_visual"] [data-option]').allInnerTexts();
+    if (shots) { await page.locator('[data-field="frame.material_visual"]').scrollIntoViewIfNeeded(); await shot(page, 'R8-机臂表面外观.png'); }
+    await tap(page.locator('[data-node=render][data-lane="lane-A"]').first());
+    await page.getByTestId('render-panel').waitFor();
+    await shot(page, 'R8-生成面板.png');
+    const render = { goal: await page.getByTestId('round-goal').count(), text: await page.getByTestId('round-text').count(), parent: await page.locator('select[aria-label=父图]').count() };
+    const n = (await rows(page)).length;
+    await page.getByTestId('run-lane').click();
+    await until(async () => (await rows(page)).length > n, 15000, '提交这一轮');
+    const sent = (await rows(page)).at(-1).text;
+    await tap(page.locator('[data-node=intent]'));
+    const tasks = await page.getByTestId('task-select').locator('option').allInnerTexts();
+    const body = await page.locator('body').innerText();
+    const observed = { frame, tiltOpen, materials, render, legsInRequest: /built into the underside of each arm tip/.test(sent), tasks, firstMain: /先做主实验/.test(body) };
+    const pass = frame.otherConfigs === 0 && frame.customWidth === 1 && frame.thicknessInSide === 1 && tiltOpen === false
+      && ['外露碳纹', '拉丝金属', '细纹注塑', '打印层纹'].every(m => materials.some(x => x.includes(m))) && Object.values(render).every(v => v === 0)
+      && observed.legsInRequest && JSON.stringify(tasks) === JSON.stringify(['日常航拍四旋', '农业植保六旋']) && !observed.firstMain;
+    return { pass, observed };
+  } finally { await context.close(); }
 });
 
 await browser.close();

@@ -13,6 +13,7 @@ import { askAi } from '../aiSession';
 import { newId } from '../model';
 import { briefOf } from '../sessions';
 import { evidenceSummary } from '../../design/defaults';
+import { fixedConditionLines } from '../conditions';
 import { Quote, TierBadge } from './Evidence';
 import { fieldLabel, formatValue } from './util';
 
@@ -30,7 +31,9 @@ export function BriefCard({ onUse, label = '把委托原文放进意图' }: { on
   return <section className="r4-sec brief4" aria-label="这一场的委托" data-testid="brief-card" data-brief={brief.id}>
     <h3>这一场的委托 · {brief.label}</h3>
     <p style={{ margin: 0, lineHeight: 1.6 }}>{brief.text}</p>
-    <span className="r4-muted">要看：{brief.target}；要保持：{brief.keep}。机架按 C2 登记条件锁定（真 X、W/L 1.00、对角轴距 250 mm）。</span>
+    <span className="r4-muted">要看：{brief.target}；要保持：{brief.keep}。</span>
+    <div data-testid="fixed-conditions" style={{ display: 'grid', gap: 2 }}><b style={{ fontSize: 12.5 }}>固定不变的</b>
+      {fixedConditionLines(brief.condition).map(line => <span key={line} className="r4-muted">{line}</span>)}</div>
     <div data-testid="evidence-summary" data-version={version} data-status={evidenceSummary.status} style={{ display: 'grid', gap: 4, borderTop: '1px solid var(--line)', paddingTop: 8 }}>
       <b style={{ fontSize: 12.5 }}>{evidenceSummary.label} · {version}{evidenceSummary.status === 'draft' ? '（草稿，作者未确认）' : ''}</b>
       <p style={{ margin: 0, lineHeight: 1.6, whiteSpace: 'pre-wrap', fontSize: 12.5 }}>{evidenceSummary.text}</p>
@@ -136,8 +139,8 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
       }, sid));
       st.setDirections(r.directions.map(d => ({ id: newId('dir'), callId: r.call.id, mode: r.call.mode, at: new Date().toISOString(), name: d.name, summary: d.summary,
         changes: d.changes, status: 'pending' as const })), sessionId);
-      if (late) setError('回答到的时候，发出它的那一场已经结束；方向记在那一场，没有放在这里。');
-      else if (!r.directions.length) setError('这次没有得到可用的方向。');
+      if (late) setError('回答到的时候，发出它的那一场已经结束；方案记在那一场，没有放在这里。');
+      else if (!r.directions.length) setError('这次没有得到可用的方案。');
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(''); }
   }
@@ -156,7 +159,7 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
           {studioTasks.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
           {!studioTasks.some(t => t.id === intent.taskId) && <option value={intent.taskId}>中性外观比较（旧项目）</option>}
         </select>
-        <span className="r4-muted">{brief ? '这一场按委托做日常航拍。' : '先做主实验的日常航拍；植保六旋看药箱、喷洒部件与机架的整合。其他构型不在这里做。'}</span></label>
+        {brief && <span className="r4-muted">这一场按委托做日常航拍。</span>}</label>
       {taskSwitch.pending && <p className="r4-note" data-testid="task-switch-confirm">项目里已经有决定或生成。换成“{studioTasks.find(t => t.id === taskSwitch.pending)?.label}”会另开一个空白项目，这一场随之结束（材料仍可在场次设置里导出）。
         <span className="row4" style={{ marginTop: 6 }}><button type="button" className="b4 sm pri" onClick={taskSwitch.confirm}>另开项目</button><button type="button" className="b4 sm quiet" onClick={taskSwitch.cancel}>不换</button></span></p>}
       <textarea className="ta4" data-testid="intent-text" value={draft} placeholder={brief ? '用你自己的话写，或把上面的委托原文放进来再补充' : '例如：一台日常随身带的航拍无人机，希望看起来小巧、紧凑，但不要像玩具'}
@@ -189,14 +192,14 @@ export default function PanelIntent({ onPlaced }: { onPlaced: (laneId: string) =
       <div className="row4">
         <button type="button" className="b4" data-testid="intent-confirm" onClick={() => st.confirmIntent()}><Check size={14} />确认意图</button>
         <button type="button" className="b4 ai" data-testid="ask-directions" disabled={busy !== '' || !accepted.length} onClick={() => void propose()}>
-          {busy === 'dirs' ? <LoaderCircle size={14} className="animate-spin" /> : <Sparkles size={14} />}让 AI 提几个方向</button>
+          {busy === 'dirs' ? <LoaderCircle size={14} className="animate-spin" /> : <Sparkles size={14} />}让 AI 提几个方案</button>
       </div>
-      {!accepted.length && <p className="r4-muted">先采纳至少一条，AI 才能按你的意图提方向。</p>}
+      {!accepted.length && <p className="r4-muted">先采纳至少一条，AI 才能按你的意图提方案。</p>}
     </section>}
 
-    {pendingDirs.length > 0 && <section className="r4-sec" aria-label="方向">
-      <h3>AI 提的方向</h3>
-      <p className="r4-muted">每个方向是一组跨层的改动。放上画布后会成为一条方向，上游能共用的层继续共用。</p>
+    {pendingDirs.length > 0 && <section className="r4-sec" aria-label="方案">
+      <h3>AI 提的方案</h3>
+      <p className="r4-muted">每个方案是一组跨层的改动。放上画布后会成为一个方案，上游能共用的层继续共用。</p>
       {pendingDirs.map(d => <DirectionCard key={d.id} d={d} onPlace={() => { const id = st.placeDirection(d.id); if (id) onPlaced(id); }} onDismiss={() => st.dismissDirection(d.id)} />)}
     </section>}
 

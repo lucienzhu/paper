@@ -28,6 +28,11 @@ export interface SessionInfo {
   environment?: SessionEnvironment;
   /** 4.3：这一场两组共用的用户依据摘要的版本和摘要（原文在 defaults 里，按版本可查）。 */
   evidenceSummary?: { version: string; status: 'draft' | 'confirmed'; sha256: string };
+  /**
+   * 4.4：登记场次开场时，两种方式都先看到同一张任务卡（委托原文、同一版用户依据、同样的限额和固定条件），
+   * 参与者点“开始”的时间。计时仍从开场算（预试记录约定），两组一样；这一项只是把读任务卡的那一段记清楚。
+   */
+  taskStartedAt?: string;
 }
 export interface SessionEnvironment {
   recordedAt: string;
@@ -57,6 +62,21 @@ export function sessionStem(s: SessionInfo) {
 /** 登记场次要四项齐全：委托、方式（工作台或自由提示）、匿名编号、次序。 */
 export const registrable = (s: Pick<SessionInfo, 'briefId' | 'method' | 'participant' | 'order'>) =>
   !!s.briefId && (s.method === 'structured' || s.method === 'free') && !!s.participant?.trim() && (s.order === 1 || s.order === 2);
+/**
+ * 4.4：开登记场次之前的冲突检查。同一个人两场要用不同的委托、不同的方式，次序不能重（pilot.md 第 2 条）。
+ * 有冲突就不开，现在这一场照常继续（Codex 子代理复现：以前只提示，仍能开，原来那一场被结束，本机留下两个第 1 场）。
+ */
+export function registrationClash(sessions: SessionInfo[], input: Pick<SessionInfo, 'briefId' | 'method' | 'participant' | 'order'>) {
+  const who = input.participant?.trim();
+  if (!registrable(input) || !who) return [];
+  const peers = sessions.filter(s => s.kind === 'registered' && s.participant?.trim() === who);
+  const brief = input.briefId ? studyBriefs.find(b => b.id === input.briefId) : undefined;
+  return [
+    peers.some(s => s.order === input.order) ? `${who} 已经有第 ${input.order} 场` : '',
+    brief && peers.some(s => s.briefId === input.briefId) ? `${who} 已经用过${brief.label}` : '',
+    peers.some(s => s.method === input.method) ? `${who} 已经做过${methodLabel[input.method]}` : '',
+  ].filter(Boolean);
+}
 export const summaryStamp = () => ({ version: evidenceSummary.version, status: evidenceSummary.status, sha256: evidenceSummary.sha256 });
 
 // ---------- 终稿：一场只有一个当前的终稿 ----------

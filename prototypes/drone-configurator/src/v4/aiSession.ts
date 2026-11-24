@@ -4,7 +4,7 @@ import { AiRequestError, type AiCall } from './ai';
 import { useStudio } from './store';
 
 export type AiTask = 'intent' | 'directions' | 'layer' | 'revise' | 'free';
-const taskLabel: Record<AiTask, string> = { intent: '读意图', directions: '提方向', layer: '逐层建议', revise: '在候选上改', free: '自由提示的对话' };
+const taskLabel: Record<AiTask, string> = { intent: '读意图', directions: '提方案', layer: '逐层建议', revise: '在候选上改', free: '自由提示的对话' };
 
 /**
  * 发一次 AI 请求。返回结果、发出时的那一场，以及这一场是不是已经结束（late）。

@@ -30,11 +30,15 @@ export const spraySystemOptions: Option<NonNullable<DroneParameters['accessories
 /** 药箱与喷洒部件只对农业植保有意义：其他任务既不显示，也不写进文字。 */
 export const agriculturalFields = ['accessories.spray_tank', 'accessories.spray_system'] as const;
 
+/**
+ * 机臂的表面外观。4.4 起按看上去的样子叫（作者 11 月 24 日：真实材料远不止四种，这四项只是外观预设）；
+ * 取值和发给出图模型的英文句子不变，旧项目照样读。其他局部纹理写进色材层的说明。
+ */
 export const armMaterialOptions: Option<DroneParameters['frame']['material_visual']>[] = [
-  { value: 'Carbon Fiber', zh: '碳纤维', en: 'Arms in exposed carbon fibre with a visible weave.' },
-  { value: 'Aluminum', zh: '铝合金', en: 'Arms in brushed aluminium.' },
-  { value: 'ABS Plastic', zh: 'ABS 塑料', en: 'Arms in moulded ABS plastic with a fine even texture.' },
-  { value: 'PLA Plastic', zh: 'PLA 塑料', en: 'Arms in printed PLA plastic with visible layer lines.' },
+  { value: 'Carbon Fiber', zh: '外露碳纹', hint: '看得见编织纹', en: 'Arms in exposed carbon fibre with a visible weave.' },
+  { value: 'Aluminum', zh: '拉丝金属', hint: '细密的拉丝纹', en: 'Arms in brushed aluminium.' },
+  { value: 'ABS Plastic', zh: '细纹注塑', hint: '均匀的细砂纹', en: 'Arms in moulded ABS plastic with a fine even texture.' },
+  { value: 'PLA Plastic', zh: '打印层纹', hint: '看得见一层层的打印纹', en: 'Arms in printed PLA plastic with visible layer lines.' },
 ];
 export const fuselageStyleOptions: Option<DroneParameters['fuselage']['fuselage_style']>[] = [
   { value: 'Aerodynamic Pod', zh: '流线舱', en: 'A rounded pod with a continuous curved outline.' },
@@ -72,6 +76,8 @@ export const gearOptions: Option<DroneParameters['landing_gear']['landing_gear_s
   { value: '无独立起落架', zh: '无独立起落架', hint: '以机腹或臂端着地' },
   { value: '低矮滑撬/支腿', zh: '低矮滑撬/支腿', hint: '贴近机腹的短支撑' },
   { value: '高脚起落架', zh: '高脚起落架', hint: '离地间隙较大' },
+  // 4.4：脚架做在机臂末端、电机正下方，像部分折叠航拍机（例如 DJI Mavic Air，用户手册第 8 页）。以前只有挂在机腹的两种。
+  { value: '臂端一体脚架', zh: '臂端一体脚架', hint: '做在机臂末端、电机正下方' },
 ];
 export const colourSwatches: { value: string; zh: string; en: string }[] = [
   { value: '#0ea5e9', zh: '天空蓝', en: 'sky blue' },
@@ -147,7 +153,7 @@ export const fields: FieldDef[] = [
   { path: 'frame.arm_width_mm', group: 'frame', label: '机臂宽度', kind: 'engineering', visibility: 'top', format: p => parseInt(p.frame.arm_width_mm, 10) + ' mm' },
   { path: 'frame.arm_thickness_mm', group: 'frame', label: '机臂厚度', kind: 'engineering', visibility: 'occluded', format: p => parseInt(p.frame.arm_thickness_mm, 10) + ' mm' },
   { path: 'frame.arm_root', group: 'frame', label: '臂根过渡', kind: 'styling', visibility: 'text', format: p => opt(armRootOptions, p.frame.arm_root) },
-  { path: 'frame.material_visual', group: 'frame', label: '机臂材料外观', kind: 'styling', visibility: 'text', format: p => opt(armMaterialOptions, p.frame.material_visual) },
+  { path: 'frame.material_visual', group: 'frame', label: '机臂表面外观', kind: 'styling', visibility: 'text', format: p => opt(armMaterialOptions, p.frame.material_visual) },
   { path: 'propulsion.prop_diameter_inch', group: 'propulsion', label: '桨径', kind: 'engineering', visibility: 'top', format: p => `${p.propulsion.prop_diameter_inch} 英寸（${(p.propulsion.prop_diameter_inch * 25.4).toFixed(0)} mm）` },
   { path: 'propulsion.prop_blade_count', group: 'propulsion', label: '每轴桨叶数', kind: 'engineering', visibility: 'top', format: p => parseInt(p.propulsion.prop_blade_count, 10) + ' 叶' },
   { path: 'propulsion.motor_tilt_degree', group: 'propulsion', label: '电机倾角', kind: 'engineering', visibility: 'text', format: p => p.propulsion.motor_tilt_degree + '°' },

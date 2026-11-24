@@ -3,17 +3,20 @@
 // 4.2 起有“场次”：每条事件、对话、建议、方向、比较和每一轮生成都写下属于哪一场，导出本场材料只取这一场的。
 // 4.3：AI 的回答记回发出请求的那一场（晚到的不用在下一场里，补进那一场的存档）；每一场开始时清掉上一场没发出的文字和选中的父图；
 // 只有委托、方式、匿名编号、次序四项齐全才是登记场次；开场时记下出图后端和文字模型；一场只有一个当前终稿；主持人的交接和技术暂停单独记。
+// 4.4（作者 11 月 24 日与 Codex 子代理走查）：撤销只撤设计上的改动，事件、对话、比较和 AI 的回答只增不减，撤销本身另记一条；
+// 登记场次里机架由程序锁定，不能解除，撤销也撤不掉；同一个人的登记有冲突就不开，现在这一场照常继续；值真的变了才记一次修改，记成看得懂的话。
 import { create } from 'zustand';
 import type { TaskId } from '../types/DroneParameters';
 import type { EvidenceTier } from '../design/evidence/registry.mjs';
 import { study, studyBriefs } from '../design/defaults';
 import {
-  applyLayer, clearValue, forkAt, isBlankProject, laneNode, laneParameters, layerOf, layers, migrate, newId, newProject, privatize, removeLane,
-  setValue, staleFields, studioTask, type IntentElement, type Layer, type Project,
+  applyLayer, clearValue, forkAt, isBlankProject, laneNode, laneParameters, layerDifferences, layerOf, layers, migrate, newId, newProject, privatize, removeLane,
+  setValue, spaced, staleFields, studioTask, upstreamOf, type IntentElement, type Layer, type Project,
 } from './model';
 import { getPath } from '../design/fields';
 import type { DroneParameters } from '../types/DroneParameters';
-import { appendArchive, methodLabel, registrable, saveArchive, summaryStamp, updateArchive, type SessionEnvironment, type SessionInfo, type SessionMethod } from './sessions';
+import { appendArchive, methodLabel, registrable, registrationClash, saveArchive, summaryStamp, updateArchive, type SessionEnvironment, type SessionInfo, type SessionMethod } from './sessions';
+import { fieldLabel, formatValue } from './ui/util';
 import { describeAi } from './ai';
 import { imageBackend } from '../design/imageBackend';
 import { registryVersion } from '../design/evidence/registry.mjs';
@@ -46,7 +49,8 @@ export interface ProjectEvent { id: string; at: string; kind: string; text: stri
   task?: string; ok?: boolean; error?: string; startedAt?: string; endedAt?: string;
   /** 4.3：主持人交接（handoff）或技术暂停（pause）的开始；note 写主持人做了什么。 */
   mark?: 'handoff' | 'pause'; note?: string;
-  /** 终稿事件指向的候选。 */ candidateId?: string }
+  /** 终稿事件指向的候选。 */ candidateId?: string;
+  /** 4.4：改了哪一项、从什么改成什么（只在值真的变了时记）。 */ path?: string; from?: unknown; to?: unknown }
 export type Selection = { kind: 'intent' } | { kind: 'layer'; laneId: string; layer: Layer } | { kind: 'render'; laneId: string }
   | { kind: 'candidate'; attemptId: string; candidateId: string } | { kind: 'compare'; id: string } | null;
 
@@ -71,6 +75,17 @@ export function sessionSlice(saved: Saved, session: SessionInfo) {
     suggestions: mine(saved.suggestions), directions: mine(saved.directions), turns: mine(saved.turns), compares: mine(saved.compares), events: mine(saved.events),
   };
 }
+/**
+ * 4.4：撤销历史里只存设计本身（项目，以及 AI 建议与方向的处理状态），不存事件、对话、比较、场次设置。
+ * 以前撤销会把整份存档退回去：期间记下的技术暂停、交接、修改事件都没了，暂停时长变成 0（Codex 子代理复现）。
+ */
+interface Snapshot {
+  project: Project;
+  s: Record<string, Pick<Suggestion, 'status' | 'resultLaneId' | 'reason'>>;
+  d: Record<string, Pick<Direction, 'status' | 'laneId'>>;
+  /** 这一步做了什么，撤销和重做时写进记录。 */
+  label: string;
+}
 /** 画布上被设计者拖过的节点位置。不进撤销历史，“整理”清空。 */
 export type Layout = Record<string, { x: number; y: number }>;
 interface Studio extends Saved {
@@ -83,8 +98,11 @@ interface Studio extends Saved {
   epoch: number;
   /** 返回正在进行的这一场；没有就开一场自由试用。每条记录写下场次编号前都先调它。 */
   ensureSession: () => string;
-  /** 主持人开一场：结束上一场；项目不是空白的就另开一个空白项目；有委托时任务定为日常航拍并载入锁定 C2 的机架。 */
-  startSession: (input: SessionSetupInput) => void;
+  /** 主持人开一场：结束上一场；项目不是空白的就另开一个空白项目；有委托时任务定为日常航拍并载入锁定 C2 的机架。
+   *  4.4：登记有冲突（同一个人重复的次序、委托或方式）就不开，返回 false，现在这一场照常继续。 */
+  startSession: (input: SessionSetupInput) => boolean;
+  /** 4.4：参与者看完开场的任务卡，点“开始”。 */
+  startTask: () => void;
   /** 结束这一场，写下原因。之后再有操作时自动开一场自由试用。 */
   endSession: (reason: string) => void;
   moveNode: (id: string, position: { x: number; y: number }) => void;
@@ -95,8 +113,8 @@ interface Studio extends Saved {
   reviseFrom: (laneId: string, frozen: DroneParameters, changes: { field: string; value: unknown }[], name: string, reason: string) => string;
   comparing: string[];
   notice: string;
-  past: Saved[];
-  future: Saved[];
+  past: Snapshot[];
+  future: Snapshot[];
   select: (s: Selection) => void;
   setNotice: (text: string) => void;
   undo: () => void;
@@ -191,6 +209,18 @@ function loadSessions(): { sessions: SessionInfo[]; currentSessionId: string | n
 const hasRuns = (s: Saved) => s.events.some(e => e.kind === 'run' || e.kind === 'free-run');
 const pick = (s: Studio): Saved => ({ project: s.project, suggestions: s.suggestions, directions: s.directions, turns: s.turns,
   compares: s.compares, events: s.events, session: s.session });
+const statusesOf = (s: Pick<Saved, 'suggestions' | 'directions'>) => ({
+  s: Object.fromEntries(s.suggestions.map(x => [x.id, { status: x.status, resultLaneId: x.resultLaneId, reason: x.reason }])),
+  d: Object.fromEntries(s.directions.map(x => [x.id, { status: x.status, laneId: x.laneId }])),
+});
+const snapshot = (s: Saved, label: string): Snapshot => ({ project: structuredClone(s.project), ...structuredClone(statusesOf(s)), label });
+/** 撤销、重做时只把快照里有的那几条建议和方向退回当时的状态；之后才到的 AI 回答原样留着。 */
+function restoreStatuses<T extends { id: string }>(list: T[], saved: Record<string, Partial<T>>) {
+  return list.map(x => saved[x.id] ? { ...x, ...saved[x.id] } : x);
+}
+const same = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+/** 一次修改写成看得懂的话：机臂宽度 15 mm → 20 mm。 */
+export const describeChange = (path: string, from: unknown, to: unknown) => `${fieldLabel(path)} ${formatValue(path, from)} → ${formatValue(path, to)}`;
 
 export const useStudio = create<Studio>((set, get) => {
   /** 正在进行的这一场；没有就开一场自由试用（沿用当前方式和项目）。 */
@@ -252,16 +282,28 @@ export const useStudio = create<Studio>((set, get) => {
     finish(reason);
     return ending;
   }
-  /** 一次可以撤销的改动：先存下改动前的状态，再在副本上改。 */
-  function commit(change: (draft: Saved) => void, event?: Omit<ProjectEvent, 'id' | 'at'>) {
-    const sessionId = event ? ensure() : undefined;
-    const before = pick(get());
-    const draft = structuredClone(before);
+  /**
+   * 一次可以撤销的改动：在副本上改，设计真的变了才记下改动前的快照和这一条事件。
+   * 返回是否改了。事件、对话、比较不进快照，撤销不会把它们退回去。
+   */
+  function commit(change: (draft: Saved) => void, event?: Omit<ProjectEvent, 'id' | 'at'>, label?: string) {
+    const current = pick(get());
+    const draft = structuredClone(current);
     change(draft);
-    if (event) draft.events = [...draft.events, { id: newId('ev'), at: now(), sessionId, ...event }].slice(-500);
-    set({ ...draft, past: [...get().past, before].slice(-60), future: [] });
+    if (same(draft.project, current.project) && same(statusesOf(draft), statusesOf(current))) return false;
+    const sessionId = event ? ensure() : undefined;
+    const before = snapshot(current, label ?? event?.text ?? '一次修改');
+    const events = event ? [...get().events, { id: newId('ev'), at: now(), sessionId, ...event }].slice(-500) : get().events;
+    set({ project: draft.project, suggestions: draft.suggestions, directions: draft.directions, session: draft.session, events,
+      past: [...get().past, before].slice(-60), future: [] });
+    return true;
   }
+  /** 改一项前后的取值：值没变就不记。 */
+  const valueOf = (laneId: string, path: string) => getPath(laneParameters(get().project, laneId), path);
   const locked = (s: Saved, path: string) => !!s.session.lockedFrame && layerOf(path) === 'frame';
+  /** 锁定时给设计者看的话：登记场次里没有“解除”，试用时由主持人解除。 */
+  const lockNotice = (s: Studio) => s.sessions.some(x => x.id === s.currentSessionId && !x.endedAt && x.kind === 'registered')
+    ? '机架是这一场登记的条件，由程序锁定，不能改。' : '机架锁定为登记条件（试用）。要改，请主持人在主持人面板里解除。';
   /** 另开一个空白项目（沿用方式）。撤销历史清空：撤销不能跨到上一个项目、上一场。 */
   function freshProject(taskId: TaskId) {
     const method = get().session.method;
@@ -275,6 +317,9 @@ export const useStudio = create<Studio>((set, get) => {
     epoch: 0,
     ensureSession: ensure,
     startSession: input => {
+      // 登记有冲突就不开：现在这一场不结束、不换项目。
+      const clash = registrationClash(get().sessions, input);
+      if (clash.length) { set({ notice: '没有开始：' + clash.join('；') + '。同一个人的两场要用不同的委托、不同的方式，次序不能重。' }); return false; }
       close('开始新的一场');
       const s = get();
       const brief = input.briefId ? studyBriefs.find(b => b.id === input.briefId) : undefined;
@@ -288,6 +333,15 @@ export const useStudio = create<Studio>((set, get) => {
         + (input.participant?.trim() ? ' · ' + input.participant.trim() : '') + (input.order ? ` · 该参与者第 ${input.order} 场` : '') });
       if (brief) get().loadCondition(brief.condition);
       set({ past: [], future: [] });
+      return true;
+    },
+    startTask: () => {
+      const id = get().currentSessionId;
+      const current = get().sessions.find(x => x.id === id && !x.endedAt);
+      if (!current || current.taskStartedAt) return;
+      const at = now();
+      set(s => ({ sessions: s.sessions.map(x => x.id === current.id ? { ...x, taskStartedAt: at } : x) }));
+      get().logEvent({ kind: 'task-start', text: '参与者看完任务卡，点了开始' });
     },
     endSession: reason => { close(reason); },
     moveNode: (id, position) => set(s => ({ layout: { ...s.layout, [id]: { x: Math.round(position.x), y: Math.round(position.y) } } })),
@@ -307,23 +361,38 @@ export const useStudio = create<Studio>((set, get) => {
     reviseFrom: (laneId, frozen, changes, name, reason) => {
       let id = '';
       commit(d => {
-        const drift = staleFields(frozen, laneParameters(d.project, laneId)).map(x => x.path);
+        // 机架锁定时（登记场次），冻结规格和修改里的机架项一律不动：它们本该等于登记条件。
+        const drift = staleFields(frozen, laneParameters(d.project, laneId)).map(x => x.path).filter(p => !locked(d, p));
+        changes = changes.filter(c => !locked(d, c.field));
         const paths = [...new Set([...drift, ...changes.map(c => c.field)])];
         const earliest = layers.find(l => paths.some(p => layerOf(p) === l)) ?? 'cmf';
         id = forkAt(d.project, laneId, earliest, name, reason).id;
         d.project.activeLaneId = id;
         for (const path of drift) setValue(d.project, id, path, getPath(frozen, path));
         for (const c of changes) setValue(d.project, id, c.field, c.value);
-      }, { kind: 'revise-from', laneId, text: '从一张旧候选另开方向修改：' + reason });
+      }, { kind: 'revise-from', laneId, text: '从一张旧候选另开方案修改：' + reason });
       return id;
     },
     select: selection => set(selection && (selection.kind === 'layer' || selection.kind === 'render') && get().project.lanes.some(l => l.id === selection.laneId)
       ? { selection, project: { ...get().project, activeLaneId: selection.laneId } } : { selection }),
     setNotice: notice => set({ notice }),
-    undo: () => { const { past } = get(); if (!past.length) return; const prev = past[past.length - 1];
-      set({ ...prev, past: past.slice(0, -1), future: [pick(get()), ...get().future].slice(0, 60) }); },
-    redo: () => { const { future } = get(); if (!future.length) return; const next = future[0];
-      set({ ...next, past: [...get().past, pick(get())].slice(-60), future: future.slice(1) }); },
+    undo: () => {
+      const { past } = get(); if (!past.length) return;
+      const prev = past[past.length - 1];
+      const after = snapshot(pick(get()), prev.label);
+      set(s => ({ project: structuredClone(prev.project), suggestions: restoreStatuses(s.suggestions, prev.s), directions: restoreStatuses(s.directions, prev.d),
+        past: past.slice(0, -1), future: [after, ...s.future].slice(0, 60) }));
+      // 撤销本身另记一条：原来那条修改事件留着，导出时看得到改过又撤回。
+      get().logEvent({ kind: 'undo', text: '撤销：' + prev.label });
+    },
+    redo: () => {
+      const { future } = get(); if (!future.length) return;
+      const next = future[0];
+      const before = snapshot(pick(get()), next.label);
+      set(s => ({ project: structuredClone(next.project), suggestions: restoreStatuses(s.suggestions, next.s), directions: restoreStatuses(s.directions, next.d),
+        past: [...s.past, before].slice(-60), future: future.slice(1) }));
+      get().logEvent({ kind: 'redo', text: '重做：' + next.label });
+    },
     reset: (taskId = 'consumer_camera') => {
       // 新建项目就是另起一场：先结束这一场（它的记录存进本机存档），再开空白项目和一场自由试用。
       close('新建项目');
@@ -332,7 +401,7 @@ export const useStudio = create<Studio>((set, get) => {
       get().logEvent({ kind: 'reset', text: '新建项目：' + studioTask(taskId).short });
     },
 
-    setIntentText: text => commit(d => { d.project.intent.text = text; d.project.intent.confirmedAt = undefined; }),
+    setIntentText: text => { commit(d => { d.project.intent.text = text; d.project.intent.confirmedAt = undefined; }, undefined, '改了意图的文字'); },
     applyReading: (r, sessionId) => {
       // 发出读意图的那一场已经结束：回答不用在现在的项目里（不改意图），只在那一场记一笔。
       const sid = target(sessionId);
@@ -369,59 +438,79 @@ export const useStudio = create<Studio>((set, get) => {
       intent.cards = [...new Set([...intent.cards.filter(id => before.some(e => e.status === 'accepted' && e.cards.includes(id))), ...r.cards.map(c => c.id)])];
     }, { kind: 'ai-intent', text: 'AI 读了意图', callId: r.callId });
     },
-    setElement: (id, patch) => commit(d => {
+    setElement: (id, patch) => { commit(d => {
       d.project.intent.elements = d.project.intent.elements.map(e => e.id === id ? { ...e, ...patch } : e);
       d.project.intent.confirmedAt = undefined;
-    }),
-    addElement: element => commit(d => { d.project.intent.elements.push({ ...element, id: newId('el') }); }),
-    setIntentState: state => commit(d => { d.project.intent.state = state; d.project.intent.question = undefined; }, { kind: 'intent', text: '确认观察状态' }),
-    toggleCard: id => commit(d => {
+    }, undefined, '改了一条意图'); },
+    addElement: element => { commit(d => { d.project.intent.elements.push({ ...element, id: newId('el') }); }, undefined, '加了一条意图'); },
+    setIntentState: state => { commit(d => { d.project.intent.state = state; d.project.intent.question = undefined; }, { kind: 'intent', text: '确认观察状态' }); },
+    toggleCard: id => { commit(d => {
       const cards = d.project.intent.cards;
       d.project.intent.cards = cards.includes(id) ? cards.filter(c => c !== id) : [...cards, id];
-    }),
-    confirmIntent: () => commit(d => {
+    }, undefined, '选了一张用户原话'); },
+    confirmIntent: () => { commit(d => {
       d.project.intent.confirmedAt = now();
       d.project.intent.elements = d.project.intent.elements.map(e => e.status === 'pending' ? { ...e, status: 'rejected' } : e);
-    }, { kind: 'intent', text: '确认意图' }),
+    }, { kind: 'intent', text: '确认意图' }); },
 
     setField: (laneId, path, value) => {
-      if (locked(get(), path)) { set({ notice: '机架是这一场登记的条件，已锁定。要改，先在场次设置里解除。' }); return; }
-      commit(d => { setValue(d.project, laneId, path, value); }, { kind: 'edit', laneId, layer: layerOf(path) ?? undefined, text: '改了一项：' + path });
+      if (locked(get(), path)) { set({ notice: lockNotice(get()) }); return; }
+      // 点的是已经选中的那一项：值没变，不算一次修改，也不记。
+      const from = valueOf(laneId, path);
+      if (same(from, value)) return;
+      commit(d => { setValue(d.project, laneId, path, value); },
+        { kind: 'edit', laneId, layer: layerOf(path) ?? undefined, path, from, to: value, text: describeChange(path, from, value) });
     },
     setMany: (laneId, entries, label) => {
       const allowed = entries.filter(([p]) => !locked(get(), p));
-      if (allowed.length < entries.length) set({ notice: '机架是这一场登记的条件，已锁定。' });
-      if (!allowed.length) return;
-      commit(d => { for (const [p, v] of allowed) setValue(d.project, laneId, p, v); }, { kind: 'edit', laneId, text: label });
+      if (allowed.length < entries.length) set({ notice: lockNotice(get()) });
+      const changed = allowed.map(([p, v]) => ({ p, v, from: valueOf(laneId, p) })).filter(x => !same(x.from, x.v));
+      if (!changed.length) return;
+      commit(d => { for (const x of changed) setValue(d.project, laneId, x.p, x.v); },
+        { kind: 'edit', laneId, layer: layerOf(changed[0].p) ?? undefined, text: label + '：' + changed.map(x => describeChange(x.p, x.from, x.v)).join('；') }, label);
     },
     clearField: (laneId, path) => {
       if (locked(get(), path)) return;
-      commit(d => { clearValue(d.project, laneId, path); }, { kind: 'edit', laneId, text: '改回起始值：' + path });
+      const from = valueOf(laneId, path);
+      const changed = commit(d => { clearValue(d.project, laneId, path); }, { kind: 'edit', laneId, layer: layerOf(path) ?? undefined, path, from,
+        text: '改回起始值：' + fieldLabel(path) });
+      // 改回以后的值要算出来才知道，补进刚记的那一条。
+      if (changed) set(s => ({ events: s.events.map((e, i) => i === s.events.length - 1 && e.path === path && e.kind === 'edit' && e.to === undefined
+        ? { ...e, to: valueOf(laneId, path), text: '改回起始值：' + describeChange(path, from, valueOf(laneId, path)) } : e) }));
     },
     fork: (laneId, layer, name, reason) => {
-      let id = '';
-      commit(d => { id = forkAt(d.project, laneId, layer, name, reason).id; d.project.activeLaneId = id; },
-        { kind: 'fork', laneId, layer, text: `在${layerName[layer]}处分叉` + (reason ? '：' + reason : '') });
-      // 分出来以后，面板跟到新方向的这一层：接下来的改动落在新方向上。
-      set({ selection: { kind: 'layer', laneId: id, layer } });
+      let id = '', newName = '';
+      const source = get().project.lanes.find(l => l.id === laneId)?.name ?? '原方案';
+      const shared = upstreamOf(layer).map(l => layerName[l]);
+      commit(d => { const lane = forkAt(d.project, laneId, layer, name, reason); id = lane.id; newName = lane.name; d.project.activeLaneId = id; },
+        { kind: 'fork', laneId, layer, text: `从${layerName[layer]}起另做一版` + (reason ? '：' + reason : '') + (shared.length ? `（${shared.join('、')}仍与${spaced(source)}共用）` : '') });
+      // 另做的一版建好以后，面板跟到新方案的这一层：接下来的改动落在新方案上。
+      set({ selection: { kind: 'layer', laneId: id, layer }, notice: `已另做一版：${newName}。` + (shared.length ? `${shared.join('、')}仍与${spaced(source)}共用，以后改它们，两个方案一起变。` : `五层都是${spaced(newName)}自己的。`) });
       return id;
     },
-    applyFrom: (fromLane, toLane, layer) => commit(d => { applyLayer(d.project, fromLane, toLane, layer); },
-      { kind: 'apply', laneId: toLane, layer, text: `把“${get().project.lanes.find(l => l.id === fromLane)?.name ?? fromLane}”的${layerName[layer]}套用过来` }),
-    ownLayer: (laneId, layer) => commit(d => { privatize(d.project, laneId, layer); },
-      { kind: 'own', laneId, layer, text: `让这条方向从${layerName[layer]}起有自己的节点` }),
-    dropLane: laneId => commit(d => { removeLane(d.project, laneId); }, { kind: 'lane', laneId, text: '删去一条方向' }),
-    renameLane: (laneId, name) => commit(d => { d.project.lanes = d.project.lanes.map(l => l.id === laneId ? { ...l, name } : l); }),
+    applyFrom: (fromLane, toLane, layer) => {
+      if (layer === 'frame' && get().session.lockedFrame) { set({ notice: lockNotice(get()) }); return; }
+      const p = get().project;
+      const diffs = layerDifferences(p, fromLane, toLane, layer);
+      const fromName = p.lanes.find(l => l.id === fromLane)?.name ?? fromLane, toName = p.lanes.find(l => l.id === toLane)?.name ?? toLane;
+      if (!diffs.length) { set({ notice: `${spaced(fromName)}和${spaced(toName)}的${layerName[layer]}设置一样，没有要抄的。` }); return; }
+      commit(d => { applyLayer(d.project, fromLane, toLane, layer); },
+        { kind: 'apply', laneId: toLane, layer, text: `把${spaced(fromName)}的${layerName[layer]}设置抄到${toName}：` + diffs.map(x => describeChange(x.path, x.from, x.to)).join('；') });
+    },
+    ownLayer: (laneId, layer) => { commit(d => { privatize(d.project, laneId, layer); },
+      { kind: 'own', laneId, layer, text: `${spaced(get().project.lanes.find(l => l.id === laneId)?.name ?? '这个方案')}从${layerName[layer]}起与其他方案分开` }); },
+    dropLane: laneId => { commit(d => { removeLane(d.project, laneId); }, { kind: 'lane', laneId, text: '删去一个方案：' + (get().project.lanes.find(l => l.id === laneId)?.name ?? laneId) }); },
+    renameLane: (laneId, name) => { commit(d => { d.project.lanes = d.project.lanes.map(l => l.id === laneId ? { ...l, name } : l); }, undefined, '改了方案名'); },
     collapseLane: (laneId, collapsed) => set(s => ({ project: { ...s.project, lanes: s.project.lanes.map(l => l.id === laneId ? { ...l, collapsed } : l) } })),
     setActiveLane: laneId => set(s => ({ project: { ...s.project, activeLaneId: laneId,
       lanes: s.project.lanes.map(l => l.id === laneId ? { ...l, collapsed: false } : l) } })),
-    addIssue: (laneId, layer, text, fromCandidate) => commit(d => {
+    addIssue: (laneId, layer, text, fromCandidate) => { commit(d => {
       laneNode(d.project, laneId, layer).issues.push({ id: newId('issue'), text, fromCandidate, at: now() });
-    }, { kind: 'issue', laneId, layer, text: `把问题送回${layerName[layer]}：` + text }),
-    resolveIssue: (laneId, layer, issueId) => commit(d => {
+    }, { kind: 'issue', laneId, layer, text: `把问题送回${layerName[layer]}：` + text }); },
+    resolveIssue: (laneId, layer, issueId) => { commit(d => {
       const node = laneNode(d.project, laneId, layer);
       node.issues = node.issues.map(i => i.id === issueId ? { ...i, resolved: true } : i);
-    }),
+    }, { kind: 'issue-resolved', laneId, layer, text: `${layerName[layer]}的一个问题处理好了` }); },
 
     addSuggestions: (list, sessionId) => {
       const sid = target(sessionId), lateOnes = late(sid);
@@ -437,7 +526,7 @@ export const useStudio = create<Studio>((set, get) => {
       commit(d => {
         if (action === 'branch') {
           const parent = d.project.lanes.find(l => l.id === s.laneId);
-          const name = `${parent?.name ?? '方向'} · 试${[...new Set(s.changes.map(c => c.label))].slice(0, 2).join('、')}`;
+          const name = `${parent?.name ?? '方案'} · 试${[...new Set(s.changes.map(c => c.label))].slice(0, 2).join('、')}`;
           laneId = forkAt(d.project, s.laneId, s.layer, name, s.title).id;
           d.project.activeLaneId = laneId;
         }
@@ -454,10 +543,12 @@ export const useStudio = create<Studio>((set, get) => {
         const items = list.map(x => ({ ...x, sessionId: sid, status: 'late' as const }));
         set(s => ({ directions: [...s.directions, ...items] }));
         archiveLate(sid, { directions: items });
-        get().logEvent({ kind: 'ai-late', callId: list[0]?.callId, text: `AI 提的 ${list.length} 个方向在这一场结束后才到，没有显示。` }, sid);
+        get().logEvent({ kind: 'ai-late', callId: list[0]?.callId, text: `AI 提的 ${list.length} 个方案在这一场结束后才到，没有显示。` }, sid);
         return;
       }
-      commit(d => { d.directions = [...d.directions.filter(x => x.status !== 'pending'), ...list.map(x => ({ ...x, sessionId: sid }))]; }, { kind: 'ai-directions', text: `AI 提了 ${list.length} 个方向` });
+      // AI 的回答是记录，不进撤销：撤销不会让已经到的方向消失。
+      set(s => ({ directions: [...s.directions.map(x => x.status === 'pending' && x.sessionId === sid ? { ...x, status: 'expired' as const } : x), ...list.map(x => ({ ...x, sessionId: sid }))] }));
+      get().logEvent({ kind: 'ai-directions', callId: list[0]?.callId, text: `AI 提了 ${list.length} 个方案` }, sid);
     },
     placeDirection: id => {
       const dir = get().directions.find(x => x.id === id);
@@ -473,15 +564,15 @@ export const useStudio = create<Studio>((set, get) => {
           p.lanes[0].name = dir.name;
         } else {
           const first = layers.find(l => usable.some(c => c.layer === l)) ?? 'body';
-          laneId = forkAt(p, p.activeLaneId, first, dir.name, 'AI 方向提议').id;
+          laneId = forkAt(p, p.activeLaneId, first, dir.name, 'AI 方案提议').id;
         }
         for (const c of usable) setValue(p, laneId, c.field, c.value);
         p.activeLaneId = laneId;
         d.directions = d.directions.map(x => x.id === id ? { ...x, status: 'placed', laneId } : x);
-      }, { kind: 'direction', text: '把方向放上画布：' + dir.name });
+      }, { kind: 'direction', text: '把 AI 提的方案放上画布：' + dir.name });
       return laneId;
     },
-    dismissDirection: id => commit(d => { d.directions = d.directions.map(x => x.id === id ? { ...x, status: 'dismissed' } : x); }),
+    dismissDirection: id => { commit(d => { d.directions = d.directions.map(x => x.id === id ? { ...x, status: 'dismissed' } : x); }, { kind: 'direction-dismissed', text: '不要 AI 提的一个方案' }); },
     addTurn: (turn, sessionId) => {
       const sid = target(sessionId), item = { ...turn, sessionId: sid };
       set(s => ({ turns: [...s.turns, item].slice(-400) }));
@@ -490,9 +581,10 @@ export const useStudio = create<Studio>((set, get) => {
 
     toggleCompare: key => set(s => ({ comparing: s.comparing.includes(key) ? s.comparing.filter(k => k !== key) : [...s.comparing, key].slice(-4) })),
     clearCompare: () => set({ comparing: [] }),
+    // 比较和取舍是记录，不改设计，也不进撤销。
     recordCompare: record => { const sessionId = ensure();
-      commit(d => { d.compares = [...d.compares.filter(c => c.id !== record.id), { ...record, sessionId: record.sessionId ?? sessionId }]; },
-        { kind: 'compare', text: '比较并取舍' + (record.reason ? '：' + record.reason : '') }); },
+      set(s => ({ compares: [...s.compares.filter(c => c.id !== record.id), { ...record, sessionId: record.sessionId ?? sessionId }] }));
+      get().logEvent({ kind: 'compare', text: (record.chosen ? '比较后选定' : '把几张候选放在一起比较') + (record.reason ? '：' + record.reason : '') }); },
     // 换方式就是换一场：结束这一场，在同一个项目里开下一场试用（委托沿用，便于练手）。登记场次不能这样换：
     // 每人两场要用不同的委托和方式、记下次序，由主持人先结束本场，再在“开一场”里开下一场（Codex 11 月 23 日第 12 条）。
     setSession: method => {
@@ -518,18 +610,25 @@ export const useStudio = create<Studio>((set, get) => {
     markModerator: (mark, note) => get().logEvent({ kind: 'moderator-start', mark, note: note.trim(),
       text: (mark === 'pause' ? '技术暂停' : '主持人接手') + (note.trim() ? '：' + note.trim() : '') }),
     endModerator: () => get().logEvent({ kind: 'moderator-end', text: '交回设计者' }),
+    // 登记条件是主持人的设置，不进撤销：载入时清掉撤销历史，否则一撤销就退回锁定以前的机架。
     loadCondition: id => {
       const condition = study.conditions.find(c => c.id === id);
       if (!condition) return;
-      commit(d => {
-        for (const lane of d.project.lanes) {
-          privatize(d.project, lane.id, 'frame');
-          for (const [k, v] of Object.entries(condition.frame)) setValue(d.project, lane.id, 'frame.' + k, v);
-        }
-        d.session.lockedFrame = id;
-      }, { kind: 'session', text: '载入并锁定登记条件：' + condition.label });
+      const project = structuredClone(get().project);
+      for (const lane of project.lanes) {
+        privatize(project, lane.id, 'frame');
+        for (const [k, v] of Object.entries(condition.frame)) setValue(project, lane.id, 'frame.' + k, v);
+      }
+      set(s => ({ project, session: { ...s.session, lockedFrame: id }, past: [], future: [] }));
+      get().logEvent({ kind: 'session', text: '载入并锁定登记条件：' + condition.label });
     },
-    unlockCondition: () => commit(d => { d.session.lockedFrame = undefined; }, { kind: 'session', text: '解除登记条件的锁定' }),
+    unlockCondition: () => {
+      const current = get().sessions.find(s => s.id === get().currentSessionId && !s.endedAt);
+      if (current?.kind === 'registered') { set({ notice: '登记场次里机架由程序锁定，不能解除。要换条件，先结束本场。' }); return; }
+      if (!get().session.lockedFrame) return;
+      set(s => ({ session: { ...s.session, lockedFrame: undefined } }));
+      get().logEvent({ kind: 'session', text: '解除登记条件的锁定（试用）' });
+    },
   };
 });
 

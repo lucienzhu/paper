@@ -22,6 +22,7 @@ import { createDesignServer } from './design-chat-server.mjs';
 import { comfyDefaults, createImageJobs, qwenModel, seedOf } from './image-jobs.mjs';
 import { createDesignAI } from './design-ai.mjs';
 import { tagPNGFront as tagPNG } from './fixture-png.mjs';
+import { closeModerator, passTaskCard, sessionBox } from './moderator-helpers.mjs';
 
 const { values } = parseArgs({ options: { 'comfy-url': { type: 'string' }, out: { type: 'string' }, 'text-model': { type: 'boolean' }, 'wait-minutes': { type: 'string' } } });
 const real = !!values['comfy-url'];
@@ -93,21 +94,24 @@ try {
   await page.goto(origin);
   await page.getByTestId('studio4').waitFor();
   const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('multirotor-studio/v4/project')));
-  const setup = async () => { const box = page.getByTestId('session-setup'); if (!await box.evaluate(d => d.open)) await box.locator(':scope > summary').click(); return box; };
   const overview = async () => { await page.evaluate(() => document.activeElement?.blur?.()); await page.keyboard.press('Escape'); await page.getByTestId('overview-panel').waitFor(); };
+  // 4.4：场次设置在“主持人”面板里，开场后面板自己关上，登记场次先过任务卡。
   const begin = async method => {
-    const box = await setup();
+    const box = await sessionBox(page);
     await box.getByTestId('session-brief').selectOption('A');
     await box.locator(`[data-setup-method=${method}]`).click();
     await box.getByTestId('session-start').click();
+    await closeModerator(page);
+    await passTaskCard(page);
     await page.getByTestId(method === 'free' ? 'free-studio' : 'v4-canvas').waitFor();
     return (await saved()).currentSessionId;
   };
   const exportZip = async id => {
-    const box = await setup();
+    const box = await sessionBox(page);
     const [download] = await Promise.all([page.waitForEvent('download', { timeout: 120000 }), box.locator(`[data-session="${id}"] [data-testid=export-session]`).click()]);
     const file = join(out, 'zips', download.suggestedFilename());
     await download.saveAs(file);
+    await closeModerator(page);
     return { file, files: unzip(new Uint8Array(await readFile(file))) };
   };
   const tap = locator => locator.dispatchEvent('click');
@@ -122,19 +126,23 @@ try {
   const ids = { structured: [], free: [] };
   const sessions = {};
 
-  // 工作台那一场：首图从画布上的生成节点发出；两次修订在生成面板里选首图为父图、写这一轮的目标
+  // 工作台那一场：首图从画布上的生成节点发出；两次修订都在首图的候选面板里“在这张图上改”（4.4 起生成面板不再选父图、不再另写目标）。
+  // 修改说明先交给文字模型（默认是规则回退）整理成这一轮的目标和参数改动，确认后按此生成，父图是首图。
   sessions.structured = await begin('structured');
+  let firstCandidate = null;
   for (const p of plan.filter(x => x.group === 'structured')) {
     const before = await page.locator('[data-node=candidate]').count();
     if (p.step === 'first') await tap(page.locator('[data-node=render] [data-testid=node-run]').first());
     else {
-      await tap(page.locator('[data-node=render]').first());
-      await page.getByTestId('render-panel').waitFor();
-      await page.locator('select[aria-label=父图]').selectOption({ index: 1 });
-      await page.getByTestId('round-goal').fill(p.goal);
-      await page.getByTestId('run-lane').click();
+      await tap(page.locator(`.react-flow__node:has([data-node=candidate][data-candidate="${firstCandidate}"])`));
+      await page.getByTestId('candidate-panel').waitFor();
+      await page.getByTestId('revise-text').fill(p.goal);
+      await page.getByTestId('revise-ask').click();
+      await page.getByTestId('revision').waitFor({ timeout: 120000 });
+      await page.getByTestId('revise-run').click();
     }
     await page.waitForFunction(n => document.querySelectorAll('[data-node=candidate]').length > n, before, { timeout: waitMs });
+    if (p.step === 'first') firstCandidate = await page.locator('[data-node=candidate]').first().getAttribute('data-candidate');
     console.log(`工作台 ${p.step} 回图`);
     await overview();
   }
@@ -188,7 +196,9 @@ try {
       ids[group].push(r.attemptId);
       report.rounds.push({ group, step: p.step, label: r.label, attemptId: r.attemptId, promptId: r.promptId, seed: graph['10']?.inputs?.seed, inputs: loads,
         png: png ? { width: size?.[0], height: size?.[1], sha256: sha(png) } : null, queueMs: manifest.timing.waiting.image[i]?.queueMs ?? null, runMs: manifest.timing.waiting.image[i]?.runMs ?? null,
-        ok: !problems.length, problems, zipFile: r.file, png_in_zip: r.candidates[0], target: p.target ?? null, keep: p.keep ?? null });
+        ok: !problems.length, problems, zipFile: r.file, png_in_zip: r.candidates[0], target: p.target ?? null, keep: p.keep ?? null,
+        // 工作台的修订轮：设计者写的修改说明，和文字模型（或规则回退）整理出的这一轮目标，照实并列，读盲读材料时用得上。
+        asked: p.goal ?? p.text ?? null, roundGoal: record.goal ?? null, roundKeep: record.keep ?? null });
     });
   }
 
@@ -225,6 +235,8 @@ try {
   const md = ['# 真机验收报告', '', `${report.mode === 'real' ? '真机：' + report.comfyUrl : '演练（夹具，不出真图）'}；${report.startedAt} 到 ${report.finishedAt}。`, '',
     '| 组 | 轮 | 输入图 | 原图 | 种子 | prompt_id | 排队 ms | 执行 ms | 结果 |', '| --- | --- | --- | --- | --- | --- | --- | --- | --- |',
     ...report.rounds.map(r => `| ${r.group === 'free' ? '自由提示' : '工作台'} | ${r.step} | ${r.inputs} | ${r.png ? r.png.width + '×' + r.png.height : '无'} | ${r.seed} | ${r.promptId ?? ''} | ${r.queueMs ?? ''} | ${r.runMs ?? ''} | ${r.ok ? '通过' : r.problems.join('；')} |`),
+    '', '工作台修订轮（在首图上改）：写的修改说明 → 这一轮的目标',
+    ...report.rounds.filter(r => r.group === 'structured' && r.step !== 'first').map(r => `- ${r.step}：${r.asked} → ${r.roundGoal}${r.roundKeep ? '（' + r.roundKeep + '）' : ''}`),
     '', report.problems.length ? '问题：' + report.problems.join('；') : '没有发现问题。', '', `盲读材料：${report.localEdit?.dir ?? '没有生成'}`].join('\n');
   await writeFile(join(out, 'report.md'), md + '\n');
   console.log(md);

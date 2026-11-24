@@ -31,7 +31,7 @@ export async function runLane(laneId: string, options: { goal?: string; parentCa
   const st = useStudio.getState();
   const project = st.project;
   const lane = project.lanes.find(l => l.id === laneId);
-  if (!lane) throw new Error('找不到这条方向。');
+  if (!lane) throw new Error('找不到这个方案。');
   const path = lanePath(project, laneId);
   const id = crypto.randomUUID();
   const task = taskOf(project.intent.taskId);

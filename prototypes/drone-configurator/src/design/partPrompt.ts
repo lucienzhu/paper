@@ -100,7 +100,7 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
   });
   // 臂根在农业植保的起始值里是折叠铰接（沿用六旋 39 张的设定），没改过时记为默认值。
   add({ id: 'arm_root', group: 'frame', source: src('frame.arm_root'), zh: '臂根过渡', fields: ['frame.arm_root'], text: en(armRootOptions, frame.arm_root) });
-  add({ id: 'arm_material', group: 'frame', source: 'chosen', zh: '机臂材料外观', fields: ['frame.material_visual'], text: en(armMaterialOptions, frame.material_visual) });
+  add({ id: 'arm_material', group: 'frame', source: 'chosen', zh: '机臂表面外观', fields: ['frame.material_visual'], text: en(armMaterialOptions, frame.material_visual) });
 
   const size = fuselage.fuselage_dimensions_mm;
   add({
@@ -143,7 +143,9 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     text: gear.landing_gear_style === '无独立起落架' ? 'No separate landing gear.'
       : gear.landing_gear_style === '低矮滑撬/支腿'
         ? `Low landing skids with ${gear.landing_gear_height_mm} mm ground clearance, tucked beneath the aircraft.`
-        : `Tall landing legs with ${gear.landing_gear_height_mm} mm ground clearance.`,
+        : gear.landing_gear_style === '臂端一体脚架'
+          ? `Short landing legs are built into the underside of each arm tip, directly below each motor; the body sits ${gear.landing_gear_height_mm} mm above the ground, with no skids under the body.`
+          : `Tall landing legs with ${gear.landing_gear_height_mm} mm ground clearance.`,
   });
 
   const hex = accessories.drone_primary_color;

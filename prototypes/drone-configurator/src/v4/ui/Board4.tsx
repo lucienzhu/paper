@@ -7,7 +7,7 @@ import { Check, Lock, Maximize2, Crosshair, LoaderCircle, AlertCircle, Sparkles,
 import type { FrozenAttempt } from '../../design/candidateRecords';
 import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { candidateRetained } from '../../design/candidateRecords';
-import { boardRows, isDefault, laneParameters, lanePath, layerInfo, layers, pairLayers, sharedBy, staleFields, type Layer, type Project } from '../model';
+import { boardRows, isDefault, laneParameters, lanePath, layerInfo, layers, pairLayers, sharedBy, spaced, staleFields, type Layer, type Project } from '../model';
 import { useStudio, type CompareRecord, type Selection, type Suggestion } from '../store';
 import { candidateKey, inLane } from '../attempts';
 import MiniTop from './MiniTop';
@@ -39,7 +39,7 @@ const LayerCard = memo(({ data, selected }: NodeProps) => {
       {d.locked && <span className="p4 lock" title="登记条件，已锁定"><Lock size={10} />锁定</span>}
       {!d.locked && d.suggestions > 0 && <span className="p4 ai">{d.suggestions} 条建议</span>}
       {!d.locked && !d.suggestions && d.issues > 0 && <span className="p4 warn">{d.issues} 条待处理</span>}
-      {!d.locked && !d.suggestions && !d.issues && d.shared > 1 && <span className="p4 gray" title={`${d.shared} 条方向共用`}>共用 ×{d.shared}</span>}
+      {!d.locked && !d.suggestions && !d.issues && d.shared > 1 && <span className="p4 gray" title={`${d.shared} 个方案共用`}>共用 ×{d.shared}</span>}
       {!d.locked && !d.suggestions && !d.issues && d.shared <= 1 && d.isDefault && <span className="p4 gray">起始值</span>}
     </div>
     <MiniTop parameters={d.parameters} upto={d.layer} highlight={selected} />
@@ -54,7 +54,7 @@ const RenderNode = memo(({ data, selected }: NodeProps) => {
     <div className="n4-h">生成<span className="grow" />
       {d.running ? <span className="p4 gray"><LoaderCircle size={10} className="animate-spin" />生成中</span> : d.failed ? <span className="p4 gray">上一轮未完成</span> : d.issue ? <span className="p4 warn"><AlertCircle size={10} />需处理</span>
         : d.stale ? <span className="p4 warn">已过时</span> : d.rounds ? <span className="p4 ok">已回图</span> : <span className="p4 gray">还没生成</span>}</div>
-    <div className="n4-t">{d.stale ? `上游改了 ${d.stale} 项，按新设置再生成` : d.rounds ? `已生成 ${d.rounds} 轮` : '把这条方向送去出图'}</div>
+    <div className="n4-t">{d.stale ? `上游改了 ${d.stale} 项，按新设置再生成` : d.rounds ? `已生成 ${d.rounds} 轮` : '把这个方案送去出图'}</div>
     <div className="n4-s">条件图 + 由各层编译的文字</div>
     <button type="button" className="n4-run nodrag" disabled={d.disabled || d.running} data-testid="node-run" onClick={e => { e.stopPropagation(); d.onRun(d.laneId); }}>
       <Sparkles size={13} />{d.rounds ? '再生成一轮' : '生成'}</button>
@@ -122,12 +122,12 @@ function Inner(props: BoardProps) {
         targets: accepted.filter(e => e.pair && e.pole).map(e => pairNames[e.pair!][e.pole === 'left' ? 0 : 1]), layers: touchedLayers, cards: intent.cards.length } });
     const pendingByNode = new Map<string, number>();
     for (const s of suggestions) if (s.status === 'pending') {
-      try { const n = lanePath(project, s.laneId)[layers.indexOf(s.layer)]; pendingByNode.set(n.id, (pendingByNode.get(n.id) ?? 0) + 1); } catch { /* 方向已删去 */ }
+      try { const n = lanePath(project, s.laneId)[layers.indexOf(s.layer)]; pendingByNode.set(n.id, (pendingByNode.get(n.id) ?? 0) + 1); } catch { /* 方案已删去 */ }
     }
     project.lanes.forEach((lane, row) => {
       const path = lanePath(project, lane.id);
       const top = rowY[row];
-      labels.push({ x: COL.layer0, y: top + 14, text: lane.name + (lane.id === active ? '（正在编辑）' : '') + (lane.forkedFrom ? ` · 从${project.lanes.find(l => l.id === lane.forkedFrom!.laneId)?.name ?? ''}的${layerInfo[lane.forkedFrom.layer].name}分出` : '') });
+      labels.push({ x: COL.layer0, y: top + 14, text: lane.name + (lane.id === active ? '（正在编辑）' : '') + (lane.forkedFrom ? ` · 从${spaced(project.lanes.find(l => l.id === lane.forkedFrom!.laneId)?.name ?? '')}的${layerInfo[lane.forkedFrom.layer].name}分出` : '') });
       if (lane.collapsed) {
         const firstOwn = path.findIndex(n => rows.get(n.id) === row);
         const at = Math.max(0, firstOwn);
@@ -308,7 +308,7 @@ function Inner(props: BoardProps) {
       <button type="button" title={moved ? '整理：把拖过的节点排回整齐的位置' : '整理：节点已经按链排好'} aria-label="整理" data-testid="tidy" aria-pressed={false}
         className={moved ? 'is-on' : ''} onClick={() => { useStudio.getState().tidy(); setTimeout(() => frame(nodes.map(n => n.id), 0.72, true), 60); }}><LayoutGrid size={15} /><span className="c4-tool-label">整理</span></button>
       <button type="button" title="适应全图" aria-label="适应全图" onClick={() => flow.fitView({ padding: 0.16, maxZoom: 1, duration: 300 })}><Maximize2 size={15} /></button>
-      <button type="button" title="看清正在编辑的方向" aria-label="看清正在编辑的方向" data-testid="frame-active" onClick={() => frame(activeIds(), 0.85, true)}><Crosshair size={15} /></button>
+      <button type="button" title="看清正在编辑的方案" aria-label="看清正在编辑的方案" data-testid="frame-active" onClick={() => frame(activeIds(), 0.85, true)}><Crosshair size={15} /></button>
     </div>
   </>;
 }

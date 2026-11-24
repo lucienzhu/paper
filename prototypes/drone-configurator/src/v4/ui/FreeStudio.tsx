@@ -1,5 +1,5 @@
 // “AI 对话 + 自由提示”那一场：和同一个文字模型对话、写提示词、出图、取舍。没有用户依据匹配、参数和条件图。
-// 出图后端、生成设置、候选管理和记录与工作台那一场相同。
+// 出图后端、生成设置、候选管理和记录与工作台那一场相同。界面上只说这一步怎么做，不拿另一种方式作比较（4.4）。
 // 4.3：这个组件按场次的分界重新挂载（Studio4 里的 key），上一场没发出的对话、提示词和选中的父图不会带进下一场；
 // 对话的回答记回发出它的那一场；每一轮可以“取回”；终稿只有一个当前值。
 import { useState } from 'react';
@@ -21,7 +21,6 @@ import { BriefCard } from './PanelIntent';
 import FinalLine from './FinalLine';
 import { useCurrentFinal } from '../useFinal';
 import { relTime } from './util';
-import SessionSetup from './SessionSetup';
 
 export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt[]; urls: Map<string, string> }) {
   const { turns, comparing, selection, sessions, currentSessionId } = useStudio();
@@ -29,6 +28,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
   const backend = useImageBackend();
   // 只看这一场：同一个项目里早先的自由提示场次另有自己的记录和 ZIP。编号也按这一场数，和导出的文件名一致。
   const current = sessions.find(s => s.id === currentSessionId && !s.endedAt);
+  const registered = current?.kind === 'registered';
   const rounds = current ? roundsOfSession(current, attempts).rounds : [];
   const talk = current ? turns.filter(t => t.scope.kind === 'free' && t.sessionId === current.id) : [];
   const [message, setMessage] = useState('');
@@ -85,7 +85,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
     <div className="c4" style={{ overflow: 'auto', padding: 20 }}>
       <div style={{ display: 'grid', gap: 12, maxWidth: 980 }}>
         <div className="row4" style={{ justifyContent: 'space-between' }}>
-          <div><b style={{ fontSize: 15 }}>AI 对话 + 自由提示</b><p className="r4-muted">同一个出图后端和设置。每一轮发出去的就是你确认的那段文字。</p></div>
+          <div><b style={{ fontSize: 15 }}>AI 对话 + 自由提示</b><p className="r4-muted">在右边写好要发给出图模型的文字，点“生成”；每点一次是一轮，发出去的就是你写的那段文字。</p></div>
           {comparing.length >= 2 && <button type="button" className="b4 ai" data-testid="free-compare" onClick={() => {
             const id = newId('cmp');
             st.recordCompare({ id, at: new Date().toISOString(), candidates: comparing.map(k => { const [a, c] = k.split('|'); return { attemptId: a, candidateId: c }; }) });
@@ -117,7 +117,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
     <aside className="r4"><div className="r4-scroll">
       {compareSel ? <><button type="button" className="b4 sm quiet" onClick={() => st.select(null)}>← 回到对话</button><PanelCompare id={compareSel} attempts={attempts} urls={urls} /></> : <>
         <div className="r4-head"><span className="r4-kicker">设计助手</span><h2 className="r4-title">聊想法，写提示词</h2>
-          <p className="r4-purpose">这个助手和工作台那一场用同一个文字模型，但它没有用户依据、参数表和条件图。</p></div>
+          <p className="r4-purpose">和 AI 聊想法；它可以帮你起草提示词，你改好再生成。</p></div>
         <section className="r4-sec" aria-label="对话">
           {talk.map(t => <div key={t.id} className={'turn4 ' + t.role}><div className="bubble">{t.text}</div>
             {t.role === 'assistant' && <span className="meta">{t.mode === 'fixture' ? '规则回退（未连模型）' : 'AI'} · {relTime(t.at)}</span>}
@@ -133,10 +133,9 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
           <textarea className="ta4" data-testid="free-prompt" value={prompt} placeholder="写下或改好要发出的文字" onChange={e => setPrompt(e.target.value)} />
           {parent && <p className="r4-muted">父图：已选一张候选 <button type="button" className="b4 sm quiet" onClick={() => setParent('')}>不用父图</button></p>}
           <button type="button" className="b4 pri" data-testid="free-run" disabled={busy === 'run' || !prompt.trim()} onClick={() => void run()}>{busy === 'run' ? <LoaderCircle size={14} className="animate-spin" /> : <Sparkles size={14} />}生成</button>
-          <p className="r4-muted">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据（且不接受不带图的提示）' : ''}</p>
+          {!registered && <p className="r4-muted">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据（且不接受不带图的提示）' : ''}</p>}
           {error && <p className="r4-note" role="alert">{error}</p>}
         </section>
-        <SessionSetup />
       </>}
     </div></aside>
   </div>;

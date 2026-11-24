@@ -1,15 +1,17 @@
 // 生成之后的三个面板：这一轮会发什么；一张候选来自哪几项决定、怎样在它上面直接改；几张候选并排比较、取舍。
+// 4.4（作者 11 月 24 日）：“生成这一轮”只按画布上确认的设置出图，不再另加一句“这一轮想看什么”（那句会写进实发请求，画布上却看不到）；
+// 在某张图上改走候选上的“在这张图上改”；每一轮实发的完整请求自动存进记录，不在面板上展开。
 import { useEffect, useMemo, useState } from 'react';
 import { Sparkles, LoaderCircle, Check, X, ArrowLeftRight, CornerDownLeft, Send, Flag } from 'lucide-react';
 import type { FrozenAttempt } from '../../design/candidateRecords';
 import { candidateRetained, recordDecision } from '../../design/candidateRecords';
-import { abandonRound, generationStatus, isGenerationPending, retryCollection, structuredText } from '../../design/generation';
+import { abandonRound, generationStatus, isGenerationPending, retryCollection } from '../../design/generation';
 import { computeLayout } from '../../design/design';
 import { diffParameters } from '../../design/fields';
 import { useImageBackend } from '../../design/imageBackend';
 import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { GuideView } from '../../components/Studio/Stage';
-import { laneIntent, laneParameters, laneTouched, layerInfo, layers, sharedBy, laneNode, newId, staleFields, type Layer, type Project } from '../model';
+import { laneIntent, laneParameters, layerInfo, layers, sharedBy, laneNode, newId, spaced, staleFields, type Layer, type Project } from '../model';
 import { useStudio, type CompareRecord } from '../store';
 import { ai, type AiChange } from '../ai';
 import { askAi } from '../aiSession';
@@ -54,48 +56,36 @@ export function PanelRender({ laneId, attempts, urls }: Props & { laneId: string
   const mine = attempts.filter(a => inLane(a, laneId, project)).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   const latest = mine[mine.length - 1];
   const stale = latest ? staleFields(latest.config.parameters, parameters) : [];
-  const [goal, setGoal] = useState('');
-  const [parent, setParent] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const candidates = mine.flatMap(a => a.candidates.map(c => ({ a, c })));
-  const parentLabel = parent ? candidates.findIndex(x => x.c.id === parent) + 1 : 0;
-  const text = useMemo(() => structuredText(parameters, laneTouched(project, laneId), laneIntent(project), parent ? 'candidate' : undefined, goal),
-    [parameters, project, laneId, parent, goal]);
   const layout = useMemo(() => computeLayout(parameters), [parameters]);
+  const registered = useStudio(s => s.sessions.some(x => x.id === s.currentSessionId && !x.endedAt && x.kind === 'registered'));
   async function run() {
     setBusy(true); setError('');
-    try { await runLane(laneId, { goal: goal.trim() || undefined, parentCandidateId: parent || undefined }); setGoal(''); st.setNotice('已提交。回图会出现在这一行的后面。'); }
+    try { await runLane(laneId); st.setNotice('已提交。回图会出现在这一行的后面。'); }
     catch (e) { setError(e instanceof Error ? e.message : String(e)); }
     finally { setBusy(false); }
   }
   return <>
     <div className="r4-head" data-testid="render-panel">
       <span className="r4-kicker">{lane?.name} · 生成</span>
-      <h2 className="r4-title">把这条方向送去出图</h2>
-      <p className="r4-purpose">五层决定编译成一张条件图和一段文字，发给 {backend.label}，每点一次是一轮，返回一张 1024 × 1024 的图。</p>
+      <h2 className="r4-title">把这个方案送去出图</h2>
+      <p className="r4-purpose">按{spaced(lane?.name ?? '这个方案')}现在的五层设置出一张图；每点一次是一轮。要在某张图上改，到那张候选上说要改什么。</p>
     </div>
     {stale.length > 0 && <section className="r4-sec"><h3>上一轮之后改了 {stale.length} 项</h3>
       <div className="diff4" data-num>{stale.map(d => <div key={d.path} style={{ display: 'contents' }}><span>{d.label}</span><b><em>{d.from} → </em>{d.to}</b></div>)}</div></section>}
     <section className="r4-sec">
-      <h3>这一轮想看什么（选填）</h3>
-      <input className="in4" data-testid="round-goal" value={goal} placeholder="例如：机鼻和相机的过渡更圆润" onChange={e => setGoal(e.target.value)} />
-      {candidates.length > 0 && <select className="in4" aria-label="父图" value={parent} onChange={e => setParent(e.target.value)}>
-        <option value="">不用父图，按决定重新生成</option>
-        {candidates.map(({ c }, i) => <option key={c.id} value={c.id}>以{lane?.name.replace(/^方向\s*/, '')}{i + 1} 为父图继续改</option>)}
-      </select>}
       <button type="button" className="b4 pri" data-testid="run-lane" disabled={busy} onClick={() => void run()}>{busy ? <LoaderCircle size={14} className="animate-spin" /> : <Sparkles size={14} />}{busy ? '正在提交' : '生成这一轮'}</button>
       {error && <p className="r4-note" role="alert">{error}</p>}
-      <p className="r4-muted">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据' : ''}{parentLabel ? ` · 父图 ${parentLabel}` : ''}</p>
+      {!registered && <p className="r4-muted">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据' : ''}</p>}
     </section>
-    <section className="r4-sec"><h3>将要发出的内容</h3>
+    <section className="r4-sec"><h3>这一轮按什么出图</h3>
       <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12, alignItems: 'start' }}>
         <GuideView layout={layout} className="img4" />
-        <p className="r4-muted">条件图只画机架：红点是电机轴心，蓝线是机架连接。其余各层都写进文字。</p>
+        <p className="r4-muted">条件图只画机架：红点是电机轴心，蓝线是机架连接。其余各层按画布上的设置写进文字；每一轮实发的完整请求自动存进记录。</p>
       </div>
-      <details><summary style={{ cursor: 'pointer', fontSize: 12.5 }}>完整文字</summary><p lang="en" style={{ whiteSpace: 'pre-wrap', fontSize: 12, color: 'var(--ink-2)', marginTop: 8 }} data-testid="round-text">{text}</p></details>
     </section>
-    {mine.length > 0 && <section className="r4-sec"><h3>这条方向的各轮</h3>
+    {mine.length > 0 && <section className="r4-sec"><h3>这个方案的各轮</h3>
       {[...mine].reverse().map((a, i) => { const s = generationStatus(a); return <div key={a.id} className="el4" data-round-status={a.h3?.status}>
         <div className="el4-main"><b>第 {mine.length - i} 轮 · {s.title}</b><span>{relTime(a.createdAt)} · {a.goal}</span>
           <RoundRecovery a={a} /></div>
@@ -164,7 +154,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
         // 这张图之后方向又改过：从这张图冻结时的规格出发另开一条方向，没要求改的部分才真正保持原样；原方向不动。
         const target = st.reviseFrom(laneId, frozen, revision.changes.map(c => ({ field: c.field, value: c.value })), `${lane.name} · 由第 ${index} 轮改`, message.trim());
         await runLane(target, { goal: revision.goal, parentCandidateId: candidateId, keep });
-        st.setNotice(`这张图之后方向改过 ${drift.length} 项，这一轮从这张图的规格出发，放在新方向里；原方向不动。`);
+        st.setNotice(`这张图之后方案改过 ${drift.length} 项，这一轮从这张图的规格出发，放在新方案里；原方案不动。`);
       } else {
         // 这一轮只改这条方向：改到的最上游一层若被共用，先让这条方向有自己的一份。
         const first = layers.find(l => revision.changes.some(c => c.layer === l));
@@ -183,7 +173,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
   const explicitGoal = !!goal && goal !== laneIntent(project).note.trim() && !goal.startsWith(attempt.variantName + ' · ');
   return <>
     <div className="r4-head" data-testid="candidate-panel">
-      <span className="r4-kicker">{lane?.name ?? '已删去的方向'}</span>
+      <span className="r4-kicker">{lane?.name ?? '已删去的方案'}</span>
       <h2 className="r4-title">第 {index} 轮{attempt.parentImage ? ' · 在上一张图上改' : ''}</h2>
       {explicitGoal && <p className="r4-purpose">这一轮的目标：{attempt.goal}</p>}
       <p className="r4-muted">{relTime(attempt.createdAt)} · {attempt.h3?.model ?? ''}{attempt.keep ? ' · 保持不动：' + attempt.keep : ''}</p>
@@ -215,7 +205,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
         {revision.reply && <p className="sg4-why">{revision.reply}</p>}
         {revision.changes.length > 0 && <div className="diff4" data-num>{revision.changes.map(c => <div key={c.field} style={{ display: 'contents' }}><span>{fieldLabel(c.field)}</span><b><em>{formatValue(c.field, c.from)} → </em>{formatValue(c.field, c.value)}</b></div>)}</div>}
         <p className="r4-muted">保持不动：{revision.keep.map(l => layerInfo[l].name).join('、') || '无'}。父图是这张候选。</p>
-        {drift.length > 0 && <p className="r4-note" data-testid="revise-drift">这张图之后，这条方向又改了 {drift.length} 项（{drift.slice(0, 3).map(d => d.label).join('、')}{drift.length > 3 ? '……' : ''}）。按这张图的规格改，没要求改的部分才保持原样，所以这一轮会放进一条新方向；原方向不动。</p>}
+        {drift.length > 0 && <p className="r4-note" data-testid="revise-drift">这张图之后，这个方案又改了 {drift.length} 项（{drift.slice(0, 3).map(d => d.label).join('、')}{drift.length > 3 ? '……' : ''}）。按这张图的规格改，没要求改的部分才保持原样，所以这一轮会放进一条新方案；原方案不动。</p>}
         <div className="row4"><button type="button" className="b4 pri" data-testid="revise-run" disabled={busy} onClick={() => void applyRevision()}><Sparkles size={14} />按此改并生成</button>
           <button type="button" className="b4 quiet" onClick={() => setRevision(null)}>不用</button></div>
       </article>}
@@ -234,7 +224,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
       <h3>这张图来自</h3>
       <div className="chk4">{layers.map(l => <div key={l}><span style={{ minWidth: 34, color: 'var(--ink-3)' }}>{layerInfo[l].name}</span><span>{layerSummary(l, frozen)}</span></div>)}</div>
       {attempt.decisionPath && <p className="r4-muted">各层节点版本：{attempt.decisionPath.map(d => `${layerInfo[d.layer as Layer]?.name ?? d.layer} v${d.version}`).join(' · ')}</p>}
-      {drift.length > 0 && <p className="r4-note">这条方向此后又改了 {drift.length} 项：{drift.slice(0, 4).map(d => d.label).join('、')}{drift.length > 4 ? '……' : ''}</p>}
+      {drift.length > 0 && <p className="r4-note">这个方案此后又改了 {drift.length} 项：{drift.slice(0, 4).map(d => d.label).join('、')}{drift.length > 4 ? '……' : ''}</p>}
     </section>
   </>;
 }
@@ -272,8 +262,8 @@ export function PanelCompare({ id, attempts, urls }: Props & { id: string }) {
   };
   const parents = items.map(it => parentOf(it.attempt!));
   const parentDiffers = parents.some(p => p !== parents[0]);
-  const title = differing.size ? `差在 ${differing.size} 项决定` + (parentDiffers ? '，父图也不同' : '')
-    : textDiffers ? (free ? '实发文字不同' : '决定相同，实发文字不同') + (parentDiffers ? '，父图也不同' : '')
+  const title = differing.size ? `差在 ${differing.size} 项设置` + (parentDiffers ? '，父图也不同' : '')
+    : textDiffers ? (free ? '实发文字不同' : '设置相同，修改说明不同') + (parentDiffers ? '，父图也不同' : '')
     : parentDiffers ? '实发文字相同，父图不同' : '输入完全相同，只差在生成本身';
   async function save() {
     setError('');
@@ -296,7 +286,13 @@ export function PanelCompare({ id, attempts, urls }: Props & { id: string }) {
     </label>; })}</div>
     {differing.size > 0 && <table className="tbl4"><thead><tr><th>决定</th>{items.map((_, i) => <th key={i}>第 {i + 1} 张</th>)}</tr></thead>
       <tbody>{[...differing.keys()].map(path => <tr key={path}><td>{fieldLabel(path)}</td>{items.map((it, i) => <td key={i} data-num>{formatValue(path, path.split('.').reduce<unknown>((o, k) => (o as Record<string, unknown>)[k], it.attempt!.config.parameters))}</td>)}</tr>)}</tbody></table>}
-    <section className="r4-sec" aria-label="实发的文字与父图" data-testid="compare-sent">
+    {!free && <section className="r4-sec" aria-label="修改说明与父图" data-testid="compare-sent">
+      <h3>修改说明与父图</h3>
+      {items.map((it, i) => { const g = it.attempt!.goal.trim(); const explicit = !!g && g !== laneIntent(project).note.trim() && !g.startsWith(it.attempt!.variantName + ' · ');
+        return <span key={i} className="r4-muted">第 {i + 1} 张 · 父图：{parents[i]} · {explicit ? '修改说明：' + g : '按当时的设置生成'}</span>; })}
+      <p className="r4-muted" style={{ margin: 0 }}>每一轮实发的完整请求在记录里，由主持人导出。</p>
+    </section>}
+    {free && <section className="r4-sec" aria-label="实发的文字与父图" data-testid="compare-sent">
       <h3>实发的文字与父图</h3>
       {items.map((_, i) => <div key={i} style={{ display: 'grid', gap: 4 }}>
         <span className="r4-muted">第 {i + 1} 张 · 父图：{parents[i]}{i > 0 && texts[i] === texts[0] ? ' · 文字与第 1 张相同' : ''}</span>
@@ -306,7 +302,7 @@ export function PanelCompare({ id, attempts, urls }: Props & { id: string }) {
             : <del key={k} style={{ color: 'var(--ink-3)' }}>{d.text}</del>)}</p>}
       </div>)}
       {texts.length > 1 && textDiffers && <p className="r4-muted" style={{ margin: 0 }}>第 2 张起，浅黄底是比第 1 张多出的字，删除线是第 1 张有、这一张没有的字。</p>}
-    </section>
+    </section>}
     <section className="r4-sec">
       <h3>为什么选它</h3>
       <textarea className="ta4" style={{ minHeight: 64 }} value={reason} data-testid="compare-reason" placeholder="例如：短一些更像随身带的东西" onChange={e => setReason(e.target.value)} />

@@ -2,8 +2,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  applyLayer, boardRows, clearValue, forkAt, laneIntent, laneNode, laneParameters, lanePath, layerFields, layerOf, layers,
-  migrate, newProject, privatize, removeLane, setValue, sharedBy, staleFields,
+  applyLayer, boardRows, clearValue, conditionHolds, forkAt, laneIntent, laneNode, laneParameters, lanePath, layerDifferences, layerFields, layerOf, layers,
+  migrate, newProject, privatize, removeLane, setValue, sharedBy, staleFields, upstreamOf,
 } from '../src/v4/model.ts';
 import { designStart } from '../src/design/defaults.ts';
 import { fields } from '../src/design/fields.ts';
@@ -101,7 +101,7 @@ test('removing a direction prunes nodes nobody uses', () => {
   const before = Object.keys(p.nodes).length;
   removeLane(p, b.id);
   assert.equal(Object.keys(p.nodes).length, before - 4);
-  assert.throws(() => removeLane(p, 'lane-A'), /至少保留一条方向/);
+  assert.throws(() => removeLane(p, 'lane-A'), /至少保留一个方案/);
 });
 
 test('stale fields list exactly the changes made after a round was frozen', () => {
@@ -139,7 +139,7 @@ import { baseParameters, studioTasks } from '../src/v4/model.ts';
 import { compilePrompt } from '../src/design/partPrompt.ts';
 import { bodyClearance, envelopeClearance } from '../src/design/checks.ts';
 import { study, studyBriefs } from '../src/design/defaults.ts';
-import { roundsOfSession, sessionStem, sessionTitle } from '../src/v4/sessions.ts';
+import { registrationClash, roundsOfSession, sessionStem, sessionTitle } from '../src/v4/sessions.ts';
 import { readFileSync } from 'node:fs';
 
 const archivedHex = JSON.parse(readFileSync(new URL('../src/data/history/cases.json', import.meta.url), 'utf8')).hex.prompt;
@@ -274,4 +274,54 @@ test('a session has one current final: a later one replaces the earlier, rejecti
   const trial = { id: 'session-1', no: 5, projectId: 'p', projectCreatedAt: '', method: 'free', kind: 'trial', briefId: 'A', startedAt: '' };
   assert.match(sessionTitle(trial), /委托 A · 机鼻 · 试用/);
   assert.equal(sessionStem(trial), 'session05-free-prompt-briefA-trial');
+});
+
+// ---------- 4.4（作者 11 月 24 日与 Codex 子代理走查） ----------
+test('4.4: another version from a middle layer keeps the earlier layers shared, and says which', () => {
+  assert.deepEqual(upstreamOf('frame'), []);
+  assert.deepEqual(upstreamOf('body'), ['frame', 'propulsion']);
+  const p = newProject();
+  const b = forkAt(p, 'lane-A', 'body');
+  assert.equal(b.name, '方案 B');
+  for (const layer of upstreamOf('body')) assert.equal(laneNode(p, 'lane-A', layer).id, laneNode(p, b.id, layer).id, layer + ' 应当仍共用');
+  assert.notEqual(laneNode(p, 'lane-A', 'body').id, laneNode(p, b.id, 'body').id);
+  // 改共用的上游一层，两个方案一起变
+  setValue(p, b.id, 'frame.wheelbase_mm', 260);
+  assert.equal(laneParameters(p, 'lane-A').frame.wheelbase_mm, 260);
+});
+
+test('4.4: copying a layer from another solution lists exactly the items that will change', () => {
+  const p = newProject();
+  const b = forkAt(p, 'lane-A', 'frame');
+  setValue(p, b.id, 'frame.arm_width_mm', '20mm');
+  setValue(p, b.id, 'frame.wheelbase_mm', 260);
+  const diffs = layerDifferences(p, b.id, 'lane-A', 'frame');
+  assert.deepEqual(diffs.map(d => d.path).sort(), ['frame.arm_width_mm', 'frame.wheelbase_mm']);
+  assert.deepEqual(diffs.find(d => d.path === 'frame.arm_width_mm'), { path: 'frame.arm_width_mm', from: '15mm', to: '20mm' });
+  assert.deepEqual(layerDifferences(p, b.id, 'lane-A', 'cmf'), []);
+  applyLayer(p, b.id, 'lane-A', 'frame');
+  assert.deepEqual(layerDifferences(p, b.id, 'lane-A', 'frame'), []);
+});
+
+test('4.4: the registered frame condition is checked on every solution', () => {
+  const c2 = study.conditions[0].frame;
+  const p = newProject();
+  for (const [k, v] of Object.entries(c2)) setValue(p, 'lane-A', 'frame.' + k, v);
+  const b = forkAt(p, 'lane-A', 'body');
+  assert.equal(conditionHolds(p, c2).ok, true);
+  const c = forkAt(p, b.id, 'frame');
+  setValue(p, c.id, 'frame.span_ratio_wl', 1.35);
+  const held = conditionHolds(p, c2);
+  assert.equal(held.ok, false);
+  assert.deepEqual(held.mismatches, [{ laneId: c.id, path: 'frame.span_ratio_wl', expected: 1, actual: 1.35 }]);
+});
+
+test('4.4: a second registration that repeats the order, brief or method for the same participant is refused', () => {
+  const first = { id: 's1', no: 1, projectId: 'p', projectCreatedAt: '', method: 'structured', kind: 'registered', briefId: 'A', participant: 'P01', order: 1, startedAt: '' };
+  assert.deepEqual(registrationClash([first], { briefId: 'B', method: 'free', participant: 'P01', order: 2 }), []);
+  assert.equal(registrationClash([first], { briefId: 'A', method: 'structured', participant: 'P01', order: 1 }).length, 3);
+  assert.match(registrationClash([first], { briefId: 'B', method: 'free', participant: ' P01 ', order: 1 }).join(), /已经有第 1 场/);
+  // 别人、试用都不算冲突
+  assert.deepEqual(registrationClash([first], { briefId: 'A', method: 'structured', participant: 'P02', order: 1 }), []);
+  assert.deepEqual(registrationClash([first], { briefId: 'A', method: 'structured', participant: 'P01' }), []);
 });

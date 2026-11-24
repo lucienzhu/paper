@@ -6,7 +6,8 @@ export interface FrameParameters {
   /** 轴心横向跨度 / 纵向跨度。真 X 固定 1.00；宽 X、伸展 X、H 型可调；Deadcat、十字由规则算出。 */
   span_ratio_wl: number;
   arm_thickness_mm: '3mm' | '4mm' | '5mm' | '6mm';
-  arm_width_mm: '10mm' | '15mm' | '20mm';
+  /** 10、15、20 mm 是常用档；4.4 起试用时可以写自定义宽度（整数毫米），所以是任意 `${n}mm`。 */
+  arm_width_mm: `${number}mm`;
   /** 空字符串表示留白，由设计者后续决定。 */
   material_visual: '' | 'Carbon Fiber' | 'Aluminum' | 'ABS Plastic' | 'PLA Plastic';
   /** 臂根过渡。空字符串表示留白。 */
@@ -37,7 +38,7 @@ export interface FuselageParameters {
 
 // 起落架参数类型
 export interface LandingGearParameters {
-  landing_gear_style: '无独立起落架' | '低矮滑撬/支腿' | '高脚起落架';
+  landing_gear_style: '无独立起落架' | '低矮滑撬/支腿' | '高脚起落架' | '臂端一体脚架';
   landing_gear_height_mm: number; // 20-100mm
 }
 
