@@ -2,6 +2,8 @@
 
 **[打开全部数据（论文协作账号登录）](https://github.com/Freeloop993/paper-reading-room/blob/1509ec8a0ced0fd9c5a7ebee28cd8ffeb2ff95a3/datasets/early-crawl/README.md)** · [公开统计、证据卡与共词矩阵](https://github.com/Freeloop993/paper/blob/3e718435cf6f80195e361b24df0f16bd87c5e34c/evidence/semantic-cards/early-crawl/README.md)
 
+**本仓库里的副本：** 8 个 ZIP 与包内逐文件校验清单在 [archive/paper-reading-room/datasets/early-crawl/](archive/paper-reading-room/datasets/early-crawl/)，2026-11-20 迁入（仓库所有者定为不脱敏公开）。放在 archive 下，但仍在用，不能删，见 [archive/README.md](archive/README.md) 第一节。上面的私有阅读库打不开时用这一份。
+
 原件共 435 个文件，分 8 个 ZIP。进入上方数据目录，按任务下载对应压缩包。清单记录每个文件的相对路径、大小及 SHA-256，各包保留原始内容。
 
 | 要查的问题 | 到哪里找 |

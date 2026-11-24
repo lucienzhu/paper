@@ -1,6 +1,6 @@
 # 开放工单快照（2026-11-24）：#3、#21—#25、#76
 
-存档：2026-11-24。本文件逐字保存正文与全部评论，按时间排序，供追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”“Codex：”等前缀表示实际撰写者。账号 Freeloop993 由作者和两位助手共用，账号名不等于撰写者。正文里写成从仓库根目录出发的相对链接，已改成从本目录出发（前面加 `../../`），其余逐字未改。这 7 个工单在存档时仍开着，之后的新评论以 GitHub 为准。
+存档：2026-11-24。本文件逐字保存正文与全部评论，按时间排序，供追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”“Codex：”等前缀表示实际撰写者。账号 Freeloop993 由作者和两位助手共用，账号名不等于撰写者。改过的只有链接：18 处按分支名写的 GitHub 链接改成了固定提交号（分支将按整理清单删除，对照表在文末），其余逐字未改。这 7 个工单在存档时仍开着，之后的新评论以 GitHub 为准。
 
 ---
 
@@ -14,7 +14,7 @@
 
 **11 月 18 日的待议问题：** [23 题及建议](https://github.com/Freeloop993/paper/issues/3#issuecomment-6950172282) · [第 1—5 题答复](https://github.com/Freeloop993/paper/issues/3#issuecomment-6950220478) · [第 6—23 题答复](https://github.com/Freeloop993/paper/issues/3#issuecomment-6966882676)。第 15 题（ParamDrone 的来源）仍待作者告知。
 
-**现行文件：** [11/17 任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md) · [论文总体框架](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-framework.md) · [仓库整理清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-cleanup-list.md)。协作与交接在 #76。
+**现行文件：** [11/17 任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md) · [论文总体框架](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-framework.md) · [仓库整理清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-cleanup-list.md)。协作与交接在 #76。
 
 本单原标题为“冻结六旋子任务、LoRA范围和正式采集条件”，原正文已[存档](https://github.com/Freeloop993/paper/blob/11f56cc/archive/issues/kept-issues-original-bodies-20261118.md)。其中 LoRA 已由作者决定不做；六旋翼已定为农业植保可行性探测（任务清单 H2）。
 
@@ -231,7 +231,7 @@ Claude：代记作者 2026-11-15 在本机 Claude Code 会话里的授权与决�
 - B 方向：“与 A 相同，照跑”。
 - C 臂材质：“外露碳纹”。
 
-**范围。** E3 设计初稿 9 张（A/B/C 各 3 张），Qwen 原生编辑通路，固定 250 mm 红点蓝线图，种子 2026112101—09 已在出图前登记：[预登记与请求](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/experiments/e3-quad-qwen)。前伸相机句按作者指示改用 11/14 机鼻前缘轮写法，记为字典 v1.4，仅用于 E3。
+**范围。** E3 设计初稿 9 张（A/B/C 各 3 张），Qwen 原生编辑通路，固定 250 mm 红点蓝线图，种子 2026112101—09 已在出图前登记：[预登记与请求](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-quad-qwen)。前伸相机句按作者指示改用 11/14 机鼻前缘轮写法，记为字典 v1.4，仅用于 E3。
 
 **不含。** 修订轮（等作者看完 9 张、选父图后另行决定）、正式 5.2.1、E2。
 
@@ -242,7 +242,7 @@ Claude：代记作者 2026-11-15 在本机 Claude Code 会话里的授权。
 
 我问：“按这套第二轮规格在 AutoDL 上跑 9 张吗？”作者答：“可以，跑第二轮”。
 
-**范围。** E3 第二轮初稿 9 张（A/B/C 各 3），规格按作者第一轮评语改写为字典 v1.5，种子 2026112111—19 已在出图前登记：[第二轮登记与请求](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/experiments/e3-quad-qwen/round-2)。仍用同一张 250 mm 红点蓝线图、Qwen 原生编辑、作者租用的 AutoDL 实例。
+**范围。** E3 第二轮初稿 9 张（A/B/C 各 3），规格按作者第一轮评语改写为字典 v1.5，种子 2026112111—19 已在出图前登记：[第二轮登记与请求](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-quad-qwen/round-2)。仍用同一张 250 mm 红点蓝线图、Qwen 原生编辑、作者租用的 AutoDL 实例。
 
 **不含。** 以父图为起点的修订（等作者看完第二轮再定）、正式 5.2.1、E2。
 
@@ -270,7 +270,7 @@ Claude：代记作者 2026-11-15 的决定与授权。
 
 **决定。** E3 第三轮父图为 E3R3-B2。第一次修订只改相机档：内嵌改为机头下挂云台。
 
-**范围。** 同一 AutoDL 实例连续运行 14 个批次、247 份请求，约 5.6 小时；作者看图后插入的修订批另计。登记见 [GPU 日程](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/experiments/gpu-day-20261115)。
+**范围。** 同一 AutoDL 实例连续运行 14 个批次、247 份请求，约 5.6 小时；作者看图后插入的修订批另计。登记见 [GPU 日程](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/gpu-day-20261115)。
 - E3 修订一及对照；
 - E2；
 - 5.2.1 正式造型响应（v1.2，每档 4 张）及扩展；
@@ -292,7 +292,7 @@ Claude：代记作者 2026-11-15 的同意。
 
 我问：“B2 修订二按‘俯视只见云台灰色顶面、看不到镜头’先跑 3 张开发验证再正式跑吗？”作者答：“可以，跑修订二”。
 
-**范围。** [B2 修订二登记](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/experiments/gpu-day-20261115/b2-rev2)（`e2dd53b`）：
+**范围。** [B2 修订二登记](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/gpu-day-20261115/b2-rev2)（`e2dd53b`）：
 - 回退到父图 B2，只改相机。
 - 先跑开发验证 3 张（种子 2026112141—43）。判据：至少 2 张看不到镜片，且其余部位保住。
 - 判据通过后跑正式 3 张（种子 2026112144—46）。这是 B2 的第二次也是最后一次修订。
@@ -304,7 +304,7 @@ Claude：代记作者 2026-11-15 的决定。
 
 我问：“B2 的相机，再试双参考图开发 3 张，还是停止生成、留到 4.4 手工深化？”作者答：“试双参考图”。
 
-**范围。** [双参考图版登记](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/experiments/gpu-day-20261115/b2-rev2b)（`38de520`）：
+**范围。** [双参考图版登记](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/gpu-day-20261115/b2-rev2b)（`38de520`）：
 - 图 1 为父图 B2，图 2 为第三轮 C1，只照搬 C1 机鼻的相机安排；
 - 开发 3 张，种子 2026112151—53，判据为三项全是、至少 2/3；
 - 通过后另登记正式 3 张，不通过则相机改由 4.4 手工深化。
@@ -367,7 +367,7 @@ Claude：代记作者 2026-11-15 的 GPU 授权。
 ### 评论 41
 *Freeloop993 · 2026-11-17T13:58:56Z · [原链接](https://github.com/Freeloop993/paper/issues/3#issuecomment-6950172282)*
 
-Claude：仓库与研究梳理留下的待议问题，汇总在这里。每题后面是我的建议。**若全部同意，回复“按建议”即可；不同意的写编号和你的决定。** 详情见[框架第八节](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-framework.md)和[整理清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-cleanup-list.md)。
+Claude：仓库与研究梳理留下的待议问题，汇总在这里。每题后面是我的建议。**若全部同意，回复“按建议”即可；不同意的写编号和你的决定。** 详情见[框架第八节](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-framework.md)和[整理清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-cleanup-list.md)。
 
 ## 甲、整理怎么做（先答，Codex 在等）
 
@@ -465,7 +465,7 @@ Claude：登记作者 11 月 18 日对第 15 题的答复。作者原话（英�
 ### 正文
 *Freeloop993 · 2026-11-12T08:19:30Z*
 
-E2 更正版（E2R）6 张已回收核验，一名真人盲读已完成，联合合格数待核。本单今后跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md) F 组的三项：
+E2 更正版（E2R）6 张已回收核验，一名真人盲读已完成，联合合格数待核。本单今后跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md) F 组的三项：
 
 - **F1 开发**：17 张，相机、顶盖、臂根各 3 张，E2 第二版 8 张；已登记并通过出图前检查。作者 11/18 同意按登记运行（#3 第 14 题），开机时间由作者安排。
 - **F2 确认**：只运行通过开发门的组，最多 56 张。时间紧时，E2 第二版的 40 张确认可降为 16 张，作者已预先同意；采用时在 #76 写明。
@@ -620,7 +620,7 @@ Codex 交付 #67（`69f350f`）。[4.2.1 三张规格卡](https://github.com/Fre
 ### 正文
 *Freeloop993 · 2026-11-12T08:19:33Z*
 
-本单跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md) 的 C1—C3，回答研究问题 RQ3：与自由提示相比，结构化协同在时间、合格率与终稿质量上有何不同。
+本单跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md) 的 C1—C3，回答研究问题 RQ3：与自由提示相比，结构化协同在时间、合格率与终稿质量上有何不同。
 
 - **C1 登记**：被试内比较两种方式，即结构化（配置器加有边界修订）与自由文字提示。两份任务简报，顺序尽量平衡并逐人登记。每场上限 9 张、主动操作 15 分钟；记录主动操作时间时区分操作、等待与人工交接。指标：主动操作时间、生成次数、合格率（两位盲态判读）、终稿质量（独立评议）、主观负荷短表。登记、简报、记录表与合格判据在场次前定稿。
 - **C2 预试**：作者本人 1 场，约 18 张，不计入结果，用来修正流程。
@@ -642,7 +642,7 @@ Codex 已在 E 盘配置器交付 [E4 配对离线工作台和记录口径](http
 ### 正文
 *Freeloop993 · 2026-11-12T08:19:34Z*
 
-本单跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md) 的 E 组，回答不知情的评议者能否读出设计意图。按作者 11/18 的决定（#3 第 8 题），评议重点是“紧凑—舒展”。
+本单跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md) 的 E 组，回答不知情的评议者能否读出设计意图。按作者 11/18 的决定（#3 第 8 题），评议重点是“紧凑—舒展”。
 
 - **人数**：目标 10 人，记录设计背景；未参与设计、未见过程。作者招募。
 - **材料**：事先写明每张终稿的目标一极；中性终稿、其他方向的 2—3 张备选终稿、8 款真实机型、单参数对照、三档比例图（来自 A5）。评分页沿用 PR #57 的词对评分页（#3 第 22 题）。
@@ -669,7 +669,7 @@ Codex 已核回四个实际型号的实拍来源，并筛查三项新增候选�
 ### 正文
 *Freeloop993 · 2026-11-12T08:19:35Z*
 
-本单跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md) 的 H 组与 A6。作者已定：六旋翼为农业植保可行性探测，既有资料优先（H2）。39 张更正输出已回收，其中 36 张已独立复测。
+本单跟踪 [11/17 任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md) 的 H 组与 A6。作者已定：六旋翼为农业植保可行性探测，既有资料优先（H2）。39 张更正输出已回收，其中 36 张已独立复测。
 
 - **H1**：方法章补六旋翼的规格卡、变量表和归一化公式。Claude 写。
 - **H2**：按布局、药箱与喷洒部件的可见性整理现有结果；遮挡的喷头记不可判。
@@ -704,10 +704,10 @@ Claude、Codex 与作者 11 月 18 日起的日常协作与交接在这里进行
 
 | 要找什么 | 文件 |
 |---|---|
-| 论文要证明什么、做到哪里、怎样做完 | [论文总体框架与现状](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-framework.md) |
-| 任务逐项分工（A、S、C、F、E、D、H、W、M） | [11/17 方向与任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md) |
-| 仓库整理 | [整理清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-cleanup-list.md) |
-| 新文献 | [文献补充](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/references/2026-11-18-literature-additions.md) |
+| 论文要证明什么、做到哪里、怎样做完 | [论文总体框架与现状](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-framework.md) |
+| 任务逐项分工（A、S、C、F、E、D、H、W、M） | [11/17 方向与任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md) |
+| 仓库整理 | [整理清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-cleanup-list.md) |
+| 新文献 | [文献补充](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/references/2026-11-18-literature-additions.md) |
 
 **当前基准分支：** `claude/direction-todo-20261117`。合并完成后改为 `main`，此后只在 `main` 和合并即删的短命分支上工作。
 
@@ -782,3 +782,10 @@ F1 开发 17 张按登记运行，开机时间由作者安排。F2 确认最多 
 - 方法冻结单 v2 的草稿（第 16 题），以 v1.6 字典为准，附偏离记录表。你核对其中的实际参数。
 - 第 15 题（ParamDrone 的来源）仍在等作者回答。
 
+
+## 附：按分支名写的链接固定到的提交（2026-11-24）
+
+| 原链接里的分支 | 固定到的提交 | 为什么改 |
+| --- | --- | --- |
+| `Freeloop993/paper` 的 `claude/direction-todo-20261117` | `9afe6903b0368cd86ced367c3675bb4a7adc98e2` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/e3-quad-qwen` | `e96d41946ea84237da506bb76c2f713a3f3b9275` | 按整理清单将删除，删前打同名标签 |

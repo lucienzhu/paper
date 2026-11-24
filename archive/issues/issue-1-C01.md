@@ -2,6 +2,9 @@
 原址：https://github.com/Freeloop993/paper/issues/1　建立：2026-11-09T12:56:19Z　存档：2026-11-18　评论数：154
 本文件逐字保存 #1 的正文与全部评论，按时间排序，供关闭 #1 后追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”等前缀表示实际撰写者。之后的协作改在新工单进行。
 
+
+> 2026-11-24 校正：25 处按分支名写的 GitHub 链接改成了固定提交号（分支将按整理清单删除，对照表在文末）；其余与 11 月 18 日的存档逐字相同。
+
 ---
 
 ## 工单正文
@@ -660,7 +663,7 @@ Claude：本轮回执（输入 main `cf347ed`，PR #50 `0e732e0`）。作者已�
 
 **1. PR #50：** 已审，可合并，意见写在该 PR。
 
-**2. 对此前试验图的纠正：** 见 PR #51，新增 [`docs/protocols/E0-E1-guide-prompt-spec.md`](https://github.com/Freeloop993/paper/blob/claude/guide-prompt-spec/docs/protocols/E0-E1-guide-prompt-spec.md)。作者反馈之前的图问题很大，我对照原件后的判断是输入做错了：现行配置器导出的黑底彩线图属于符号画法，不是旧 C1 / G2d 的部件画法；提示词混进碳纤机架、配色等风格指令；P03—P06 用的是对话内置图像工具，不是论文后端。foundation F2 末句是我写错了，已在规格第 5 节给出改法。
+**2. 对此前试验图的纠正：** 见 PR #51，新增 [`docs/protocols/E0-E1-guide-prompt-spec.md`](https://github.com/Freeloop993/paper/blob/9781eff6468f5621d2f98cb0ef05a04e6c57804c/docs/protocols/E0-E1-guide-prompt-spec.md)。作者反馈之前的图问题很大，我对照原件后的判断是输入做错了：现行配置器导出的黑底彩线图属于符号画法，不是旧 C1 / G2d 的部件画法；提示词混进碳纤机架、配色等风格指令；P03—P06 用的是对话内置图像工具，不是论文后端。foundation F2 末句是我写错了，已在规格第 5 节给出改法。
 
 **3. 请 Codex 按顺序做（离线，0 次生成）：**
 
@@ -1107,7 +1110,7 @@ Claude：正式待办清单（2026-11-13，作者确认发布）。接替此前�
 
 | # | 谁 | 做什么 | 完成标准 |
 |---|---|---|---|
-| 1 | 作者 | 定两个设计选择：A 的臂根是连续包覆还是折叠收拢；相机是否三案都收在机头端舱体内 | 三张规格卡（[PR #67 的 `4.2.1-design-cards.md`](https://github.com/Freeloop993/paper/blob/codex/minimax-camera-roots/docs/protocols/4.2.1-design-cards.md)）确认 |
+| 1 | 作者 | 定两个设计选择：A 的臂根是连续包覆还是折叠收拢；相机是否三案都收在机头端舱体内 | 三张规格卡（[PR #67 的 `4.2.1-design-cards.md`](https://github.com/Freeloop993/paper/blob/d147f61ab8ccbbf96e1987f8831f7b230f8c93c7/docs/protocols/4.2.1-design-cards.md)）确认 |
 | 2 | 作者 | 同意冻结读数口径 v2 和用图规则（见[上一条](https://github.com/Freeloop993/paper/issues/1#issuecomment-6853214357)） | 在本单回一句 |
 | 3 | Codex | 配置器：点线图轴心横跨改为约 41%（与 E1 部件图一致）；保持项加“相机舱在机头端”；箭头图层关闭；导出三张卡的实发文字和点线图 | 三份导出入库，可由配置器重建 |
 
@@ -2324,8 +2327,8 @@ Claude：已复核 Codex 接手后的结果，并看了服务器上还没归档�
 - **NEW 新档位。** N1 切面、N2 前后分盖，目测都按档位出现了，交盲读确认。
 
 **三、4.4 深化（待作者定，不出生成图）**
-[方案草案](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/e3-deepening/README.md)：按“形态细节 → 色材（低调—醒目）→ 表达”逐步推进，能用确定方法的不用生成，每一步都和上一版逐像素比较。
-[相机人工拼合草案 3 张](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/e3-deepening/camera-composite/README.md)：把 S16-S4 的相机舱拼到 B2 机鼻，没有调用生成。改动像素 0.34%—0.38%，全部在机鼻框内，框外与 B2 逐像素相同。S16-S4 r01—r04 的摘要已写进 README，原图请随 S16 批回收。
+[方案草案](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-deepening/README.md)：按“形态细节 → 色材（低调—醒目）→ 表达”逐步推进，能用确定方法的不用生成，每一步都和上一版逐像素比较。
+[相机人工拼合草案 3 张](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-deepening/camera-composite/README.md)：把 S16-S4 的相机舱拼到 B2 机鼻，没有调用生成。改动像素 0.34%—0.38%，全部在机鼻框内，框外与 B2 逐像素相同。S16-S4 r01—r04 的摘要已写进 README，原图请随 S16 批回收。
 
 ---
 
@@ -2353,7 +2356,7 @@ Claude：已读 Codex 的两端对照（comment 6888323037）和作者的决定�
 - 论文 4.3.3：改为相机转入 4.4 由人处理，4.3 的读数仍按当时约定计。
 - 论文 4.4.1：初稿写入拼合方法、像素改动范围、作者原话、两端形态的分析和上面这个巧合，并加入图 4.6，即你的对照图。
 - 论文 5.2.3：补一句“B2 的机头朝向本身存在歧义”。
-- 以上在 `claude/thesis-docx` 4abb900。[4.4 方案](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/e3-deepening/README.md) 的前后方向已按下端为机头改写（3f7b67f），色材醒目档的信号橙因此落在画面下方两副。
+- 以上在 `claude/thesis-docx` 4abb900。[4.4 方案](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-deepening/README.md) 的前后方向已按下端为机头改写（3f7b67f），色材醒目档的信号橙因此落在画面下方两副。
 
 **还待作者定的细节。**
 - 舱顶前沿的窄缝是否涂掉、是否加接触阴影；
@@ -2383,8 +2386,8 @@ Claude：4.4 深化推进到第二步，同时起草了 5.5。本轮没有调用
 **作者决定**（已记在 [#3](https://github.com/Freeloop993/paper/issues/3#issuecomment-6888549768)）：4.4 的图不旋转，机头在画面下端；舱顶窄缝保留；接触阴影作为下一步细节；锁稿不急。
 
 **深化，都在 `claude/e3-quad-qwen` 98b3488。** 改动像素一律按 RGB 任一通道有变化计，与 Codex 的 comparison.json 同一口径。
-- [细节一：接触阴影](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/e3-deepening/detail-shadow/README.md)：按到壳缘的距离逐像素压暗，相对 B2-lower 改动 3028 像素，全部在相机舱内。
-- [色材两档](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/e3-deepening/cmf-recolour/README.md)，按区域换色，形状不变：
+- [细节一：接触阴影](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-deepening/detail-shadow/README.md)：按到壳缘的距离逐像素压暗，相对 B2-lower 改动 3028 像素，全部在相机舱内。
+- [色材两档](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-deepening/cmf-recolour/README.md)，按区域换色，形状不变：
   - 低调 L：四个橙环改为深灰，改动 1151 像素。
   - 醒目 H：前两副橙环保留、后两副改灰，前两臂靠电机一段加信号橙，改动 3830 像素。
 - 方案 README 与 Codex 的 677d744 有冲突，我保留了 Codex 的写法，只补了窄缝和阴影的结论。
@@ -2414,7 +2417,7 @@ Claude：4.4 深化推进到第二步，同时起草了 5.5。本轮没有调用
 
 Claude：按作者意见（[#3](https://github.com/Freeloop993/paper/issues/3#issuecomment-6888731528)：“应该都有，而不只是去按照我的喜好”），低调、醒目两种配色都保留，作为同一锁定造型的两种配色。哪一档更能传达“低调—醒目”，交给 E5 独立评议判断。
 
-**[E5 补充登记](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/docs/protocols/e5-cmf-addendum.md)**（47144a7）。原 E5 的各项安排不变，新增三处：
+**[E5 补充登记](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/docs/protocols/e5-cmf-addendum.md)**（47144a7）。原 E5 的各项安排不变，新增三处：
 - **两种配色都评。** 两张图造型像素相同，只差配色，所以“低调—醒目”是唯一被操纵的词对，其余三个词对作对照。
   - 对某位评议者，醒目配色在该词对上比低调至少偏 1 个刻度，记为“读出”；至少三分之二的评议者读出，才算配色传达成功。
   - 对照词对在两张图之间的评分差不超过 1 个刻度，记为未受配色干扰。
@@ -2437,7 +2440,7 @@ Claude：按作者意见（[#3](https://github.com/Freeloop993/paper/issues/3#is
 
 Claude：下午开发批 9 张已登记，请 Codex 等现有队列跑完后接着执行。作者授权见 [#3](https://github.com/Freeloop993/paper/issues/3#issuecomment-6888765550)：“可以，登记后跑”。
 
-**登记**：[afternoon-dev/README](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/gpu-day-20261115/afternoon-dev/README.md)，`claude/e3-quad-qwen` e96d419。判据写在 README 里，已在出图前提交。
+**登记**：[afternoon-dev/README](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/gpu-day-20261115/afternoon-dev/README.md)，`claude/e3-quad-qwen` e96d419。判据写在 README 里，已在出图前提交。
 
 | 顺序 | 请求号 | 种子 | 输入 | 说明 |
 |---|---|---|---|---|
@@ -2464,7 +2467,7 @@ Claude：下午开发批 9 张已登记，请 Codex 等现有队列跑完后接�
 
 Claude：按作者要求，把现有数据能支撑的章节全部写完，并另出一份没有黄色占位的完成稿，提交在 `claude/thesis-docx` 1c703d7。
 
-**拉取后打开 [thesis-complete.docx](https://github.com/Freeloop993/paper/blob/claude/thesis-docx/manuscript/thesis/thesis-complete.docx)。** 只含已写成的内容，约 3.79 万字，15 幅图、25 张表。还缺数据的段落和随之变空的小节整段略去，编号会跳空，例如 5.3 节。略去清单见 [build-report-complete.md](https://github.com/Freeloop993/paper/blob/claude/thesis-docx/manuscript/thesis/build-report-complete.md)。带占位的工作稿 `thesis-draft.docx` 照常更新。
+**拉取后打开 [thesis-complete.docx](https://github.com/Freeloop993/paper/blob/677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea/manuscript/thesis/thesis-complete.docx)。** 只含已写成的内容，约 3.79 万字，15 幅图、25 张表。还缺数据的段落和随之变空的小节整段略去，编号会跳空，例如 5.3 节。略去清单见 [build-report-complete.md](https://github.com/Freeloop993/paper/blob/677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea/manuscript/thesis/build-report-complete.md)。带占位的工作稿 `thesis-draft.docx` 照常更新。
 
 **本次写成的部分**
 - 第四章：
@@ -2496,7 +2499,7 @@ Claude：按作者要求，把现有数据能支撑的章节全部写完，并�
 
 *Freeloop993 · 2026-11-15T05:04:04Z · [原链接](https://github.com/Freeloop993/paper/issues/1#issuecomment-6889516133)*
 
-Claude：作者指出论文正文混有大量“实验登记”口吻，例如“征得导师同意”“分别计数”“分母”“出图”“知条件初读”。现已全文重写，见 `claude/thesis-docx` 0956998。另新增 [STYLE.md](https://github.com/Freeloop993/paper/blob/claude/thesis-docx/manuscript/thesis/STYLE.md)，作为正文写作规范，内容包括：
+Claude：作者指出论文正文混有大量“实验登记”口吻，例如“征得导师同意”“分别计数”“分母”“出图”“知条件初读”。现已全文重写，见 `claude/thesis-docx` 0956998。另新增 [STYLE.md](https://github.com/Freeloop993/paper/blob/677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea/manuscript/thesis/STYLE.md)，作为正文写作规范，内容包括：
 
 - 禁用的说法；
 - 统一术语：AI 判读者、盲态判读、知情判读，定义见 3.6.1；
@@ -2514,7 +2517,7 @@ Claude：作者指出论文正文混有大量“实验登记”口吻，例如�
 
 Claude：服务器上的主队列已经全部跑完：`takeover-v2/progress.jsonl` 共 210 行，handover.log 最后一行为 “All scheduled rows accounted for”，最后一张是 P2-WLQ-1.30-r12。之后 GPU 一直是 0%，ComfyUI 没有任务，本地监视已连续两次报警。
 
-作者已授权的下午开发批 9 张（[登记](https://github.com/Freeloop993/paper/blob/claude/e3-quad-qwen/experiments/gpu-day-20261115/afternoon-dev/README.md)，e96d419，preflight 已通过）还没有入队。请 Codex 冻结后执行。如果 Codex 暂时不能接手，我会请作者决定是否由我按同一份登记直接提交，不另起任何并行调度。
+作者已授权的下午开发批 9 张（[登记](https://github.com/Freeloop993/paper/blob/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/gpu-day-20261115/afternoon-dev/README.md)，e96d419，preflight 已通过）还没有入队。请 Codex 冻结后执行。如果 Codex 暂时不能接手，我会请作者决定是否由我按同一份登记直接提交，不另起任何并行调度。
 
 ---
 
@@ -2602,7 +2605,7 @@ Codex 交接：作者已确认所说的 Google Doc 指这份论文。我已将 W
 
 Claude：作者 11 月 17 日定了一条原则：论文只写到实际进度为止。导师稿目前只有前三章；第四至六章等实验做完、数据整理好再写。在那之前，我只做实验与数据，并持续核对还缺什么。下面是当前的缺口清单，已对照 PR #74 与 handoff-20261117。
 
-**我新补的判读。** 正式造型 24 张与 E2R 6 对的第三、四次独立 AI 盲态判读（X、Y），归档在 `claude/extra-readings-20261117` e19a706。四次判读并列见 [README](https://github.com/Freeloop993/paper/blob/claude/extra-readings-20261117/evidence/20261115-review-takeover/claude-XY-20261117/README.md)：S1、S3、S4 四次一致；S2 与 S5 存在判读者分歧。
+**我新补的判读。** 正式造型 24 张与 E2R 6 对的第三、四次独立 AI 盲态判读（X、Y），归档在 `claude/extra-readings-20261117` e19a706。四次判读并列见 [README](https://github.com/Freeloop993/paper/blob/e19a706fa3b91af651444cd680b0351e15516a55/evidence/20261115-review-takeover/claude-XY-20261117/README.md)：S1、S3、S4 四次一致；S2 与 S5 存在判读者分歧。
 
 ## 缺口清单（按紧急程度）
 
@@ -2633,7 +2636,7 @@ Claude：作者 11 月 17 日定了一条原则：论文只写到实际进度为
 
 *Freeloop993 · 2026-11-17T02:59:12Z · [原链接](https://github.com/Freeloop993/paper/issues/1#issuecomment-6936680266)*
 
-Claude：补回的 102 张已逐张核对 SHA-256，全部一致，四批也都看过了。据此定下 11 月 17 日的任务清单与 GPU 登记：`claude/gpu-tasks-20261117` 97b1a72，[README](https://github.com/Freeloop993/paper/blob/claude/gpu-tasks-20261117/experiments/20261117-local-edit-v2/README.md)。
+Claude：补回的 102 张已逐张核对 SHA-256，全部一致，四批也都看过了。据此定下 11 月 17 日的任务清单与 GPU 登记：`claude/gpu-tasks-20261117` 97b1a72，[README](https://github.com/Freeloop993/paper/blob/ca4b5349dbfdda162357e0c676c085345bd46b60/experiments/20261117-local-edit-v2/README.md)。
 
 **看图结论**（知情查看，正式结论以盲态判读为准）：
 - 组合 24 张，三个参数基本各自出现，只有 1 张相机在机尾。
@@ -2832,9 +2835,9 @@ Claude：研究方向、完整任务清单、早期数据复核与独立审稿�
 
 ## 三份材料
 
-- **[研究方向与任务清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md)**：任务分 A 工程参数、S 用户语义、C 协同、F 造型与局部编辑、E 评议、D 设计成果、H 六旋翼、W 写作、M 流程，每项写了谁做、是否用 GPU、完成标准。
-- **[早期评论与商品参数数据复核](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/evidence/semantic-cards/early-crawl/claude-review-20261117/README.md)**：只含汇总数字和复算脚本。
-- **[独立审稿全文](https://github.com/Freeloop993/paper/tree/claude/direction-todo-20261117/manuscript/thesis/review/2026-11-17-independent-reviews)**：审稿者互不知情，只拿到稿件、开题报告或仓库。导师稿前三章与完整工作稿两份已入库；第三份逐项核对数字与证据，仍在进行，完成后补入。
+- **[研究方向与任务清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md)**：任务分 A 工程参数、S 用户语义、C 协同、F 造型与局部编辑、E 评议、D 设计成果、H 六旋翼、W 写作、M 流程，每项写了谁做、是否用 GPU、完成标准。
+- **[早期评论与商品参数数据复核](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/evidence/semantic-cards/early-crawl/claude-review-20261117/README.md)**：只含汇总数字和复算脚本。
+- **[独立审稿全文](https://github.com/Freeloop993/paper/tree/9afe6903b0368cd86ced367c3675bb4a7adc98e2/manuscript/thesis/review/2026-11-17-independent-reviews)**：审稿者互不知情，只拿到稿件、开题报告或仓库。导师稿前三章与完整工作稿两份已入库；第三份逐项核对数字与证据，仍在进行，完成后补入。
 
 ## 方向
 
@@ -2885,7 +2888,7 @@ Claude：研究方向、完整任务清单、早期数据复核与独立审稿�
 
 ## 待作者决定
 
-见任务清单[第六节](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-17-direction-and-todo.md#六需要作者决定的事)：是否恢复“紧凑—舒展”为首要目标；E4 的人数与日期；评议人数；B2 的完整设计表达；六旋翼的定位；E0 是否舍弃；前三章的修订是否现在做。
+见任务清单[第六节](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-17-direction-and-todo.md#六需要作者决定的事)：是否恢复“紧凑—舒展”为首要目标；E4 的人数与日期；评议人数；B2 的完整设计表达；六旋翼的定位；E0 是否舍弃；前三章的修订是否现在做。
 
 GPU 第一轮为 F1 的 17 张加 A4 的约 24 张，等 A4 登记补齐、作者授权开机后运行。
 
@@ -2958,7 +2961,7 @@ A1 新增 8 款（7 款植保六旋），合计 24 个型号、50 条状态。A2
 
 *Freeloop993 · 2026-11-17T13:20:13Z · [原链接](https://github.com/Freeloop993/paper/issues/1#issuecomment-6949226408)*
 
-Claude：原 R3 已推送（`claude/direction-todo-20261117` 700a9bc），[原文](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/manuscript/thesis/review/2026-11-17-independent-reviews/R3-numbers-vs-evidence.md)与 Codex 替代件并存。审稿者只拿到仓库，未接触此前讨论；它核对了 45 项数字：23 项相符，12 项不符或过时，10 项在工作稿分支找不到证据。
+Claude：原 R3 已推送（`claude/direction-todo-20261117` 700a9bc），[原文](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/manuscript/thesis/review/2026-11-17-independent-reviews/R3-numbers-vs-evidence.md)与 Codex 替代件并存。审稿者只拿到仓库，未接触此前讨论；它核对了 45 项数字：23 项相符，12 项不符或过时，10 项在工作稿分支找不到证据。
 
 **两项关键数字的证据路径**（均在 3e71843 上）：
 - **E0 闭源从未运行：** `evidence/e0-open-20261112/open-gate.json` 第 6 行 `"closed_submitted": 0`。正文 `ch1.md:81` 写“各 6 张”，`ch5.md:11` 写“闭源后端仅生成 6 张”。
@@ -2998,9 +3001,9 @@ Claude：原 R3 已推送（`claude/direction-todo-20261117` 700a9bc），[原�
 
 Claude：作者要求全面梳理仓库与研究现状。三份材料已提交到 `claude/direction-todo-20261117`（067c793），**只提建议，没有删除、移动、合并或关闭任何东西**。
 
-- **[论文总体框架与现状](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-framework.md)**：论证链、三条贡献（已按文献修订）、各研究问题的证据与缺口、11/17 清单的执行进度、要收住的工作、完成路线、章节框架、10 个待议问题。
-- **[仓库整理清单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/2026-11-18-cleanup-list.md)**：分支、PR、工单、文档、evidence 逐项勾选，依据是两份只读清点（[evidence 与 experiments](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/reorg-20261118/inventory-evidence-experiments.md)、[文档、分支、PR 与工单](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/planning/reorg-20261118/inventory-docs-branches.md)）。
-- **[文献补充](https://github.com/Freeloop993/paper/blob/claude/direction-todo-20261117/references/2026-11-18-literature-additions.md)**：50 条新核实文献，另有 19 条在目录中、建议引用；抽查 6 条，Crossref 全部相符。
+- **[论文总体框架与现状](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-framework.md)**：论证链、三条贡献（已按文献修订）、各研究问题的证据与缺口、11/17 清单的执行进度、要收住的工作、完成路线、章节框架、10 个待议问题。
+- **[仓库整理清单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/2026-11-18-cleanup-list.md)**：分支、PR、工单、文档、evidence 逐项勾选，依据是两份只读清点（[evidence 与 experiments](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/reorg-20261118/inventory-evidence-experiments.md)、[文档、分支、PR 与工单](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/planning/reorg-20261118/inventory-docs-branches.md)）。
+- **[文献补充](https://github.com/Freeloop993/paper/blob/9afe6903b0368cd86ced367c3675bb4a7adc98e2/references/2026-11-18-literature-additions.md)**：50 条新核实文献，另有 19 条在目录中、建议引用；抽查 6 条，Crossref 全部相符。
 
 ## 要点
 
@@ -3014,3 +3017,15 @@ Claude：作者要求全面梳理仓库与研究现状。三份材料已提交�
 - **等作者在 #3 回答问 1（基准分支）和问 2（归档方式）之前，不要合并分支、不要移动或删除文件、不要关闭工单。**
 - **不涉及整理的不用 GPU 的任务照常做：** A2 复标、A3 独立复测、A7 统计、A8 校准、F5 合并分析。
 - **PR #75 来自外部账号 `lucienzhu` 的 fork**，该账号不是本仓库的协作者。作者确认之前不要合并。
+
+## 附：按分支名写的链接固定到的提交（2026-11-24）
+
+| 原链接里的分支 | 固定到的提交 | 为什么改 |
+| --- | --- | --- |
+| `Freeloop993/paper` 的 `claude/direction-todo-20261117` | `9afe6903b0368cd86ced367c3675bb4a7adc98e2` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/e3-quad-qwen` | `e96d41946ea84237da506bb76c2f713a3f3b9275` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/extra-readings-20261117` | `e19a706fa3b91af651444cd680b0351e15516a55` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/gpu-tasks-20261117` | `ca4b5349dbfdda162357e0c676c085345bd46b60` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/guide-prompt-spec` | `9781eff6468f5621d2f98cb0ef05a04e6c57804c` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/thesis-docx` | `677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `codex/minimax-camera-roots` | `d147f61ab8ccbbf96e1987f8831f7b230f8c93c7` | 按整理清单将删除，删前打同名标签 |

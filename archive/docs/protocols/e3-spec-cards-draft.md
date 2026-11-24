@@ -127,7 +127,7 @@ A 是基准。B 只在第一组词对上与 A 不同。C 在第二、三组上�
 
 - 接近 A 的处理：[蓝色上壳示范](../../evidence/quad-guide-cmf-review/product.png)的上壳是卵石形，机臂从壳体下伸出。作者对它的配色材料不满意，这里只借它看轮廓和臂根。
 - 接近 C 的处理：[桌面原型第一次接通的银色四旋](../../evidence/desktop-parameter-first-example/gpt-image-top.png)，分件线多，有开孔，相机舱是外露的前置模块。
-- “拼凑”一极的反面教材：[E1-control-wl1.00-r2](../../../evidence/e1-open-20261112/E1-actual/E1-control-wl1.00-r2/original.png)，细杆机臂和机身之间有白缝。这是出图缺陷造成的断开，方向 C 要的是有设计的分件，不是这种断开。
+- “拼凑”一极的反面教材：[E1-control-wl1.00-r2](https://github.com/Freeloop993/paper/blob/bef84974e91de1e02a0be052dfcdf698752b102c/evidence/e1-open-20261112/E1-actual/E1-control-wl1.00-r2/original.png)，细杆机臂和机身之间有白缝。这是出图缺陷造成的断开，方向 C 要的是有设计的分件，不是这种断开。
 - 作者一年前并排图的右半：机身方正、臂根连贯，介于 A 与 C 之间。
 
 ## 6. 参数去向

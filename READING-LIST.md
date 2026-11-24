@@ -22,8 +22,8 @@
 
 | 环节 | 先读 | 数据与原件 | 交到论文 |
 | --- | --- | --- | --- |
-| RQ1 用户评论 → 设计意图 | [评论核查与新共词图](evidence/20261117-research-update/comments/README.md)（18 KB）· [证据卡说明](evidence/semantic-cards/README.md) | [36 张证据卡](evidence/semantic-cards/cards.csv) · [早期采集数据与分母](evidence/semantic-cards/early-crawl/README.md) · [第二编码](evidence/semantic40-second-coding-20261115/) 与[配对规则](experiments/semantic40-pairing/README.md) · [词对 v1（作者 11 月 13 日冻结）](docs/protocols/word-pairs-v1-draft.md) · [S6 词对重新编码](evidence/20261117-research-update/s6-recode/README.md) · 原始评论表的入口在 [DATA](DATA.md) | 3.2、3.3 |
-| RQ2a 布局比例控得住吗 | [A8 真人取点](evidence/20261117-research-update/a8-click/README.md) 与[读法](evidence/20261117-research-update/a8-click/returns/reading.md) · [A8 不知情 AI 读数](evidence/20261117-research-update/a8-ai/README.md) | [A3 生成图读数](evidence/20261117-research-update/a3/README.md) · [点线图通路](experiments/l1-layout/README.md) 与[实测](evidence/l1-layout-actual/) · 部件图通路 [R0](evidence/r0-20261112/)、[E0](evidence/e0-open-20261112/)、[E1](evidence/e1-open-20261112/)（11 月 19 日退役，只留读数） | 3.4、5.1.2、5.2.1 |
+| RQ1 用户评论 → 设计意图 | [评论核查与新共词图](evidence/20261117-research-update/comments/README.md)（18 KB）· [证据卡说明](evidence/semantic-cards/README.md) | [36 张证据卡](evidence/semantic-cards/cards.csv) · [早期采集数据与分母](evidence/semantic-cards/early-crawl/README.md) · [第二编码](evidence/semantic40-second-coding-20261115/) 与[配对规则](experiments/semantic40-pairing/README.md) · [词对 v1（作者 11 月 13 日冻结）](docs/protocols/word-pairs-v1-draft.md) · [S6 词对重新编码](evidence/20261117-research-update/s6-recode/README.md) · 原始评论与商品数据的 [8 个 ZIP](archive/paper-reading-room/datasets/early-crawl/)（放在 archive 下，但仍在用，说明见 [DATA](DATA.md)）· S2 题面与对应键在 [paper-reading-room/studies](archive/paper-reading-room/studies/20261117-offline/) | 3.2、3.3 |
+| RQ2a 布局比例控得住吗 | [A8 真人取点](evidence/20261117-research-update/a8-click/README.md) 与[读法](evidence/20261117-research-update/a8-click/returns/reading.md) · [A8 不知情 AI 读数](evidence/20261117-research-update/a8-ai/README.md) | [A3 生成图读数](evidence/20261117-research-update/a3/README.md) · [点线图通路](experiments/l1-layout/README.md) 与[实测](evidence/l1-layout-actual/) · 部件图通路 [R0](evidence/r0-20261112/)、[E0](evidence/e0-open-20261112/)、[E1](evidence/e1-open-20261112/)（11 月 19 日退役，只留读数）· A8 的取点图与发放包在 [paper-reading-room/studies](archive/paper-reading-room/studies/20261117-offline/) | 3.4、5.1.2、5.2.1 |
 | 真实机型（RQ2 的参照） | [A1 官方规格](evidence/20261117-research-update/a1/README.md) · [A1、A4、C1 的关系](evidence/20261117-a1-a4-c1/README.md) | [A2 手册图面量测](evidence/20261117-config-review/A2/README.md) · [真实产品顶视图来源](evidence/real-product-topview/README.md) | 3.2.3 |
 | RQ2b 造型档位出得来吗 | [96 张读数与六旋](evidence/20261117-offline-review/README.md) · [v1.2 正式与 v1.6 平行批](evidence/20261115-review-takeover/README.md) | [GPU 日登记](experiments/gpu-day-20261115/README.md) 与[回收件](evidence/gpu-day-20261115/) · 造型字典开发 [form342-h3-dev 各轮](evidence/form342-h3-dev/)、[S4](evidence/qwen-shape-s4-20261114/README.md) | 5.2.1 |
 | RQ2c 改得对、保得住吗 | [局部编辑第一版](evidence/20261115-review-takeover/local-edit/README.md) · [第二版 73 份请求](experiments/20261117-local-edit-v2/README.md)（未运行） | [E2R 轴心位移复核](evidence/e2r-hub-readback/README.md) · [出图防错清单](docs/protocols/run-checklist.md) 与 [preflight.py](experiments/preflight.py) | 5.2.2 |
@@ -41,7 +41,7 @@
 | 看研究框架怎么定的 | [总体框架](planning/2026-11-18-framework.md)（20 KB）· [导师反馈后的研究与验收表](planning/advisor-20261118/README.md) |
 | 查语义、文献或构型，给工作台读 JSON | [研究资料库](planning/research-library/README.md) · [第三章方法与四项验证](planning/research-library/method.md) |
 | 写论文 | [现行目录](manuscript/outline.md) · [论文源码与构建](manuscript/thesis/README.md) · 各章在 `manuscript/thesis/src/ch1.md`—`ch6.md`（ch3 35 KB、ch5 40 KB，按节读）· [2.6 节比较表现稿](manuscript/revisions/ch02-2.6-comparison.md) |
-| 对照开题和目录原件 | [开题原 PDF](planning/proposal-original.pdf) · [修订目录 Word](planning/outline-revised.docx) · [同专业四篇硕士论文](references/peer-theses.md) |
+| 对照开题和目录原件 | [开题原 PDF](planning/proposal-original.pdf) · [修订目录 Word](planning/outline-revised.docx) · [同专业四篇硕士论文](references/peer-theses.md)（三篇是文献库的 L020、L045、L046，何彦一篇在 [archive/paper-reading-room/originals/](archive/paper-reading-room/originals/)） |
 | 找文献 | [文献库](literature/README.md) → [关系图](literature/map.md) → [目录 catalog.csv](literature/catalog.csv) → [原页证据 page-evidence.csv](literature/page-evidence.csv)。目录里标“未逐页核读”的，引用前先核原页。工作台用到的 A、B 编号原页证据在[这里](planning/workbench-handoff/literature/README.md)。`references/` 是 11 月 18 日以前的旧目录，只在追溯旧引用时用；102 份旧原件在分支 `reference-fulltexts-20261109` |
 
 ## 四、工作台（系统）
@@ -64,9 +64,9 @@
 
 ## 六、不用读的
 
-- **[archive/](archive/README.md)**：不再使用、只留作追溯的材料。不要从这里取数据写论文。旧日志 `archive/logs/` 和旧计划 `archive/docs/` 都在这里。
+- **[archive/](archive/README.md) 第二节列的退役材料**：只留作追溯，不要从这里取数据写论文。旧日志 `archive/logs/` 和旧计划 `archive/docs/` 都在这里。**archive/README.md 第一节列的不在此列**：评论原始数据、S2/A3/A8 材料、一篇同专业论文和几个现行脚本要读的旧文件，仍在用，要用时照常读，不能删，也不要挪。
 - **GitHub 上的旧讨论**：全部工单和 PR 的逐字副本、一览表在 [archive/issues/](archive/issues/README.md)，不用翻网页。
-- **原图、压缩包和请求文件**：各实验目录下的 `originals/`、`inputs/`、`requests/`、`*.zip`。要看图时按 README 点名的那几张看。
+- **原图、压缩包和请求文件**：各实验目录下的 `originals/`、`inputs/`、`requests/`、`*.zip`。要看图时按 README 点名的那几张看；评论原始数据的 8 个 ZIP 要复算 RQ1 时再打开。这些文件不读，但都不能删。
 - **文献 PDF**：`literature/fulltexts/` 和分支 `reference-fulltexts-20261109`。先查 page-evidence.csv，要核原页时再打开。
 - **工作台的依赖和构建产物**：`node_modules/`、`dist/`、`configurator-offline.zip`。
 
@@ -74,4 +74,5 @@
 
 - 新增一份主线文件（蓝图、任务表、证据索引、论文、交接里会被引用的），在第一至五节加一行；移进 archive 的，从这里删掉那一行，在 [archive/README.md](archive/README.md) 加一行。
 - 只写“是什么、什么时候读”，不写结论和数字。
+- 研究材料只移进 archive，不删除；archive/README.md 第一节的东西连路径也不要动，现行脚本按路径读取。
 - 每次整理后，把这一页里的链接全部点一遍，坏了就修。

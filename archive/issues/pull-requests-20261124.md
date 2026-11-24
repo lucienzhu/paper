@@ -1,6 +1,6 @@
 # 全部 PR 的正文与评论（截至 2026-11-24，共 51 个）
 
-存档：2026-11-24。本文件逐字保存正文与全部评论，按时间排序，供追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”“Codex：”等前缀表示实际撰写者。账号 Freeloop993 由作者和两位助手共用，账号名不等于撰写者。正文里写成从仓库根目录出发的相对链接，已改成从本目录出发（前面加 `../../`），其余逐字未改。改了哪些文件以各 PR 的提交为准，这里只存说明和讨论。
+存档：2026-11-24。本文件逐字保存正文与全部评论，按时间排序，供追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”“Codex：”等前缀表示实际撰写者。账号 Freeloop993 由作者和两位助手共用，账号名不等于撰写者。改过的只有链接：3 处从仓库根目录出发的相对链接前面加了 `../../`，使它从本目录出发仍指到原文件；26 处按分支名写的 GitHub 链接改成了固定提交号（12 处指向 2026-11-24 已删的 fork 分支，14 处指向将删除的分支，对照表在文末）。其余逐字未改。改了哪些文件以各 PR 的提交为准，这里只存说明和讨论。
 
 ---
 
@@ -223,7 +223,7 @@ https://claude.ai/code/session_01NhRvFgJ1kywKTws4dcgY4d
 
 增加 E0 六张同屏原图和原像素局部；点选表支持匿名抽读、放大和缺失记录。读数汇总按冻结的两组及两个因素分别记录。E0 闭源仍 0/6，真人待收。研究状态与接手快照均已更新。
 
-[原件与逐份核验](https://github.com/Freeloop993/paper/tree/codex/e1-actuals/evidence/e1-open-20261112) · [E0 原图合看](https://github.com/Freeloop993/paper/blob/codex/e1-actuals/evidence/e0-open-20261112/gallery.md)
+[原件与逐份核验](https://github.com/Freeloop993/paper/tree/eb575d44fec7b4d53f7766a3f5e8629dcbdf7a5a/evidence/e1-open-20261112) · [E0 原图合看](https://github.com/Freeloop993/paper/blob/eb575d44fec7b4d53f7766a3f5e8629dcbdf7a5a/evidence/e0-open-20261112/gallery.md)
 
 
 ---
@@ -580,11 +580,11 @@ Claude：新增 `manuscript/revisions/ch03-3.2-3.3-v2.md`（3.2 需求资料与�
 
 作者要求论文以 Word 形式放在 GitHub 上持续维护，并按学校格式与目录排版。本 PR 新建 `manuscript/thesis/`。
 
-**打开：** [`manuscript/thesis/thesis-draft.docx`](https://github.com/Freeloop993/paper/blob/claude/thesis-docx/manuscript/thesis/thesis-draft.docx)（Word 打开时选“更新域”即得目录页码）。
+**打开：** [`manuscript/thesis/thesis-draft.docx`](https://github.com/Freeloop993/paper/blob/677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea/manuscript/thesis/thesis-draft.docx)（Word 打开时选“更新域”即得目录页码）。
 
 ## 版式依据
 
-南航《研究生学位论文撰写要求》（2015 年 4 月修订），逐项设置见 [FORMAT.md](https://github.com/Freeloop993/paper/blob/claude/thesis-docx/manuscript/thesis/FORMAT.md)：
+南航《研究生学位论文撰写要求》（2015 年 4 月修订），逐项设置见 [FORMAT.md](https://github.com/Freeloop993/paper/blob/677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea/manuscript/thesis/FORMAT.md)：
 
 - 结构：封面、英文封面、承诺书、摘要、ABSTRACT、目录、图表清单、注释表、正文、参考文献、致谢、在学期间成果、附录
 - 章标题“第一章”黑体小三，1.1 黑体四号，1.1.1 黑体小四；正文宋体五号，固定行距 20 磅
@@ -624,8 +624,8 @@ Claude：新增 `manuscript/revisions/ch03-3.2-3.3-v2.md`（3.2 需求资料与�
 
 作者 11/15 授权（[#3](https://github.com/Freeloop993/paper/issues/3#issuecomment-6879284903)）：用工作簿 A/B/C 规格各跑 3 张，固定 250 mm 红点蓝线图与双叶要求；B 与 A 同档位照跑；C 外露碳纹；前伸相机句改用 11/14 机鼻前缘写法（字典 v1.4，仅 E3）。
 
-- [出图前登记与 9 份请求](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/experiments/e3-quad-qwen)（种子 2026112101—09）
-- [实收原件与比较图](https://github.com/Freeloop993/paper/tree/claude/e3-quad-qwen/evidence/e3-quad-qwen-20261115)：9/9，无重跑；请求逐字节一致；采样无缓存命中；三份权重 SHA-256 与登记一致
+- [出图前登记与 9 份请求](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/experiments/e3-quad-qwen)（种子 2026112101—09）
+- [实收原件与比较图](https://github.com/Freeloop993/paper/tree/e96d41946ea84237da506bb76c2f713a3f3b9275/evidence/e3-quad-qwen-20261115)：9/9，无重跑；请求逐字节一致；采样无缓存命中；三份权重 SHA-256 与登记一致
 
 Claude 知条件观察（不计入分母）：C 三张云台在机头越出，但镜片朝上可见；A2、B2 有横向盖缝；B3 最接近“连续曲肩”。下一步由作者逐张写取舍、选父图。
 
@@ -744,16 +744,16 @@ npm run verify && npm run replay && npm run check-offline
 
 ## 研究框架与任务
 
-第四章采用《四旋翼无人机的人智协同设计》，第五章采用《关键设计指标验证与跨构型无人机设计应用》。[研究框架、工单和验收表](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/README.md) 将四个研究问题分别落实为系统动作、设计任务、评价指标和允许得出的结论。跨构型研究保留农业六旋应用，新增批次使用中性简报、四旋参照及预先规定的不可判项。[跨构型实验草案](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/cross-layout-protocol.md)
+第四章采用《四旋翼无人机的人智协同设计》，第五章采用《关键设计指标验证与跨构型无人机设计应用》。[研究框架、工单和验收表](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/README.md) 将四个研究问题分别落实为系统动作、设计任务、评价指标和允许得出的结论。跨构型研究保留农业六旋应用，新增批次使用中性简报、四旋参照及预先规定的不可判项。[跨构型实验草案](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/cross-layout-protocol.md)
 
 ## 研究依据
 
-- 现稿 47 条参考文献逐条筛查。两轮共 34 张原页证据卡，其中 29 项支持具体方法，4 项提供背景，1 项为国内造型作品。首轮 59 个候选组另作二筛，归并为 45 项，其中 3 项只有摘要。[文献二筛及台账](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/literature/followup.md)
-- 消费航拍语义数据复算至 228 个造型表述簇，36 张展示卡追溯至 35 个来源。系统需区分折叠收纳与展开外观，允许设计者采纳、驳回或自定，独立检验 RAG 的增益。五类拓扑收录 12 项一手资料，已核 10 份 PDF。[数据、资料及实际输入](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/evidence.md)
-- 四旋 B2 和六旋历史样本已核对冻结请求、实际执行、模型回执及输出。四旋可追溯作者选案和深化。现版切到底层六轴布局后，提示词首句仍要求四旋。[Claude 系统优化规格与复现步骤](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/system.md)
-- 研究侧[预试记录工具](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/pilot-bridge/README.md)支持 PR #75 原始导出、真实多候选回执、修订回退和分段计时，27 项离线控制通过。设计者提交机会、实际派发调用、回图和首次呈现分别记录。已在历史四旋和六旋原图核实盲判导出保留 RGBA 像素并移除模型提示词。
+- 现稿 47 条参考文献逐条筛查。两轮共 34 张原页证据卡，其中 29 项支持具体方法，4 项提供背景，1 项为国内造型作品。首轮 59 个候选组另作二筛，归并为 45 项，其中 3 项只有摘要。[文献二筛及台账](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/literature/followup.md)
+- 消费航拍语义数据复算至 228 个造型表述簇，36 张展示卡追溯至 35 个来源。系统需区分折叠收纳与展开外观，允许设计者采纳、驳回或自定，独立检验 RAG 的增益。五类拓扑收录 12 项一手资料，已核 10 份 PDF。[数据、资料及实际输入](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/evidence.md)
+- 四旋 B2 和六旋历史样本已核对冻结请求、实际执行、模型回执及输出。四旋可追溯作者选案和深化。现版切到底层六轴布局后，提示词首句仍要求四旋。[Claude 系统优化规格与复现步骤](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/system.md)
+- 研究侧[预试记录工具](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/pilot-bridge/README.md)支持 PR #75 原始导出、真实多候选回执、修订回退和分段计时，27 项离线控制通过。设计者提交机会、实际派发调用、回图和首次呈现分别记录。已在历史四旋和六旋原图核实盲判导出保留 RGBA 像素并移除模型提示词。
 
-- 已交付[可接入前端的语义资料查询](https://github.com/Freeloop993/paper/blob/codex/advisor-study-system-20261118/planning/advisor-20261118/semantic/lookup/README.md)。17 个话题覆盖已有 36 张卡、35 个匿名来源。在实际 PR #75 数据上，字段检索可返回同源限制、要求澄清或明确指出缺少依据。原 40 条第二编码评价评论的语义方向；独立的新任务检索评价仍待完成。
+- 已交付[可接入前端的语义资料查询](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/semantic/lookup/README.md)。17 个话题覆盖已有 36 张卡、35 个匿名来源。在实际 PR #75 数据上，字段检索可返回同源限制、要求澄清或明确指出缺少依据。原 40 条第二编码评价评论的语义方向；独立的新任务检索评价仍待完成。
 
 后继界面先用正常入口回放四旋，验证六旋任务、图、规格、提示词与实际提交一致。作者再做结构化与自由提示各一场真实预试。之后进入正式配对、独立评议与设计成果归档，再写全文。本轮新增模型生成、作者真实预试及真人评议均为 0。
 
@@ -801,7 +801,7 @@ npm run verify && npm run replay && npm run check-offline
 
 ## 依据
 
-[画布式工作流拆解](https://github.com/lucienzhu/paper/blob/claude/canvas-workflow-ux-134e36/planning/workbench-handoff/literature/%E7%94%BB%E5%B8%83%E5%BC%8F%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%8B%86%E8%A7%A3.md)读了仓库里三篇把同一后端接到不同界面上比较的研究（Workflow-Net、DesignTrace、InspirationGraph），带页码：步骤是画布上的对象，选中后直接操作、自动连线；节点里可以直接干活；参数放在随所选节点变化的侧栏。手工接线的节点图负担最重，只靠对话到细化阶段失控。同一份文档也写明了这些研究只有九人、任务不是无人机，不能预设效果。[界面设计说明](https://github.com/lucienzhu/paper/blob/claude/canvas-workflow-ux-134e36/prototypes/drone-configurator/interface-design.md)逐项说明了对应做法。
+[画布式工作流拆解](https://github.com/Freeloop993/paper/blob/0dbe1d828c59ca4dbff993f857e53f5564b24ea0/planning/workbench-handoff/literature/%E7%94%BB%E5%B8%83%E5%BC%8F%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%8B%86%E8%A7%A3.md)读了仓库里三篇把同一后端接到不同界面上比较的研究（Workflow-Net、DesignTrace、InspirationGraph），带页码：步骤是画布上的对象，选中后直接操作、自动连线；节点里可以直接干活；参数放在随所选节点变化的侧栏。手工接线的节点图负担最重，只靠对话到细化阶段失控。同一份文档也写明了这些研究只有九人、任务不是无人机，不能预设效果。[界面设计说明](https://github.com/Freeloop993/paper/blob/0dbe1d828c59ca4dbff993f857e53f5564b24ea0/prototypes/drone-configurator/interface-design.md)逐项说明了对应做法。
 
 ## 怎样试
 
@@ -815,7 +815,7 @@ npm run studio:chat -- --port 4178      # 真实服务；只走查界面可改�
 
 ## 核了什么
 
-全部是软件检查，[记录与截图](https://github.com/lucienzhu/paper/blob/claude/canvas-workflow-ux-134e36/prototypes/drone-configurator/review/20261119-round4/README.md)：
+全部是软件检查，[记录与截图](https://github.com/Freeloop993/paper/blob/0dbe1d828c59ca4dbff993f857e53f5564b24ea0/prototypes/drone-configurator/review/20261119-round4/README.md)：
 
 - `npm run walkthrough:canvas`：在隔离浏览器里把画布上的每一步做一遍，图像作业由软件夹具应答。连续 8 次通过。
 - `check-offline`、`verify` 56 项、`replay` 10 份、本机服务测试 8 项通过。
@@ -1340,7 +1340,7 @@ PR #85 已合并，但其中指出 S2 真实题面仍在私有 `paper-reading-ro
 
 - [本次成功的构建及下载入口](https://github.com/Freeloop993/paper/actions/runs/44736562815)
 - [构建产物：A8_quadrotor_H1_H2_HTML](https://github.com/Freeloop993/paper/actions/runs/44736562815/artifacts/14628448310)（ZIP 内含两份独立 HTML，2026-12-20 到期）
-- [可重现的工作流](https://github.com/Freeloop993/paper/blob/tools/a8-html-download-20261120/.github/workflows/build-a8-html.yml)（在单独分支，未修改或合并 main）
+- [可重现的工作流](https://github.com/Freeloop993/paper/blob/ca9d71021ba7e0545c365ef847e5fb151e361f60/.github/workflows/build-a8-html.yml)（在单独分支，未修改或合并 main）
 
 SHA-256：
 - H1: `c154f4977d052e2a8edf5d7db393afddac364b425d470f5d4d01e68196c0c46e`
@@ -1502,11 +1502,11 @@ A8 有一处要作者定：不知情的读数下 WLQ 中档命中是 3/12，`a3/
 - **“AI 对话 + 自由提示”成为一场。** 每一轮记下发出的文字是自己写的、AI 起草后原样用的，还是改过的。工作区记录可导出成 JSON。
 - **3.6 保留在 `#v=3`。** 视觉系统改为石墨。
 
-节点为什么这样分（比较了五种分法；机架和动力不合并，因为条件图只画机架）见 [interface-design.md](https://github.com/lucienzhu/paper/blob/claude/workbench-redesign-20261122/prototypes/drone-configurator/interface-design.md)。
+节点为什么这样分（比较了五种分法；机架和动力不合并，因为条件图只画机架）见 [interface-design.md](https://github.com/Freeloop993/paper/blob/0cfbd6768f1295ad31c9c923996d425471388e0f/prototypes/drone-configurator/interface-design.md)。
 
 ## 研究设计跟着改的（带日期的修订，原文不改）
 
-- [预试记录约定](https://github.com/lucienzhu/paper/blob/claude/workbench-redesign-20261122/evidence/20261117-research-update/method/paired-pilot.md)：两组都用同一个文字模型；测量不变；能检验什么、不能检验什么。
+- [预试记录约定](https://github.com/Freeloop993/paper/blob/0cfbd6768f1295ad31c9c923996d425471388e0f/evidence/20261117-research-update/method/paired-pilot.md)：两组都用同一个文字模型；测量不变；能检验什么、不能检验什么。
 - 登记任务 C1、蓝图 ② 和 RQ3、桥接工具说明（主持人要多收 AI 日志和工作区记录）。
 - 进度页第二十节、STATUS、PROGRESS。
 
@@ -1521,11 +1521,11 @@ npm run build
 npm run studio:fixture -- --port 4178
 ```
 
-打开 http://127.0.0.1:4178/ 。AI 由规则回退应答，图像由软件夹具应答（把条件图当回图），不需要任何密钥。接真实文字模型的方法写在[工作台说明](https://github.com/lucienzhu/paper/blob/claude/workbench-redesign-20261122/prototypes/drone-configurator/README.md)的 4.0 一节。
+打开 http://127.0.0.1:4178/ 。AI 由规则回退应答，图像由软件夹具应答（把条件图当回图），不需要任何密钥。接真实文字模型的方法写在[工作台说明](https://github.com/Freeloop993/paper/blob/0cfbd6768f1295ad31c9c923996d425471388e0f/prototypes/drone-configurator/README.md)的 4.0 一节。
 
 ## 核对
 
-[复核记录与截图](https://github.com/lucienzhu/paper/blob/claude/workbench-redesign-20261122/prototypes/drone-configurator/review/20261122-workbench-4/README.md)
+[复核记录与截图](https://github.com/Freeloop993/paper/blob/0cfbd6768f1295ad31c9c923996d425471388e0f/prototypes/drone-configurator/review/20261122-workbench-4/README.md)
 
 - 27 项服务测试通过：决定链的逻辑、AI 服务的核对与版本锁定。
 - `npm run verify` 70 项通过。
@@ -1590,13 +1590,13 @@ GPT 复测 4.3 提了三条，**我在 4.3 上都复现了**，4.3.1 修好。�
 第 7、14 条要真机：`npm run gpu:acceptance -- --comfy-url <地址>` 两组各出首图和两次修订，逐轮核对原图、输入、工作流、权重、种子、prompt_id、历史和 ZIP，另存匿名盲读材料；已在夹具上演练通过。
 
 - 43 项服务测试、`npm run verify` 71 项、4.0 整条走查（最后连跑 3 次）、3.6 两条走查、`check-offline`、`verify_checkout.py` 都通过。
-- [4.3 复核记录与截图](https://github.com/lucienzhu/paper/blob/claude/workbench-review-20261122/prototypes/drone-configurator/review/20261123-workbench-4.3/README.md)
+- [4.3 复核记录与截图](https://github.com/Freeloop993/paper/blob/53d12fa4278772ecf125cb2d49b5c0e0c8fc3123/prototypes/drone-configurator/review/20261123-workbench-4.3/README.md)
 
 **还要作者定的：** 用哪把密钥跑真实文字冒烟（max 下的等待时长也在这一步量）；用户依据摘要定稿；等待时还在操作算不算主动时间；第 14 条前后对照表草案；租 GPU。
 
 ## 4.2：对齐研究主线（2026-11-23）
 
-作者要求对照蓝图和论文的实际研究再核一遍工作台，并提了四点，另定文字模型。逐条结论在[工作台与研究主线的对齐](https://github.com/lucienzhu/paper/blob/claude/workbench-review-20261122/planning/2026-11-23-workbench-alignment.md)。
+作者要求对照蓝图和论文的实际研究再核一遍工作台，并提了四点，另定文字模型。逐条结论在[工作台与研究主线的对齐](https://github.com/Freeloop993/paper/blob/53d12fa4278772ecf125cb2d49b5c0e0c8fc3123/planning/2026-11-23-workbench-alignment.md)。
 
 **1. 起点按主实验。** 4.1 里根本没有登记的委托 A、B，起点也不是主实验。
 - 现在主持人在“研究场次”里按委托开一场：选委托、方式、参与者编号和次序。
@@ -1623,7 +1623,7 @@ GPT 复测 4.3 提了三条，**我在 4.3 上都复现了**，4.3.1 修好。�
 - 从底部输入框读意图的调用编号写进事件，4.1 的导出会漏掉它。
 - 新的一场从空的撤销历史开始。
 
-[4.2 复核记录与截图](https://github.com/lucienzhu/paper/blob/claude/workbench-review-20261122/prototypes/drone-configurator/review/20261123-workbench-4.2/README.md)
+[4.2 复核记录与截图](https://github.com/Freeloop993/paper/blob/53d12fa4278772ecf125cb2d49b5c0e0c8fc3123/prototypes/drone-configurator/review/20261123-workbench-4.2/README.md)
 - 39 项服务测试通过。
 - `npm run verify` 71 项通过。
 - 4.0 整条走查加了 4.2 的各项，前后跑了 10 次，没有失败。
@@ -1637,7 +1637,7 @@ GPT 复测 4.3 提了三条，**我在 4.3 上都复现了**，4.3.1 修好。�
 
 ## 4.1：按 Codex 评审修正（2026-11-22）
 
-逐条结论在[评审汇总（定稿）](https://github.com/lucienzhu/paper/blob/claude/workbench-review-20261122/planning/2026-11-22-workbench-4-review-summary.md)。第七节记了作者 11 月 23 日的答复。
+逐条结论在[评审汇总（定稿）](https://github.com/Freeloop993/paper/blob/53d12fa4278772ecf125cb2d49b5c0e0c8fc3123/planning/2026-11-22-workbench-4-review-summary.md)。第七节记了作者 11 月 23 日的答复。
 
 - **会让数据出错的两处：**
   - 分叉后改错方向（第 05 条）。
@@ -1658,7 +1658,7 @@ GPT 复测 4.3 提了三条，**我在 4.3 上都复现了**，4.3.1 修好。�
   - 第五章与登记不一致的三处写进重写清单。
   - Mugge 2018 和四篇编辑评价原件已逐页核读（L118 至 L122）。
 
-[4.1 复核记录与截图](https://github.com/lucienzhu/paper/blob/claude/workbench-review-20261122/prototypes/drone-configurator/review/20261122-workbench-4.1/README.md)
+[4.1 复核记录与截图](https://github.com/Freeloop993/paper/blob/53d12fa4278772ecf125cb2d49b5c0e0c8fc3123/prototypes/drone-configurator/review/20261122-workbench-4.1/README.md)
 
 ## 还没验证的
 
@@ -1701,3 +1701,16 @@ GPT 附的复现日志在 Codex 那台机器上（`D:\codex\tmp\…`），我这
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
+
+## 附：按分支名写的链接固定到的提交（2026-11-24）
+
+| 原链接里的分支 | 固定到的提交 | 为什么改 |
+| --- | --- | --- |
+| `Freeloop993/paper` 的 `claude/e3-quad-qwen` | `e96d41946ea84237da506bb76c2f713a3f3b9275` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `claude/thesis-docx` | `677f8bf0a9159b09c2efbf26e0e452dbe5f4b4ea` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `codex/advisor-study-system-20261118` | `a98b3ecdce0330902d9f5dd99336ce41e7fc993e` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `codex/e1-actuals` | `eb575d44fec7b4d53f7766a3f5e8629dcbdf7a5a` | 按整理清单将删除，删前打同名标签 |
+| `Freeloop993/paper` 的 `tools/a8-html-download-20261120` | `ca9d71021ba7e0545c365ef847e5fb151e361f60` | 按整理清单将删除，删前打同名标签 |
+| `lucienzhu/paper` 的 `claude/canvas-workflow-ux-134e36` | `0dbe1d828c59ca4dbff993f857e53f5564b24ea0` | Claude 账号 fork 上的分支，2026-11-24 已删 |
+| `lucienzhu/paper` 的 `claude/workbench-redesign-20261122` | `0cfbd6768f1295ad31c9c923996d425471388e0f` | Claude 账号 fork 上的分支，2026-11-24 已删 |
+| `lucienzhu/paper` 的 `claude/workbench-review-20261122` | `53d12fa4278772ecf125cb2d49b5c0e0c8fc3123` | Claude 账号 fork 上的分支，2026-11-24 已删 |

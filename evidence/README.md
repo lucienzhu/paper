@@ -34,4 +34,4 @@
 
 ## 分支上的证据回到主分支
 
-11 月 18 日清单列为“正式证据”的 18 项现在都在主分支上。11 月 20—21 日从四个分支补回 1,094 个文件；11 月 24 日补回当时漏掉的 47 个，其中正式证据是 `20261117-a1-a4-c1`、`e2r-hub-readback`、`e5-individual-reviewed`、`semantic-cards/early-crawl` 和 `experiments/semantic40-pairing`。两次都逐字节取原 blob，来源逐件记在 [20261120-branch-recovery](20261120-branch-recovery/README.md)。
+11 月 18 日清单列为“正式证据”的 18 项现在都在主分支上。11 月 20—21 日从四个分支补回 1,093 个文件；11 月 24 日补回当时漏掉的 47 个，其中正式证据是 `20261117-a1-a4-c1`、`e2r-hub-readback`、`e5-individual-reviewed`、`semantic-cards/early-crawl` 和 `experiments/semantic40-pairing`。两次都取分支上的原 blob；11 月 24 日补回的文件里有的改了链接，原 blob、现 blob 和改了什么逐件记在 [20261120-branch-recovery](20261120-branch-recovery/README.md)。
