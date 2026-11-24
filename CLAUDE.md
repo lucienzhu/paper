@@ -14,9 +14,9 @@
 
 11 月 14 日实测已补齐：[Qwen 十二张＋S4 修订两张的原图、实际请求、逐图读数](evidence/qwen-shape-s4-20261114/README.md)。S4 仅见顶部 0/2 → 0/2，E3 仍为 0/9。[四篇同校硕士论文全文、结构和页码](references/peer-theses.md)。
 
-[先核对论文原件、同专业四篇结构对照及其写作用途](planning/claude-materials.md)。其中列出全文分支、缺全文的条目及原件使用范围。
+[先核对论文原件、同专业四篇结构对照及其写作用途](archive/planning/claude-materials.md)。其中列出全文分支、缺全文的条目及原件使用范围。
 
-**2026-11-12 六章执行入口**　[打开24项任务、逐节对照、思维导图及验收条件](docs/execution-playbook.md)。Claude 从 T01–03 和 T23 接续。给各章写入可核查的主张与出处；原工单 #1 留写作和裁定回执。
+**2026-11-12 六章执行入口**　[打开24项任务、逐节对照、思维导图及验收条件](archive/docs/execution-playbook.md)。Claude 从 T01–03 和 T23 接续。给各章写入可核查的主张与出处；原工单 #1 留写作和裁定回执。
 
 
 请先读 [README](README.md)、[STATUS](STATUS.md) 和 [协作规则](CONTRIBUTING.md)。你的主责是全局、章节、文献证据、任务排序与写作；Codex负责实际技术执行和数据分析。不要另行启动同组生成。作者仍对设计目标、研究范围、经费与参与者安排作决定。

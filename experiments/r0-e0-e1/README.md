@@ -1,6 +1,6 @@
 # R0、E0、E1 出图前冻结单
 
-研究者 2026-11-12 固定请求。库存、余额和模型授权另行核对。计划 50 次，冻结时实际提交 0。复现用原图及其长提示词；正式实验用短提示词，正交顶视，白底部件条件图，机身留白。[输入规格](../../docs/protocols/E0-E1-guide-prompt-spec.md) · [研究地基 §5](../../docs/foundation.md) · [费用授权 #3](https://github.com/Freeloop993/paper/issues/3)
+研究者 2026-11-12 固定请求。库存、余额和模型授权另行核对。计划 50 次，冻结时实际提交 0。复现用原图及其长提示词；正式实验用短提示词，正交顶视，白底部件条件图，机身留白。[输入规格](../../docs/protocols/E0-E1-guide-prompt-spec.md) · [研究地基 §5](../../archive/docs/foundation.md) · [费用授权 #3](https://github.com/Freeloop993/paper/issues/3)
 
 | 批次 | 因素及次数 | 读取与判定 | 后续 |
 |---|---|---|---|

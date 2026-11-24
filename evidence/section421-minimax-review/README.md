@@ -25,8 +25,8 @@ Codex 的知条件初读供交叉检查。1A 有四处红色标记残留；1B �
 ## Claude 作全局裁定时请先读原件
 
 1. [作者开题原 PDF，第 6–7 页的五项内容](../../planning/proposal-original.pdf#page=6)；[实际修订目录 Word](../../planning/outline-revised.docx)；[可检索的全目录](../../manuscript/outline.md)。本次对 Word 正文与 Markdown 的全部 85 个编号章、节标题逐条比对，六章标题文字及顺序一致。导师唯一目录批注已在第 4 章“方法应用”落实。
-2. [已经上传的前三章来源稿](../../manuscript/source-drafts/)；[现有章节证据矩阵](../../manuscript/evidence-matrix.md)；[学长学姐四篇论文的结构、篇幅与书目对照](../../planning/claude-materials.md)；[写作总记录与 Google Doc 入口](../../planning/claude-review.md)。同门论文用于结构与体量参照，方法主张回到本研究文献与数据。
-3. [研究地基 v1.2](../../docs/foundation.md)、[研究计划](../../docs/research-plan.md)、[六章执行清单](../../docs/execution-playbook.md)、[历轮出图和错误索引](../../docs/claude-context-20261113.md)、[此前全程交接](https://github.com/Freeloop993/paper/issues/1#issuecomment-6850913665)。遇到网页历史进度、目录、正文和真实回执冲突，请点出行与证据，不沿用旧日期的结论。
+2. [已经上传的前三章来源稿](../../archive/manuscript/source-drafts/)；[现有章节证据矩阵](../../archive/manuscript/evidence-matrix.md)；[学长学姐四篇论文的结构、篇幅与书目对照](../../archive/planning/claude-materials.md)；[写作总记录与 Google Doc 入口](../../archive/planning/claude-review.md)。同门论文用于结构与体量参照，方法主张回到本研究文献与数据。
+3. [研究地基 v1.2](../../archive/docs/foundation.md)、[研究计划](../../archive/docs/research-plan.md)、[六章执行清单](../../archive/docs/execution-playbook.md)、[历轮出图和错误索引](../../archive/docs/claude-context-20261113.md)、[此前全程交接](https://github.com/Freeloop993/paper/issues/1#issuecomment-6850913665)。遇到网页历史进度、目录、正文和真实回执冲突，请点出行与证据，不沿用旧日期的结论。
 
 ## 供 Claude 独立判断的事实
 
@@ -34,7 +34,7 @@ Codex 的知条件初读供交叉检查。1A 有四处红色标记残留；1B �
 |---|---|
 | 真实评论整理出 36 张证据卡、35 个来源；有词对 v1。 | 评论第二编码和真实机型顶视参照的完整覆盖。[评论证据](../../evidence/semantic-cards/) |
 | E0 开源 6/6；E1 两因素的控制组 24、纯文字组 12，共 36 张已核，有两名独立 AI 的读数。 | 仓库当前登记 E0 正式闭源 0/6，D2 闭源六张另计；E1 真人抽读 12 张待补。几何命中不能外推到设计质量。[E0](../../evidence/e0-open-20261112/) · [E1](../../evidence/e1-open-20261112/README.md) |
-| 旧 S1、G3 有小规模真人资料；L1 已回收 28 张；其他排错批保留实际完成与停止状态。三张 E 盘规格是开发提案，已收到本次作者反馈。 | 这些活动不填正式 E3 选稿、E4 真人设计对照或 E5 终稿盲评的位置。现有图能否支撑部件级方案讨论请 Claude 逐张判读。[历史批与限制](../../docs/claude-context-20261113.md) |
+| 旧 S1、G3 有小规模真人资料；L1 已回收 28 张；其他排错批保留实际完成与停止状态。三张 E 盘规格是开发提案，已收到本次作者反馈。 | 这些活动不填正式 E3 选稿、E4 真人设计对照或 E5 终稿盲评的位置。现有图能否支撑部件级方案讨论请 Claude 逐张判读。[历史批与限制](../../archive/docs/claude-context-20261113.md) |
 | E2 已事前指定两张 E1 中档父图和对照；E3 的方案父图另由作者从其候选中选择。六旋确定农业植保，观察药箱与机架、喷洒组件与支臂。 | E2 正式修订与 E3 正式选稿/修订、E4 场次、E5 独立评议、E6 植保案例及迁移边界待取证。正式主线、样本与失败处置按研究地基和逐项工单。[E2 原登记](https://github.com/Freeloop993/paper/issues/21#issuecomment-6821671015) · [E3](https://github.com/Freeloop993/paper/issues/22) |
 
 ## 请在 #1 交回的决定

@@ -16,4 +16,4 @@
 
 这四篇覆盖 80–104 个 PDF 物理页、47–70 条文后参考文献。这里核读的是结构和编号；上述区间适合比较篇幅安排。学校现行排版规定需另取正式模板核对。本文仍按作者修订目录推进：第 3 章提出方法，第 4 章用四旋航拍做方法应用并记录设计者取舍，第 5 章作验证和六旋植保迁移，第 6 章总结。
 
-[作者开题](../planning/proposal-original.pdf) · [修订目录 Word](../planning/outline-revised.docx) · [研究地基](../docs/foundation.md)
+[作者开题](../planning/proposal-original.pdf) · [修订目录 Word](../planning/outline-revised.docx) · [研究地基](../archive/docs/foundation.md)
