@@ -2,6 +2,8 @@
 
 先读[阅读清单](READING-LIST.md)：每次开工读哪几份、按论证链去哪里找材料、哪些不用读。研究全貌见[总体研究蓝图](planning/research-panorama/README.md)。
 
+**现在做到哪，只看 [STATUS（现状总表）](STATUS.md)**（作者 2026-11-25 要求：不能只有一个会话知道）。蓝图、任务表、进度页里的“现在到哪”是当时的快照。一项任务的状态变了，就改现状总表里那一行，写日期和依据；数人数时把答卷文件数、作答人数、有效人数分开。
+
 **每一步开工前先对蓝图**（作者 2026-11-19 定）：回到蓝图和[登记任务表](planning/2026-11-17-direction-and-todo.md)，写明这一步对应哪一环、对象范围、人数、要对照的参数和交到哪一节，再动手；做完按同一张表报告到了哪、还差多少。范围只能由作者收窄。格式见[进度页第八节](planning/research-panorama/progress-20261119.md#八每一步开工前的对照)。
 
 找文献从[文献库](literature/README.md)进。每做一环先看[关系图第四节](literature/map.md#四按论证链每一环依据哪些文献)的依据文献；目录里标“未逐页核读”的，引用具体结论前先核原页。引用实验数据和图之前先看[哪些数据能进论文](evidence/usable-for-writing.md)：只从“可以进正文”一节取；给人看的图要先按[评议用图标准](experiments/s5-compactness-pilot/stimulus-review.md)审过。
