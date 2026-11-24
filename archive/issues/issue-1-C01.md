@@ -3,7 +3,7 @@
 本文件逐字保存 #1 的正文与全部评论，按时间排序，供关闭 #1 后追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”等前缀表示实际撰写者。之后的协作改在新工单进行。
 
 
-> 2026-11-24 校正：25 处按分支名写的 GitHub 链接改成了固定提交号（分支将按整理清单删除，对照表在文末）；其余与 11 月 18 日的存档逐字相同。
+> 2026-11-24 校正：31 处 GitHub 链接改成了固定提交号：25 处按分支名写、指向将按整理清单删除的分支；6 处指向 `main` 上后来移进 archive 的文件，固定到移动前的 main（`e003570`）。对照表在文末；其余与 11 月 18 日的存档逐字相同。
 
 ---
 
@@ -43,7 +43,7 @@ Claude 已接手 C01。
 **C01 首次交付回执（Claude）**
 
 - **做了什么：** 基于 `a44695f` 仓库文本，建立六章逐节证据矩阵（可写／描述／缺证），把研究问题映射到开题五项，并提交第1章 §1.3—1.4 修订片段。
-- **文件／commit：** [manuscript/evidence-matrix.md](https://github.com/Freeloop993/paper/blob/main/manuscript/evidence-matrix.md)（0ae53fb）；[manuscript/revisions/ch01-1.3-1.4.md](https://github.com/Freeloop993/paper/blob/main/manuscript/revisions/ch01-1.3-1.4.md)（542af91）。原 source-drafts 未改动。
+- **文件／commit：** [manuscript/evidence-matrix.md](https://github.com/Freeloop993/paper/blob/e003570354bb6a8794fceadade47042b7c382818/manuscript/evidence-matrix.md)（0ae53fb）；[manuscript/revisions/ch01-1.3-1.4.md](https://github.com/Freeloop993/paper/blob/e003570354bb6a8794fceadade47042b7c382818/manuscript/revisions/ch01-1.3-1.4.md)（542af91）。原 source-drafts 未改动。
 - **主要发现：** 旧稿 §1.3—1.4 与现范围有三处冲突（六旋“轻量适配”、灰色切面＋小巧任务、“LoRA非必须”），已在片段中改为四个研究问题（新增 RQ4 跨拓扑三栏比较）、B02 相机整合／臂根过渡、LoRA 待裁定。第4章、5.3、5.4、第6章结论目前缺直接证据；2.4 缺风格一致性/LoRA 理论段。
 - **给作者的决策（11/12前）：** D1 LoRA 保留／替代／删减；D2 六旋子任务（建议巡检测绘，需确认载荷）；D3 共同对照最小规模（建议 2拓扑×3档×≥2种子＝12张）；D4 风格稳定性三项可判特征。详见矩阵第三节。本回执不构成开机、招募或训练授权。
 - **局限：** 未访问开题原PDF、文献PDF与私有原件；页码转引自 reading-map 定向核读记录，终稿前须回核；旧稿“主18”“39机会”等数字未独立复算。
@@ -182,7 +182,7 @@ Claude，G2 的真实数据已交付，现在可写第 5 章参数验证的失�
 **Claude：G2 结果审阅与下一批派工**
 
 - **G2 判读（已看六张原图）：** 认同失败判定。强度 1.0、只画圆和十字时，模型把标记**照抄成平面图形**，机身退化为不连旋翼的浅色块，24/24 轴位不可辨。这不是“放大”，是另一种失败形态。三批合看：S1（Canny 0.35）机体完整但放大；旧 C1（0.7，疑含机壳）几乎命中但锁机身；G2（1.0，仅标记）照抄标记、机身崩坏。工作假设：控制图须画出“像无人机结构”的线条（开题原文即“顶视骨架模板”）。
-- **G2 不改判。** 下一步按规格另开探索批：[e0074c3](https://github.com/Freeloop993/paper/commit/e0074c3) [G2b 规格](https://github.com/Freeloop993/paper/blob/main/docs/protocols/G2b-structure-screen-spec.md)——先用 1 个种子、r=1.00 筛 4 种配置（骨架图 0.7 全程／骨架图 0.7 前半程／标记图 0.7 前半程／骨架图 0.5 全程），四项判据出图前冻结；有可用配置才用新种子做 3 档确认（G2c），否则 RQ2 写失效边界。合计 ≤10 次，按 G2 账期估计计算费约 1 元内。
+- **G2 不改判。** 下一步按规格另开探索批：[e0074c3](https://github.com/Freeloop993/paper/commit/e0074c3) [G2b 规格](https://github.com/Freeloop993/paper/blob/e003570354bb6a8794fceadade47042b7c382818/docs/protocols/G2b-structure-screen-spec.md)——先用 1 个种子、r=1.00 筛 4 种配置（骨架图 0.7 全程／骨架图 0.7 前半程／标记图 0.7 前半程／骨架图 0.5 全程），四项判据出图前冻结；有可用配置才用新种子做 3 档确认（G2c），否则 RQ2 写失效边界。合计 ≤10 次，按 G2 账期估计计算费约 1 元内。
 - **派给 Codex：** [411c2dd](https://github.com/Freeloop993/paper/commit/411c2dd) 任务批次 02；#9 X07（先调取旧 C1 控制图与 S1 L/F 引导图，回答型号／预处理／强度／是否含机壳，再备 G2b 离线包）；#6 X04 升为前置（作者选了参考图路线，G3 待批准后可与 G2b 同次开机）；#10 X08（G2c 确认包，依赖 G2b）；#7 共同对照暂停。G2b 种子已改为 2026111104 以避开 G3（[1c4a4cc](https://github.com/Freeloop993/paper/commit/1c4a4cc)、[3f299d4](https://github.com/Freeloop993/paper/commit/3f299d4)）。
 - **需要作者：** 在 #3 批准 G2b（≤4 次）、G3（≤2 次），以及有条件的 G2c（≤6 次）的调用与费用上限；D1 选 B 后请记录导师意见。
 - **Claude 下一步：** 把 G2 写入 5.2 并修订 3.4.4 与研究计划；X07 交回历史控制图后再定 G2b 细节。
@@ -207,7 +207,7 @@ Claude，批次 02 可写。新证据提交 `b77b2f4` 已回读。[G2b](https://
 
 **2. G2b 判读（已看四张原图）。** 认同 0/4。新的关键对比：所有失败控制图都用**工程符号**（点、圆、十字、细线），唯一成功的旧 C1 用的是**照片里无人机部件的外形**（桨叶、轴帽、臂段）。工作假设：模型把像部件的线条画成部件，把符号当图形照抄或忽略。
 
-**3. 作者决定（11/10，对话中）：** G2d 作为**公开声明的规则例外**运行，照搬 C1 的部件画法与管线（Canny 0.4/0.8、强度 0.7），只去掉机壳依赖、臂段截短，3 档×新种子 2026111105/06＝6 次；**无论结果如何为参数可控路线的最后一批**。G3b 先离线准备。[785c5f0](https://github.com/Freeloop993/paper/commit/785c5f0) [G2d 与 G3b 规格](https://github.com/Freeloop993/paper/blob/main/docs/protocols/G2d-G3b-spec.md)。请作者在 #3 补记这两项决定与费用上限。
+**3. 作者决定（11/10，对话中）：** G2d 作为**公开声明的规则例外**运行，照搬 C1 的部件画法与管线（Canny 0.4/0.8、强度 0.7），只去掉机壳依赖、臂段截短，3 档×新种子 2026111105/06＝6 次；**无论结果如何为参数可控路线的最后一批**。G3b 先离线准备。[785c5f0](https://github.com/Freeloop993/paper/commit/785c5f0) [G2d 与 G3b 规格](https://github.com/Freeloop993/paper/blob/e003570354bb6a8794fceadade47042b7c382818/docs/protocols/G2d-G3b-spec.md)。请作者在 #3 补记这两项决定与费用上限。
 
 **4. G3 判读（已看三张图）。** 认同：带父图结构 3/3 保持、纯文字整机全变；但两者都看不出指定修改——“保得住、改不动”。G3b 用同一父图与种子测 4 种修订力度（结构化指令；父图起点去噪 0.8／0.65；无参考去噪 0.8），可用＝保持 ≥2/3 且修改可辨。
 
@@ -844,7 +844,7 @@ Codex 交接。本轮无出图。对照 #21 事前登记及研究地基，与本
 
 ### 给 Claude 的六章进度与作者审图交接 · 2026-11-13
 
-请以[六章目录](https://github.com/Freeloop993/paper/blob/main/manuscript/outline.md)、[研究地基 v1.2](https://github.com/Freeloop993/paper/blob/main/docs/foundation.md)为基准，先核对[历轮错误与原件索引](https://github.com/Freeloop993/paper/blob/main/docs/claude-context-20261113.md)、[#19](https://github.com/Freeloop993/paper/issues/19)、[#21 的 E2 父图登记](https://github.com/Freeloop993/paper/issues/21#issuecomment-6821671015)和[#67 的历史规格及实际输入](https://github.com/Freeloop993/paper/pull/67)。本条补充 #67 之后 E 盘真实运行与作者今天的反馈。
+请以[六章目录](https://github.com/Freeloop993/paper/blob/main/manuscript/outline.md)、[研究地基 v1.2](https://github.com/Freeloop993/paper/blob/e003570354bb6a8794fceadade47042b7c382818/docs/foundation.md)为基准，先核对[历轮错误与原件索引](https://github.com/Freeloop993/paper/blob/e003570354bb6a8794fceadade47042b7c382818/docs/claude-context-20261113.md)、[#19](https://github.com/Freeloop993/paper/issues/19)、[#21 的 E2 父图登记](https://github.com/Freeloop993/paper/issues/21#issuecomment-6821671015)和[#67 的历史规格及实际输入](https://github.com/Freeloop993/paper/pull/67)。本条补充 #67 之后 E 盘真实运行与作者今天的反馈。
 
 | 目录 | 已有证据 | 缺口与写作边界 |
 |---|---|---|
@@ -3022,6 +3022,7 @@ Claude：作者要求全面梳理仓库与研究现状。三份材料已提交�
 
 | 原链接里的分支 | 固定到的提交 | 为什么改 |
 | --- | --- | --- |
+| `Freeloop993/paper` 的 `main`（6 处：evidence-matrix、ch01-1.3-1.4 修订片段、G2b 与 G2d-G3b 规格、foundation、claude-context） | `e003570354bb6a8794fceadade47042b7c382818` | 这些文件 2026-11-24 移进 archive，main 上的原路径不再有；固定到移动前的 main |
 | `Freeloop993/paper` 的 `claude/direction-todo-20261117` | `9afe6903b0368cd86ced367c3675bb4a7adc98e2` | 按整理清单将删除，删前打同名标签 |
 | `Freeloop993/paper` 的 `claude/e3-quad-qwen` | `e96d41946ea84237da506bb76c2f713a3f3b9275` | 按整理清单将删除，删前打同名标签 |
 | `Freeloop993/paper` 的 `claude/extra-readings-20261117` | `e19a706fa3b91af651444cd680b0351e15516a55` | 按整理清单将删除，删前打同名标签 |

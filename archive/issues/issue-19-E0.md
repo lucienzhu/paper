@@ -2,6 +2,9 @@
 原址：https://github.com/Freeloop993/paper/issues/19　建立：2026-11-12T08:19:27Z　存档：2026-11-18　评论数：38
 本文件逐字保存工单的正文与全部评论，按时间排序，供关闭后追溯。每条评论标注发布者账号、时间与原链接；评论正文中的“Claude：”等前缀表示实际撰写者。关闭依据为作者 11 月 18 日对 #3 待议问题第 7 题的同意。
 
+
+> 2026-11-24 校正：1 处指向 `main` 上 `evidence/l1-closed-reference-diagnostic/requests-and-originals.json` 的链接改成固定提交号 `55d5ddd7b8697e89286a48aecce8358995e8b7eb`（这个文件夹 11 月 20 日移进了 `archive/evidence/`，固定到移动前的那个提交）；其余与 11 月 18 日的存档逐字相同。
+
 ---
 
 ### 工单正文
@@ -354,7 +357,7 @@ D2 的 42 张授权已落 [#3](https://github.com/Freeloop993/paper/issues/3#iss
 
 *Freeloop993 · 2026-11-12T16:43:52Z · [原链接](https://github.com/Freeloop993/paper/issues/19#issuecomment-6829824501)*
 
-Claude，作者最新反馈是“我感觉大概率就是 prompt 的问题，还有参数的设置”，请你亲自按图号复核并在本工单回复。已给你 [核验入口](https://github.com/Freeloop993/paper/tree/main/evidence/prompt-parameter-review)、[逐张原 PNG、正负提示词、实际请求、输入及 history](https://github.com/Freeloop993/paper/blob/main/evidence/prompt-parameter-review/by-image.md)、[可筛选的完整参数和提示词字典](https://github.com/Freeloop993/paper/blob/main/evidence/prompt-parameter-review/actual-parameters.json)。已入库的 64 份开源回执覆盖 R0 2、E0 6、E1 36、L1 20。其余 L1 和 D2 随原件回收追加。另附[四张闭源诊断的实际输入输出](https://github.com/Freeloop993/paper/blob/main/evidence/l1-closed-reference-diagnostic/requests-and-originals.json)，隐藏的版本和采样参数无法核验。
+Claude，作者最新反馈是“我感觉大概率就是 prompt 的问题，还有参数的设置”，请你亲自按图号复核并在本工单回复。已给你 [核验入口](https://github.com/Freeloop993/paper/tree/main/evidence/prompt-parameter-review)、[逐张原 PNG、正负提示词、实际请求、输入及 history](https://github.com/Freeloop993/paper/blob/main/evidence/prompt-parameter-review/by-image.md)、[可筛选的完整参数和提示词字典](https://github.com/Freeloop993/paper/blob/main/evidence/prompt-parameter-review/actual-parameters.json)。已入库的 64 份开源回执覆盖 R0 2、E0 6、E1 36、L1 20。其余 L1 和 D2 随原件回收追加。另附[四张闭源诊断的实际输入输出](https://github.com/Freeloop993/paper/blob/55d5ddd7b8697e89286a48aecce8358995e8b7eb/evidence/l1-closed-reference-diagnostic/requests-and-originals.json)，隐藏的版本和采样参数无法核验。
 
 请逐项回复：① 哪句对相机安装端、哪句对镜头朝向有歧义，指出对应反例；② 哪些词和设置更可能导致通体哑光、臂根缺少层次；③ 用相同种子和输入分别指出能隔离、不能隔离的因素；④ 如果 D2 能改善其中一项，是否仍破坏几何或另一项。请用未叠红圈的原 PNG 做外观判断，列图号和对应实际字段；对现有条件不能拆分的原因保留待验。当前运行按已授权的 manifest 继续。
 

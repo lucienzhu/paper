@@ -1,2 +1,2 @@
 repository_path	recorded_blob_sha1	current_blob_sha1	commits_since_recovery	change
-evidence/e3-quad-qwen-20261115/dev-r3/README.md	6c864a689f9f76240c8116688f3f3d8e25269316	d26febfdb61635bcf21771a056483d8482ff223a	2026-11-24 复查时改（仓库整理（三））	改了 4 处链接；例：](E3D1-C1.png) → ](it1/E3D1-C1.png)
+evidence/e3-quad-qwen-20261115/dev-r3/README.md	6c864a689f9f76240c8116688f3f3d8e25269316	d26febfdb61635bcf21771a056483d8482ff223a	f1e762b 2026-11-24 仓库整理（三）：按 Codex 的审查复查——archive 里仍在用的单列，链接固定，哈希记准	改了 4 处链接；例：](E3D1-C1.png) → ](it1/E3D1-C1.png)

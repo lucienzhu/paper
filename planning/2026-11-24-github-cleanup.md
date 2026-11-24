@@ -6,15 +6,22 @@ Claude 用的账号对 `Freeloop993/paper` 只有读和评论的权限，关 PR�
 
 **为什么每个要删的分支都先打标签。** 主分支上约 280 处固定提交链接指向只在未合并分支上的提交，标签让这些提交一直可达。GitHub 网页上的工单和 PR 讨论里还有按分支名写的链接，包括已并入主分支的分支（如 `codex/e1-actuals`）；网页上的原文改不了，只有同名标签能让这些链接在删分支后继续有效。仓库里的讨论存档（`archive/issues/`）已经把这些链接改成固定提交号，不依赖标签。
 
+**2026-11-24 核对时的状态（Codex 复核过）。** 41 个同名标签一个都还没有（0/41）。要删的 40 个分支里，16 个的末提交不在 main 的历史里，删了只能靠标签找回。其中有两件东西只在各自的分支上，按已定的去留不进主分支，只靠标签保存：
+
+- `codex/e2r-human-review-20261115` 上的 E2R 评阅稿 Word（`manuscript/thesis/review/2026-11-15-codex-e2r-human-reading.docx`，blob `03050e0a…`，#3 第 23 题定为打标签后删分支）；
+- `codex/r1-render-freeze` 上的 R1 冻结请求包（`experiments/r1-render/`，24 份请求，manifest blob `70058d41…`，清单第二节定为只打标签存档）。
+
+所以删分支前必须逐个确认同名标签指向原末提交。[2026-11-24-github-cleanup.sh](2026-11-24-github-cleanup.sh) 把这件事做成了脚本：`verify` 逐个核 41 个标签，再核这两件原件确实在标签里；`delete` 先跑 `verify`，不过就一个也不删，过了也在删每个分支前再核一次它的标签。`#57` 的分支（`codex/semantic-tools`）打标签但不删，`reference-fulltexts-20261109` 不在清单里，保留为分支。
+
 ## 给执行者的提示词
 
 > 你在 GitHub 仓库 `Freeloop993/paper` 上做一次整理，只做下面清单里写到的操作，不多做。
 >
 > 1. 先执行 `git fetch origin --prune`，核对清单里每个分支现在的末提交和表里写的一致。不一致的，那一个分支就不要动，记下来报告。
 > 2. 确认整理 PR #98 已经合并；没合并就只做第二步（打标签），其余停下等作者。
-> 3. 打标签用 API，不要在本地建同名的分支和标签：`gh api -X POST repos/Freeloop993/paper/git/refs -f ref=refs/tags/<分支名> -f sha=<末提交>`。第二步两张表里的 41 个分支全部要打。
+> 3. 用仓库里的脚本做标签和删分支，不要手敲：先 `bash planning/2026-11-24-github-cleanup.sh check`，再 `tag`，再 `verify`。`verify` 必须显示“同名标签：41 个一致”和两行“原件 ok”，否则停下报告。不要在本地建同名的分支和标签。
 > 4. 关 PR 用 `gh pr close <号> --repo Freeloop993/paper --comment "<评论>"`，评论用表里的原文。先关 PR，再删它的分支。
-> 5. 删分支用 `gh api -X DELETE repos/Freeloop993/paper/git/refs/heads/<分支名>`。删之前再确认同名标签已经存在、指向同一个提交。不要删 `main` 和 `reference-fulltexts-20261109`。
+> 5. 关完 PR 后，先 `bash planning/2026-11-24-github-cleanup.sh delete` 看会删哪些，确认是清单 41 个里除 `codex/semantic-tools` 以外的 40 个、每个都写着“标签已核”，再 `delete --yes`。脚本只删清单里的分支，`main` 和 `reference-fulltexts-20261109` 不在清单里。
 > 6. 不要合并任何 PR，不要改主分支上的文件，不要强推。PR #57 先不关，等作者回答。
 > 7. 做完把第六步的核对结果贴在工单 #76，写明实际做了哪些、哪些没做、为什么。
 
@@ -44,7 +51,7 @@ gh issue list --repo Freeloop993/paper --state open
 | `codex/advisor-study-system-20261118` | `a98b3ecdce0330902d9f5dd99336ce41e7fc993e` | #77 | 导师反馈后的研究框架，内容已在主分支；26 处固定提交链接 |
 | `codex/e2r-human-review-20261115` | `5b1e4c6526011a94b078f1474dc24479285b600b` | 无 | 3 MB 评阅稿 Word，#3 第 23 题定为打标签后删分支 |
 | `codex/multirotor-studio-20261118` | `f308b7e5630fd67f6ede84874084755e208bd22a` | #78 | Codex 11 月 18 日的工作台，已被 4.x 取代 |
-| `codex/r1-render-freeze` | `370363c9deafc7aaaac3cb8e6dc2c49a85602d8f` | #54 | R1 的 22 份请求，R1 从未运行 |
+| `codex/r1-render-freeze` | `370363c9deafc7aaaac3cb8e6dc2c49a85602d8f` | #54 | R1 的 24 份请求（新增 22 次、复用 E1 两张），R1 从未运行 |
 | `codex/semantic-tools` | `62a00b13c4e6e637481befe4d6f2c3f372b1c93d` | #57 | E5 词对评分页，见第三步 #57，先不要删 |
 | `codex/thesis-source-e2r-20261115` | `5f92248dd353075d83134c99c7d52383b96a6a48` | #74 | 论文源码合并稿，`5f92248` 的更正已在主分支；40 处固定提交链接 |
 | `sync/missing-zips-20261120` | `7a265063caab4f3745e224afd9bf474bc094f72d` | 无 | 两个 ZIP 的 base64 分片，ZIP 已在主分支 |
@@ -106,7 +113,7 @@ gh issue list --repo Freeloop993/paper --state open
 
 | 工单 | 处理 | 评论 |
 | --- | --- | --- |
-| #22 E3 | 关 | E3 的证据已在主分支 evidence/e3-quad-qwen-20261115；本工单正文与评论原文存于 archive/issues/open-issues-20261124.md。 |
+| #22 E3 | 关 | E3 三轮设计的证据已收进主分支 evidence/e3-quad-qwen-20261115，本工单正文与评论原文存于 archive/issues/open-issues-20261124.md。第 4 章 B2 的完整设计表达（D1：三视图或简模、主要尺寸、折叠方式、云台处剖面、CMF 说明、使用情境）还没有做，按蓝图 ⑧ 第 5 条和登记任务表 D1 继续跟踪，交到第 4 章 4.4 节，不因本工单关闭而结束。 |
 | #3、#21、#23、#24、#25、#76 | 留着 | 11 月 18 日定的完成标准是只留这 6 个。它们 11 月 18 日以后没有新评论；存档快照在 archive/issues/open-issues-20261124.md |
 
 ## 第六步：核对结果
