@@ -42,14 +42,14 @@
 - `reference-fulltexts-20261109`：102 份文献全文约 806 MB，作为长期数据分支，不并入 `main`。
 
 **并入基准（按顺序，Codex 执行，作者确认问 1 后）：**
-- [ ] `origin/main`：带入 `DATA.md`、H3 相机原图、S4 机鼻两张。
-- [ ] `claude/e3-quad-qwen`：第四章全部证据、v1.6 字典、11/15 GPU 日登记、E2R 与六旋原图。**最要紧。**
-- [ ] `claude/gpu-tasks-20261117`：局部编辑第二版与 E2 第二版的登记（F1、F2）。
-- [ ] `claude/extra-readings-20261117`：X/Y 两次判读（F5 需要）。
-- [ ] `codex/thesis-source-e2r-20261115`：只取 `5f92248`，即六旋缺毂图号的更正。
-- [ ] `claude/word-pairs-v1`：词对 v1，第二编码的冻结依据。
-- [ ] `codex/semantic-tools`（PR #57）：词对评分页（#3 第 22 题）。试算与基准有 4 处冲突，处理办法见 #76。
-- [ ] 合并后：重建两份论文 Word；运行链接检查；固定提交链接改为相对路径。
+- [x] `origin/main`：带入 `DATA.md`、H3 相机原图、S4 机鼻两张。（2026-11-24 核对：三样都已在主分支上。）
+- [x] `claude/e3-quad-qwen`：第四章全部证据、v1.6 字典、11/15 GPU 日登记、E2R 与六旋原图。**最要紧。**（11 月 20—21 日按文件补回，11 月 24 日补齐剩余 4 个；没有按分支合并，见第八节。）
+- [x] `claude/gpu-tasks-20261117`：局部编辑第二版与 E2 第二版的登记（F1、F2）。（同上，preflight 两个文件取本分支版本。）
+- [x] `claude/extra-readings-20261117`：X/Y 两次判读（F5 需要）。（同上。）
+- [x] `codex/thesis-source-e2r-20261115`：只取 `5f92248`，即六旋缺毂图号的更正。（主分支上的 `evidence/20261117-offline-review/README.md` 已含这次更正；本分支其余只在分支上的证据 11 月 24 日补回。）
+- [x] `claude/word-pairs-v1`：词对 v1，第二编码的冻结依据。（2026-11-24 补回为 `docs/protocols/word-pairs-v1-draft.md`。）
+- [ ] `codex/semantic-tools`（PR #57）：词对评分页（#3 第 22 题）。试算与基准有 4 处冲突，处理办法见 #76。（2026-11-24：仍未合并，要先改到现在的主分支上，见第八节。）
+- [ ] 合并后：重建两份论文 Word；运行链接检查；固定提交链接改为相对路径。（2026-11-24：做了链接检查，README 里 4 处固定提交链接改为相对路径；Word 未重建。）
 
 **并入后改为同名标签（链接不失效）：**
 - [ ] `claude/e3-quad-qwen`、`claude/gpu-tasks-20261117`、`claude/extra-readings-20261117`、`claude/thesis-docx`、`claude/guide-prompt-spec`、`codex/minimax-camera-roots`、`claude/direction-todo-20261117`。
@@ -67,6 +67,8 @@
 - [ ] **【#3 第 23 题】`codex/e2r-human-review-20261115`：** 一份 3 MB 的评阅稿 Word。若含 E2R 真人答卷原文或可识别信息，应去标识后放私有库（M5）；否则打标签存档。**已核对：不含。** 该稿（5b1e4c6）只有对一名匿名评者答复的转述，唯一的人名是封面上作者本人的姓名。**已定：打同名标签后删除分支。**
 
 ## 三、PR（9 个）
+
+**2026-11-24：** 逐个核对后的处理办法和关闭时的评论写在 [2026-11-24-github-cleanup.md](2026-11-24-github-cleanup.md)，要仓库所有者的权限执行。
 
 - [ ] **#73**（e3-quad-qwen → main）：改为并入基准，随整合标为已合并。
 - [ ] **#62**（词对 v1）：随整合合并。
@@ -112,18 +114,18 @@
 | `references/README.md`（新建） | `reading-map.md`、`docs/literature-update-2026-11.md`、本次文献补充 |
 
 **归档（移入 `archive/`，作者勾选后执行）：**
-- [ ] **旧计划 7 份**：`docs/execution-playbook.md`、`docs/foundation.md`（先把定案表抄入 DECISIONS）、`docs/research-plan.md`、`docs/requirements.md`、`docs/methods.md`、`docs/research-variables.md`、`docs/roadmap-20261114.md`。
-- [ ] **旧交接与复盘 4 份**：`docs/configurator-realignment.md`、`docs/claude-context-20261113.md`、`docs/image-retrospective-20261113.md`、`docs/historical-development-index.md`。
-- [ ] **旧协议 9 份**：`4.2.1-design-cards`、`e3-spec-cards-draft`、`semantic-to-E3-spec`、`freeze-sheet-P3`、`G2-axis-control-spec`、`G2b-structure-screen-spec`、`G2d-G3b-spec`、`G3b-amendment-orientation`，以及 `docs/tasks/` 下的 3 份派单。
-- [ ] **planning 下 3 份**：`claude-review.md`、`google-doc-snapshot.md`、`route-review-20261112/`。
-- [ ] **manuscript 下 4 份**：`ch05-hexa-results.md`、`evidence-matrix.md`、`revisions/`、`source-drafts/`。
-- [ ] **其余**：`PROGRESS.md`（冻结为 11/13 以前的日志）、`docs/figures/motor-centers-two-views.png`。
+- [x] **旧计划 7 份**：`docs/execution-playbook.md`、`docs/foundation.md`（先把定案表抄入 DECISIONS）、`docs/research-plan.md`、`docs/requirements.md`、`docs/methods.md`、`docs/research-variables.md`、`docs/roadmap-20261114.md`。（2026-11-24 移入 `archive/docs/`。没有新建 DECISIONS；foundation 的定案表随原文存档，阅读清单第五节指到它。）
+- [x] **旧交接与复盘 4 份**：`docs/configurator-realignment.md`、`docs/claude-context-20261113.md`、`docs/image-retrospective-20261113.md`、`docs/historical-development-index.md`。（2026-11-24 移入 `archive/docs/`，另加 `docs/handoff.md` 与 `docs/literature-update-2026-11.md`。）
+- [x] **旧协议 9 份**：`4.2.1-design-cards`、`e3-spec-cards-draft`、`semantic-to-E3-spec`、`freeze-sheet-P3`、`G2-axis-control-spec`、`G2b-structure-screen-spec`、`G2d-G3b-spec`、`G3b-amendment-orientation`，以及 `docs/tasks/` 下的 3 份派单。（2026-11-24 移入 `archive/docs/protocols/` 与 `archive/docs/tasks/`；现行协议见 `docs/protocols/README.md`。）
+- [x] **planning 下 3 份**：`claude-review.md`、`google-doc-snapshot.md`、`route-review-20261112/`。（2026-11-24 移入 `archive/planning/`，另加 `claude-materials.md`。）
+- [x] **manuscript 下 4 份**：`ch05-hexa-results.md`、`evidence-matrix.md`、`revisions/`、`source-drafts/`。（2026-11-24 移入 `archive/manuscript/`。`revisions/ch02-2.6-comparison.md` 留在原处：11 月 19 日改过，进度页第四节说它是 2.6 节比较表的现稿。）
+- [x] **其余**：`PROGRESS.md`（冻结为 11/13 以前的日志）、`docs/figures/motor-centers-two-views.png`。（2026-11-24：原日志移到 `archive/logs/PROGRESS-20261109-20261123.md`，根目录重开一份短的 `PROGRESS.md`；示意图移入 `archive/docs/figures/`。）
 
 **更新：**
-- [ ] `CLAUDE.md`：入口仍指向 11 月 12 日的 24 项任务。
-- [ ] `STATUS.md`：合并后改相对链接，清掉旧计数（M6）。
+- [x] `CLAUDE.md`：入口仍指向 11 月 12 日的 24 项任务。（2026-11-24 只留常用规则并指向阅读清单，原文存档在 `archive/entry-history/`。）
+- [ ] `STATUS.md`：合并后改相对链接，清掉旧计数（M6）。（2026-11-24 只把开头的每日进展移进 `archive/logs/`；旧计数属 M6，没动。）
 - [ ] `manuscript/thesis/README.md`：底稿说明和待核文献条数已过时。
-- [ ] `references/reading-map.md`：删去指向旧清单的横幅。
+- [x] `references/reading-map.md`：删去指向旧清单的横幅。（2026-11-24 换成指向文献库的一行说明。）
 - [ ] `docs/protocols/formal-collection-kit.md`：改为 3 名设计者、10 名评议者，作为知情同意的底稿（M3）。
 
 **【问】：**
@@ -167,7 +169,7 @@
 - [ ] `evidence/20261115-review-takeover/README.md`、`e1-open-20261112/geometry-readout.json`、`semantic-cards/README.md`、`real-product-topview/README.md`、`formal-reset/README.md`、`20261117-config-review/A1-extension`、`gpu-day-20261115/analysis-247/说明.md`、`hexa-plant-protection/README.md`、`qwen-shape-pilot/README.md`、`d2-tuning/README.md`、`l1-layout/README.md`、`g3-reference/README.md`、`semantic40-pairing/README.md`、`common-control/README.md`。逐条说明见 [evidence 清点 0.2 节](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/reorg-20261118/inventory-evidence-experiments.md)。
 
 **【问】：**
-- [ ] **`archive/evidence/20261117-r3-check`：** 与较晚的 `20261117-research-update` 大量重叠。今后以 research-update 为准吗？若是，r3-check 归档。**已定（第 20 题）：以 research-update 为准。** 移动前核对配对已被 `research-update/a1/crosswalk.csv` 覆盖。
+- [x] **`archive/evidence/20261117-r3-check`：** 与较晚的 `20261117-research-update` 大量重叠。今后以 research-update 为准吗？若是，r3-check 归档。**已定（第 20 题）：以 research-update 为准。** 移动前核对配对已被 `research-update/a1/crosswalk.csv` 覆盖。（2026-11-24 从分支直接放进 `archive/evidence/`，它从未进过主分支。与 `research-update/a1/crosswalk.csv` 的逐对核对没有做，归档件保留原样，需要时可查。）
 - [ ] **`evidence/section421-h3-span`：** E3 第一轮的 A/B/C 规格是不是由这里的方向卡演变来的？若是，它与相关的三个条目改为方法开发保留，第四章要说明方向的来源；若不是，一起归档。**已核对：是。** `specs-after-review.md` 写明短肩与长渐缩“正式响应字典统一归入‘无缝’”，即表 4.3 中 A、B 同为“无缝”的由来；C 的切角壳、承座、前伸、多块顶盖也一致。四个条目改为方法开发保留。
 - [ ] **图 3.2：** 是否换成按 1,318 簇重算、可复现的新共词图（`20261117-research-update/comments/cooccurrence.png`）？**已定（第 19 题）：换。** 旧的 Gephi 图随之归档；`cards.csv` 与 `early-crawl/` 保留。
 
@@ -178,3 +180,42 @@
 - `evidence/` 只有正式证据与方法开发两类，各有一份索引，写明实验编号、文件夹、正文位置。
 - 远端分支只剩 `main` 与 `reference-fulltexts-20261109`，其余为标签。
 - 开放工单只剩 #3、#21、#23、#24、#25、#76，与 11/17 任务清单的任务组对应；#22 在 `claude/e3-quad-qwen` 合入后存档并关闭。
+
+## 八、2026-11-24 执行情况与剩余
+
+作者 11 月 24 日要求按蓝图整理 GitHub 上的文件和讨论，能做的提 PR，做不了的给 GPT 提示词和完整清单，并建一份阅读清单。研究主线的文件（蓝图、登记任务表、取数清单、文献库、论文源码、工作台交接）只改链接，不删不挪。
+
+| 做了什么 | 规模 | 记录 |
+| --- | --- | --- |
+| 补回 11 月 20—21 日漏掉的分支文件，取分支上的原 blob（有的改了链接，原 blob 与现 blob 都记在清单里）；其中正式证据 5 项、作者冻结的词对 v1、出图防错清单与 preflight、11 月 18 日的工单存档 | 47 个文件（新增 43，以较新版本替换 4） | [source-manifest-20261124.tsv](../evidence/20261120-branch-recovery/source-manifest-20261124.tsv) |
+| 第五节的旧计划、旧交接、旧协议、旧修订片段、旧日志移入 `archive/` | 59 个文件；全库 67 个文件里的 319 处链接一并改写 | [archive/README.md](../archive/README.md) |
+| 改写前后各数一遍全库相对链接 | 按每一处链接数：整理前 97 处坏的，整理后 63 处，没有因整理新坏的（11 月 24 日初稿写的“78 → 74”是按文件与目标去重数的，而且没数图片链接） | |
+| 新建阅读清单、现行协议索引；CLAUDE.md、STATUS.md 只留现行内容，原文存档 | | [阅读清单](../READING-LIST.md) |
+| GitHub 全部 46 个工单、51 个 PR 的正文与评论存档（原文照录，只改了链接），附一览表 | | [archive/issues/](../archive/issues/README.md) |
+| 关闭自己开的 PR #75（已被工作台 4.x 取代）；清理 fork 上已并入的旧分支 | | |
+
+**复查（2026-11-24，Codex 审过之后）。** 作者转来 Codex 的三条意见，逐条核对后都成立，已改：
+
+| 意见 | 核对结果 | 改了什么 |
+| --- | --- | --- |
+| archive 里还有论文 PDF 和评论原始数据，是不是不要了 | 不是。`archive/paper-reading-room` 是评论原始数据、S2/A3/A8 的题面、对应键和取点图、一篇同专业论文；另有 `experiments/g2d`、`evidence/formal-reset`、两处 `d2-tuning`、`evidence/h3-e2-local-edit-20261113` 被现行脚本或索引按路径读取。阅读清单原来写“archive 不用读”，会把它们当成废料 | [archive/README.md](../archive/README.md) 分成“一、仍在用：不能删，不要挪”和“二、退役”；阅读清单、AGENTS、DATA.md、peer-theses.md、阅读库说明都指到这些副本。没有移动任何文件 |
+| 讨论存档里 12 处链接指向已删的分支；还有相对路径不对 | 12 处都在 PR #79、#96、#97 的说明里，指向 Claude 账号 fork 上已删的 3 个分支；另有 57 处按分支名写的链接指向将要删除的分支，1 处写成站内路径。相对路径：25 处指向 11 月 20 日已移入 archive 的图、11 月 19 日删掉的 E1 原图，E3 dev-r3 的 4 张图少写了 `it1/` | 讨论存档里按分支名写的 69 处链接全部改成固定提交号，1 处站内路径改成完整网址（连同下面 E1 原图的 8 处，共 77 处固定链接逐个核过，目标在那个提交里都存在）；25 处相对路径改到 archive 下的现位置或删除前的那个提交；fork 上补了 3 个同名标签，GitHub 网页上的 12 处旧链接恢复可用；交给 GPT 的清单改为删前给全部 41 个分支打同名标签 |
+| “逐字节相同”写得不准，#62 的关闭评论尤其如此 | 对。47 个补回的文件里现在 37 个与原 blob 逐字节相同，10 个只改了链接（词对 v1 改了 1 处），文件哈希已不同 | 来源清单加了原 blob、现 blob、是否相同和改了什么；11 月 20 日那份清单另做复核（1,093 个里 1,092 个仍相同）；各处措辞和 #62 的评论改准。第一次提交的提交说明里“逐字节取原 blob”这句写错了，提交说明不再改，以清单为准 |
+
+**第二轮复查（2026-11-24，Codex 再审之后）。** 三条都成立：
+
+| 意见 | 核对结果 | 改了什么 |
+| --- | --- | --- |
+| 7 个网址仍指向 `main` 上的旧路径（issue-1 的 6 处、路线审核页 1 处） | 对。上一轮只查了分支名，没查路径在 main 上还在不在。全库 1,868 个 GitHub 网址逐个查了路径，另找到 1 处（issue-19，指向 11 月 20 日已移走的 l1-closed-reference-diagnostic） | 8 处都固定到移动前的 main：7 处到 `e003570`，1 处到 `55d5ddd`；各文件开头写明 |
+| 41 个同名标签现在是 0/41；16 个要删的分支末提交不在 main 的历史里；E2R 评阅稿 Word 和 R1 请求包只在各自分支上 | 对，这是等仓库所有者执行的状态 | 新加 [2026-11-24-github-cleanup.sh](2026-11-24-github-cleanup.sh)：`verify` 逐个核 41 个标签指向原末提交，并核这两件原件在标签里；`delete` 不过 `verify` 就一个也不删，删每个前再核一次。清单和提示词改为用脚本 |
+| #22 的关闭评论少一句 | 对 | 加上：E3 证据已收进主分支；第 4 章 B2 的完整设计表达（D1）按蓝图 ⑧ 第 5 条和登记任务表 D1 继续跟踪 |
+
+顺带更正：R1 请求包是 24 份（新增 22 次、复用 E1 两张），上一轮写成了 22 份。
+
+**没有做的：**
+
+1. 关 PR、删分支、打标签、关 #22：Claude 的账号没有仓库权限。清单和逐条评论在 [2026-11-24-github-cleanup.md](2026-11-24-github-cleanup.md)，要在整理 PR 合并后执行。
+2. 还剩 63 处坏链接。61 处在这次没有动的文件里：47 处指向 11 月 17 日、19 日按决定删掉的图和页面（E1 原图、旧配置器的研究页），其余是网页模板里的占位、生成后才有的文件和网页应用的站内路径，不是真的缺文件。另 2 处在动过的文件里，有意保留：`docs/protocols/E0-E1-guide-prompt-spec.md` 里那条是写给 foundation.md 的引文，在那个位置是对的；`README.historical.md` 指向的 LICENSE 仓库里从来没有。都没改。
+3. PR #57 的 E5 词对评分页：11 月 18 日定为合并，但要先改到现在的主分支上，交 Codex；作者若不再用它，打标签后关闭。
+4. 第五节“更新”里的 `manuscript/thesis/README.md` 与 `formal-collection-kit.md`、第六节的 E2 旧记录线说明和 14 处 README 矛盾（M6）、ParamDrone 的目录标注、方法冻结单 v2、Word 重建：都是内容上的修订，不在这次整理里。
+5. 没有新建 `planning/DECISIONS.md`。作者历次决定的位置写在阅读清单第五节。

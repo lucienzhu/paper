@@ -11,6 +11,8 @@
 
 ## 仍缺少 3 个原始 ZIP（共 43,186,361 字节）
 
+> **2026-11-24 核对：这三个 ZIP 已经在主分支上。** 2026-11-20 的提交 `ba44944` 补进了它们，blob 与 [FILE-INDEX.json](FILE-INDEX.json) 记的一致（`558110a`、`158bc73`、`6c9e205`），状态为 published。本节以下保留当时的记录。
+
 | 文件 | 原始字节数 | 源文件 |
 |---|---:|---|
 | `datasets/early-crawl/08-semantic-analysis.zip` | 13,876,021 | [源仓](https://github.com/Freeloop993/paper-reading-room/blob/main/datasets/early-crawl/08-semantic-analysis.zip) |

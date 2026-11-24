@@ -1,0 +1,67 @@
+old_path	new_path	date	note
+docs/execution-playbook.md	archive/docs/execution-playbook.md	2026-11-24	移入 archive
+docs/foundation.md	archive/docs/foundation.md	2026-11-24	移入 archive
+docs/research-plan.md	archive/docs/research-plan.md	2026-11-24	移入 archive
+docs/requirements.md	archive/docs/requirements.md	2026-11-24	移入 archive
+docs/methods.md	archive/docs/methods.md	2026-11-24	移入 archive
+docs/research-variables.md	archive/docs/research-variables.md	2026-11-24	移入 archive
+docs/roadmap-20261114.md	archive/docs/roadmap-20261114.md	2026-11-24	移入 archive
+docs/configurator-realignment.md	archive/docs/configurator-realignment.md	2026-11-24	移入 archive
+docs/claude-context-20261113.md	archive/docs/claude-context-20261113.md	2026-11-24	移入 archive
+docs/image-retrospective-20261113.md	archive/docs/image-retrospective-20261113.md	2026-11-24	移入 archive
+docs/historical-development-index.md	archive/docs/historical-development-index.md	2026-11-24	移入 archive
+docs/handoff.md	archive/docs/handoff.md	2026-11-24	移入 archive
+docs/literature-update-2026-11.md	archive/docs/literature-update-2026-11.md	2026-11-24	移入 archive
+docs/tasks/codex-batch-01.md	archive/docs/tasks/codex-batch-01.md	2026-11-24	移入 archive
+docs/tasks/codex-batch-02.md	archive/docs/tasks/codex-batch-02.md	2026-11-24	移入 archive
+docs/tasks/codex-batch-03.md	archive/docs/tasks/codex-batch-03.md	2026-11-24	移入 archive
+docs/figures/motor-centers-two-views.png	archive/docs/figures/motor-centers-two-views.png	2026-11-24	移入 archive
+docs/protocols/4.2.1-design-cards.md	archive/docs/protocols/4.2.1-design-cards.md	2026-11-24	移入 archive
+docs/protocols/e3-spec-cards-draft.md	archive/docs/protocols/e3-spec-cards-draft.md	2026-11-24	移入 archive
+docs/protocols/semantic-to-E3-spec.md	archive/docs/protocols/semantic-to-E3-spec.md	2026-11-24	移入 archive
+docs/protocols/freeze-sheet-P3.md	archive/docs/protocols/freeze-sheet-P3.md	2026-11-24	移入 archive
+docs/protocols/G2-axis-control-spec.md	archive/docs/protocols/G2-axis-control-spec.md	2026-11-24	移入 archive
+docs/protocols/G2b-structure-screen-spec.md	archive/docs/protocols/G2b-structure-screen-spec.md	2026-11-24	移入 archive
+docs/protocols/G2d-G3b-spec.md	archive/docs/protocols/G2d-G3b-spec.md	2026-11-24	移入 archive
+docs/protocols/G3b-amendment-orientation.md	archive/docs/protocols/G3b-amendment-orientation.md	2026-11-24	移入 archive
+docs/method-freeze-evidence-20261114.md	docs/protocols/method-freeze-evidence-20261114.md	2026-11-24	仍在 docs/protocols，挪到冻结单旁边
+planning/claude-review.md	archive/planning/claude-review.md	2026-11-24	移入 archive
+planning/claude-materials.md	archive/planning/claude-materials.md	2026-11-24	移入 archive
+planning/google-doc-snapshot.md	archive/planning/google-doc-snapshot.md	2026-11-24	移入 archive
+planning/route-review-20261112/六章执行思维导图.png	archive/planning/route-review-20261112/六章执行思维导图.png	2026-11-24	移入 archive
+planning/route-review-20261112/六章目录.mmd	archive/planning/route-review-20261112/六章目录.mmd	2026-11-24	移入 archive
+planning/route-review-20261112/执行思维导图.mmd	archive/planning/route-review-20261112/执行思维导图.mmd	2026-11-24	移入 archive
+planning/route-review-20261112/研究路线.mmd	archive/planning/route-review-20261112/研究路线.mmd	2026-11-24	移入 archive
+planning/route-review-20261112/论文研究路线审核.html	archive/planning/route-review-20261112/论文研究路线审核.html	2026-11-24	移入 archive
+manuscript/ch05-hexa-results.md	archive/manuscript/ch05-hexa-results.md	2026-11-24	移入 archive
+manuscript/evidence-matrix.md	archive/manuscript/evidence-matrix.md	2026-11-24	移入 archive
+manuscript/revisions/ch01-1.3-1.4.md	archive/manuscript/revisions/ch01-1.3-1.4.md	2026-11-24	移入 archive
+manuscript/revisions/ch01-1.5.md	archive/manuscript/revisions/ch01-1.5.md	2026-11-24	移入 archive
+manuscript/revisions/ch02-2.1-hexa.md	archive/manuscript/revisions/ch02-2.1-hexa.md	2026-11-24	移入 archive
+manuscript/revisions/ch02-2.4-2.5.md	archive/manuscript/revisions/ch02-2.4-2.5.md	2026-11-24	移入 archive
+manuscript/revisions/ch03-3.3-3.4.md	archive/manuscript/revisions/ch03-3.3-3.4.md	2026-11-24	移入 archive
+manuscript/revisions/ch03-3.4-v2.md	archive/manuscript/revisions/ch03-3.4-v2.md	2026-11-24	移入 archive
+manuscript/revisions/ch03-3.6-ch05-5.1.md	archive/manuscript/revisions/ch03-3.6-ch05-5.1.md	2026-11-24	移入 archive
+manuscript/revisions/ch05-5.2-g2.md	archive/manuscript/revisions/ch05-5.2-g2.md	2026-11-24	移入 archive
+manuscript/revisions/ch05-5.2.3-s1.md	archive/manuscript/revisions/ch05-5.2.3-s1.md	2026-11-24	移入 archive
+manuscript/source-drafts/01.md	archive/manuscript/source-drafts/01.md	2026-11-24	移入 archive
+manuscript/source-drafts/02.md	archive/manuscript/source-drafts/02.md	2026-11-24	移入 archive
+manuscript/source-drafts/03.md	archive/manuscript/source-drafts/03.md	2026-11-24	移入 archive
+manuscript/source-drafts/citation-keys.md	archive/manuscript/source-drafts/citation-keys.md	2026-11-24	移入 archive
+prototypes/e4-ds-session/README.md	archive/prototypes/e4-ds-session/README.md	2026-11-24	移入 archive
+prototypes/e4-ds-session/protocol.js	archive/prototypes/e4-ds-session/protocol.js	2026-11-24	移入 archive
+prototypes/e4-ds-session/reference.png	archive/prototypes/e4-ds-session/reference.png	2026-11-24	移入 archive
+prototypes/drone-configurator/AI_IMAGE_GENERATION_GUIDE.md	archive/prototypes/drone-configurator-legacy/AI_IMAGE_GENERATION_GUIDE.md	2026-11-24	移入 archive
+prototypes/drone-configurator/FRONTEND_DEVELOPMENT_REPORT.md	archive/prototypes/drone-configurator-legacy/FRONTEND_DEVELOPMENT_REPORT.md	2026-11-24	移入 archive
+prototypes/drone-configurator/GEMINI_OPTIMIZATION_GUIDE.md	archive/prototypes/drone-configurator-legacy/GEMINI_OPTIMIZATION_GUIDE.md	2026-11-24	移入 archive
+prototypes/drone-configurator/RAG_SETUP_GUIDE.md	archive/prototypes/drone-configurator-legacy/RAG_SETUP_GUIDE.md	2026-11-24	移入 archive
+prototypes/drone-configurator/STARTUP_INSTRUCTIONS.md	archive/prototypes/drone-configurator-legacy/STARTUP_INSTRUCTIONS.md	2026-11-24	移入 archive
+prototypes/drone-configurator/USAGE_GUIDE.md	archive/prototypes/drone-configurator-legacy/USAGE_GUIDE.md	2026-11-24	移入 archive
+PROGRESS.md	archive/logs/PROGRESS-20261109-20261123.md	2026-11-24	移入 archive
+evidence/20261117-r3-check/README.md（分支 claude/direction-todo-20261117 上）	archive/evidence/20261117-r3-check/README.md	2026-11-24	11-24 补回时直接放进 archive
+evidence/20261117-r3-check/checks.json（分支 claude/direction-todo-20261117 上）	archive/evidence/20261117-r3-check/checks.json	2026-11-24	11-24 补回时直接放进 archive
+evidence/20261117-r3-check/verify.py（分支 claude/direction-todo-20261117 上）	archive/evidence/20261117-r3-check/verify.py	2026-11-24	11-24 补回时直接放进 archive
+planning/reorg-20261118/inventory-docs-branches.md（分支 claude/direction-todo-20261117 上）	archive/planning/reorg-20261118/inventory-docs-branches.md	2026-11-24	11-24 补回时直接放进 archive
+planning/reorg-20261118/inventory-evidence-experiments.md（分支 claude/direction-todo-20261117 上）	archive/planning/reorg-20261118/inventory-evidence-experiments.md	2026-11-24	11-24 补回时直接放进 archive
+prototypes/e4-author-pilot/README.md（分支 claude/direction-todo-20261117 上）	archive/prototypes/e4-author-pilot/README.md	2026-11-24	11-24 补回时直接放进 archive
+docs/requirements.md（分支 codex/advisor-study-system-20261118 上）	archive/docs/requirements.md	2026-11-24	11-24 补回时直接放进 archive

@@ -2,7 +2,7 @@
 
 当前共享表为[六旋四图的8条历史AI技术标注](hexa4-ai.csv)。每行是一位AI标注对**同一图**的可见中央组件测量；每个任务/条件只有一张输出，非8次独立抽样。图像SHA可供本地核原件；不含参与者答卷或云实例标识。由原协议、历史请求和恢复检查交叉对账。
 
-每一条件：IoU＝两条中央组件 `target_iou` 算术平均；高宽比误差＝各标注 `abs(visible_assembly_ratio-input_ratio)` 的平均值，**不是**先平均比例再取绝对差。只在相同任务内以 full 减 structure。标准库复算命令：`python evidence/summarize_hexa.py`。差异和不可归因为参数/拓扑的原因见[第5章段落](../../../manuscript/ch05-hexa-results.md)。
+每一条件：IoU＝两条中央组件 `target_iou` 算术平均；高宽比误差＝各标注 `abs(visible_assembly_ratio-input_ratio)` 的平均值，**不是**先平均比例再取绝对差。只在相同任务内以 full 减 structure。标准库复算命令：`python evidence/summarize_hexa.py`。差异和不可归因为参数/拓扑的原因见[第5章段落](../../manuscript/ch05-hexa-results.md)。
 
 | 核查对象 | 保留标识／出处 | 能说什么 |
 |---|---|---|

@@ -1,5 +1,7 @@
 # paper-reading-room 原件迁移归档（2026-11-20）
 
+> **2026-11-24：这个目录虽在 archive/ 下，存的是仍在用的原始数据和研究材料，不是退役材料。** 评论原始数据是 RQ1 语料的来源；S2、A3、A8 的题面、对应键、取点图和发放包是 `evidence/20261117-research-update/` 里正式证据的原件，现行脚本按路径读取；何彦一篇是写作时对照结构用的同专业论文。不能删，也不要挪动路径。见 [archive/README.md](../README.md) 第一节。
+
 源仓：[`Freeloop993/paper-reading-room`](https://github.com/Freeloop993/paper-reading-room) · 源版本：`cc122ae8757f175cde92484da194b568fcbb7a3a`。原仓有 **129 个文件**，本目录已按**原始二进制或原始文本 Git blob SHA** 迁移 **129 个**，包含后续补传的 3 个 ZIP，详情见 [迁移状态](MIGRATION-STATUS.md)。
 
 [完整文件索引：129 条逐项 SHA 与状态](FILE-INDEX.json) · [源 README 原文](SOURCE-README.md)

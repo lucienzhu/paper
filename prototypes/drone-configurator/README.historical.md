@@ -103,7 +103,7 @@ VITE_API_BASE_URL=http://localhost:8000  # 后端API地址
 **完成度**: 96%  
 **状态**: 前端开发完成，待后端集成
 
-详细开发报告请查看：[FRONTEND_DEVELOPMENT_REPORT.md](./FRONTEND_DEVELOPMENT_REPORT.md)
+详细开发报告请查看：[FRONTEND_DEVELOPMENT_REPORT.md](../../archive/prototypes/drone-configurator-legacy/FRONTEND_DEVELOPMENT_REPORT.md)
 
 ## 🎨 界面预览
 

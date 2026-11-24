@@ -14,6 +14,8 @@
 - **厉茜茜**　隐性特征 → 显性特征与规则 → 影响程度 → 规则范围 → 方法应用与评价。适合对读如何把一次参数实验限定为一项结论。
 - **邓家乐**　理论共性与差异 → 方法框架 → 方法应用 → 总结。适合对读语义如何从理论进入部件级案例。
 
+**本仓库里的副本（2026-11-24 核对）。** 上表链接指向私有阅读库，那边打不开时用这里的：邓家乐一篇是文献库 L020（[PDF](../literature/fulltexts/K-需求语义与感性工学/L020_可供性和产品语义驱动的产品设计方法研究_邓家乐.pdf)），厉茜茜一篇是 L045（[PDF](../literature/fulltexts/S-形状文法与参数化造型/L045_基于参数化形状语法的产品识别设计方法研究_厉茜茜.pdf)），朱天燕一篇是 L046（[PDF](../literature/fulltexts/S-形状文法与参数化造型/L046_基于形状文法和交互式遗传算法的产品形态推演设计研究_朱天燕.pdf)），这三份与阅读库里的原件逐字节相同（[迁移索引](../archive/paper-reading-room/FILE-INDEX.json)标为 deduplicated）；何彦一篇在 [archive/paper-reading-room/originals/](../archive/paper-reading-room/originals/)。
+
 这四篇覆盖 80–104 个 PDF 物理页、47–70 条文后参考文献。这里核读的是结构和编号；上述区间适合比较篇幅安排。学校现行排版规定需另取正式模板核对。本文仍按作者修订目录推进：第 3 章提出方法，第 4 章用四旋航拍做方法应用并记录设计者取舍，第 5 章作验证和六旋植保迁移，第 6 章总结。
 
-[作者开题](../planning/proposal-original.pdf) · [修订目录 Word](../planning/outline-revised.docx) · [研究地基](../docs/foundation.md)
+[作者开题](../planning/proposal-original.pdf) · [修订目录 Word](../planning/outline-revised.docx) · [研究地基](../archive/docs/foundation.md)
