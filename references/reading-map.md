@@ -2,7 +2,7 @@
 
 本轮与设计工作台直接有关的论文、逐页依据、可共享全文和两台电脑的原件恢复方法已整理到[工作台文献入口](../planning/workbench-handoff/literature/README.md)。
 
-**2026-11-12 六章执行入口**　[打开24项任务、逐节对照、思维导图及验收条件](../archive/docs/execution-playbook.md)。T01–24逐项列必读章节、页码或原始案例；保留原文版本和审读程度。
+> 2026-11-24：现行的文献入口是[文献库](../literature/README.md)。本页是 11 月 12 日的阅读地图，保留作追溯；这里原来指向的 24 项任务已移入 [archive/docs/execution-playbook.md](../archive/docs/execution-playbook.md)。
 
 
 ## 文献地图 R01—R14

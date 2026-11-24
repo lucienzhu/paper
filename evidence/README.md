@@ -6,10 +6,19 @@
 
 | 文件夹 | 是什么 |
 | --- | --- |
-| [semantic-cards](semantic-cards/) | 评论语料的证据卡 |
+| [semantic-cards](semantic-cards/) | 评论语料的 36 张证据卡；[early-crawl](semantic-cards/early-crawl/README.md) 是早期电商采集数据的分母、参数覆盖和两份共词矩阵 |
+| [semantic40-second-coding-20261115](semantic40-second-coding-20261115/) | 40 条评论的独立第二编码；配对规则与结果在 [experiments/semantic40-pairing](../experiments/semantic40-pairing/README.md) |
 | [r0-20261112](r0-20261112/)、[e0-open-20261112](e0-open-20261112/)、[e1-open-20261112](e1-open-20261112/) | R0、E0、E1：部件图条件控制的比例批。图已退役，只留读数（E1 的图已删） |
-| [real-product-topview](real-product-topview/) | 真实机型的顶视图 |
-| [20261117-research-update](20261117-research-update/README.md) | 11 月 17 日的线下数据：真实机型规格与手册量测、设计图复测、评论复算与 S2 题面 |
+| [real-product-topview](real-product-topview/) | 真实机型的顶视图及来源登记 |
+| [20261115-review-takeover](20261115-review-takeover/README.md) | v1.2 正式 24 张、v1.6 平行 24 张的原图与匿名读数；局部编辑第一版 |
+| [gpu-day-20261115](gpu-day-20261115/) | 11 月 15 日 GPU 日的回收件：B2 修订与盲读、E2R、双六旋交接 |
+| [e2r-hub-readback](e2r-hub-readback/README.md) | 更正版 E2 六张的轴心位移复核 |
+| [e3-quad-qwen-20261115](e3-quad-qwen-20261115/README.md) | 第 4 章 E3 三轮设计的原图与作者取舍 |
+| [20261117-offline-review](20261117-offline-review/README.md) | 96 张造型图的两次 AI 盲读；农业植保六旋 39 张与开发读数；结构观察 |
+| [e5-individual-reviewed](e5-individual-reviewed/README.md) | 逐图评议 3 份回件，及真实产品与 B2 的紧凑感复核 |
+| [20261117-research-update](20261117-research-update/README.md) | 11 月 17 日以后的线下数据：真实机型规格与手册量测、设计图复测、评论复算、S2 题面、A8 取点、S6 重新编码、预试记录约定 |
+| [20261117-config-review](20261117-config-review/README.md) | 真实机型手册图面量测（A2）与构型素材审查 |
+| [20261117-a1-a4-c1](20261117-a1-a4-c1/README.md) | A1 官方规格、A4 控制方法开发矩阵、C1 预试任务书与计时 |
 
 人的评议数据不在这里，在 [experiments/s5-compactness-pilot](../experiments/s5-compactness-pilot/README.md)（S5）。
 
@@ -23,6 +32,6 @@
 | [section421-h3-span](section421-h3-span/)、[section421-minimax-review](section421-minimax-review/)、[quad-author-selection](quad-author-selection/) | E3 三个设计方向的来源 |
 | [g3-actual](g3-actual/)、[x12-calibration](x12-calibration/) | 评议工具的校准 |
 
-## 还不在主分支上的正式证据
+## 分支上的证据回到主分支
 
-11 月 18 日清单列为“正式证据”的下列文件夹，主分支上没有，仍在没有合并的分支里（主要是 `claude/e3-quad-qwen` 和 `claude/direction-todo-20261117`）：`gpu-day-20261115`、`20261115-review-takeover`、`20261117-offline-review`、`e2r-hub-readback`、`e5-paired-topview`、`e5-individual-reviewed`、`semantic40-second-coding-20261115`、`semantic40-pairing`、`20261117-config-review`、`20261117-a1-a4-c1`、`20261115-local-edit`。第四章要用的 E3 三轮设计、GPU 日的记录和评议答卷都在其中。合并顺序见[整理清单](../planning/2026-11-18-cleanup-list.md)第二节，还没有执行。
+11 月 18 日清单列为“正式证据”的 18 项现在都在主分支上。11 月 20—21 日从四个分支补回 1,094 个文件；11 月 24 日补回当时漏掉的 47 个，其中正式证据是 `20261117-a1-a4-c1`、`e2r-hub-readback`、`e5-individual-reviewed`、`semantic-cards/early-crawl` 和 `experiments/semantic40-pairing`。两次都逐字节取原 blob，来源逐件记在 [20261120-branch-recovery](20261120-branch-recovery/README.md)。
