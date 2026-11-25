@@ -1,5 +1,7 @@
 # E2 局部编辑 · 六份 Qwen 请求
 
+> 2026-11-25 补记：这是 11 月 14 日登记、11 月 15 日 GPU 日出图的旧 E2（父图是早期 E1 图，机背露出大镜头），现在只作历史资料。现行的是更正版 E2R（父图 B2、C1；[轴心复核](../../evidence/e2r-hub-readback/README.md)、[判读](../../evidence/20261115-review-takeover/README.md)）；之后的第二版见 [local-edit-v2](../20261117-local-edit-v2/README.md)（73 份请求，没跑）。各批的请求、回图和分母见[逐条核对表二](../../planning/2026-11-25-codex-clues-check.md#三分表)。
+
 本实验检验设计者能否单独修改机鼻或臂根，同时保留原布局。原文与量测判据见 [双父图登记](https://github.com/Freeloop993/paper/issues/21#issuecomment-6821671015)，运行范围见 [作者授权](https://github.com/Freeloop993/paper/issues/3#issuecomment-6851509121)。
 
 | 位置 | 图片输入 | 正向提示词 | 种子 |
