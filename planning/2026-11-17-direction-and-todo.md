@@ -37,7 +37,7 @@
 6. 正式论文全文省略 LoRA。已交导师版前三章的证据核对可以继续；作者此次只确认了这项措辞，未指定立即整体重写或扩写后续章节。
 7. **2026-11-25（作者原话）：** “We have plenty of time — there's no need to narrow the scope and no need to reduce the volume. Just push forward according to your original intent.” 即：时间充足，不缩范围，不减量，按原登记推进。据此有三条：
    - 登记时写明“时间紧时可减”的，不减（例如 F2 里 E2 第二版的 40 张）。
-   - 后来记录里由 Claude 提议收掉、作者没有点头的，回到原登记（例如 S6、F6 的人数、A4 的完整设计、S5 混排的人数）。
+   - 后来记录里由 Claude 提议收掉、作者没有点头的，回到原登记（例如 S6、F6 的人数、A4 的完整设计）。
    - 登记时就写成“可选”或“作者定”的（A6、H3、F8），以及作者 11 月 22—23 日收敛的跨构型范围，仍由作者定；Claude 在现状总表第四节写了建议。
 
    逐项见[现状总表](../STATUS.md)第四节、第五节。
