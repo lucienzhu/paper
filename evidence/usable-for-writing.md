@@ -52,7 +52,7 @@
 - `archive/evidence/` 下的 b02-parent-reference、d2-closed-six、d2-tuning、denominators、desktop-parameter-first-example、formal-reset、h3-e2-local-edit-20261113、l1-closed-reference-diagnostic、minimax-junction-pilot、p04-quad-biblade、p05-quad-equal-blades、p06-quad-front-camera、p1-param-prompt、p2-spec-cards、quad-guide-cmf-review，以及旧六旋的 old-hexa-20261103。
 - `archive/experiments/` 下的 b02-view-calibration、common-control、d2-tuning、desktop-parameter-v2、g2d、g3b、gpt-image-b02-visual、hub-annotator、minimax-junction-pilot、operator-workbench、p1-param-prompt、p2-spec-cards。
 
-2026-11-26 又移入一批，逐个列在 [archive/MOVES-20261126.tsv](../archive/MOVES-20261126.tsv)：MiniMax H3 托管接口出的全部图（开发三轮、首轮五图、4.2.1 节轴距两档、配置器开发图、相机布局开发图、条件图分工对比、作者工作簿、S5 试作 8 张、工作台交接包里的作业记录）及其请求、读数和说明；Codex 内置图像编辑出的两张样张；E0 闭源对照臂的 6 份请求（从未运行）。作者定这些是没走正式通路的冒烟数据，不进论文，也不作方法依据。11 月 18 日“方法开发，保留”的定法由此取代。
+2026-11-26 又移入一批，逐个列在 [archive/MOVES-20261126.tsv](../archive/MOVES-20261126.tsv)：MiniMax H3 托管接口出的全部图（开发三轮、首轮五图、4.2.1 节轴距两档、配置器开发图、相机布局开发图、条件图分工对比、作者工作簿、S5 试作 8 张、工作台交接包里的作业记录）及其请求、读数和说明；Codex 内置图像编辑出的两张样张；E0 闭源对照臂的 6 份请求（从未运行）。同日全库复查又移入三处：论文图4.1（工作簿截图里载着三张 H3 图）；资料库用本机小模型 Qwen2.5-0.5B 起草的通路和两份无效草稿；工作台早期原型里接 DALL-E 3、Gemini、DeepSeek 的代码。作者定这些是没走正式通路的冒烟数据，不进论文，也不作方法依据。11 月 18 日“方法开发，保留”的定法由此取代。
 
 ## 五、现稿里要改的地方
 
@@ -77,8 +77,8 @@
 作者 11 月 19 日决定：模型和方法统一，全文只出现一个模型名，用 Qwen。做法是让它成为事实，而不是改写标签：
 
 - 进正文的图和数据都出自 Qwen。评议包的图已换成 Qwen（1.2 版），S5 第一步最后用的是真实产品图。
-- 任何一张图都按它实际的来源登记。2026-11-26 起，仓库里不在 archive 的图都出自 Qwen（或是真实产品图、程序画的条件图）；不是 Qwen 出的图一律移进 archive，不改标签。
-- 研究控制变量（作者 2026-11-26）：文字模型统一用 MiniMax M3.1，出图模型统一用 Qwen-Image 2.1。工作台去掉了原先开发用的 MiniMax 出图后端，只接 Qwen。
+- 任何一张图都按它实际的来源登记。2026-11-26 起，仓库里不在 archive 的图，生成的都出自 Qwen；其余是真实产品图、程序画的条件图和遮罩、由 Qwen 图拼合或换色的深化图、界面截图和图表。不是 Qwen 出的图一律移进 archive，不改标签；截图和拼版里载着的图也算。
+- 研究控制变量（作者 2026-11-26）：文字模型统一用 MiniMax M3.1，出图模型统一用 Qwen-Image 2.1。工作台去掉了原先开发用的 MiniMax 出图后端，只接 Qwen；文字模型只接 MiniMax M3.1，换模型名或改接别的服务，服务不启动。研究里生成文字的只有这一个模型；资料库原有的本机小模型起草通路已移进 archive。
 - 写作时注明 Qwen 的具体版本、权重摘要和许可。原版和 2512 版是 Apache 2.0，2.1 版据报道是仅限研究的许可，以所用版本的官方说明为准。
 
 

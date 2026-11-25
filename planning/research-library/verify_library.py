@@ -5,9 +5,50 @@ import json
 from contextlib import closing
 from types import SimpleNamespace
 
-from generate import check_packet
-from library import DB, connect, description, packet, search
+from library import DB, as_json, connect, description, packet, search
 from sources import HERE, ROOT
+
+
+# 检索包校验：原在 generate.py（本机小模型起草通路）里。2026-11-26 作者定文字模型统一用 MiniMax，
+# 起草通路移进 archive，这段只校验检索包本身，原样移到这里。
+def check_packet(conn, payload):
+    recorded = payload.get("packet_sha256")
+    content = {k: v for k, v in payload.items() if k != "packet_sha256"}
+    if (
+        not recorded
+        or hashlib.sha256(as_json(content).encode()).hexdigest() != recorded
+    ):
+        raise ValueError("检索包摘要不符")
+    if payload["source_digest"] != description(conn)["meta"]["source_digest"]:
+        raise ValueError("检索包的资料版本与数据库不相符")
+    for item in payload["evidence"]:
+        record = conn.execute(
+            "SELECT * FROM items WHERE id=?", (item["id"],)
+        ).fetchone()
+        if not record or any(
+            record[k] != item[k]
+            for k in ("kind", "claim", "limitation", "source", "locator", "status")
+        ):
+            raise ValueError("检索包中的证据与数据库不符")
+    args = SimpleNamespace(
+        **{
+            k: payload[k]
+            for k in (
+                "question",
+                "route",
+                "task",
+                "layout",
+                "state",
+                "topic",
+                "component",
+                "limit",
+            )
+        }
+    )
+    args.ranker = "lexical" if args.route == "semantic" else payload["ranker"]
+    args.select = payload["selected"]
+    if packet(conn, args) != payload:
+        raise ValueError("当前证据路由或候选与保存的检索包不符")
 
 
 def verify():

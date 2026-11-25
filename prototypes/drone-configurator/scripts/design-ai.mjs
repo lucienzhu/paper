@@ -17,6 +17,9 @@ import { items as evidenceItems, item as evidenceItem, registryVersion, relevant
 import { layerFields, layerOf, layers } from '../src/v4/model.ts';
 
 export const defaultModel = 'MiniMax-M3.1-Flash';
+// 4.5：作者 2026-11-26 定研究控制变量，文字模型统一用 MiniMax（M3.1）。模型名只认 M3.1-Flash；文档里也出现过带 -Preview 的写法，
+// 真实冒烟时服务若报的是那个名字，照服务写。别的模型名、别的兼容服务，服务一律不启动。
+export const isLockedModel = name => typeof name === 'string' && /^MiniMax-M3\.1-Flash(?:-Preview)?$/i.test(name.trim());
 const endpoints = { cn: 'https://api.minimax.cn/v1/chat/completions', global: 'https://api.minimax.io/v1/chat/completions' };
 // MiniMax 文档（platform.minimax.io，OpenAI 兼容接口）：M3.1-Flash 的推理强度取 low、medium、high、xhigh、max，不写时就是 max；
 // 思考也算进输出上限，上限太小会以 finish_reason 为 length、回答为空收尾；max_completion_tokens 建议 131072，最大 524288。
@@ -298,10 +301,13 @@ const fixtures = { intent: fixtureIntent, directions: fixtureDirections, layer: 
 // ---------- 服务 ----------
 export async function createDesignAI({ apiKey, region = 'cn', model = defaultModel, baseUrl, effort, maxTokens, timeoutMs, fetchImpl = globalThis.fetch,
   logDir = path.join(process.env.LOCALAPPDATA || homedir(), 'Freeloop', 'multirotor-workbench', 'ai-calls') } = {}) {
-  if (!baseUrl && !Object.hasOwn(endpoints, region)) throw new Error('MINIMAX_REGION 仅支持 cn 或 global。');
-  // MiniMax 不写推理强度时按 max 跑；这里照样写明 max，回执里看得到。别的兼容服务只在配置了时才发这一项。
-  const reasoningEffort = effort?.trim() || (baseUrl ? undefined : defaultEffort);
-  if (!baseUrl && !efforts.includes(reasoningEffort)) throw new Error('推理强度只能是 ' + efforts.join('、') + '。');
+  // baseUrl 这一项留着，只为旧的 WORKBENCH_LLM_BASE_URL 设置能报清楚错，不再接别的服务。
+  if (baseUrl) throw new Error('文字模型只接 MiniMax 的官方接口（MINIMAX_REGION 选 cn 或 global），不能改接别的服务。');
+  if (!isLockedModel(model)) throw new Error(`文字模型只能是 MiniMax M3.1（${defaultModel}），不能换成 ${model}。`);
+  if (!Object.hasOwn(endpoints, region)) throw new Error('MINIMAX_REGION 仅支持 cn 或 global。');
+  // MiniMax 不写推理强度时按 max 跑；这里照样写明 max，回执里看得到。
+  const reasoningEffort = effort?.trim() || defaultEffort;
+  if (!efforts.includes(reasoningEffort)) throw new Error('推理强度只能是 ' + efforts.join('、') + '。');
   const budget = Number(maxTokens) || defaultMaxTokens;
   if (!Number.isInteger(budget) || budget < 1024 || budget > 524288) throw new Error('输出上限要在 1024 到 524288 之间。');
   const waitMs = Number(timeoutMs) || defaultTimeoutMs;
@@ -310,8 +316,8 @@ export async function createDesignAI({ apiKey, region = 'cn', model = defaultMod
   const cardIds = new Set(cards.map(c => c.id));
   const cardContext = cardTable(cards);
   const mode = apiKey ? 'model' : 'fixture';
-  const provider = baseUrl ? 'openai-compatible' : 'minimax';
-  const url = baseUrl ? baseUrl.replace(/\/+$/, '') + '/chat/completions' : endpoints[region];
+  const provider = 'minimax';
+  const url = endpoints[region];
   // 记下发到哪个服务（只记主机名）：同一个模型名在国内站和国际站是两个服务，登记要写明是哪一个。
   const endpoint = mode === 'model' ? new URL(url).host : null;
 

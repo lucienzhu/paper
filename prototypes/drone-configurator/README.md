@@ -62,8 +62,8 @@
 | --- | --- |
 | `WORKBENCH_LLM_API_KEY`（或 `MINIMAX_API_KEY`） | 文字模型的密钥。只放在启动进程的环境里，不写进任何文件 |
 | `MINIMAX_REGION` | `global` 或 `cn`，用 MiniMax 时选区域。作者现有的密钥是国际站的，用 `global`。日志和界面标签写明服务主机（国际站 `api.minimax.io`） |
-| `WORKBENCH_LLM_MODEL` | 锁定的模型名，默认 `MiniMax-M3.1-Flash`。作者 2026-11-23 定文字模型统一用 MiniMax M3.1，这就是官方接口里的名字；真实冒烟后把服务实际报的名字写进登记 |
-| `WORKBENCH_LLM_BASE_URL` | 改接其他兼容 OpenAI 接口的服务时填它的地址 |
+| `WORKBENCH_LLM_MODEL` | 锁定的模型名，默认 `MiniMax-M3.1-Flash`。作者 2026-11-23 定文字模型统一用 MiniMax M3.1，这就是官方接口里的名字；真实冒烟后把服务实际报的名字写进登记。4.5 起只认 `MiniMax-M3.1-Flash`（或文档里出现过的 `MiniMax-M3.1-Flash-Preview`），给别的模型名，服务不启动 |
+| `WORKBENCH_LLM_BASE_URL` | 4.5 起不再用：文字模型只接 MiniMax 的官方接口，设了这一项，服务报错不启动 |
 | `WORKBENCH_LLM_EFFORT` | 推理强度。用 MiniMax 时默认写明 `max`（服务不写时也是 max），可选 low、medium、high、xhigh、max；两组必须同一档，开场时记进场次 |
 | `WORKBENCH_LLM_MAX_TOKENS` | 输出上限，默认 131072（MiniMax 文档的建议值；思考也算在内，4.2 的 4096 在 max 下会截断） |
 | `WORKBENCH_LLM_TIMEOUT_MS` | 等一次回答的上限，默认 300000（5 分钟）；页面等 330 秒 |
@@ -229,7 +229,7 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 | 状态、撤销、方向（方案）、对比、设计意图 | [droneStore.ts](src/store/droneStore.ts) |
 | 参考机型数据（官方规格与手册图面量测） | [aircraft.ts](src/data/aircraft.ts) |
 | 评论短引文数据 | [evidenceCards.json](src/data/evidenceCards.json)，由 `npm run evidence` 生成 |
-| 早期评论检索与模型服务（停用，未改动） | [知识库](rag_knowledge_base.py)、[本地服务](rag_api_server.py)、`src/services/` |
+| 早期评论检索服务（停用，未改动；只有嵌入检索，生成接口一律答“模型服务未配置”） | [知识库](rag_knowledge_base.py)、[本地服务](rag_api_server.py)。早期接 DALL-E 3、Gemini、DeepSeek 的前端代码（原 `src/services/`）2026-11-26 已移进 archive |
 
 ## 评论短引文从哪里来、怎样增加
 

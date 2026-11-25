@@ -396,7 +396,8 @@ await check(6, '重新导出旧的一场：清单写的文字模型和出图后�
     await box.getByTestId('session-end').click();
     // 4.5 起出图只接 Qwen：模拟服务换成了软件夹具（标签不同），导出仍应照那一场登记的出图后端写。
     live.jobsDescribe = { provider: 'qwen-comfy', model: 'Qwen-Image-2.1', endpoint: '/prompt', label: '软件夹具（接口同 Qwen-Image 2.1，不出真图）', fixture: true, configured: true };
-    live.aiDescribe = { mode: 'model', provider: 'openai-compatible', model: 'Some-Other-Model', endpoint: 'api.example.invalid', registry: 'x', label: 'Some-Other-Model（api.example.invalid）' };
+    // 4.5 起文字模型也只接 MiniMax M3.1：模拟服务重启时没给密钥、改走规则回退，导出仍应照那一场登记的文字模型写。
+    live.aiDescribe = { mode: 'fixture', provider: 'rules', model: null, endpoint: null, registry: 'x', effort: null, maxTokens: null, label: '规则回退（未连模型）' };
     await page.reload();
     await page.getByTestId('studio4').waitFor();
     const zip = await exportZip(page, id);
