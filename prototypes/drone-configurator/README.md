@@ -4,7 +4,7 @@
 
 [下载离线版 ZIP](configurator-offline.zip?raw=true)，完整解压后打开 `index.html`。画布上的目标、依据、造型、便签、参考图、保存版本和历史案例可离线使用。在线生成与设计对话使用下方本机服务。4.x 工作台只做两个任务：日常随行航拍四旋（主案例，RQ3 的两种方式对照在这里）和农业植保六旋（场景适配案例）。三旋、平面八旋、共轴六旋 Y6、共轴八旋 X8 和中性外观比较留在 3.6 版（`#v=3`）和请求管线里，迁移检验直接在 GPU 上跑（作者 2026-11-23 定）。
 
-## 4.0：每条方向是一串设计决定（默认打开，现为 4.4）
+## 4.0：每条方向是一串设计决定（默认打开，现为 4.5）
 
 打开页面看到的是 4.0。走查用的软件夹具冒充出图后端时，顶栏和面板写“软件夹具（……不出真图）”。画布上每条方向占一行，从左到右是：意图 → 机架 → 动力 → 机身 → 细节 → 色材 → 生成 → 候选与比较。每一层节点只管自己的决定，节点上画着累到这一层为止的顶视小图。点哪个节点，右侧面板就是那一步；画布下方的输入框跟着选中的节点走。为什么这样分层、和别的分法比过什么，见[界面设计说明](interface-design.md)第一节。
 
@@ -124,20 +124,21 @@ npm run studio:chat -- --port 4178
 
 检索来自36张公开的脱敏短引，界面区分卡数、来源数和答复提及的卡号。设计者可以预览、采纳、写明驳回理由或撤销。保存版本、冻结轮次和导出规格时会保留当时的对话与决定；读入上一版规格时，已有参数和意图仍可使用。生成图的服务回执、作者对图片的取舍与设计助手的文字建议分别保留。
 
-## 图像后端：开发用 MiniMax，计入论文的场次用 Qwen
+## 图像后端：只接 Qwen（4.5）
 
-画布上的「生成」可以接两个后端，由启动本机服务时的参数决定，界面上会写明当前接的是哪一个。
+作者 2026-11-26 定研究控制变量：文字模型统一用 MiniMax（M3.1），出图模型统一用 Qwen（Qwen-Image 2.1）。4.5 去掉了原先开发用的托管出图后端，画布上的「生成」只接本机 ComfyUI 上的 Qwen：
 
-| 后端 | 怎样启动 | 用途 |
-| --- | --- | --- |
-| MiniMax H3 Image（默认） | `npm run studio:chat -- --port 4178`，另设 `MINIMAX_API_KEY` | 开发和走查。界面上标“开发用，不计入论文数据” |
-| Qwen-Image 2.1，本机 ComfyUI | `npm run studio:chat -- --port 4178 --image-backend qwen-comfy --comfy-url http://GPU主机:8188` | 计入论文的设计场次。论文全文只用这一个模型 |
+```powershell
+npm run studio:chat -- --port 4178 --comfy-url http://GPU主机:8188
+```
+
+地址也可以用环境变量 `COMFY_URL` 给。没给地址时，生成会直接报“尚未配置 Qwen 图像服务地址”，不会改连别的服务。`--image-backend` 只接受 `qwen-comfy`，留着是为了旧命令照常能用。4.5 以前留在本机的非 Qwen 旧轮次只照实标出，服务不再取回，也不计入研究数据。接口路由里的 `h3`（如 `/api/h3/jobs`）和轮次记录里的 `h3` 字段是早期版本留下的内部名字，保留是为了不改导出格式，现在只承载 Qwen 的轮次。
 
 Qwen 后端发出的是第 4 章 E3 设计通路已归档的同一套工作流：`TextEncodeQwenImage21` 接条件图和可选的父图，40 步、cfg 3、euler／simple，负面词与 `experiments/e3-quad-qwen/requests` 里的请求相同。三个权重文件名默认取归档请求里的名字，GPU 主机上的文件名不同时用环境变量 `QWEN_UNET`、`QWEN_CLIP`、`QWEN_VAE` 改。种子由轮次编号算出，同一轮重交不会变，并记在本轮记录里。
 
 每一轮实际发出的请求、入队回执和运行历史原样存在本机的图像作业目录（`WORKBENCH_IMAGE_JOBS_DIR`，文件名是 `轮次编号.comfy-request.json`、`.comfy-ack.json`、`.comfy-history.json`），实际发出的文字另存为 `轮次编号.prompt.txt`，作业记录（派发时间、后端作业号、请求摘要）是 `轮次编号.json`。回图存两份：`QWEN-轮次编号.png`，以及后端报告的原文件名 `studio-轮次编号_00001_.png`。主持人登记场次时从这里取原件。
 
-**还没有对真实的 GPU 主机测过。** 现有的检查用的是冒充 ComfyUI 接口的软件夹具（`npm run studio:fixture -- --port 4178 --image-backend qwen-comfy`，以及 `node --test scripts/image-jobs.test.mjs`）。开机后的第一件事是在画布上生成一张，核对三样：回图是 1024 × 1024 的 PNG；存下的请求里节点和权重文件名与主机一致；同一轮重交不产生第二次调用。
+**还没有对真实的 GPU 主机测过。** 现有的检查用的是冒充 ComfyUI 接口的软件夹具（`npm run studio:fixture -- --port 4178`，以及 `node --test scripts/image-jobs.test.mjs`）。开机后的第一件事是在画布上生成一张，核对三样：回图是 1024 × 1024 的 PNG；存下的请求里节点和权重文件名与主机一致；同一轮重交不产生第二次调用。
 
 ## 两种方式：结构化和自由提示，在同一块画布上
 
@@ -150,7 +151,7 @@ Qwen 后端发出的是第 4 章 E3 设计通路已归档的同一套工作流�
 | 发给模型的图 | 布局条件图；可再带一张父图或参考图 | 不带布局条件图；可带一张父图或参考图 |
 | 回图以后 | 保留、以此图继续、对照、驳回 | 相同 |
 
-不带图的自由提示发出的工作流，与 E1 纯文字组已归档的请求是同一种结构（`evidence/e1-open-20261112/E1-actual/E1-text-*/request.json`）。开发用的 MiniMax 后端是改图接口，不接受不带图的自由提示；自由提示请在 Qwen 后端上用。
+不带图的自由提示发出的工作流，与 E1 纯文字组已归档的请求是同一种结构（`evidence/e1-open-20261112/E1-actual/E1-text-*/request.json`）。
 
 **研究场次设置。** 不选任何卡片时，右侧面板最下面有「研究场次设置（主持人用）」。「这一场的方式」选「结构化」或「自由提示」后，画布上只留这一种方式的入口和卡片：自由提示场次里看不到目标、造型、用户依据和设计对话；结构化场次里看不到自由提示。记录都还在，选回「不限」就都出现。平时设计用「不限」。
 
@@ -175,14 +176,14 @@ $env:MINIMAX_API_KEY = [System.Net.NetworkCredential]::new('', (Read-Host 'MiniM
 try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item Env:MINIMAX_API_KEY }
 ```
 
-打开 [造型卡片的机身页签](http://127.0.0.1:4178/#step=studio&tab=fuselage)，在右侧面板的「设计对话」页签询问折叠收纳的依据，或选中机身后要求调整宽度。工作台从现有脱敏短引检索相关卡，用 MiniMax-M3.1-Flash 的 `max` 推理生成答复。选「预览」在造型卡片上查看宽度差异，选「应用到草稿」才写入当前规格。模型服务只监听本机回环地址。浏览器通过同源代理调用模型。图像默认使用相同区域和密钥。若账户分别授权了图像和文本服务，可在启动进程前通过环境变量 MINIMAX_IMAGE_API_KEY、MINIMAX_IMAGE_REGION 指定图像凭据与区域。
+打开 [造型卡片的机身页签](http://127.0.0.1:4178/#step=studio&tab=fuselage)，在右侧面板的「设计对话」页签询问折叠收纳的依据，或选中机身后要求调整宽度。工作台从现有脱敏短引检索相关卡，用 MiniMax-M3.1-Flash 的 `max` 推理生成答复。选「预览」在造型卡片上查看宽度差异，选「应用到草稿」才写入当前规格。模型服务只监听本机回环地址。浏览器通过同源代理调用模型。MiniMax 只作文字模型；要出图，另加 `--comfy-url` 接 Qwen（见上一节）。
 
 ## 从设计目标到候选图
 
 1. 在「目标」卡片上写下想做的改变。可选择采用一条用户原话，也可以按自己的判断确认目标。工作台按话题、观察状态和任务筛选适用依据。
 2. 在「造型」卡片上直接拖动，或在右侧选择部件修改规格。部件面板可从知识库调出对照问题，由设计师决定是否记入当前方案。画布能从设计目标或已保存规格追到实际采用的证据卡。
-3. 选中造型卡片，点「生成效果图」，再点新卡片上的「生成」。工作台保存当前规格，把布局条件图发给 MiniMax H3 Image，默认每轮生成一张 1024 × 1024 PNG。以候选图继续生成时，同时传入父图；以画布上的参考图生成时，同时传入那张图。等待回图时可以继续修改造型。
-4. 选中候选图，选择「保留」或「以此图继续」。原始输入、图像摘要、服务回执、选案与各版关系均可回查。「研究详情与导出」保留完整记录和旧版 ComfyUI 研究工具。[MiniMax 图像编辑接口](https://platform.minimax.io/docs/guides/image-generation)
+3. 选中造型卡片，点「生成效果图」，再点新卡片上的「生成」。工作台保存当前规格，把布局条件图发给本机 ComfyUI 上的 Qwen-Image 2.1，每轮生成一张 1024 × 1024 PNG。以候选图继续生成时，同时传入父图；以画布上的参考图生成时，同时传入那张图。等待回图时可以继续修改造型。
+4. 选中候选图，选择「保留」或「以此图继续」。原始输入、图像摘要、服务回执、选案与各版关系均可回查。「研究详情与导出」保留完整记录和旧版 ComfyUI 研究工具。
 
 本机服务在用户数据目录 Freeloop/multirotor-workbench/image-jobs 中保存轮次与 PNG，供浏览器刷新后取回。设置 WORKBENCH_IMAGE_JOBS_DIR 可以指定该目录。
 
@@ -220,7 +221,7 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 | 布局空间图、设计提示、参考机型 | [SpaceMap.tsx](src/components/Studio/SpaceMap.tsx)、[Hints.tsx](src/components/Studio/Hints.tsx)、[References.tsx](src/components/Studio/References.tsx) |
 | 研究详情与导出：提示词面板、规格卡与导出 | [HandoffPage.tsx](src/components/Handoff/HandoffPage.tsx)、[PromptGenerator.tsx](src/components/DevPreview/PromptGenerator.tsx)、[ParameterOverview.tsx](src/components/Overview/ParameterOverview.tsx) |
 | 历史提交、候选原件、人工取舍与历史回放 | [ModelDispatch.tsx](src/components/Handoff/ModelDispatch.tsx)、[candidateRecords.ts](src/design/candidateRecords.ts)、[HistoryReplay.tsx](src/components/Handoff/HistoryReplay.tsx) |
-| H3 生成、参考图转换、同一轮次恢复与本机代理 | [generation.ts](src/design/generation.ts)、[image-jobs.mjs](scripts/image-jobs.mjs) |
+| 出图（Qwen）、参考图转换、同一轮次恢复与本机代理 | [generation.ts](src/design/generation.ts)、[image-jobs.mjs](scripts/image-jobs.mjs) |
 | 轴心几何、构型画法与依据、条件图 | [design.ts](src/design/design.ts) |
 | 设计提示的算法（桨盘重叠、相机视野、桨与机身） | [checks.ts](src/design/checks.ts) |
 | 每个选项的名称、短语和参考数值 | [fields.ts](src/design/fields.ts) |

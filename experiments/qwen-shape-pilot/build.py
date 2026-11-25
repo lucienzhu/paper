@@ -79,8 +79,8 @@ def template(rep, registration):
 
 
 def pack_files():
-    # 2026-11-26：字典与点线图改读本目录里逐字节相同的两份；原先另读 MiniMax H3 开发批里的同名文件和提交记录，
-    # 那一批已按作者决定移进 archive，提示词本来就由字典逐行拼出，不依赖它。
+    # 2026-11-26：字典与点线图改读本目录里逐字节相同的两份；原先另读一个托管接口开发批里的同名文件和提交记录，
+    # 那一批已按作者决定移进 archive（archive/MOVES-20261126.tsv）；提示词本来就由字典逐行拼出，不依赖它。
     dictionary = read(HERE.relative_to(ROOT) / "dictionary.json", "22ca89232e010ae603f34096dd3f5ccfcf62b7faa91161b157fb6007514f06a9")
     d = json.loads(dictionary)
     guide = read(HERE.relative_to(ROOT) / "input" / INPUT, GUIDE_SHA)

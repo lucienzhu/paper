@@ -6,52 +6,55 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createImageJobs } from './image-jobs.mjs';
 
-test('an H3 job binds the prompt, ordered reference images and at most one provider call to an attempt', async () => {
-  const directory=await mkdtemp(join(tmpdir(),'h3-job-test-'));
+test('a job binds the prompt, ordered reference images and at most one enqueue to an attempt', async () => {
+  const directory=await mkdtemp(join(tmpdir(),'image-job-test-'));
   const png=await readFile(new URL('../src/data/history/quad-guide.png',import.meta.url));
   const base64=png.toString('base64');
   const digest=createHash('sha256').update(png).digest('hex');
   const input={attemptId:randomUUID(),prompt:'civilian product study',
     inputs:[{role:'layout',sha256:digest,dataUrl:'data:image/png;base64,'+base64}]};
-  let resolveProvider, calls=0;
-  const provider=new Promise(resolve=>{resolveProvider=resolve;});
-  const options={apiKey:'fixture',directory,fetchImpl:async(url,init)=>{
-    calls++;
-    const body=JSON.parse(init.body);
-    assert.equal(url,'https://api.minimax.io/v1/images/edits');
-    assert.equal(body.images[0].image_url,input.inputs[0].dataUrl);
-    assert.equal(body.prompt,input.prompt);
-    assert.equal(body.size,'1024x1024');
-    assert.equal('disable_prompt_enhanced' in body,false);
-    await provider;
-    return Response.json({data:[{b64_json:base64,revised_prompt:'provider text'}]},{headers:{'trace-id':'fixture-trace'}});
+  let release, enqueued=0;
+  const gate=new Promise(resolve=>{release=resolve;});
+  const options={backend:{provider:'qwen-comfy',url:'http://gpu.test:8188',pollMs:5},directory,fetchImpl:async(url,init={})=>{
+    const {pathname}=new URL(url);
+    if(pathname==='/upload/image'){ const file=init.body.get('image'); return Response.json({name:file.name,subfolder:'',type:'input'}); }
+    if(pathname==='/queue') return Response.json({queue_running:[],queue_pending:[]});
+    if(pathname==='/prompt'){ enqueued++; const body=JSON.parse(init.body); assert.equal(body.prompt['4'].inputs.prompt,input.prompt); return Response.json({prompt_id:'run-1',node_errors:{}}); }
+    if(pathname==='/history/run-1'){ await gate; return Response.json({'run-1':{status:{completed:true,status_str:'success'},
+      outputs:{12:{images:[{filename:'studio-x_00001_.png',subfolder:'',type:'output'}]}}}}); }
+    if(pathname==='/view') return new Response(png);
+    return new Response('',{status:404});
   }};
   try {
     const jobs=createImageJobs(options);
     await Promise.all([jobs.submit(input), jobs.submit(input)]);
-    assert.equal(calls,1);
-    assert.equal((await jobs.get(input.attemptId)).status,'running');
     await assert.rejects(jobs.submit({...input,prompt:'changed'}),error=>error.status===409);
     await assert.rejects(jobs.submit({...input,inputs:[{...input.inputs[0],sha256:'0'.repeat(64)}]}),error=>error.status===400);
-    resolveProvider();
+    release();
     let result;
-    for(let i=0;i<100;i++){
+    for(let i=0;i<200;i++){
       result=await jobs.get(input.attemptId);
-      if(result.status!=='running') break;
+      if(result.status==='succeeded' || result.status==='failed') break;
       await new Promise(resolve=>setTimeout(resolve,10));
     }
-    assert.equal(result.status,'succeeded');
+    assert.equal(result.status,'succeeded',result.error);
     assert.equal(result.outputs[0].sha256,digest);
-    assert.equal(result.evidence.response.traceId,'fixture-trace');
-    assert.equal(result.evidence.response.revisedPrompt,'provider text');
+    assert.equal(enqueued,1);
     const restarted=createImageJobs(options);
     await restarted.submit(input);
     assert.equal((await restarted.get(input.attemptId)).outputs[0].dataUrl,input.inputs[0].dataUrl);
-    assert.equal(calls,1);
+    assert.equal(enqueued,1);
   } finally {
-    resolveProvider();
+    release();
     await rm(directory,{recursive:true,force:true});
   }
+});
+
+test('the image service only runs Qwen on ComfyUI: any other backend is refused', () => {
+  assert.throws(()=>createImageJobs({backend:{provider:'minimax'}}),/只能是本机 ComfyUI 上的 Qwen-Image 2.1/);
+  assert.throws(()=>createImageJobs({backend:{provider:'other',url:'http://x'}}),/只能是本机 ComfyUI 上的 Qwen-Image 2.1/);
+  const jobs=createImageJobs({directory:join(tmpdir(),'never-used')});
+  assert.deepEqual([jobs.describe().provider,jobs.describe().model,jobs.describe().configured],['qwen-comfy','Qwen-Image-2.1',false]);
 });
 
 test('a Qwen job runs the archived E3 workflow on ComfyUI, keeps the raw receipts and reuses its seed', async () => {
@@ -175,9 +178,6 @@ test('a free-prompt Qwen job sends only the designer text, with the same setting
     await assert.rejects(jobs.submit({attemptId:randomUUID(),condition:'free',prompt:words,inputs:[image('layout')]}),/参考图格式或顺序/);
     await assert.rejects(jobs.submit({attemptId:randomUUID(),prompt:words,inputs:[]}),/缺少本轮目标或布局图/);
     await assert.rejects(jobs.submit({attemptId:randomUUID(),condition:'other',prompt:words,inputs:[]}),/生成方式无法识别/);
-    // 开发用的 MiniMax 后端不接受不带图的自由提示，也不会为它发起调用
-    const dev=createImageJobs({apiKey:'k',fetchImpl:async()=>{throw new Error('should not be called');},directory});
-    await assert.rejects(dev.submit({attemptId:randomUUID(),condition:'free',prompt:words,inputs:[]}),/MiniMax 后端不接受不带图的自由提示/);
   } finally { await rm(directory,{recursive:true,force:true}); }
 });
 

@@ -10,7 +10,7 @@
 | B | 同 A | 同 A | 同 A | 同 A | 同 A | 同 A | 2026112104—06 |
 | C | 切角方壳 | 外露承座 | 前伸 | 多块 | 250 mm | 外露碳纹 | 2026112107—09 |
 
-- 档位取自 `prototypes/e3-author-workbook` 的规格；A、B 提示词逐字相同，只靠种子区分，是同一造型语言的两组变体。B 的“连续曲肩”不是字典档位，只能由模型自由发挥，不写成可控差别。
+- 档位取自作者在配置器里定的 A/B/C 三套规格（[specs.json](specs.json)）；A、B 提示词逐字相同，只靠种子区分，是同一造型语言的两组变体。B 的“连续曲肩”不是字典档位，只能由模型自由发挥，不写成可控差别。
 - 字典 v1.4（[dictionary-v14.json](dictionary-v14.json)）：在 v1.3 上只换“前伸”相机句，改用 11/14 机鼻前缘轮的写法；“无外突”沿用 v1.2 原句（Qwen 小测基准两张均读为无外突、镜头不可见）。5.2.1 造型响应批仍按 v1.2。
 - 固定输入：红点蓝线图 `evidence/qwen-shape-s4-20261114/layout.png`（SHA-256 `15c5ad1c…1338`）；每轴静止双叶写在布局句中。
 - 工作流：以 11/14 机鼻前缘轮的实际请求为模板（[template.request.json](template.request.json)），Qwen-Image 2.1 BF16 原生图像编辑，1024²，40 步，CFG 3，euler/simple，负向词不变。只替换正向词、种子与保存前缀。[编译脚本](build_requests.py) · [清单与摘要](manifest.json) · [运行脚本](run_e3.py)

@@ -258,13 +258,12 @@ function GeneratePanel({ node, nodes, attempts, steps, starting, ops }: Pick<Pro
         </div>
       </div>
       {offline() && <p className="cv-warning"><AlertCircle size={14}/>在线生成需要从本机工作台服务打开页面。</p>}
-      {backend.provider === 'minimax' && !parent && <p className="cv-warning"><AlertCircle size={14}/>当前接的是开发用的 MiniMax 后端，它不接受不带图的自由提示。计入论文的场次请用 Qwen 后端启动工作台。</p>}
       <div className="cv-panel-actions">
         <button type="button" className="cv-primary" disabled={busy || !words.trim()} data-testid="generate-current" onClick={() => { save(); ops.run({ ...node, detail: words }); }}>
           {busy ? <LoaderCircle size={15} className="animate-spin"/> : <Sparkles size={15}/>}{busy ? '正在提交' : '生成'}</button>
         <button type="button" onClick={() => ops.removeStep(node)} disabled={busy}><Trash2 size={14}/>移除这一步</button>
       </div>
-      <p className="cv-provider" data-testid="generation-model">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据' : ''} · 生成设置与结构化方式相同</p>
+      <p className="cv-provider" data-testid="generation-model">{backend.label} · 生成设置与结构化方式相同</p>
     </div>;
   }
   if (step) {
@@ -303,7 +302,7 @@ function GeneratePanel({ node, nodes, attempts, steps, starting, ops }: Pick<Pro
           {busy ? <LoaderCircle size={15} className="animate-spin"/> : <Sparkles size={15}/>}{busy ? '正在提交' : '生成'}</button>
         <button type="button" onClick={() => ops.removeStep(node)} disabled={busy}><Trash2 size={14}/>移除这一步</button>
       </div>
-      <p className="cv-provider" data-testid="generation-model">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据' : ''}</p>
+      <p className="cv-provider" data-testid="generation-model">{backend.label}</p>
     </div>;
   }
   const status = attempt && generationStatus(attempt);

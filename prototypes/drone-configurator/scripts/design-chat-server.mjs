@@ -148,13 +148,13 @@ async function main() {
   const port = Number(values.port ?? process.env.PORT ?? 4178);
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('端口必须为 1 至 65535 的整数。');
   const { chat, evidence } = await createDesignService({ apiKey: process.env.MINIMAX_API_KEY?.trim(), region: process.env.MINIMAX_REGION ?? 'cn' });
-  // 计入论文的场次用 Qwen：--image-backend qwen-comfy --comfy-url http://GPU主机:8188（或环境变量 WORKBENCH_IMAGE_BACKEND、COMFY_URL）。
-  const backendName = values['image-backend'] ?? process.env.WORKBENCH_IMAGE_BACKEND ?? 'minimax';
-  if (!['minimax', 'qwen-comfy'].includes(backendName)) throw new Error('图像后端只能是 minimax 或 qwen-comfy。');
-  const backend = backendName === 'qwen-comfy' ? { provider: 'qwen-comfy', url: (values['comfy-url'] ?? process.env.COMFY_URL ?? '').trim(),
-    unet: process.env.QWEN_UNET, clip: process.env.QWEN_CLIP, vae: process.env.QWEN_VAE } : undefined;
-  const imageJobs=createImageJobs({apiKey:process.env.MINIMAX_IMAGE_API_KEY?.trim() || process.env.MINIMAX_API_KEY?.trim(),backend,
-    region:process.env.MINIMAX_IMAGE_REGION ?? process.env.MINIMAX_REGION ?? 'cn',directory:process.env.WORKBENCH_IMAGE_JOBS_DIR});
+  // 出图只接本机 ComfyUI 上的 Qwen-Image 2.1（4.5）：--comfy-url http://GPU主机:8188（或环境变量 COMFY_URL）。
+  // --image-backend 只接受 qwen-comfy，留着是为了旧命令照常能用。
+  const backendName = values['image-backend'] ?? process.env.WORKBENCH_IMAGE_BACKEND ?? 'qwen-comfy';
+  if (backendName !== 'qwen-comfy') throw new Error('出图后端只能是 qwen-comfy（本机 ComfyUI 上的 Qwen-Image 2.1）。');
+  const backend = { provider: 'qwen-comfy', url: (values['comfy-url'] ?? process.env.COMFY_URL ?? '').trim(),
+    unet: process.env.QWEN_UNET, clip: process.env.QWEN_CLIP, vae: process.env.QWEN_VAE };
+  const imageJobs=createImageJobs({backend,directory:process.env.WORKBENCH_IMAGE_JOBS_DIR});
   // 4.0 的 AI：文字模型经 API 调用，两组同一个锁定的版本。密钥只从环境变量读。
   const ai = await createDesignAI({ apiKey: (process.env.WORKBENCH_LLM_API_KEY ?? process.env.MINIMAX_API_KEY)?.trim(),
     region: process.env.MINIMAX_REGION ?? 'cn', model: process.env.WORKBENCH_LLM_MODEL?.trim() || defaultModel,

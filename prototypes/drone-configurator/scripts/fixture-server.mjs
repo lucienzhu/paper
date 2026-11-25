@@ -13,8 +13,8 @@ import { tagPNGFront as tagPNG } from './fixture-png.mjs';
 const { values } = parseArgs({ options: { port: { type: 'string' }, delay: { type: 'string' }, 'image-backend': { type: 'string' } } });
 const port = Number(values.port ?? 4178), delay = Number(values.delay ?? 1200);
 const { chat, evidence } = await createDesignService({ apiKey: undefined, region: 'cn' });
-// --image-backend qwen-comfy：夹具改按 ComfyUI 的接口应答（上传、入队、历史、取图），同样把布局条件图原样返回；
-// 不带图的自由提示返回一张固定的示意图。回图里嵌入本轮的执行图，和 ComfyUI 存下的原图一样。
+// 夹具按 ComfyUI 的接口应答（上传、入队、历史、取图），把布局条件图原样返回；不带图的自由提示返回一张固定的示意图。
+// 回图里嵌入本轮的执行图，和 ComfyUI 存下的原图一样。4.5 起出图只接 Qwen，--image-backend 只接受 qwen-comfy（旧命令照常能用）。
 const plain = await readFile(new URL('../src/data/history/quad-guide.png', import.meta.url));
 const historyOf = (id, graph) => ({ [id]: { prompt: [1, id, graph, { client_id: 'fixture' }, ['12']],
   outputs: { 12: { images: [{ filename: graph['12'].inputs.filename_prefix + '_00001_.png', subfolder: '', type: 'output' }] } },
@@ -29,14 +29,8 @@ const comfyFixture = async (url, init = {}) => {
   if (pathname === '/view' && searchParams.get('type') === 'output') return new Response(lastGuide, { headers: { 'Content-Type': 'image/png' } });
   return new Response('not found', { status: 404 });
 };
-const jobs = values['image-backend'] === 'qwen-comfy'
-  ? createImageJobs({ fixture: true, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 50 }, fetchImpl: comfyFixture, directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')) })
-  : createImageJobs({ fixture: true, apiKey: 'fixture', directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')),
-  fetchImpl: async (_url, init) => {
-    const body = JSON.parse(init.body);
-    await new Promise(resolve => setTimeout(resolve, delay));
-    return Response.json({ data: [{ b64_json: body.images[0].image_url.split(',')[1] }] }, { headers: { 'trace-id': 'software-fixture' } });
-  } });
+if ((values['image-backend'] ?? 'qwen-comfy') !== 'qwen-comfy') throw new Error('出图后端只能是 qwen-comfy。');
+const jobs = createImageJobs({ fixture: true, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 50 }, fetchImpl: comfyFixture, directory: await mkdtemp(join(tmpdir(), 'workbench-fixture-')) });
 const ai = await createDesignAI({ logDir: await mkdtemp(join(tmpdir(), 'workbench-ai-')) });
 createDesignServer(chat, evidence, jobs, ai).listen(port, '127.0.0.1', () =>
   console.log(`界面走查服务（软件夹具，不调用模型） http://127.0.0.1:${port}/ · 冒充的后端：${jobs.describe().label}`));

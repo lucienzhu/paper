@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createDesignService } from './design-chat.mjs';
 import { createDesignServer } from './design-chat-server.mjs';
 import { createImageJobs } from './image-jobs.mjs';
+import { makeComfyFixture, sentOf } from './comfy-fixture.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_CORE || 'playwright-core');
@@ -18,11 +19,8 @@ if (capture) await mkdir(capture, { recursive: true });
 const jobDirectory = await mkdtemp(join(tmpdir(), 'canvas-walkthrough-'));
 const sent = [];
 const { chat, evidence } = await createDesignService({ apiKey: undefined, region: 'cn' });
-const jobs = createImageJobs({ apiKey: 'fixture', directory: jobDirectory, fetchImpl: async (_url, init) => {
-  const body = JSON.parse(init.body);
-  sent.push({ prompt: body.prompt, images: body.images.length });
-  return Response.json({ data: [{ b64_json: body.images[0].image_url.split(',')[1] }] }, { headers: { 'trace-id': 'software-fixture' } });
-} });
+const jobs = createImageJobs({ fixture: true, directory: jobDirectory, backend: { provider: 'qwen-comfy', url: 'http://comfy.fixture', pollMs: 30 },
+  fetchImpl: await makeComfyFixture({ onPrompt: graph => sent.push(sentOf(graph)) }) });
 const server = createDesignServer(chat, evidence, jobs);
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = 'http://127.0.0.1:' + server.address().port;
@@ -196,7 +194,9 @@ try {
   const [download] = await Promise.all([page.waitForEvent('download'), page.locator('[data-export-attempt]').click()]);
   const record = JSON.parse(await readFile(await download.path(), 'utf8'));
   assert.equal(record.parentId, referenceId);
-  assert.equal(record.h3.traceId, 'software-fixture');
+  // Qwen（ComfyUI）通路的追踪号就是入队时的 prompt_id，工作台把它定为本轮编号。
+  assert.equal(record.h3.model, 'Qwen-Image-2.1');
+  assert.equal(record.h3.traceId, record.id);
   assert.equal(record.candidates.length, 1);
   await page.locator('[data-step=canvas]').click();
 

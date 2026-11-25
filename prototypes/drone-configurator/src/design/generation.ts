@@ -38,7 +38,7 @@ async function call(path: string, body?: Blob): Promise<{raw: Blob; job: H3Job}>
   let job;
   try { job = JSON.parse(await raw.text()); }
   catch { throw new ServiceError(response.status,'当前页面未连接图像生成服务，请从本机工作台服务打开。'); }
-  if (!response.ok) throw new ServiceError(response.status,typeof job?.error === 'string' ? job.error : 'H3 服务返回 HTTP ' + response.status);
+  if (!response.ok) throw new ServiceError(response.status,typeof job?.error === 'string' ? job.error : '出图服务返回 HTTP ' + response.status);
   return {raw,job};
 }
 
@@ -66,9 +66,9 @@ function verifyIdentity(row: FrozenAttempt, job: H3Job) {
     throw new Error('回执中的模型或任务编号与本轮不符。本轮冻结时接的是 ' + backend.label + '。');
 }
 function decodePng(src: string) {
-  if (typeof src !== 'string' || !src.startsWith('data:image/png;base64,')) throw new Error('H3 回图缺少 PNG 原件。');
+  if (typeof src !== 'string' || !src.startsWith('data:image/png;base64,')) throw new Error('回图缺少 PNG 原件。');
   const bytes = Uint8Array.from(atob(src.slice('data:image/png;base64,'.length)), ch => ch.charCodeAt(0));
-  if (![137,80,78,71,13,10,26,10].every((byte,index) => bytes[index] === byte)) throw new Error('H3 回图文件格式与 PNG 标记不符。');
+  if (![137,80,78,71,13,10,26,10].every((byte,index) => bytes[index] === byte)) throw new Error('回图文件格式与 PNG 标记不符。');
   return new Blob([bytes], {type:'image/png'});
 }
 async function storeResult(row: FrozenAttempt, request: Blob, raw: Blob, job: H3Job) {
@@ -78,7 +78,7 @@ async function storeResult(row: FrozenAttempt, request: Blob, raw: Blob, job: H3
   const originals = [...(free ? [] : [row.guide]), ...(row.parentImage ? [row.parentImage] : [])];
   if (sent.attemptId !== row.id || sent.prompt !== row.confirmedText || sent.inputs.length !== originals.length || (sent.condition === 'free') !== free ||
     !Array.isArray(job.inputHashes) || job.inputHashes.length !== originals.length)
-    throw new Error('H3 回执的设计输入和本轮冻结记录不一致。');
+    throw new Error('出图回执的设计输入和本轮冻结记录不一致。');
   for (let index = 0; index < originals.length; index++) {
     const digest = await hashBlob(originals[index]), input = sent.inputs[index];
     if (input.role !== (!free && index === 0 ? 'layout' : 'parent') || input.sha256 !== digest ||
@@ -98,11 +98,11 @@ async function storeResult(row: FrozenAttempt, request: Blob, raw: Blob, job: H3
     return;
   }
   if (!job.evidence?.request || !job.evidence?.response || !Array.isArray(job.outputs) || job.outputs.length !== 1)
-    throw new Error('H3 服务未返回本轮完整的供应商记录和一张效果图。');
+    throw new Error('出图服务未返回本轮完整的记录和一张效果图。');
   const item = job.outputs[0], file = decodePng(item.dataUrl);
   if (item.mimeType !== 'image/png' || !item.name || await hashBlob(file) !== item.sha256 ||
     job.evidence.response.outputHashes?.length !== 1 || job.evidence.response.outputHashes[0] !== item.sha256)
-    throw new Error('H3 回图与服务记录的 PNG 摘要不一致。');
+    throw new Error('回图与服务记录的 PNG 摘要不一致。');
   const decoded = await createImageBitmap(file);
   decoded.close();
   await updateH3Record(row.id,{status:'succeeded',result:raw,traceId,issue:undefined,pending:undefined,receivedAt:new Date().toISOString()},
@@ -179,7 +179,7 @@ async function run(id: string) {
       } else if (job.status === 'queued' || job.status === 'running') {
         const current = await findAttempt(id);
         if (current?.h3?.pending) await updateH3Record(id,{pending:undefined});
-      } else throw new Error('H3 服务未返回可识别的任务状态。');
+      } else throw new Error('出图服务未返回可识别的任务状态。');
       await sleep(interval);
       interval = Math.min(5000,interval * 1.4);
       const current = await findAttempt(id);

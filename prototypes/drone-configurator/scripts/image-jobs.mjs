@@ -4,7 +4,6 @@ import path from 'node:path';
 import { homedir } from 'node:os';
 import { ChatError } from './design-chat.mjs';
 
-export const imageModel = 'MiniMax-H3-Image';
 export const qwenModel = 'Qwen-Image-2.1';
 // 与第 4 章 E3 设计通路已归档的请求是同一套工作流和设置（experiments/e3-quad-qwen/requests/*.request.json）。
 export const comfyDefaults = { unet:'qwen_image_2.1_bf16.safetensors', clip:'qwen3vl_8b_bf16.safetensors', vae:'qwen_image_2.1_vae_bf16.safetensors',
@@ -28,7 +27,6 @@ export function comfyGraph(id, prompt, seed, imageNames, s=comfyDefaults) {
 }
 // 同一轮次重交时种子不变：取轮次编号摘要的前 32 位。
 export const seedOf = id => parseInt(sha(id).slice(0,8),16);
-const origins = { global:'https://api.minimax.io', cn:'https://api.minimaxi.com' };
 const uuid = /^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/i;
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const dataHeader = 'data:image/png;base64,';
@@ -56,14 +54,6 @@ function validate(request) {
   return {attemptId,prompt,references,free};
 }
 
-function providerMessage(status, code, detail) {
-  if (status===402 || String(code)==='1008' || /insufficient balance/i.test(detail)) return 'MiniMax 账户图像 API 余额不足。';
-  if ([401,403].includes(status) || ['1004','2049'].includes(String(code)) || /not support|not authorized|permission/i.test(detail) && /plan|auth|model/i.test(detail))
-    return 'MiniMax 未授权此密钥调用 H3 Image。请核对密钥区域和图像模型权限。';
-  if(status===429) return 'MiniMax 当前达到调用限额，请稍后开启新一轮。';
-  return 'MiniMax 未完成本轮图像生成。' + (detail ? ' '+String(detail).replace(/sk-[\w-]+|Bearer\s+\S+|https?:\/\/\S+/gi,'[已隐藏]').slice(0,280) : '');
-}
-
 /**
  * 用临时文件替换记录。Windows 上目标文件正被读取（工作台每隔一两秒查一次进度）或被杀毒软件打开时，
  * rename 会报 EPERM、EACCES 或 EBUSY；这时稍等再试，最多约 6 秒，不把这一轮卡在“等待回图”。
@@ -78,19 +68,18 @@ export async function replaceFile(tmp, target, attempts = 30) {
   }
 }
 
-// The provider edits endpoint is synchronous and non-idempotent. Reserve a durable local job before calling it.
-// fixture: true 表示后端由软件夹具冒充，只在标签上写明，其余流程不变。
-export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fetch,backend,fixture=false,
+// 出图只接本机 ComfyUI 上的 Qwen-Image 2.1（4.5：作者 2026-11-26 定研究控制变量，文字模型 MiniMax、出图模型 Qwen；原先开发用的托管出图后端已去掉）。
+// 发图前先在本机落一份作业记录，再入队。fixture: true 表示后端由软件夹具冒充，只在标签上写明，其余流程不变。
+export function createImageJobs({fetchImpl=globalThis.fetch,backend={provider:'qwen-comfy'},fixture=false,
   directory=path.join(process.env.LOCALAPPDATA || homedir(),'Freeloop','multirotor-workbench','image-jobs')}={}) {
-  if (!Object.hasOwn(origins,region)) throw new Error('图像服务区域设置无效。');
-  // backend 为 {provider:'qwen-comfy', url} 时走本机 ComfyUI 上的 Qwen；否则走 MiniMax H3（开发用）。
-  const comfy=backend?.provider==='qwen-comfy' ? {...comfyDefaults,...Object.fromEntries(Object.entries(backend).filter(([,v])=>v!==undefined && v!==''))} : null;
-  const ident=comfy ? {provider:'qwen-comfy',model:qwenModel} : {provider:'minimax',model:imageModel};
+  if (backend?.provider!=='qwen-comfy') throw new Error('出图后端只能是本机 ComfyUI 上的 Qwen-Image 2.1。');
+  const comfy={...comfyDefaults,...Object.fromEntries(Object.entries(backend).filter(([,v])=>v!==undefined && v!==''))};
+  const ident={provider:'qwen-comfy',model:qwenModel};
   const baseRecord=id=>({attemptId:id,jobId:id,...ident});
   // 软件夹具冒充后端接口时，标签直说不出真图，免得把走查截图当成真实回图。
-  const realLabel=comfy ? 'Qwen-Image 2.1（本机 ComfyUI）' : 'MiniMax H3 Image';
-  const describe=()=>({...ident,endpoint:comfy ? '/prompt' : '/v1/images/edits',label:fixture ? '软件夹具（接口同 '+realLabel.replace(/（.*?）/,'')+'，不出真图）' : realLabel,
-    configured:comfy ? !!comfy.url : !!apiKey,...(fixture ? {fixture:true} : {})});
+  const realLabel='Qwen-Image 2.1（本机 ComfyUI）';
+  const describe=()=>({...ident,endpoint:'/prompt',label:fixture ? '软件夹具（接口同 '+realLabel.replace(/（.*?）/,'')+'，不出真图）' : realLabel,
+    configured:!!comfy.url,...(fixture ? {fixture:true} : {})});
   const active=new Map();
   const filename=id=>path.join(directory,id+'.json');
   const read=async id=>{
@@ -308,54 +297,14 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
     }
     await save(record);
   }
-  async function execute(record, refs) {
-    if(comfy) return executeComfy(record,refs);
-    const req=record.evidence.request;
-    const {prompt,model,size,n,response_format,output_format}=req;
-    try {
-      const response=await fetchImpl(origins[region]+'/v1/images/edits',{
-        method:'POST', redirect:'error',signal:AbortSignal.timeout(600000),
-        headers:{Authorization:'Bearer '+apiKey,'Content-Type':'application/json'},
-        body:JSON.stringify({prompt,model,size,n,response_format,output_format,images:refs.map(r=>({image_url:r.dataUrl}))}),
-      });
-      const data=await response.json().catch(()=>({}));
-      const code=data.base_resp?.status_code ?? data.error?.code ?? data.data?.[0]?.error?.code;
-      const traceId=(response.headers.get('trace-id') || response.headers.get('x-request-id') || data.request_id || data.id || '').toString().slice(0,160);
-      const detail=data.error?.message || data.base_resp?.status_msg || data.data?.[0]?.error?.message || '';
-      record.evidence.response={httpStatus:response.status,traceId,code:code ?? null,created:data.created ?? null,
-        outputFormat:data.output_format ?? null,size:data.data?.[0]?.size ?? null,
-        revisedPrompt:typeof data.data?.[0]?.revised_prompt==='string' ? data.data[0].revised_prompt : null};
-      if (!response.ok || (code!=null && Number(code)!==0) || data.data?.[0]?.error || data.error) {
-        throw new Error(providerMessage(response.status,code,detail));
-      }
-      const item=data.data?.[0];
-      if(!item || data.data.length!==1 || typeof item.b64_json!=='string' || item.b64_json.length>32*1024*1024)
-        throw new Error('MiniMax 回执未包含本轮请求的单张 PNG 原图。');
-      const png=Buffer.from(item.b64_json,'base64');
-      if (!checkedPng(png,false)) throw new Error('MiniMax 回图未通过 1024 × 1024 PNG 校验。');
-      const hash=sha(png), name='H3-'+record.jobId+'.png';
-      await writeFile(path.join(directory,name),png,{mode:0o600});
-      record.outputs=[{name,mimeType:'image/png',sha256:hash}];
-      record.evidence.response.outputHashes=[hash];
-      record.status='succeeded';
-    } catch(err) {
-      record.status='failed';
-      record.error=record.evidence.response ? err.message : '未收到 MiniMax 完整回执，已保留本轮记录。';
-    }
-    record.completedAt=new Date().toISOString();
-    await save(record);
-  }
   async function submit(raw) {
     const {attemptId,prompt,references,free}=validate(raw);
-    // MiniMax 的接口是改图接口，必须带图。它只作开发用，不为它另接一个文生图接口。
-    if(free && !comfy && !references.length) fail(400,'开发用的 MiniMax 后端不接受不带图的自由提示。请用 Qwen 后端启动工作台。');
     const hashes=references.map(x=>x.sha256);
     const images=references.map(({role,sha256})=>({role,sha256}));
     // 两种方式的模型、画幅、步数、引导强度、采样器、负向词和种子规则完全相同；差别只在发什么文字、带不带布局条件图。
-    const request=comfy ? {model:qwenModel,prompt,size:'1024x1024',n:1,output_format:'png',endpoint:'/prompt',seed:seedOf(attemptId),
+    const request={model:qwenModel,prompt,size:'1024x1024',n:1,output_format:'png',endpoint:'/prompt',seed:seedOf(attemptId),
         steps:comfy.steps,cfg:comfy.cfg,sampler_name:comfy.sampler_name,scheduler:comfy.scheduler,negative_prompt:comfy.negative_prompt,
-        weights:{unet:comfy.unet,clip:comfy.clip,vae:comfy.vae},images,...(free ? {condition:'free'} : {})}
-      : {model:imageModel,prompt,size:'1024x1024',n:1,response_format:'b64_json',output_format:'png',endpoint:'/v1/images/edits',images,...(free ? {condition:'free'} : {})};
+        weights:{unet:comfy.unet,clip:comfy.clip,vae:comfy.vae},images,...(free ? {condition:'free'} : {})};
     const fingerprint=sha(JSON.stringify(request));
     await mkdir(directory,{recursive:true,mode:0o700});
     const record={...baseRecord(attemptId),status:'running',inputHashes:hashes,fingerprint,ownerPid:process.pid,startedAt:new Date().toISOString(),evidence:{request}};
@@ -369,12 +318,12 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
     if(!claimed){
       const old=await read(attemptId);
       if(old?.fingerprint!==fingerprint)fail(409,'同一轮次编号已经用于另一组设计输入。');
-    } else if (comfy ? !comfy.url : !apiKey) {
-      record.status='failed';record.error=comfy ? '尚未配置 Qwen 图像服务地址。' : '尚未配置 MiniMax 图像服务凭据。';await save(record);
+    } else if (!comfy.url) {
+      record.status='failed';record.error='尚未配置 Qwen 图像服务地址。';await save(record);
     } else {
       // 输入图另存一份：待核对之后要重新入队（回执确实丢了、队列里也没有）时，服务重启过也拿得到原件。
       // 先登记到 active 再等存盘，免得这段时间里的查询以为没人在管这一轮。
-      const work=(async()=>{ if(comfy) await saveInputs(record,references); await execute(record,references); })()
+      const work=(async()=>{ await saveInputs(record,references); await executeComfy(record,references); })()
         .catch(err=>console.error('保存图像回执失败',err.code || err.name)).finally(()=>active.delete(attemptId));
       active.set(attemptId,work);
     }
@@ -390,7 +339,8 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
     if(!uuid.test(id))fail(400,'轮次编号格式不正确。');
     const record=await read(id);
     if(!record)fail(404,'未找到这次图像生成记录。');
-    if(!comfy || ['succeeded','failed'].includes(record.status)) return false;
+    // 不是 Qwen 出图的旧记录（4.5 以前开发用后端留下的）不取回。
+    if(record.provider!=='qwen-comfy' || ['succeeded','failed'].includes(record.status)) return false;
     if(record.status==='running' && record.ownerPid!==process.pid && alive(record.ownerPid)) return false;
     // 远端已经找不到这一轮（GPU 主机重启过、或者入队结果不明而一直找不到）时不自动重试，等设计者或主持人决定；点了“取回”才再查一次。
     if(!force && record.status==='unconfirmed' && (record.pending?.lost || Date.now()-Date.parse(record.pending?.lastTryAt ?? 0)<(comfy.retryMs ?? 3000))) return false;
@@ -450,14 +400,13 @@ export function createImageJobs({apiKey,region='global',fetchImpl=globalThis.fet
     let record=await read(id);
     if(!record)fail(404,'未找到这次图像生成记录。');
     // Qwen：管这一轮的服务进程已经不在（重启过），或者这一轮在等核对，就按原 prompt_id 接着取回，不再报失败、不再入队。
-    if(comfy && !active.has(id) && ((record.status==='running' && (!alive(record.ownerPid) || record.ownerPid===process.pid)) || record.status==='unconfirmed')) {
+    if(record.provider==='qwen-comfy' && !active.has(id) && ((record.status==='running' && (!alive(record.ownerPid) || record.ownerPid===process.pid)) || record.status==='unconfirmed')) {
       if(await resume(id)) record=await read(id);
     }
     const {fingerprint,ownerPid,...visible}=record;
-    const ownerAlive=alive(ownerPid);
-    // MiniMax 的改图接口不能重放：服务在收到回执前重启，这一轮只能记为未完成。
-    if(!comfy && visible.status==='running' && (!ownerAlive || Date.now()-Date.parse(record.startedAt)>630000)){
-      visible.status='failed';visible.error='工作台服务在收到完整回执前重启。请核对该轮服务记录，当前请求已保留。';
+    // 不是 Qwen 出图的旧记录还停在进行中时，不再取回，只显示为未完成。
+    if(record.provider!=='qwen-comfy' && ['running','unconfirmed'].includes(visible.status)){
+      visible.status='failed';visible.error='这一轮不是 Qwen 出图的记录，不再取回。';
     }
     if(visible.outputs)visible.outputs=await Promise.all(visible.outputs.map(async file=>({...file,dataUrl:dataHeader+(await readFile(path.join(directory,file.name))).toString('base64')})));
     return visible;

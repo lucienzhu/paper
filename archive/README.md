@@ -15,7 +15,6 @@
 | [experiments/g2d/](experiments/g2d/) | G2d 条件图的请求与画法 | `experiments/r0-e0-e1` 的 build_guides.py、compile.py、verify.py 读它的提示词模板；E0、E1 的读数（只能以数字出现）靠它复现 |
 | [evidence/formal-reset/](evidence/formal-reset/) | 11 月 11 日的图像登记表 | `experiments/rating-kit/eligibility.py` 读其中的 image-registry.json |
 | [evidence/d2-tuning/](evidence/d2-tuning/)、[experiments/d2-tuning/](experiments/d2-tuning/) | D2 调参的原图与输入绑定 | `evidence/prompt-parameter-review/build_index.py` 和 actual-parameters.json |
-| [evidence/h3-e2-local-edit-20261113/](evidence/h3-e2-local-edit-20261113/) | H3 局部编辑开发图 | `evidence/h3-camera-layout-originals` 的索引指到其中 4 张原图 |
 
 **公开状态。** `paper-reading-room` 里有研究者对应键、原始样本和盲测映射。仓库所有者 11 月 20 日定为不脱敏公开迁入，并提醒对应键已公开、以后的实验要重新生成并封存新键，见[该目录的说明](paper-reading-room/README.md)。
 
@@ -34,6 +33,7 @@
 | [logs/](logs/) | 11 月 9—23 日的进度日志（原 `PROGRESS.md`）、STATUS 开头 11 月 18—23 日的每日进展；2026-11-25 加入改写以前的 STATUS 全文（11 月 17 日的逐批实验索引） | 2026-11-24 |
 | [entry-history/](entry-history/) | 11 月 23 日以前 `CLAUDE.md` 的全文 | 2026-11-24 |
 | 2026-11-25 一批（62 个文件，逐个列在 [MOVES-20261125.tsv](MOVES-20261125.tsv)） | S6 的手册、页面和脚本（作者定不做）；11 月 19 日开机单；11 月 18 日整理清单、11 月 24 日 GitHub 清理工单和脚本（都已执行）；11 月 17 日的 E 盘配置器方案；11 月 10 日 X12 表单预读；工作台 4.0—4.2 和 11 月 18—19 日的复核记录。都放在 `archive/` 下原来的相对路径里 | 2026-11-25（作者第 9 条：无关文件移出去） |
+| 2026-11-26 一批（745 个文件，逐个列在 [MOVES-20261126.tsv](MOVES-20261126.tsv)，含原因） | MiniMax H3 托管接口出的全部图及其请求、回执、读数和说明：开发三轮、首轮五图、4.2.1 节轴距两档、配置器开发图、相机布局开发图、条件图分工对比、作者工作簿、S5 试作 8 张、工作台交接包里的作业记录和截图。原在第一节的 `evidence/h3-e2-local-edit-20261113` 也是这类数据，读它的索引一并移进来了，所以改列在这里。另有 Codex 内置图像编辑出的两张样张、E0 闭源对照臂 6 份请求（从未运行）、资料库检索走查的题表与结果。S5 评议图审查页里 1.1 版的四节另存为 [experiments/s5-compactness-pilot/stimulus-review-v1.1.md](experiments/s5-compactness-pilot/stimulus-review-v1.1.md) | 2026-11-26（作者第 11 条：冒烟脏数据全部移出；研究控制变量，文字模型 MiniMax，出图模型 Qwen） |
 | [issues/](issues/README.md) | GitHub 全部工单与 PR 的逐字副本和一览表 | 2026-11-18 写在分支上，2026-11-24 带回并补全 |
 
 ## 移动时做了什么

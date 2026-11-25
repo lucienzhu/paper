@@ -7,34 +7,9 @@
       "sha256": "4a26a2c5eb6e4f7a578306aad4e4fbeabb09edac66e9c24b567f0b3b669f3380"
     },
     {
-      "path": "planning/workbench-handoff/context/h3/H3-02.png",
-      "format": "binary",
-      "sha256": "8733eecf4e82f473d3599926dd3722b7632225c0f3b51bf105ce9aedc260a4da"
-    },
-    {
-      "path": "planning/workbench-handoff/context/h3/H3-03.png",
-      "format": "binary",
-      "sha256": "44af73563e6d19f2f4d908fe092e5c1548e8ed2d80115f2309641c6608b1234b"
-    },
-    {
-      "path": "planning/workbench-handoff/context/h3/H3-04.png",
-      "format": "binary",
-      "sha256": "5cea9d17f9d9643f93e4962138e113bb32b26f0329dd25c05d58a646b2bddcde"
-    },
-    {
-      "path": "planning/workbench-handoff/context/h3/jobs.csv",
-      "format": "text-lf",
-      "sha256": "8ebdea183ddf6133b749c56c7d06155ce06d9812a6247d02eade9cc0c792c5f6"
-    },
-    {
-      "path": "planning/workbench-handoff/context/h3/layout-input.png",
-      "format": "binary",
-      "sha256": "39522647f0daac8854598cf38d61198103ab4b27043fd4dcfd87c51d36cc9e3b"
-    },
-    {
       "path": "planning/workbench-handoff/context/README.md",
       "format": "text-lf",
-      "sha256": "3c21798632287ce2381eadbeef4055502592b6ddeef9c2e516f3c36f67124f22"
+      "sha256": "c87cbd13a39a794cf526174d1a6e4fa21f10a50387cc93db861577ab2e75fd13"
     },
     {
       "path": "planning/workbench-handoff/context/visuals/b2-history-canvas.png",
@@ -62,11 +37,6 @@
       "sha256": "337f80779e29fe5e48ead717e30ec26eb2d2d17a444ab4e51655206a466068a8"
     },
     {
-      "path": "planning/workbench-handoff/context/visuals/h3-workspace.png",
-      "format": "binary",
-      "sha256": "f7a44628d3a1c0def3cacc7bd093540171d71dddcea98753757e146f40190539"
-    },
-    {
       "path": "planning/workbench-handoff/context/visuals/seven-step-flow.png",
       "format": "binary",
       "sha256": "c47fe7e5d274b55bfcb9d45c574086194cdc36fea536dfb52b30db2ae38dce4f"
@@ -79,12 +49,7 @@
     {
       "path": "planning/workbench-handoff/context/界面资料.md",
       "format": "text-lf",
-      "sha256": "755affa4a371a275cc3f5e678dc55aeb57a9fe9357ad4e317c73ad958124efe1"
-    },
-    {
-      "path": "planning/workbench-handoff/context/运行证据.md",
-      "format": "text-lf",
-      "sha256": "e32c563d07f038f61532b9cce3757024c629274aeb0c801e75a7cfc80a259ca0"
+      "sha256": "93742807a9fc6db29a040d2ad7383da94dfc99ae9f7c8bf61eec1c5610e41be5"
     },
     {
       "path": "planning/workbench-handoff/literature/.gitignore",
@@ -239,12 +204,12 @@
     {
       "path": "planning/workbench-handoff/README.md",
       "format": "text-lf",
-      "sha256": "084057aefb5a47d39c9afdb0608556fa88792a5eb0337f73d1b22096937fa82c"
+      "sha256": "1586bd86c708799b2189c4ce3c0f0757e34998567a932b3e28c69c2a9af253ed"
     },
     {
       "path": "planning/workbench-handoff/v3.2-review.md",
       "format": "text-lf",
-      "sha256": "4aeab6977dcdac16aae62bd4b44551a747731262ae5e76439920676a6efbd8da"
+      "sha256": "fcb04cd3f8e9c3ce7e2b2558a6dbebc341c954afa4ba621dd0336bc8c91bf213"
     },
     {
       "path": "planning/workbench-handoff/verify_checkout.py",
@@ -264,12 +229,12 @@
     {
       "path": "prototypes/drone-configurator/README.md",
       "format": "text-lf",
-      "sha256": "8d90546062832e9b30019fa01c390901e3763d6e6cdb4971367c24930a8d54c2"
+      "sha256": "949ef062558f5c86344c92fcee8397476b452c8ae284e0247d7a7ca05a5d2dbf"
     },
     {
       "path": "prototypes/drone-configurator/configurator-offline.zip",
       "format": "binary",
-      "sha256": "f1ae9cdda5e885086a1c66912a1e1afc4cac201f1d807552e8a5604c523f7b0a"
+      "sha256": "5d70182a8e2aef2a523249d7b8bd2add5b8f10ee1520cfd334a278f50ca26a41"
     },
     {
       "path": "prototypes/drone-configurator/src/data/evidenceCards.json",
