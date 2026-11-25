@@ -4,8 +4,8 @@
 
 ### 依据的范围
 
-- 作者原配置器已有 Aerodynamic Pod、Boxy Enclosure、机身长宽尺寸和 10/15/20 mm 臂宽。此次新增臂根、相机整合和可见分件的离散选项。窄/中/宽、短/长均是本研究的操作定义。本轮所选档位不代表业界机型分类、总体比例分布或审美真值。[原配置器字段](../../prototypes/drone-configurator/src/types/DroneParameters.ts) · [Claude 的字典草案](https://github.com/Freeloop993/paper/issues/1#issuecomment-6853553208)
-- 用户评论 E001 支持“小巧”的需求，E003 的收纳语境不能换算成展开状态的比例；E011–E015 提及简洁，E016 表达将外挂件收入机身的愿望。这些资料支持研究该维度，具体边界由本表定义。[评论卡与限制](../../evidence/semantic-cards/README.md)
+- 作者原配置器已有 Aerodynamic Pod、Boxy Enclosure、机身长宽尺寸和 10/15/20 mm 臂宽。此次新增臂根、相机整合和可见分件的离散选项。窄/中/宽、短/长均是本研究的操作定义。本轮所选档位不代表业界机型分类、总体比例分布或审美真值。[原配置器字段](../../../prototypes/drone-configurator/src/types/DroneParameters.ts) · [Claude 的字典草案](https://github.com/Freeloop993/paper/issues/1#issuecomment-6853553208)
+- 用户评论 E001 支持“小巧”的需求，E003 的收纳语境不能换算成展开状态的比例；E011–E015 提及简洁，E016 表达将外挂件收入机身的愿望。这些资料支持研究该维度，具体边界由本表定义。[评论卡与限制](../../../evidence/semantic-cards/README.md)
 - DJI Mini 4 Pro 手册的“Diagram / Aircraft”用不同编号标识前置云台相机、视觉传感器、桨和电机，准备章节要求展开机臂。它支持区分相机和避障传感器，并为折叠连接提供实物先例。手册给出的折叠/展开整机外廓尺寸不能换算为裸机身长宽比；部件示图也不能证明相机必须在正顶视下可见。[厂家手册](https://dl.djicdn.com/downloads/DJI_Mini_4_Pro/20240627/DJI_Mini_4_Pro_User_Manual_en.pdf) · [官方规格](https://www.dji.com/support/product/mini-4-pro)
 - 九图和最近 15 张 H3 原图给出了实际混淆案例，包括无缝肩部趋同、下端误生相机、空心叶形以及把暗顶读作玻璃。这些是选择读数项目的内部证据。[九图](../../evidence/section421-minimax-review/README.md) · [15 图及逐图记录](../../evidence/guide-choice-20261113/README.md)
 

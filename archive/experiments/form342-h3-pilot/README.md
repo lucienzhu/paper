@@ -20,6 +20,6 @@
 |B|[原 PNG](actual/B/original.png)|[配置](exports/B/spec.json) · [完整文本](exports/B/prompt.txt)|[提交](actual/B/submission.json) · [回执](actual/B/receipt.json)|
 |C|[原 PNG](actual/C/original.png)|[配置](exports/C/spec.json) · [完整文本](exports/C/prompt.txt)|[提交](actual/C/submission.json) · [回执](actual/C/receipt.json)|
 
-[出图前的清单](manifest.json) · [逐图摘要、调用与 PNG 核验](verification.json)。没有固定种子、自动重试或筛图。可直接从共享仓库下载配置器的 [HTML](../../prototypes/drone-configurator/public/research-guides/form342.html) 与同目录的 [JS](../../prototypes/drone-configurator/public/research-guides/form342.js)，放在同一文件夹打开。E 盘本地配置器的四旋工作台与原条件图页都有该入口。浏览器使用真实导出按钮的 Blob，与页面显示文本一致。页面导出不含模型凭据。
+[出图前的清单](manifest.json) · [逐图摘要、调用与 PNG 核验](verification.json)。没有固定种子、自动重试或筛图。可直接从共享仓库下载配置器的 [HTML](../../../prototypes/drone-configurator/public/research-guides/form342.html) 与同目录的 [JS](../../../prototypes/drone-configurator/public/research-guides/form342.js)，放在同一文件夹打开。E 盘本地配置器的四旋工作台与原条件图页都有该入口。浏览器使用真实导出按钮的 Blob，与页面显示文本一致。页面导出不含模型凭据。
 
 源码在 [configurator/src/design/form342.ts](configurator/src/design/form342.ts)。复用 E 盘 layoutFor 和 drawGuide；此研究页指定固定导出比例，旧规格仍按原比例计算。用 esbuild 从此源码打包生成公开的 form342.js。构型输入通过点线图表达；相机、臂根、分件均经档位短句输入。请选择实际可辨的字段进入正式读数讨论。

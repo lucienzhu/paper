@@ -27,9 +27,9 @@
 | 文件夹 | 说明什么 |
 | --- | --- |
 | [historic-guides](historic-guides/)、[s1-axis-repeat](s1-axis-repeat/)、[s1-decomposition](s1-decomposition/)、[g2-six](g2-six/)、[g2b-actual](g2b-actual/)、[l1-layout-actual](l1-layout-actual/)、[prompt-parameter-review](prompt-parameter-review/) | 条件图的画法和强度是怎么选出来的 |
-| [guide-choice-20261113](guide-choice-20261113/) | 条件图的分工 |
-| [form342-h3-dev](form342-h3-dev/)、[qwen-shape-s4-20261114](qwen-shape-s4-20261114/README.md)、[h3-camera-layout-originals](h3-camera-layout-originals/) | 造型字典的开发，含 H3 的相机布局原图 |
-| [section421-h3-span](section421-h3-span/)、[section421-minimax-review](section421-minimax-review/)、[quad-author-selection](quad-author-selection/) | E3 三个设计方向的来源 |
+| [guide-choice-20261113](../archive/evidence/guide-choice-20261113/) | 条件图的分工 |
+| [form342-h3-dev](../archive/evidence/form342-h3-dev/)、[qwen-shape-s4-20261114](qwen-shape-s4-20261114/README.md)、[h3-camera-layout-originals](../archive/evidence/h3-camera-layout-originals/) | 造型字典的开发，含 H3 的相机布局原图 |
+| [section421-h3-span](../archive/evidence/section421-h3-span/)、[section421-minimax-review](../archive/evidence/section421-minimax-review/)、[quad-author-selection](../archive/evidence/quad-author-selection/) | E3 三个设计方向的来源 |
 | [g3-actual](g3-actual/)、[x12-calibration](../archive/evidence/x12-calibration/) | 评议工具的校准 |
 
 ## 分支上的证据回到主分支
