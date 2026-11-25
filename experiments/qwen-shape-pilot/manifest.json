@@ -10,7 +10,7 @@
   "dictionary": "shape-dictionary-v1.2",
   "dictionary_sha256": "22ca89232e010ae603f34096dd3f5ccfcf62b7faa91161b157fb6007514f06a9",
   "reading_protocol": "v2.2",
-  "guide_source": "evidence/form342-h3-dev/round-2/guides/dots.png",
+  "guide_source": "input/qwen-shape-dots-250-15c5ad1c924b.png",
   "guide": {
     "span_mm": 250,
     "layout_wl": 1.0,
@@ -106,8 +106,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1",
-      "h3_submission": "S0-1"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1"
     },
     {
       "id": "QSP-S0-r2",
@@ -126,8 +125,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2",
-      "h3_submission": "S0-2"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2"
     },
     {
       "id": "QSP-S1-r1",
@@ -146,8 +144,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1",
-      "h3_submission": "S1-1"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1"
     },
     {
       "id": "QSP-S1-r2",
@@ -166,8 +163,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2",
-      "h3_submission": "S1-2"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2"
     },
     {
       "id": "QSP-S2-r1",
@@ -186,8 +182,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1",
-      "h3_submission": "S2-1"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1"
     },
     {
       "id": "QSP-S2-r2",
@@ -206,8 +201,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2",
-      "h3_submission": "S2-2"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2"
     },
     {
       "id": "QSP-S3-r1",
@@ -226,8 +220,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1",
-      "h3_submission": "S3-1"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1"
     },
     {
       "id": "QSP-S3-r2",
@@ -246,8 +239,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2",
-      "h3_submission": "S3-2"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2"
     },
     {
       "id": "QSP-S4-r1",
@@ -266,8 +258,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1",
-      "h3_submission": "S4-1"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1"
     },
     {
       "id": "QSP-S4-r2",
@@ -286,8 +277,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2",
-      "h3_submission": "S4-2"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2"
     },
     {
       "id": "QSP-S5-r1",
@@ -306,8 +296,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1",
-      "h3_submission": "S5-1"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r1"
     },
     {
       "id": "QSP-S5-r2",
@@ -326,8 +315,7 @@
       "input_name": "qwen-shape-dots-250-15c5ad1c924b.png",
       "input_file": "input/qwen-shape-dots-250-15c5ad1c924b.png",
       "input_sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
-      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2",
-      "h3_submission": "S5-2"
+      "historical_template": "evidence/l1-layout-actual/L1-actual/L1-F-wl0.70-r2"
     }
   ]
 }

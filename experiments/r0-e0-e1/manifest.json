@@ -48,32 +48,6 @@
       "guide_sha256": "4bd9d29b41b8d71c453931046a749d835202c12112301b1d528ba750854dc92f"
     },
     {
-      "case": "E0-closed-wl0.70-r1",
-      "request": "requests/E0-closed-wl0.70-r1.json",
-      "sha256": "d7d502f7841354bead856c453aa0bb90aa89b746da7480f62a106cd33b1a4eef",
-      "stage": "E0",
-      "arm": "closed",
-      "factor": "wl",
-      "level": 0.7,
-      "repeat": 1,
-      "seed": null,
-      "guide": "prototypes/drone-configurator/public/research-guides/wl-0.70-dd-0.50.png",
-      "guide_sha256": "4bd9d29b41b8d71c453931046a749d835202c12112301b1d528ba750854dc92f"
-    },
-    {
-      "case": "E0-closed-wl0.70-r2",
-      "request": "requests/E0-closed-wl0.70-r2.json",
-      "sha256": "d7d502f7841354bead856c453aa0bb90aa89b746da7480f62a106cd33b1a4eef",
-      "stage": "E0",
-      "arm": "closed",
-      "factor": "wl",
-      "level": 0.7,
-      "repeat": 2,
-      "seed": null,
-      "guide": "prototypes/drone-configurator/public/research-guides/wl-0.70-dd-0.50.png",
-      "guide_sha256": "4bd9d29b41b8d71c453931046a749d835202c12112301b1d528ba750854dc92f"
-    },
-    {
       "case": "E0-control-wl1.00-r1",
       "request": "requests/E0-control-wl1.00-r1.json",
       "sha256": "e5d25f63a76f2c991105310287d7055668748b34696a37475ad71b852ebb22a4",
@@ -100,32 +74,6 @@
       "guide_sha256": "4dd33589a21d710153d912ac8dada8d0fc26fe0ac029883794461e53b0f4628e"
     },
     {
-      "case": "E0-closed-wl1.00-r1",
-      "request": "requests/E0-closed-wl1.00-r1.json",
-      "sha256": "81a6300146aa52ad3320733dc29e7f697b22be874d747e4399088741dbb4596b",
-      "stage": "E0",
-      "arm": "closed",
-      "factor": "wl",
-      "level": 1.0,
-      "repeat": 1,
-      "seed": null,
-      "guide": "prototypes/drone-configurator/public/research-guides/wl-1.00-dd-0.50.png",
-      "guide_sha256": "4dd33589a21d710153d912ac8dada8d0fc26fe0ac029883794461e53b0f4628e"
-    },
-    {
-      "case": "E0-closed-wl1.00-r2",
-      "request": "requests/E0-closed-wl1.00-r2.json",
-      "sha256": "81a6300146aa52ad3320733dc29e7f697b22be874d747e4399088741dbb4596b",
-      "stage": "E0",
-      "arm": "closed",
-      "factor": "wl",
-      "level": 1.0,
-      "repeat": 2,
-      "seed": null,
-      "guide": "prototypes/drone-configurator/public/research-guides/wl-1.00-dd-0.50.png",
-      "guide_sha256": "4dd33589a21d710153d912ac8dada8d0fc26fe0ac029883794461e53b0f4628e"
-    },
-    {
       "case": "E0-control-wl1.30-r1",
       "request": "requests/E0-control-wl1.30-r1.json",
       "sha256": "047be28369795c230e2c7b7204621db217b1b715be6fc0809804cdebe09375cc",
@@ -148,32 +96,6 @@
       "level": 1.3,
       "repeat": 2,
       "seed": 2026111202,
-      "guide": "prototypes/drone-configurator/public/research-guides/wl-1.30-dd-0.50.png",
-      "guide_sha256": "b2272f1fbe1351c2a6a01ed699461d13aa7c6ca884e26b1bca97c1d2f806f797"
-    },
-    {
-      "case": "E0-closed-wl1.30-r1",
-      "request": "requests/E0-closed-wl1.30-r1.json",
-      "sha256": "e8495050d7a7af953c28e6351be759fa1b778cc0f7735a995304abf5a50fd037",
-      "stage": "E0",
-      "arm": "closed",
-      "factor": "wl",
-      "level": 1.3,
-      "repeat": 1,
-      "seed": null,
-      "guide": "prototypes/drone-configurator/public/research-guides/wl-1.30-dd-0.50.png",
-      "guide_sha256": "b2272f1fbe1351c2a6a01ed699461d13aa7c6ca884e26b1bca97c1d2f806f797"
-    },
-    {
-      "case": "E0-closed-wl1.30-r2",
-      "request": "requests/E0-closed-wl1.30-r2.json",
-      "sha256": "e8495050d7a7af953c28e6351be759fa1b778cc0f7735a995304abf5a50fd037",
-      "stage": "E0",
-      "arm": "closed",
-      "factor": "wl",
-      "level": 1.3,
-      "repeat": 2,
-      "seed": null,
       "guide": "prototypes/drone-configurator/public/research-guides/wl-1.30-dd-0.50.png",
       "guide_sha256": "b2272f1fbe1351c2a6a01ed699461d13aa7c6ca884e26b1bca97c1d2f806f797"
     },

@@ -254,29 +254,8 @@ class Registers:
                     ),
                 )
             )
-        path = HAND + "context/h3/jobs.csv"
-        for r in self.rows(path):
-            key = r["sample_id"]
-            self.items.append(
-                Item(
-                    key,
-                    "design_record",
-                    key + " 四旋造型生成记录",
-                    f"{r['model']}，HTTP {r['http_status']}，状态 {r['status']}。"
-                    + (
-                        "登记的父图为 " + r["parent_sample_id"] + "。"
-                        if r["parent_sample_id"]
-                        else "输入含布局条件图。"
-                    ),
-                    "一次作业的技术记录，不能推断造型质量、作者采纳或跨构型控制。",
-                    path,
-                    key,
-                    "run_record",
-                    path,
-                    r["original_output_sha256"] or r["layout_sha256"],
-                    "quad",
-                )
-            )
+        # 2026-11-26：原先这里把工作台交接包里 MiniMax H3 的四条作业记录（context/h3/jobs.csv）编成条目；
+        # 作者定 MiniMax H3 出图全部移出，那份记录已移进 archive，不再编进资料库。
         for f in ("lookup.mjs", "topics.mjs"):
             path = STUDY + "semantic/lookup/" + f
             self.files[path] = hashlib.sha256(

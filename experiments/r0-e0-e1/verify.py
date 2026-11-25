@@ -12,7 +12,7 @@ get = lambda path: json.loads(path.read_bytes())
 hashed = lambda path: sha256(path.read_bytes()).hexdigest()
 base = get(root/"archive/experiments/g2d/requests/G2d-r100-s2026111105.json")["prompt"]
 assert Counter((c["stage"],c["arm"]) for c in rows) == {
-    ("R0","control"):2, ("E0","control"):6, ("E0","closed"):6, ("E1","control"):24, ("E1","text"):12}
+    ("R0","control"):2, ("E0","control"):6, ("E1","control"):24, ("E1","text"):12}  # E0 闭源臂 2026-11-26 作废移出
 assert len({c["case"] for c in rows}) == len(rows) == len(list((here/"requests").glob("*.json")))
 cells = defaultdict(list)
 for c in rows:
@@ -31,12 +31,6 @@ for c in rows:
     sentence = (f"The left-right motor spacing is {level:.2f} times the front-back motor spacing."
                 if factor=="wl" else f"Each rotor diameter is {level:.2f} of the diagonal motor distance.")
     text = base["4"]["inputs"]["prompt"]+" "+sentence
-    if c["arm"]=="closed":
-        assert c["seed"] is None and body["prompt"] == text+" Use the attached layout only for rotor positions and blade size; do not reproduce its black marks."
-        assert body["images"][0]["image_url"].endswith("/"+data["guide_commit"]+"/"+c["guide"])
-        assert body["n"] == 1 and body["size"] == "1024x1024" and body["output_format"] == "png"
-        assert body["model"] == "gpt-image-2.6-flare" and len(body["images"]) == 1
-        continue
     g=body["prompt"]
     assert g["4"]["inputs"]["prompt"] == text
     assert g["4"]["inputs"]["negative_prompt"] == base["4"]["inputs"]["negative_prompt"]
@@ -62,5 +56,4 @@ for factor, levels in (("wl",(.7,1.,1.3)),("dd",(.4,.5,.6))):
         assert cells["E1","text",factor,level]==cells["E1","control",factor,level][:2]
         if factor=="wl":
             assert cells["E0","control",factor,level]==[2026111201,2026111202]
-            assert cells["E0","closed",factor,level]==[None,None]
-print("50 request hashes; 2 R0, 12 E0, 36 E1; per-cell factors, prompts, seeds, graph parity and reference bytes verified.")
+print("44 request hashes; 2 R0, 6 E0, 36 E1; per-cell factors, prompts, seeds, graph parity and reference bytes verified.")
