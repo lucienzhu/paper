@@ -60,7 +60,7 @@
 
    | 批次单 | 批 | 份数 | 登记 |
    | --- | --- | ---: | --- |
-   | [02-h3-confirm.json](batches/02-h3-confirm.json) | H3 喷头确认 | 4 | [登记](../20261126-h3-nozzle-confirm/README.md) |
+   | [02-nozzle-confirm.json](batches/02-nozzle-confirm.json) | 电机下方喷头确认（任务表 H3，不是 MiniMax H3 模型） | 4 | [登记](../20261126-nozzle-confirm/README.md) |
    | [03-h5-stage1.json](batches/03-h5-stage1.json) | 八旋与 X8 顶视 | 12 | [登记](../20261126-h5-octo-x8/README.md) |
    | 04-h5-stage2.json（第一段出图后编） | 八旋与 X8 关联斜视 | 8 | 同上 |
    | [05-a6-hexa.json](batches/05-a6-hexa.json) | A6 六旋比例补验 | 18 | [登记](../20261126-a6-hexa-ratio/README.md) |

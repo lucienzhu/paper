@@ -1,6 +1,6 @@
-"""H3 电机下方喷头的确认 4 张：取 11 月 15 日开发批 E6B-N-dev-r1 的实际请求，只换种子和保存前缀。
+"""电机下方喷头的确认 4 张（任务表 H3，不是 MiniMax H3 模型；在 ComfyUI 上用 Qwen-Image 2.1 跑）：取 11 月 15 日开发批 E6B-N-dev-r1 的实际请求，只换种子和保存前缀。
 
-运行：python3 -B experiments/20261126-h3-nozzle-confirm/build.py   （仓库根目录）
+运行：python3 -B experiments/20261126-nozzle-confirm/build.py   （仓库根目录）
 种子 2026112601—04。2026-11-26 对全库请求查过，此前没用过。
 """
 import copy

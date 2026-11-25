@@ -1,10 +1,10 @@
 {
   "schema": "gpu-remote-batch-v1",
-  "batch": "H3 电机下方喷头确认 4 张",
-  "registration": "experiments/20261126-h3-nozzle-confirm/README.md",
-  "registered_manifest": "experiments/20261126-h3-nozzle-confirm/manifest.json",
+  "batch": "电机下方喷头确认 4 张（任务表 H3；ComfyUI 上的 Qwen）",
+  "registration": "experiments/20261126-nozzle-confirm/README.md",
+  "registered_manifest": "experiments/20261126-nozzle-confirm/manifest.json",
   "registered_manifest_sha256": "2dc67cd8b756b8b1e74146c084d1757efbab1ad19b901695c9cfac2986af439c",
-  "requests_dir": "experiments/20261126-h3-nozzle-confirm/requests",
+  "requests_dir": "experiments/20261126-nozzle-confirm/requests",
   "files_dirs": [
     "experiments/gpu-day-20261115/afternoon-dev/inputs"
   ],

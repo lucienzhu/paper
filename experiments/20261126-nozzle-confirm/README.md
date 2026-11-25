@@ -1,4 +1,6 @@
-# H3 · 电机下方喷头的确认 4 张（出图前登记，Claude，2026-11-26）
+# 电机下方喷头的确认 4 张（任务表 H3；出图前登记，Claude，2026-11-26）
+
+> **这里的 H3 是登记任务表的编号，不是 MiniMax 托管的 H3 出图模型。** 这批在 ComfyUI 上用 Qwen-Image 2.1 跑，依据的开发图 E6B-N 和对照图 HEXA3 也都是 11 月 15 日在 ComfyUI 上用 Qwen 出的。MiniMax H3 出的图只作过方法开发和冒烟，不进论文结果。编号重名见 [STATUS](../../STATUS.md) 第七节。目录 2026-11-26 由 `20261126-h3-nozzle-confirm` 改名，免得与 H3 模型的目录混淆。
 
 **对蓝图。**
 - 论证链：RQ4“换构型还成立吗”，5.5.2 农业植保六旋，定位是可行性探测（登记任务表第 35 行）。
@@ -12,8 +14,8 @@
 - 取 E6B-N-dev-r1 的实际请求，只换种子和保存前缀，见 [build.py](build.py)。三张开发请求除种子外逐项相同，已核。
 - 种子 2026112601—04，2026-11-26 对全库请求查过，此前没用过。
 - 其余全部不变：点线图 hexa-points-1.00、正负提示词、40 步、CFG 3、euler/simple。负向词是六旋更正版，不带四旋专用词（出图前检查第 5 项通过）。
-- 出图前检查：`python3 -B experiments/preflight.py experiments/20261126-h3-nozzle-confirm/requests --inputs experiments/gpu-day-20261115/afternoon-dev/inputs` 通过，4 份。
-- 批次单：[02-h3-confirm.json](../gpu-remote/batches/02-h3-confirm.json)。环境核对通过以后才跑。
+- 出图前检查：`python3 -B experiments/preflight.py experiments/20261126-nozzle-confirm/requests --inputs experiments/gpu-day-20261115/afternoon-dev/inputs` 通过，4 份。
+- 批次单：[02-nozzle-confirm.json](../gpu-remote/batches/02-nozzle-confirm.json)。环境核对通过以后才跑。
 
 ## 判据（照开发批原登记，事先写定）
 
