@@ -2,17 +2,17 @@
 
 2026-11-24 按[总体研究蓝图](planning/research-panorama/README.md)整理。这一页只告诉你哪份文件管什么、什么时候读，不写任何新的研究结论。研究结论以各文件原文为准。大小按字节算，中文约 1 KB 合 330 字；超过 30 KB 的文件只读要用的节。
 
-## 一、每次开工先读这几份（约 50 KB）
+## 一、每次开工先读这几份（约 80 KB）
 
 | 顺序 | 文件 | 管什么 | 怎么读 |
 | --- | --- | --- | --- |
 | 1 | 本页 | 去哪里找东西 | 全读 |
-| 2 | [总体研究蓝图](planning/research-panorama/README.md)（14 KB）· [一页图 PDF](planning/research-panorama/research-blueprint.pdf) | 在解决什么、要证明的一句话、论证链、四个研究问题、缺口和下一步的顺序 | 全读。①—⑨ 节是研究主线 |
-| 3 | [登记任务表](planning/2026-11-17-direction-and-todo.md)（37 KB） | 每项任务的对象、人数、验收，作者最新决定，H 节范围收敛，第七节“数据门” | 先读开头的“作者最新决定与执行顺序”，再只读自己这一项所在的任务组 |
-| 4 | [研究进度与实际情况](planning/research-panorama/progress-20261119.md)（55 KB） | 按论证链逐环到了哪；第八节是每一步开工前的对照格式 | 读第一至八节，再读最后一节（最新进展）。第九节以后是按日期的记录，要追溯时再读 |
-| 5 | [STATUS](STATUS.md) | 当前状态和逐批实验索引 | 读开头一段和实验索引表 |
-| 6 | [哪些数据能进论文](evidence/usable-for-writing.md)（10 KB） | 哪一批能进正文、哪一批只能以数字出现、哪一批不能用 | 引用任何实验数据或图之前必读 |
-| 7 | [AGENTS](AGENTS.md)、[协作规则](CONTRIBUTING.md)；Claude 另读 [CLAUDE.md](CLAUDE.md) | 分工、提交与验收规矩、不能提交的东西 | 全读，都很短 |
+| 2 | [现状总表（STATUS）](STATUS.md)（25 KB） | **现在做到哪**：每项登记任务的状态和实际数量（答卷文件、人数、张数分开写），开 GPU 和招人之前的门，等作者定的事，GPU 各批缺什么，同名编号对照 | 全读。查现状只看这一处；别的文件里写的“现在到哪”和它不一致时，以它为准 |
+| 3 | [总体研究蓝图](planning/research-panorama/README.md)（16 KB）· [一页图 PDF](planning/research-panorama/research-blueprint.pdf) | 在解决什么、要证明的一句话、论证链、四个研究问题、缺口和下一步的顺序 | 全读。①—⑨ 节是研究主线；里面的“现在到哪”是 11 月 18—19 日的快照 |
+| 4 | [登记任务表](planning/2026-11-17-direction-and-todo.md)（39 KB） | 每项任务的对象、人数、验收，作者最新决定，H 节范围收敛，第七节“数据门” | 先读开头的“作者最新决定与执行顺序”，再只读自己这一项所在的任务组。表里的“状态”栏是登记时写的 |
+| 5 | [哪些数据能进论文](evidence/usable-for-writing.md)（10 KB） | 哪一批能进正文、哪一批只能以数字出现、哪一批不能用 | 引用任何实验数据或图之前必读 |
+| 6 | [AGENTS](AGENTS.md)、[协作规则](CONTRIBUTING.md)；Claude 另读 [CLAUDE.md](CLAUDE.md) | 分工、提交与验收规矩、不能提交的东西 | 全读，都很短 |
+| 要追溯时 | [研究进度与实际情况](planning/research-panorama/progress-20261119.md)（65 KB） | 按日期的经过；第八节是每一步开工前的对照格式 | 不在这里查现状。第一至八节是 11 月 19 日的快照，第九节以后按日期记，要追溯某件事的来由时再读 |
 
 **作者定的规矩（2026-11-19）。** 每一步开工前，先回到蓝图和登记任务表，写明这一步对应哪一环、对象范围、人数、要对照的参数、交到论文哪一节；做完按同一张表报告。范围只能由作者收窄。格式见[进度页第八节](planning/research-panorama/progress-20261119.md#八每一步开工前的对照)。
 
@@ -50,7 +50,7 @@
 | --- | --- |
 | 在另一台电脑接手、核对文件 | [双机交接](planning/workbench-handoff/README.md)，用 `verify_checkout.py` 核对 |
 | 运行、改代码 | [工作台说明](prototypes/drone-configurator/README.md)（35 KB，先读开头的版本和运行方法）· [界面设计记录](prototypes/drone-configurator/interface-design.md) |
-| 看最近一次复核和还没验证的 | [4.3 / 4.3.1 复核记录](prototypes/drone-configurator/review/20261123-workbench-4.3/README.md) · [4.0 评审汇总](planning/2026-11-22-workbench-4-review-summary.md)（第六、七节是要作者定的事和作者的答复） |
+| 看最近一次复核和还没验证的 | [4.4 复核记录](prototypes/drone-configurator/review/20261124-workbench-4.4/README.md) · [4.3 / 4.3.1 复核记录](prototypes/drone-configurator/review/20261123-workbench-4.3/README.md) · [4.0 评审汇总](planning/2026-11-22-workbench-4-review-summary.md)（第六、七节是要作者定的事和作者的答复） |
 
 更早的复核记录在 `prototypes/drone-configurator/review/` 下，按日期命名。
 
@@ -58,6 +58,7 @@
 
 | 时间 | 在哪 |
 | --- | --- |
+| 还没定的 | [现状总表](STATUS.md)第四节，按对后面的影响排序 |
 | 11 月 18 日以后 | 登记任务表开头的“作者最新决定”；蓝图 ② ④ 里注明“作者定”的引文；进度页各节；评审汇总第七节 |
 | 11 月 9—18 日 | 工单 #3 “作者决定与授权登记”（[存档快照](archive/issues/open-issues-20261124.md)）；最早的 F1—F5 定案在 [archive/docs/foundation.md](archive/docs/foundation.md) |
 | 仓库里什么留、什么归档 | [11 月 18 日整理清单](planning/2026-11-18-cleanup-list.md)，第八节是 11 月 24 日的执行情况；等仓库所有者执行的关 PR、删分支清单在 [2026-11-24-github-cleanup.md](planning/2026-11-24-github-cleanup.md) |
@@ -72,6 +73,7 @@
 
 ## 七、维护这一页
 
+- 任务的状态只写在[现状总表](STATUS.md)：变了就改那一行，写日期和依据。其他文件不另写“现在到哪”，要写就链到现状总表。
 - 新增一份主线文件（蓝图、任务表、证据索引、论文、交接里会被引用的），在第一至五节加一行；移进 archive 的，从这里删掉那一行，在 [archive/README.md](archive/README.md) 加一行。
 - 只写“是什么、什么时候读”，不写结论和数字。
 - 研究材料只移进 archive，不删除；archive/README.md 第一节的东西连路径也不要动，现行脚本按路径读取。

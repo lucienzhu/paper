@@ -31,7 +31,7 @@
 | [planning/](planning/) | 11 月 12 日的全局评估入口、Claude 资料入口、Google Doc 快照、路线审核；11 月 18 日的两份仓库清点 | 同上 |
 | [manuscript/](manuscript/) | 旧证据矩阵、前三章来源稿、9 份 11 月 10—14 日的旧修订片段、旧六旋结果稿。2.6 节比较表的现稿不在这里，仍在 `manuscript/revisions/` | 同上 |
 | [prototypes/](prototypes/) | 已撤下的 E4 配对演练与作者预试界面的说明；工作台根目录 6 份 Gemini 时期的旧说明 | 同上 |
-| [logs/](logs/) | 11 月 9—23 日的进度日志（原 `PROGRESS.md`）、STATUS 开头 11 月 18—23 日的每日进展 | 2026-11-24 |
+| [logs/](logs/) | 11 月 9—23 日的进度日志（原 `PROGRESS.md`）、STATUS 开头 11 月 18—23 日的每日进展；2026-11-25 加入改写以前的 STATUS 全文（11 月 17 日的逐批实验索引） | 2026-11-24 |
 | [entry-history/](entry-history/) | 11 月 23 日以前 `CLAUDE.md` 的全文 | 2026-11-24 |
 | [issues/](issues/README.md) | GitHub 全部工单与 PR 的逐字副本和一览表 | 2026-11-18 写在分支上，2026-11-24 带回并补全 |
 
