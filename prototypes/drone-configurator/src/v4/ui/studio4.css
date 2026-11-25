@@ -221,3 +221,10 @@ fieldset.fs4:disabled * { cursor: not-allowed; }
 .s4 .brief4 { border-left: 3px solid var(--ink); background: var(--surface); padding: 10px 12px; border-radius: 0 10px 10px 0; }
 .s4 .brief4 h3 { margin: 0; }
 .s4 .chk4 b.is-warn { color: var(--warn); }
+
+/* 4.4：登记场次开场的任务卡（两种方式同一张）与主持人面板的确认框 */
+.task4-overlay { position: fixed; inset: 0; z-index: 60; background: rgba(15, 23, 42, .42); display: grid; place-items: center; padding: 24px; }
+.task4-card { background: var(--paper); width: min(640px, 100%); max-height: calc(100vh - 48px); overflow: auto; border-radius: 12px; padding: 20px; display: grid; gap: 12px; box-shadow: 0 18px 48px rgba(15, 23, 42, .25); }
+/* 4.4：层面板里的侧视 */
+.r4-side { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 8px; }
+.r4-side .side4 { width: 100%; height: 150px; display: block; }

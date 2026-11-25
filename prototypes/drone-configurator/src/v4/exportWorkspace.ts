@@ -12,7 +12,8 @@ import { evidenceSummary } from '../design/defaults';
 import { sessionSlice, useStudio } from './store';
 import { describeAi } from './ai';
 import { briefOf, currentFinal, loadArchive, methodLabel, registrable, roundsOfSession, sessionStem, sessionTitle, type SessionEnvironment, type SessionInfo } from './sessions';
-import { studioTasks } from './model';
+import { conditionHolds, studioTasks, type Project } from './model';
+import { conditionOf } from './conditions';
 import { zipBytes, type ZipEntry } from './zip';
 import { sessionEventsCsv, sessionTiming, type RoundTimes } from './timing';
 import { roundStatus, roundTimes, storedJob, type ServiceJob } from './roundTimes';
@@ -178,6 +179,16 @@ export async function exportSessionBundle(sessionId?: string): Promise<string> {
   const final = currentFinal(slice.events);
   const finalLabel = (attemptId?: string) => { const i = rounds.findIndex(a => a.id === attemptId); return i >= 0 ? labels[i].label : null; };
   const task = (id => studioTasks.find(t => t.id === id)?.label ?? id)((slice.project as { intent: { taskId: string } }).intent.taskId);
+  // 4.4：登记场次的机架条件逐个方案再核一遍（工作台的一场才有机架）。程序锁定以后应当永远成立；不成立就写明，不算完整登记。
+  const condition = brief ? conditionOf(brief.condition) : undefined;
+  const conditionCheck = session.method === 'free' || !condition ? null : (() => {
+    const lanes = (slice.project as Project).lanes;
+    if (!Array.isArray(lanes)) return { ok: false, mismatches: [], note: '导出的项目里没有方案，核不了' };
+    const held = conditionHolds(slice.project as Project, condition.frame as Record<string, unknown>);
+    const unlocked = slice.events.some(e => e.kind === 'session' && /解除/.test(e.text));
+    return { ok: held.ok && !unlocked, mismatches: held.mismatches, unlockedDuringSession: unlocked, frame: condition.frame };
+  })();
+  const registeredComplete = session.kind !== 'registered' || (registrable(session) && (conditionCheck?.ok ?? true));
   const summary = session.evidenceSummary ?? null;
   const taskVersion = `${brief ? '委托' + brief.id : '无委托'}·依据摘要${summary?.version ?? '无'}`;
   files.push({ name: 'session-events.csv', data: enc.encode(sessionEventsCsv(session, taskVersion, slice.events, times)) });
@@ -190,7 +201,7 @@ export async function exportSessionBundle(sessionId?: string): Promise<string> {
   const manifest = {
     schema: 'workbench/v4-session-bundle', exportedAt: new Date().toISOString(), app: { name: STUDIO_NAME, version: STUDIO_VERSION, sessionRecordedWith: recorded?.app?.version ?? null },
     session: { ...session, title, methodLabel: methodLabel[session.method], brief: brief ? { id: brief.id, label: brief.label, text: brief.text, source: brief.source } : null, task,
-      registeredComplete: session.kind !== 'registered' || registrable(session) },
+      registeredComplete, registrationCondition: conditionCheck },
     evidenceSummary: summary ? { ...summary, text: summary.version === evidenceSummary.version ? evidenceSummary.text : null, cards: summary.version === evidenceSummary.version ? evidenceSummary.cards : null,
       note: summary.status === 'draft' ? '草稿，作者未确认' : '作者已确认' } : null,
     project: { id: slice.project.id, name: slice.project.name, createdAt: slice.project.createdAt },
@@ -208,7 +219,8 @@ export async function exportSessionBundle(sessionId?: string): Promise<string> {
       everyRoundThisSession: rounds.every(a => a.sessionId === session.id || legacy.includes(a.id)),
       everyRoundThisMethod: rounds.every(a => (a.condition === 'free') === (session.method === 'free')),
       roundsAttributedByTime: legacy.length, decisionsAfterSessionEnd: decisionsAfterEnd,
-      registeredSessionComplete: session.kind !== 'registered' || registrable(session),
+      registeredSessionComplete: registeredComplete,
+      registeredConditionHolds: conditionCheck ? conditionCheck.ok : null,
       environmentMatchesRecords: textMatches && imageMatches,
       everyCallThisSession: log.entries.every(e => !e.sessionId || e.sessionId === session.id),
     },
@@ -229,7 +241,7 @@ export async function exportSessionBundle(sessionId?: string): Promise<string> {
     `共 ${rounds.length} 轮、${candidates} 张候选、${slice.events.length} 条事件、${log.entries.length} 次 AI 调用（失败 ${failedCalls.length} 次${log.missing.length ? `，${log.missing.length} 个编号在服务日志里找不到` : ''}${neverReached.length ? `，另有 ${neverReached.length} 次没到服务` : ''}）。只含这一场；同一个项目里别的场次另有自己的 ZIP。`,
     `终稿：${final.current?.kind === 'final' ? finalLabel(final.current.attemptId) ?? '一张候选' : final.current?.kind === 'none-acceptable' ? '登记了没有可接受的候选' : '没有定稿'}（经过见 manifest.json 的 final.history）。`,
     `计时：主动操作 ${clock(timing.activeMs)}，模型与排队等待 ${clock(timing.waiting.ms)}，主持人交接 ${clock(timing.moderator.ms)}，技术暂停 ${clock(timing.moderator.pauseMs)}${timing.unknownWaitMs ? `，未知等待 ${clock(timing.unknownWaitMs)}` : ''}；生成 ${timing.used.opportunities} 次、回图 ${timing.used.images} 张（登记上限 ${timing.limits.activeMinutes} 分钟、${timing.limits.opportunities} 次、${timing.limits.images} 张）。`,
-    'workspace.json：这一场的事件、对话、AI 建议及其处理、方向、比较与取舍' + (session.method === 'free' ? '（自由提示的一场不附工作台的方向和节点）。' : '，以及导出时的项目（方向、各层节点、意图）。'),
+    'workspace.json：这一场的事件、对话、AI 建议及其处理、方案、比较与取舍' + (session.method === 'free' ? '（自由提示的一场不附工作台的方案和节点）。' : '，以及导出时的项目（方案、各层节点、意图）。'),
     'rounds/：这一场的每一轮，文件名里写着界面上的叫法。JSON 是冻结的输入、实发文字、服务回执、候选、取舍和时间戳（含原件的 base64）；PNG 是候选原图；“-服务端/”里是本机服务存下的实发请求、实发文字、入队回执、运行历史和拒收时的回答。',
     'ai-calls.jsonl：这一场的文字模型调用（成功和失败都在：发出的消息、请求的推理强度和输出上限、原始回答、推理内容、核对后的结果、拿掉的条目、服务报的模型名、收尾原因和用量）。',
     'session-events.csv：按登记的场次事件表列出每一个时间点，time_source 写明是页面、本机服务、GPU 主机（ComfyUI）还是主持人的钟；取不到的时间留空，missing_reason 写原因。',

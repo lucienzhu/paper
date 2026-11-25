@@ -1,8 +1,10 @@
-// 一层的面板：这一层决定什么；可拖动的顶视图；AI 的建议；这一层自己的控件；核对；从候选送回来的问题；这一层的记录。
+// 一层的面板：这一层决定什么；可拖动的顶视图；AI 的建议；这一层自己的控件；侧视；核对；从候选送回来的问题；另做一版与抄设置。
+// 4.4（作者 11 月 24 日）：原始事件只在后台记、由主持人按场次导出，这里不再列；按钮按做的事起名：“从机架起另做一版”
+// “把方案 B 的机架设置抄过来”，抄之前先列出会改哪几项；机架锁定时另做一版的入口在其他层；八旋、共轴的说明不在这里。
 import { useEffect, useMemo, useState } from 'react';
 import { GitBranch, Lock, Copy, CheckCircle2, AlertTriangle, Info, RotateCcw } from 'lucide-react';
 import { DroneStoreContext, taskStores } from '../../store/droneStore';
-import { TopStage } from '../../components/Studio/Stage';
+import { SideView, TopStage } from '../../components/Studio/Stage';
 import { Choice, Field, OpenChoice, Slider } from '../../components/controls/controls';
 import { computeLayout, frameRules, usesConsumerReferences, type FrameType } from '../../design/design';
 import { designStart, realQuadrotors, study } from '../../design/defaults';
@@ -10,17 +12,26 @@ import {
   armMaterialOptions, armRootOptions, cameraMountOptions, colourSwatches, finishOptions, fuselageStyleOptions, gearOptions, sprayTankOptions, spraySystemOptions, topCoverOptions,
 } from '../../design/fields';
 import type { ParameterGroup } from '../../types/DroneParameters';
-import { isDefault, laneNode, laneParameters, layerInfo, layers, sharedBy, studioTask, type Layer } from '../model';
+import { isDefault, laneNode, laneParameters, layerDifferences, layerInfo, layers, sharedBy, spaced, studioTask, upstreamOf, type Layer } from '../model';
 import { laneStore } from '../adapter';
 import { useStudio } from '../store';
 import { SuggestionCard } from './Evidence';
-import { layerChecks, relTime } from './util';
+import { fieldLabel, formatValue, layerChecks, relTime } from './util';
 
 const stagePart: Record<Layer, ParameterGroup> = { frame: 'frame', propulsion: 'propulsion', body: 'fuselage', details: 'accessories', cmf: 'accessories' };
 
+/** 登记场次正在进行：机臂宽度不给自定义（整个机架按登记固定）。 */
+const useRegistered = () => useStudio(s => s.sessions.some(x => x.id === s.currentSessionId && !x.endedAt && x.kind === 'registered'));
+const widthPresets = ['10mm', '15mm', '20mm'];
+
 function FrameControls({ laneId }: { laneId: string }) {
   const project = useStudio(s => s.project);
+  const registered = useRegistered();
   const p = laneParameters(project, laneId);
+  const width = parseInt(p.frame.arm_width_mm, 10);
+  const [custom, setCustom] = useState(widthPresets.includes(p.frame.arm_width_mm) ? '' : String(width));
+  useEffect(() => { setCustom(widthPresets.includes(p.frame.arm_width_mm) ? '' : String(width)); }, [p.frame.arm_width_mm, width]);
+  const applyCustom = (raw: string) => { const n = Math.round(Number(raw)); if (Number.isFinite(n) && n >= 4 && n <= 80) useStudio.getState().setField(laneId, 'frame.arm_width_mm', `${n}mm`); };
   const rule = frameRules[p.frame.frame_type];
   const consumer = usesConsumerReferences(p.frame.frame_type, project.intent.taskId);
   // 工作台只给这个任务的构型：日常航拍是四旋的几种排法，农业植保是平面六旋。八旋、共轴等迁移检验另走 GPU 请求管线。
@@ -30,8 +41,7 @@ function FrameControls({ laneId }: { laneId: string }) {
     <Field path="frame.frame_type" value={rule.zh} hint={rule.desc}>
       {types.length > 1 ? <Choice<FrameType> options={types.map(t => ({ value: t, zh: frameRules[t].zh }))} value={p.frame.frame_type}
         onChange={v => useStudio.getState().setMany(laneId, [['frame.frame_type', v], ['frame.span_ratio_wl', frameRules[v].wl.value]], '换构型')} label="构型" />
-        : <p className="r4-muted" style={{ margin: 0 }}>{rule.zh}：农业植保案例沿用既有六旋实验的构型。</p>}
-      <p className="r4-muted" style={{ margin: 0 }} data-testid="other-configs-note">八旋、共轴等其他构型不在工作台里做：迁移检验按登记直接在 GPU 上跑请求管线，配四旋参照。</p>
+        : <p className="r4-muted" style={{ margin: 0 }}>{rule.zh}（这个任务只有这一种构型）。</p>}
     </Field>
     {rule.wl.adjustable ? <Field path="frame.span_ratio_wl" value={p.frame.span_ratio_wl.toFixed(2)} hint="电机左右跨度 ÷ 前后跨度。越大越宽扁。">
       <Slider path="frame.span_ratio_wl" min={rule.wl.min} max={rule.wl.max} step={0.01} unit="" digits={2}
@@ -41,15 +51,32 @@ function FrameControls({ laneId }: { laneId: string }) {
     <Field path="frame.wheelbase_mm" value={`${p.frame.wheelbase_mm} mm`} hint="对角电机中心距的平均值，决定整机大小。">
       <Slider path="frame.wheelbase_mm" min={100} max={Math.max(consumer ? 500 : 2000, p.frame.wheelbase_mm)} step={1} unit="mm" presets={consumer ? [{ v: 250, label: '250 实验设定' }] : []} />
     </Field>
-    <Field path="frame.arm_width_mm" value={p.frame.arm_width_mm.replace('mm', ' mm')} hint="从上面看到的机臂粗细。">
-      <Choice options={[{ value: '10mm', zh: '10 mm' }, { value: '15mm', zh: '15 mm' }, { value: '20mm', zh: '20 mm' }]} value={p.frame.arm_width_mm}
+    <Field path="frame.arm_width_mm" value={`${width} mm`} hint="从上面看到的机臂粗细，会画进顶视图。">
+      <Choice options={widthPresets.map(v => ({ value: v as typeof p.frame.arm_width_mm, zh: v.replace('mm', ' mm') }))} value={p.frame.arm_width_mm}
         onChange={v => useStudio.getState().setField(laneId, 'frame.arm_width_mm', v)} label="机臂宽度" />
+      {!registered && <div className="row4" data-testid="arm-width-custom"><span className="r4-muted">自定义</span>
+        <input className="in4" type="number" min={4} max={80} step={1} style={{ width: 80 }} aria-label="自定义机臂宽度（毫米）" value={custom} placeholder={String(width)}
+          onChange={e => setCustom(e.target.value)} onBlur={() => applyCustom(custom)} onKeyDown={e => { if (e.key === 'Enter') applyCustom(custom); }} />
+        <span className="r4-muted">mm（4—80）</span></div>}
     </Field>
-    <Field path="frame.arm_thickness_mm" value={p.frame.arm_thickness_mm.replace('mm', ' mm')} hint="从上面看不到，影响侧面的观感。">
-      <Choice options={['3mm', '4mm', '5mm', '6mm'].map(v => ({ value: v, zh: v.replace('mm', ' mm') }))} value={p.frame.arm_thickness_mm}
-        onChange={v => useStudio.getState().setField(laneId, 'frame.arm_thickness_mm', v)} label="机臂厚度" />
-    </Field>
+    <p className="r4-muted" style={{ margin: 0 }}>机臂厚度从上面看不到，在下面的侧视里改。</p>
   </>;
+}
+
+/** 侧视：俯视看不到的机臂厚度、机身高度、相机和起落架都在这里看；机臂厚度也在这里改（4.4）。 */
+function SideDetail({ laneId, layer, locked }: { laneId: string; layer: Layer; locked: boolean }) {
+  const project = useStudio(s => s.project);
+  const p = laneParameters(project, laneId);
+  const layout = useMemo(() => computeLayout(p), [p]);
+  return <section className="r4-sec" aria-label="侧视" data-testid="side-detail">
+    <h3>侧视</h3>
+    <div className="r4-side"><SideView parameters={p} layout={layout} className="side4" /></div>
+    {layer === 'frame' && <fieldset className="fs4" disabled={locked} aria-label={locked ? '登记条件，已固定' : undefined} style={locked ? { opacity: .55 } : undefined}>
+      <Field path="frame.arm_thickness_mm" value={p.frame.arm_thickness_mm.replace('mm', ' mm')} hint="从上面看不到，只在侧视和文字里体现。">
+        <Choice options={['3mm', '4mm', '5mm', '6mm'].map(v => ({ value: v as typeof p.frame.arm_thickness_mm, zh: v.replace('mm', ' mm') }))} value={p.frame.arm_thickness_mm}
+          onChange={v => useStudio.getState().setField(laneId, 'frame.arm_thickness_mm', v)} label="机臂厚度" />
+      </Field></fieldset>}
+  </section>;
 }
 
 function PropulsionControls({ laneId }: { laneId: string }) {
@@ -68,9 +95,13 @@ function PropulsionControls({ laneId }: { laneId: string }) {
       <Choice options={[{ value: 'none', zh: '不加护圈' }, { value: 'ring', zh: '环形护圈' }]} value={p.propulsion.prop_guard}
         onChange={v => useStudio.getState().setField(laneId, 'propulsion.prop_guard', v)} label="桨叶护圈" />
     </Field>
-    <Field path="propulsion.motor_tilt_degree" value={p.propulsion.motor_tilt_degree + '°'} hint="电机前倾，顶视里看不出，只进文字。">
-      <Slider path="propulsion.motor_tilt_degree" min={0} max={20} step={1} unit="°" />
-    </Field>
+    {/* 4.4：电机前倾只写进文字，构型、跨度、比例和条件图都不变，默认 0°，收在这里。 */}
+    <details data-testid="tilt-more" open={p.propulsion.motor_tilt_degree > 0 || undefined}>
+      <summary className="r4-muted" style={{ cursor: 'pointer' }}>更多：电机前倾（现在 {p.propulsion.motor_tilt_degree}°）</summary>
+      <Field path="propulsion.motor_tilt_degree" value={p.propulsion.motor_tilt_degree + '°'} hint="电机前倾，顶视里看不出，只写进文字。">
+        <Slider path="propulsion.motor_tilt_degree" min={0} max={20} step={1} unit="°" />
+      </Field>
+    </details>
   </>;
 }
 
@@ -101,7 +132,7 @@ function DetailsControls({ laneId }: { laneId: string }) {
         onChange={v => useStudio.getState().setField(laneId, 'accessories.has_camera_gimbal', v === 'yes')} label="前视相机" />
     </Field>
     {p.accessories.has_camera_gimbal && <Field path="accessories.camera_mount" hint="从正上方几乎看不到相机，安装方式主要写进文字。"><OpenChoice path="accessories.camera_mount" options={cameraMountOptions} /></Field>}
-    <Field path="landing_gear.landing_gear_style" hint="顶视里被机身挡住。">
+    <Field path="landing_gear.landing_gear_style" hint="顶视里被机身挡住；样式和离地高度画在下面的侧视里。">
       <Choice options={gearOptions} value={p.landing_gear.landing_gear_style} onChange={v => useStudio.getState().setField(laneId, 'landing_gear.landing_gear_style', v)} label="起落架" />
     </Field>
     {p.landing_gear.landing_gear_style !== '无独立起落架' && <Field path="landing_gear.landing_gear_height_mm" value={p.landing_gear.landing_gear_height_mm + ' mm'}>
@@ -137,7 +168,7 @@ function CmfControls({ laneId }: { laneId: string }) {
       </div>
     </Field>
     <Field path="accessories.surface_finish"><OpenChoice path="accessories.surface_finish" options={finishOptions} /></Field>
-    <Field path="frame.material_visual" hint="机臂看上去是什么材料。"><OpenChoice path="frame.material_visual" options={armMaterialOptions} /></Field>
+    <Field path="frame.material_visual" hint="机臂表面看上去的样子；其他局部纹理写在下面的说明里。"><OpenChoice path="frame.material_visual" options={armMaterialOptions} /></Field>
     <Field path="accessories.custom_prompt_additions" hint="选项里没有的，自己写：颜色的名字、分色、局部材质、纹理、标识位置……原样写进生成的文字，AI 不改这一栏。">
       <textarea className="ta4" data-testid="cmf-note" rows={3} maxLength={200} value={note} placeholder="例如：主色雾霾蓝，机臂哑光黑，镜头圈拉丝银"
         onChange={e => setNote(e.target.value)} onBlur={() => { if (note !== p.accessories.custom_prompt_additions) set('accessories.custom_prompt_additions', note.trim()); }} />
@@ -150,7 +181,7 @@ const controls: Record<Layer, (p: { laneId: string }) => React.ReactElement> = {
 };
 
 export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: string; layer: Layer; onSelectLayer: (layer: Layer) => void }) {
-  const { project, suggestions, events, session, turns, currentSessionId } = useStudio();
+  const { project, suggestions, session, turns, currentSessionId } = useStudio();
   const st = useStudio.getState();
   const lane = project.lanes.find(l => l.id === laneId);
   const node = laneNode(project, laneId, layer);
@@ -164,13 +195,17 @@ export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: s
   const pending = mine.filter(s => s.status === 'pending' && s.sessionId === currentSessionId).reverse();
   const done = mine.filter(s => s.status !== 'pending' && s.status !== 'late').reverse();
   const checks = layerChecks(layer, parameters, consumer && project.intent.taskId === 'consumer_camera');
-  const record = events.filter(e => e.laneId === laneId && (e.layer === layer || !e.layer)).slice(-6).reverse();
   const issues = node.issues.filter(i => !i.resolved);
   const talk = turns.filter(t => t.sessionId === currentSessionId && t.scope.kind === 'layer' && t.scope.laneId === laneId && t.scope.layer === layer).slice(-4);
   const [busy, setBusy] = useState(false);
   const Controls = controls[layer];
   const others = project.lanes.filter(l => l.id !== laneId);
   const index = layers.indexOf(layer);
+  // 抄另一个方案的这一层：先选来源，列出会改的几项，确认了才抄。
+  const [copyFrom, setCopyFrom] = useState('');
+  const source = others.find(l => l.id === copyFrom);
+  const diffs = source ? layerDifferences(project, source.id, laneId, layer) : [];
+  const upstream = upstreamOf(layer).map(l => layerInfo[l].name);
   const act = (id: string, action: 'apply' | 'branch' | 'reject') => {
     setBusy(true);
     try {
@@ -187,11 +222,10 @@ export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: s
       <h2 className="r4-title">{layerInfo[layer].name}</h2>
       <p className="r4-purpose">{layerInfo[layer].question}{layerInfo[layer].generation}</p>
     </div>
-    {locked && <p className="r4-note" data-testid="locked-note"><Lock size={12} style={{ verticalAlign: '-2px' }} /> 这一场登记了机架条件（{study.conditions.find(c => c.id === session.lockedFrame)?.label}），机架已锁定，AI 也不会提这一层的建议。要改，先在场次设置里解除。</p>}
-    {!locked && shared.length > 1 && <div className="r4-note">这一层被 {shared.length} 条方向共用，改动会同时影响它们。
+    {locked && <p className="r4-note" data-testid="locked-note"><Lock size={12} style={{ verticalAlign: '-2px' }} /> 这一场的机架是登记的条件（{study.conditions.find(c => c.id === session.lockedFrame)?.label}），各方案共用，不能改；AI 也不会提这一层的建议。</p>}
+    {!locked && shared.length > 1 && <div className="r4-note" data-testid="shared-note">这一层由 {shared.length} 个方案共用：{shared.map(id => project.lanes.find(l => l.id === id)?.name ?? id).join('、')}。在这里改，它们一起变。
       <div className="row4" style={{ marginTop: 6 }}>
-        <button type="button" className="b4 sm" data-testid="own-layer" onClick={() => st.ownLayer(laneId, layer)}>只改这条方向</button>
-        <button type="button" className="b4 sm" onClick={() => st.fork(laneId, layer)}><GitBranch size={12} />在这里分叉</button>
+        <button type="button" className="b4 sm" data-testid="own-layer" onClick={() => st.ownLayer(laneId, layer)}>只改{lane?.name}（从{layerInfo[layer].name}起与其他方案分开）</button>
       </div></div>}
 
     {layer !== 'cmf' && <div className="r4-stage"><div className="stage-wrap">
@@ -218,6 +252,8 @@ export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: s
       <fieldset className="fs4" disabled={locked} aria-label={locked ? '登记条件，已锁定' : undefined}><div style={{ display: 'grid', gap: 18 }}><Controls laneId={laneId} /></div></fieldset>
     </section>
 
+    {layer !== 'cmf' && <SideDetail laneId={laneId} layer={layer} locked={locked} />}
+
     {checks.length > 0 && <section className="r4-sec" aria-label="核对">
       <h3>核对</h3>
       <div className="chk4">{checks.map((c, i) => <div key={i} data-check={c.basis}>{Icon(c.level)}<span>{c.text}{c.basis === 'geometry' ? '（几何计算）' : c.basis === 'pipeline' ? '（出图通路实测）' : ''}</span></div>)}</div>
@@ -230,22 +266,39 @@ export default function PanelLayer({ laneId, layer, onSelectLayer }: { laneId: s
         <div className="el4-acts"><button type="button" className="b4 sm" onClick={() => st.resolveIssue(laneId, layer, i.id)}>处理好了</button></div></div>)}
     </section>}
 
-    <section className="r4-sec" aria-label="分叉与套用">
-      <h3>分叉与套用</h3>
-      <div className="row4">
-        <button type="button" className="b4" data-testid="fork-here" onClick={() => st.fork(laneId, layer)}><GitBranch size={14} />在{layerInfo[layer].name}处分叉</button>
-        {others.length > 0 && <select className="in4" style={{ width: 'auto' }} aria-label="套用另一条方向的这一层" value="" onChange={e => { if (e.target.value) st.applyFrom(e.target.value, laneId, layer); }}>
-          <option value="">套用另一条方向的{layerInfo[layer].name}…</option>
-          {others.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
-        </select>}
-      </div>
-      {node.origin && <p className="r4-muted"><Copy size={12} style={{ verticalAlign: '-2px' }} /> 这一层套用自 {project.lanes.find(l => l.id === node.origin!.laneId)?.name ?? '另一条方向'}。</p>}
+    <section className="r4-sec" aria-label="另做一版">
+      <h3>另做一版</h3>
+      {locked
+        ? <p className="r4-muted" data-testid="fork-frame-locked">机架是这一场登记的条件，各方案共用。要另做一版，到动力、机身、细节或色材层。</p>
+        : <>
+          <div className="row4"><button type="button" className="b4" data-testid="fork-here" onClick={() => st.fork(laneId, layer)}><GitBranch size={14} />从{layerInfo[layer].name}起另做一版</button></div>
+          <p className="r4-muted" data-testid="fork-shared-hint" style={{ margin: 0 }}>{upstream.length
+            ? `新的一版和${spaced(lane?.name ?? '')}设置相同，从${layerInfo[layer].name}起各改各的；${upstream.join('、')}仍共用，以后改它们，两个方案一起变。`
+            : `新的一版和${spaced(lane?.name ?? '')}设置相同，五层都是自己的，之后各改各的。`}</p>
+        </>}
     </section>
 
-    {(done.length > 0 || record.length > 0) && <section className="r4-sec" aria-label="这一层的记录">
-      <h3>这一层的记录</h3>
-      {done.map(s => <SuggestionCard key={s.id} s={s} onAct={() => {}} />)}
-      <div className="chk4">{record.map(e => <div key={e.id}><span className="r4-muted" style={{ minWidth: 40 }}>{relTime(e.at)}</span><span>{e.text}</span></div>)}</div>
+    {others.length > 0 && !locked && <section className="r4-sec" aria-label="抄另一个方案的设置">
+      <h3>抄另一个方案的{layerInfo[layer].name}设置</h3>
+      <select className="in4" style={{ width: 'auto' }} data-testid="copy-from" aria-label={`抄哪一个方案的${layerInfo[layer].name}设置`} value={copyFrom} onChange={e => setCopyFrom(e.target.value)}>
+        <option value="">选一个方案…</option>
+        {others.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+      </select>
+      {source && (diffs.length
+        ? <div data-testid="copy-preview" style={{ display: 'grid', gap: 6 }}>
+          <span className="r4-muted">抄过来会改这 {diffs.length} 项：</span>
+          <div className="diff4" data-num>{diffs.map(d => <div key={d.path} style={{ display: 'contents' }}><span>{fieldLabel(d.path)}</span><b><em>{formatValue(d.path, d.from)} → </em>{formatValue(d.path, d.to)}</b></div>)}</div>
+          <div className="row4"><button type="button" className="b4 pri" data-testid="copy-confirm" onClick={() => { st.applyFrom(source.id, laneId, layer); setCopyFrom(''); }}><Copy size={13} />把{spaced(source.name)}的{layerInfo[layer].name}设置抄过来</button>
+            <button type="button" className="b4 quiet" onClick={() => setCopyFrom('')}>不抄</button></div>
+        </div>
+        : <p className="r4-muted" data-testid="copy-preview" style={{ margin: 0 }}>{spaced(source.name)}和{spaced(lane?.name ?? '')}的{layerInfo[layer].name}设置一样，没有要抄的。</p>)}
+      {node.origin && <p className="r4-muted"><Copy size={12} style={{ verticalAlign: '-2px' }} /> 这一层的设置抄自 {project.lanes.find(l => l.id === node.origin!.laneId)?.name ?? '另一个方案'}。</p>}
     </section>}
+
+    {/* 原始事件在后台记、由主持人按场次导出（4.4），这里只留处理过的 AI 建议，收起来。 */}
+    {done.length > 0 && <details className="r4-sec" data-testid="done-suggestions">
+      <summary className="r4-muted" style={{ cursor: 'pointer' }}>处理过的 AI 建议（{done.length}）</summary>
+      {done.map(s => <SuggestionCard key={s.id} s={s} onAct={() => {}} />)}
+    </details>}
   </DroneStoreContext.Provider>;
 }

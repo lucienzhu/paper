@@ -49,7 +49,7 @@ export function laneStore(laneId: string) {
   let store = cache.get(laneId);
   if (store) return store;
   const first = derive(laneId);
-  if (!first) throw new Error('找不到这条方向。');
+  if (!first) throw new Error('找不到这个方案。');
   store = create<LaneView>(set => ({
     task: 'quad', designChatAudit: [], pinned: null, lastChange: null, history: [], exportNote: '', notice: null,
     ...first,

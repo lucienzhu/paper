@@ -4,6 +4,7 @@
 // 4.2 起：按场次导出（同一个项目里换过方式，也是一场一个 ZIP，标签与内容一致）；按委托开一场（任务定为日常航拍、C2 机架锁定、两种方式看到同一段委托）；
 // C2 下机身间距按画出的圆角量；农业植保有药箱与喷洒部件，句子沿用 39 张的原文；已经有决定时换任务要另开项目。
 // 图像作业和文字模型都由软件夹具应答，不调用任何模型。运行前先执行 npm run build。可加一个目录参数保存截图。
+import { closeModerator, passTaskCard, sessionBox } from './moderator-helpers.mjs';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { mkdir, mkdtemp, readFile, readdir } from 'node:fs/promises';
@@ -85,7 +86,8 @@ try {
   };
   // Esc 回到总览（焦点在输入框里时 Esc 不起作用，先移开焦点）。
   const overview = async () => { await page.evaluate(() => document.activeElement?.blur?.()); await page.keyboard.press('Escape'); await page.getByTestId('overview-panel').waitFor(); };
-  const setup = async () => { const box = page.getByTestId('session-setup'); if (!await box.evaluate(d => d.open)) await box.locator(':scope > summary').click(); return box; };
+  // 4.4：场次设置在主持人面板里；开场、换方式、结束、载入条件之后面板自己关上。
+  const setup = () => sessionBox(page);
 
   // 0. 旧版仍在 #v=3，顶栏有回到 4.0 的入口
   await page.goto(origin + '/#v=3');
@@ -226,7 +228,7 @@ try {
   await tap(page.locator('.react-flow__node-candidate').first());
   await page.getByTestId('open-compare').click();
   await page.getByTestId('compare-panel').waitFor();
-  assert.match(await page.getByTestId('compare-panel').locator('.r4-title').textContent(), /差在 1 项决定/);
+  assert.match(await page.getByTestId('compare-panel').locator('.r4-title').textContent(), /差在 1 项设置/);
   await page.locator('.cmp4 input[type=radio]').nth(1).check();
   await page.getByTestId('compare-reason').fill('短一些更像随身带的东西');
   await page.getByTestId('compare-save').click();
@@ -287,7 +289,7 @@ try {
   await page.getByTestId('v4-canvas').waitFor();
   await overview();
   await (await setup()).getByTestId('load-condition').click();
-  await page.locator('.t4-chip', { hasText: '登记条件已锁定' }).waitFor();
+  await page.locator('.t4-chip', { hasText: '机架已固定' }).waitFor();
   state = await saved();
   assert.equal(await page.locator('[data-node=layer][data-layer=frame][data-locked=yes]').count(), state.project.lanes.length);
   await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=frame])').first());
@@ -301,6 +303,7 @@ try {
     const box = await setup();
     const [download] = await Promise.all([page.waitForEvent('download'), box.locator(`[data-session="${id}"] [data-testid=export-session]`).click()]);
     const bundle = unzip(new Uint8Array(await readFile(await download.path())));
+    await closeModerator(page);
     const read = name => JSON.parse(new TextDecoder().decode(bundle.get(name)));
     const calls = new TextDecoder().decode(bundle.get('ai-calls.jsonl')).trim().split('\n').filter(Boolean).map(l => JSON.parse(l));
     return { name: download.suggestedFilename(), bundle, manifest: read('manifest.json'), workspace: read('workspace.json'), calls,
@@ -317,7 +320,7 @@ try {
   assert.ok(first.rounds.every(n => !n.includes('自由提示')), '第 1 场只有工作台的轮次');
   assert.ok(first.manifest.rounds.every(r => r.method === '工作台'));
   assert.deepEqual(first.manifest.checks, { everyRoundThisSession: true, everyRoundThisMethod: true, roundsAttributedByTime: 0, decisionsAfterSessionEnd: 0,
-    registeredSessionComplete: true, environmentMatchesRecords: true, everyCallThisSession: true });
+    registeredSessionComplete: true, registeredConditionHolds: null, environmentMatchesRecords: true, everyCallThisSession: true });
   // 4.3：每一轮附上服务端原件；清单写的出图后端取自这一场开场时的记录
   assert.ok(first.manifest.rounds.every(r => ['comfy-request.json', 'comfy-ack.json', 'comfy-history.json'].every(n => r.serverFiles.found.some(f => f.name === n))));
   assert.equal(first.manifest.imageBackend.model, 'Qwen-Image-2.1');
@@ -389,6 +392,8 @@ try {
   await box14.getByTestId('session-order').selectOption('1');
   await box14.getByTestId('session-start').click();
   await page.getByTestId('session-chip').filter({ hasText: '委托 A' }).waitFor();
+  // 4.4：登记场次开场先看任务卡，点“开始”
+  assert.ok(await passTaskCard(page), '登记场次开场有任务卡');
   state = await saved();
   const registered = state.sessions.find(x => x.id === state.currentSessionId);
   assert.deepEqual([registered.kind, registered.method, registered.briefId, registered.participant, registered.order], ['registered', 'structured', 'A', 'P01', 1]);
@@ -435,6 +440,7 @@ try {
   assert.match(await box15.getByTestId('session-kind').textContent(), /登记场次/);
   await box15.getByTestId('session-start').click();
   await page.getByTestId('free-studio').waitFor();
+  assert.ok(await passTaskCard(page), '第 2 场也先看任务卡');
   await page.getByTestId('brief-card').waitFor();
   assert.equal(await page.getByTestId('evidence-summary').getAttribute('data-version'), await page.evaluate(() => JSON.parse(localStorage.getItem('multirotor-studio/v4/project')).sessions.at(-1).evidenceSummary.version));
   assert.equal(await page.locator('[data-free-candidate]').count(), 0, '上一场工作台的图不在这一场里');
@@ -459,6 +465,7 @@ try {
   assert.equal(regZip.workspace.lockedFrame, 'c2-pilot');
   await (await setup()).getByTestId('session-list').scrollIntoViewIfNeeded();
   await shot('12-场次列表.png');
+  await closeModerator(page);
 
   // 16. 农业植保六旋：药箱和喷洒部件可选，起始值沿用 39 张的设定；冻结的文字里是 39 张用过的原句
   let box16 = await setup();
@@ -473,7 +480,8 @@ try {
   state = await saved();
   assert.equal(state.project.intent.taskId, 'agricultural_spraying', '空白项目里原地换任务');
   await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=frame])').first());
-  await page.getByTestId('other-configs-note').waitFor();
+  // 4.4：八旋、共轴的迁移检验说明不再出现在机架面板里（作者 11 月 24 日），只留在迁移协议里
+  assert.equal(await page.getByTestId('other-configs-note').count(), 0, '机架面板里没有八旋、共轴的说明');
   assert.equal(await page.locator('aside.r4 [role=radiogroup][aria-label=构型]').count(), 0, '植保只有平面六旋，不给其他构型');
   await tap(page.locator('.react-flow__node:has([data-node=layer][data-layer=body])').first());
   await page.locator('aside.r4 [role=radiogroup][aria-label=药箱]').waitFor();

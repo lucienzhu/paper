@@ -14,7 +14,7 @@ export const layerInfo: Record<Layer, { name: string; question: string; generati
   propulsion: { name: '动力', question: '桨多大、几叶、要不要护圈。', generation: '生成时写成桨与护圈句。' },
   body: { name: '机身', question: '机身的体量、轮廓和顶盖分件；农业植保还有药箱。', generation: '生成时写成机身尺寸句、轮廓句和顶盖句（植保另有药箱句）。' },
   details: { name: '细节', question: '臂根怎样过渡、相机怎样安装、起落架；农业植保还有喷洒部件。', generation: '生成时写成臂根句、相机句和起落架句（植保另有喷洒句）。' },
-  cmf: { name: '色材', question: '主色、表面处理、机臂材料，以及设计者自己写的色材说明。', generation: '生成时写成色材句；自己写的说明原样写进文字。' },
+  cmf: { name: '色材', question: '主色、表面处理、机臂表面外观，以及设计者自己写的色材说明。', generation: '生成时写成色材句；自己写的说明原样写进文字。' },
 };
 
 /** 每个参数归哪一层管。补充文字不属于任何一层，放在生成那一步。药箱和喷洒部件只在农业植保的规格里出现。 */
@@ -34,8 +34,9 @@ export const layerFields: Record<Layer, string[]> = {
  * 中性外观比较（neutral_design）只留给跨构型的请求管线和 3.6 版读旧文件，工作台里不再提供。
  */
 export const studioTasks: { id: TaskId; label: string; short: string; frames: string[] }[] = [
-  { id: 'consumer_camera', label: '日常随行航拍四旋（主案例）', short: '日常航拍', frames: ['True X', 'Wide X', 'Stretch X', 'H-Frame', 'Deadcat', '+ Configuration'] },
-  { id: 'agricultural_spraying', label: '农业植保六旋（场景适配案例）', short: '农业植保', frames: ['Radial Hex'] },
+  // 4.4：界面上只写任务本身。“主案例”“场景适配案例”是研究里的分工，不给设计者看（作者 11 月 24 日）。
+  { id: 'consumer_camera', label: '日常航拍四旋', short: '日常航拍', frames: ['True X', 'Wide X', 'Stretch X', 'H-Frame', 'Deadcat', '+ Configuration'] },
+  { id: 'agricultural_spraying', label: '农业植保六旋', short: '农业植保', frames: ['Radial Hex'] },
 ];
 export const studioTask = (id: TaskId) => studioTasks.find(t => t.id === id) ?? studioTasks[0];
 const owner = new Map<string, Layer>(layers.flatMap(layer => layerFields[layer].map(path => [path, layer] as [string, Layer])));
@@ -159,7 +160,7 @@ export function freshChain(nodes: Record<string, LayerNode>) {
 export function newProject(taskId: TaskId = 'consumer_camera', name = '未命名项目'): Project {
   const nodes: Record<string, LayerNode> = {};
   const leafId = freshChain(nodes);
-  const lane: Lane = { id: 'lane-A', name: '方向 A', leafId, createdAt: now() };
+  const lane: Lane = { id: 'lane-A', name: '方案 A', leafId, createdAt: now() };
   return {
     schema: 'workbench/v4', id: newId('project'), name, createdAt: now(),
     intent: { text: '', taskId, state: 'unspecified', elements: [], cards: [] },
@@ -170,16 +171,16 @@ export function newProject(taskId: TaskId = 'consumer_camera', name = '未命名
 /** 从机架到色材，这条方向经过的五个节点。 */
 export function lanePath(project: Project, laneId: string): LayerNode[] {
   const lane = project.lanes.find(l => l.id === laneId);
-  if (!lane) throw new Error('找不到这条方向。');
+  if (!lane) throw new Error('找不到这个方案。');
   const path: LayerNode[] = [];
   let id: string | null = lane.leafId;
   while (id) {
     const node: LayerNode | undefined = project.nodes[id];
-    if (!node) throw new Error('方向的链断了：缺少节点 ' + id);
+    if (!node) throw new Error('方案的链断了：缺少节点 ' + id);
     path.unshift(node);
     id = node.parentId;
   }
-  if (path.length !== layers.length || path.some((n, i) => n.layer !== layers[i])) throw new Error('方向的链不完整。');
+  if (path.length !== layers.length || path.some((n, i) => n.layer !== layers[i])) throw new Error('方案的链不完整。');
   return path;
 }
 export function laneNode(project: Project, laneId: string, layer: Layer) {
@@ -279,7 +280,7 @@ export function forkAt(project: Project, laneId: string, layer: Layer, name?: st
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const used = new Set(project.lanes.map(l => l.id));
   const letter = [...letters].find(ch => !used.has('lane-' + ch)) ?? String(project.lanes.length + 1);
-  const lane: Lane = { id: 'lane-' + letter, name: name ?? '方向 ' + letter, leafId: parent as string, createdAt: now(), forkedFrom: { laneId, layer, reason } };
+  const lane: Lane = { id: 'lane-' + letter, name: name ?? '方案 ' + letter, leafId: parent as string, createdAt: now(), forkedFrom: { laneId, layer, reason } };
   const index = project.lanes.findIndex(l => l.id === laneId);
   project.lanes.splice(index + 1, 0, lane);
   return lane;
@@ -299,9 +300,39 @@ export function applyLayer(project: Project, fromLaneId: string, toLaneId: strin
   return target;
 }
 
+/** 名字以字母或数字结尾、后面接中文时空一格：“方案 B 的机架”。 */
+export const spaced = (name: string) => /[A-Za-z0-9]$/.test(name) ? name + ' ' : name;
+
+/** 在 layer 另做一版以后，新旧两个方案仍然共用的上游层（这几层以后一改，两个方案一起变）。 */
+export function upstreamOf(layer: Layer): Layer[] { return layers.slice(0, layers.indexOf(layer)); }
+
+/** 两个方案在某一层上取值不同的项：抄设置之前给设计者看会改哪几项。 */
+export function layerDifferences(project: Project, fromLaneId: string, toLaneId: string, layer: Layer) {
+  const from = laneParameters(project, fromLaneId), to = laneParameters(project, toLaneId);
+  const relevant = layerFields[layer].filter(path => getPath(baseParameters(project.intent.taskId), path) !== undefined);
+  return relevant.map(path => ({ path, from: getPath(to, path), to: getPath(from, path) }))
+    .filter(d => JSON.stringify(d.from) !== JSON.stringify(d.to));
+}
+
+/**
+ * 登记条件是否在每个方案上都成立。4.4：登记场次里机架由程序锁定，这一项应当永远成立；导出时再核一遍，
+ * 不成立就在清单里写明，这一场不算完整登记。
+ */
+export function conditionHolds(project: Project, frame: Record<string, unknown>) {
+  const mismatches: { laneId: string; path: string; expected: unknown; actual: unknown }[] = [];
+  for (const lane of project.lanes) {
+    const p = laneParameters(project, lane.id);
+    for (const [k, v] of Object.entries(frame)) {
+      const actual = getPath(p, 'frame.' + k);
+      if (JSON.stringify(actual) !== JSON.stringify(v)) mismatches.push({ laneId: lane.id, path: 'frame.' + k, expected: v, actual });
+    }
+  }
+  return { ok: mismatches.length === 0, mismatches };
+}
+
 /** 删掉一条方向；只属于它的节点一并删去。 */
 export function removeLane(project: Project, laneId: string) {
-  if (project.lanes.length < 2) throw new Error('至少保留一条方向。');
+  if (project.lanes.length < 2) throw new Error('至少保留一个方案。');
   project.lanes = project.lanes.filter(l => l.id !== laneId);
   if (project.activeLaneId === laneId) project.activeLaneId = project.lanes[0].id;
   prune(project);

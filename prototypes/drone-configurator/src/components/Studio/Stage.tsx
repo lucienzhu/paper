@@ -165,7 +165,10 @@ export const TopStage: React.FC<{
         <g data-layer="gear" stroke={lit('landing_gear') ? BLUE : '#8a9099'} strokeWidth={fs * 0.1} strokeDasharray={`${fs * 0.3} ${fs * 0.25}`} fill="none" {...pick('landing_gear')}>
           {gear.landing_gear_style === '低矮滑撬/支腿'
             ? [-1, 1].map(s => <line key={s} x1={s * (bw / 2 + 6)} y1={-bl * 0.36} x2={s * (bw / 2 + 6)} y2={bl * 0.36} />)
-            : [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy], i) => <circle key={i} cx={sx * (bw / 2 + 7)} cy={sy * bl * 0.32} r={fs * 0.3} />)}
+            : gear.landing_gear_style === '臂端一体脚架'
+              // 4.4：脚架在每个电机正下方
+              ? hubs.map(h => <circle key={h.id} cx={h.x} cy={h.y} r={fs * 0.42} data-gear="arm-tip" />)
+              : [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy], i) => <circle key={i} cx={sx * (bw / 2 + 7)} cy={sy * bl * 0.32} r={fs * 0.3} />)}
         </g>
       )}
 
@@ -309,7 +312,12 @@ export const SideView: React.FC<{ parameters: DroneParameters; layout: Layout; c
       <rect x={nose} y={bodyTop} width={bl} height={bh} rx="5" fill={colour || 'url(#side-hatch)'} stroke={INK} strokeWidth={fs * 0.13} strokeDasharray={fuselage.fuselage_style ? undefined : `${fs * 0.5} ${fs * 0.32}`} />
       {hasGear && (gear.landing_gear_style === '低矮滑撬/支腿'
         ? <path d={`M${-bl * 0.3},${bodyBottom} V${-1.5} H${bl * 0.3} V${bodyBottom}`} fill="none" stroke="#4a5568" strokeWidth={fs * 0.16} strokeLinejoin="round" />
-        : <path d={`M${-bl * 0.3},${bodyBottom} L${-bl * 0.44},0 M${bl * 0.3},${bodyBottom} L${bl * 0.44},0`} fill="none" stroke="#4a5568" strokeWidth={fs * 0.16} strokeLinecap="round" />)}
+        : gear.landing_gear_style === '臂端一体脚架'
+          // 4.4：臂端一体脚架画在每个电机正下方，从机臂下沿到地面；机腹下面没有支撑。
+          ? <g data-side-gear="arm-tip">{sideRotorAxes(layout, armT).filter(a => a.layer === 1).map(a =>
+              <path key={a.hub} d={`M${a.x},${bodyTop + 2 + armT} V0 M${a.x - fs * 0.5},0 H${a.x + fs * 0.5}`} fill="none" stroke="#4a5568" strokeWidth={fs * 0.16} strokeLinecap="round" />)}
+              <text x={sideRotorAxes(layout, armT)[0].x} y={fs * 1.1} fontSize={fs * 0.62} fill="#5b6472" textAnchor="middle">臂端脚架</text></g>
+          : <path d={`M${-bl * 0.3},${bodyBottom} L${-bl * 0.44},0 M${bl * 0.3},${bodyBottom} L${bl * 0.44},0`} fill="none" stroke="#4a5568" strokeWidth={fs * 0.16} strokeLinecap="round" />)}
       {accessories.has_camera_gimbal && (
         <g data-layer="side-camera">
           <rect x={mount === 'flush' ? nose + 1 : nose - 4} y={camY} width={camLen} height={camH} rx="3" fill={mount ? '#4a5058' : '#fff'} stroke={VIOLET} strokeWidth={fs * 0.12} strokeDasharray={mount ? undefined : `${fs * 0.3} ${fs * 0.22}`} />
