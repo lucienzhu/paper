@@ -737,3 +737,10 @@ prototypes/e3-author-workbook/model.js	archive/prototypes/e3-author-workbook/mod
 prototypes/e3-author-workbook/start.cmd	archive/prototypes/e3-author-workbook/start.cmd	MiniMax H3 出图（冒烟数据，不在正式通路）及其请求、回执、读数和说明；作者 11-26 定移出
 prototypes/e3-author-workbook/workbook.css	archive/prototypes/e3-author-workbook/workbook.css	MiniMax H3 出图（冒烟数据，不在正式通路）及其请求、回执、读数和说明；作者 11-26 定移出
 prototypes/e3-author-workbook/workbook.js	archive/prototypes/e3-author-workbook/workbook.js	MiniMax H3 出图（冒烟数据，不在正式通路）及其请求、回执、读数和说明；作者 11-26 定移出
+planning/research-library/qa/README.md	archive/planning/research-library/qa/README.md	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档
+planning/research-library/qa/initial/results.csv	archive/planning/research-library/qa/initial/results.csv	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档
+planning/research-library/qa/initial/scores.json	archive/planning/research-library/qa/initial/scores.json	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档
+planning/research-library/qa/questions.jsonl	archive/planning/research-library/qa/questions.jsonl	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档
+planning/research-library/qa/revised/results.csv	archive/planning/research-library/qa/revised/results.csv	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档
+planning/research-library/qa/revised/scores.json	archive/planning/research-library/qa/revised/scores.json	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档
+planning/research-library/qa/run_queries.py	archive/planning/research-library/qa/run_queries.py	资料库检索走查的题表与结果：20 题里 3 题问的是移出的冒烟出图作业记录，资料库移出这些条目后整套题对不上，原样归档

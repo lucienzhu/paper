@@ -254,8 +254,8 @@ class Registers:
                     ),
                 )
             )
-        # 2026-11-26：原先这里把工作台交接包里 MiniMax H3 的四条作业记录（context/h3/jobs.csv）编成条目；
-        # 作者定 MiniMax H3 出图全部移出，那份记录已移进 archive，不再编进资料库。
+        # 2026-11-26：原先这里把工作台交接包里一组托管接口冒烟出图的作业记录编成条目；
+        # 作者定这类数据全部移出（archive/MOVES-20261126.tsv），不再编进资料库。
         for f in ("lookup.mjs", "topics.mjs"):
             path = STUDY + "semantic/lookup/" + f
             self.files[path] = hashlib.sha256(
