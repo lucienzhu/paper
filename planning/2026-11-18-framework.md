@@ -1,6 +1,6 @@
 # 论文总体框架与现状（Claude，2026-11-18）
 
-这份文件回答四件事：论文到底要证明什么、现在证明到哪里、还缺什么、按什么顺序做完。任务的逐项分工仍以 [11 月 17 日任务清单](2026-11-17-direction-and-todo.md) 为准，这里不重复；文中 A、S、C、F、D、H、W、M 开头的编号都指该清单的任务。清单 E 组是评议任务，与实验编号 E0—E6 不同，本文写作“清单 E 组”。仓库整理见 [整理清单](2026-11-18-cleanup-list.md)，新增文献见 [文献补充](../references/2026-11-18-literature-additions.md)。
+这份文件回答四件事：论文到底要证明什么、现在证明到哪里、还缺什么、按什么顺序做完。任务的逐项分工仍以 [11 月 17 日任务清单](2026-11-17-direction-and-todo.md) 为准，这里不重复；文中 A、S、C、F、D、H、W、M 开头的编号都指该清单的任务。清单 E 组是评议任务，与实验编号 E0—E6 不同，本文写作“清单 E 组”。仓库整理见 [整理清单](../archive/planning/2026-11-18-cleanup-list.md)，新增文献见 [文献补充](../references/2026-11-18-literature-additions.md)。
 
 文中标 **【待议 Qn】** 的地方，是我无法替作者决定、需要一起商量的点，汇总在第八节。**11 月 18 日作者已答复：Q1—Q9 按建议执行；Q10 的 PDF 由 Codex 撰写，不是文献**（[#3 第 1—5 题](https://github.com/Freeloop993/paper/issues/3#issuecomment-6950220478)、[第 6—23 题](https://github.com/Freeloop993/paper/issues/3#issuecomment-6966882676)）。
 

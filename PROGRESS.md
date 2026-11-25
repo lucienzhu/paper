@@ -34,7 +34,7 @@
 ## 2026-11-24｜仓库整理第二轮复查（Codex 再审之后）
 
 - **指向 main 上旧路径的 8 个网址**（Codex 找到 7 个，全库逐个查路径又找到 1 个）固定到移动前的 main。
-- **删分支前逐个核标签：** 新加 [2026-11-24-github-cleanup.sh](planning/2026-11-24-github-cleanup.sh)，核 41 个同名标签都指向原末提交，再核 E2R 评阅稿 Word 和 R1 请求包确实在标签里；不过就不删。现在是 0/41，等仓库所有者执行。
+- **删分支前逐个核标签：** 新加 [2026-11-24-github-cleanup.sh](archive/planning/2026-11-24-github-cleanup.sh)，核 41 个同名标签都指向原末提交，再核 E2R 评阅稿 Word 和 R1 请求包确实在标签里；不过就不删。现在是 0/41，等仓库所有者执行。
 - **#22 的关闭评论**补一句：B2 的完整设计表达（D1）按蓝图继续跟踪。
 
 ## 2026-11-24｜仓库整理复查（Codex 审过之后）
@@ -47,6 +47,6 @@
 ## 2026-11-24｜仓库整理：补回分支上的证据，旧文档归档，建阅读清单
 
 - **补回主分支：** 47 个文件（43 个只在未合并分支上，4 个是比主分支新的版本），取分支上的原 blob；其中有的在整理时改了链接，源 blob 与现 blob 逐个记在清单里：正式证据 `evidence/20261117-a1-a4-c1`、`e2r-hub-readback`、`e5-individual-reviewed`、`semantic-cards/early-crawl`，`experiments/semantic40-pairing`；作者冻结的词对 v1；出图防错清单与 `preflight.py`；11 月 18 日存档的 35 个工单。来源逐件记在 [source-manifest-20261124.tsv](evidence/20261120-branch-recovery/source-manifest-20261124.tsv)。
-- **移入 archive：** 59 个不再使用的文件（旧计划、旧交接、旧协议、旧修订片段、工作台根目录的旧说明、本日志的旧文），全库引用一并改写，没有因此新坏的链接（按每一处链接数，整理前 97 处坏的，复查后 63 处）。清单见[整理清单第八节](planning/2026-11-18-cleanup-list.md#八2026-11-24-执行情况与剩余)。
+- **移入 archive：** 59 个不再使用的文件（旧计划、旧交接、旧协议、旧修订片段、工作台根目录的旧说明、本日志的旧文），全库引用一并改写，没有因此新坏的链接（按每一处链接数，整理前 97 处坏的，复查后 63 处）。清单见[整理清单第八节](archive/planning/2026-11-18-cleanup-list.md#八2026-11-24-执行情况与剩余)。
 - **新建：** [阅读清单](READING-LIST.md)、[现行协议索引](docs/protocols/README.md)、[GitHub 工单与 PR 的讨论存档](archive/issues/README.md)（原文照录，只改了链接）。CLAUDE.md 和 STATUS.md 只留现行内容，旧文存档。
-- **没有做的：** 关 PR、删分支、关 #22 要仓库所有者的权限，交给 GPT 的清单在 [2026-11-24-github-cleanup.md](planning/2026-11-24-github-cleanup.md)。研究数据、读数和图都没有改；真实模型调用 0，真人场次 0。
+- **没有做的：** 关 PR、删分支、关 #22 要仓库所有者的权限，交给 GPT 的清单在 [2026-11-24-github-cleanup.md](archive/planning/2026-11-24-github-cleanup.md)。研究数据、读数和图都没有改；真实模型调用 0，真人场次 0。

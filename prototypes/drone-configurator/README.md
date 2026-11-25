@@ -186,7 +186,7 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 
 本机服务在用户数据目录 Freeloop/multirotor-workbench/image-jobs 中保存轮次与 PNG，供浏览器刷新后取回。设置 WORKBENCH_IMAGE_JOBS_DIR 可以指定该目录。
 
-[本轮软件走查记录与截图](review/20261119-round4/README.md) · [上一版界面与历史验收](review/20261118-round3/README.md) · [研究系统实施依据](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/system.md)
+[本轮软件走查记录与截图](../../archive/prototypes/drone-configurator/review/20261119-round4/README.md) · [上一版界面与历史验收](review/20261118-round3/README.md) · [研究系统实施依据](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/planning/advisor-20261118/system.md)
 
 
 ## 源码入口
@@ -256,7 +256,7 @@ npm run evidence -- --extra 路径/新增短引文.csv
 | `npm run gpu:acceptance` | 真机验收（第 7、14 条）：`-- --comfy-url <地址> --out <目录>`。两种方式各出首图和两次修订（只改机鼻、只改臂根），逐轮核对原图、输入图数、工作流、权重、采样设置、种子、prompt_id、运行历史、入队次数和事件表，与本场 ZIP 对上；另存匿名盲读材料。不给地址时用夹具演练 |
 | `npm run ai:smoke` | 接上真实文字模型后的冒烟检查：读意图、提方向、对机身说话、在候选上改、自由提示的助手各调用一次，列出是否通过服务的核对、耗时、服务报的模型名、推理强度、收尾原因和拿掉的条目。会产生 5 次真实调用；密钥只从环境变量读。加 `-- --fixture` 只检查脚本本身 |
 | `npm run walkthrough:canvas` | 先 `npm run build`。3.6 版（`#v=3`）。在隔离的浏览器里把画布上的每一步做一遍：目标、依据、造型拖动、生成、保留、以候选继续、参考图作输入、便签、新方向、留档、B2 案例和手机宽度。图像作业由软件夹具应答，不调用模型。可加一个目录参数保存截图 |
-| `npm run walkthrough:methods` | 先 `npm run build`。3.6 版（`#v=3`）。同一块画布、同一个 Qwen 后端（软件夹具），先做一场自由提示，再做一场结构化：核对起始值、载入 C2 登记条件、自由提示只发原文、两种方式的生成设置逐项相同、原始文件都存了盘、一场只显示一种方式。加两个目录参数可保存截图和留下作业文件，供 [登记工具试收](review/20261121-defaults-free-prompt/bridge-dry-run.sh) |
+| `npm run walkthrough:methods` | 先 `npm run build`。3.6 版（`#v=3`）。同一块画布、同一个 Qwen 后端（软件夹具），先做一场自由提示，再做一场结构化：核对起始值、载入 C2 登记条件、自由提示只发原文、两种方式的生成设置逐项相同、原始文件都存了盘、一场只显示一种方式。加两个目录参数可保存截图和留下作业文件，供 [登记工具试收](../../archive/prototypes/drone-configurator/review/20261121-defaults-free-prompt/bridge-dry-run.sh) |
 | `npm run walkthrough` | 从离线包走一遍目标、造型和导出，保存农业六旋实际导出与桌面截图，命令会输出所在目录 |
 | `npm run check-offline` | 解压离线包，以 `file://` 打开，检查画布、目标面板、造型、导出、报错、是否有非本地请求和实际下载 |
 | `npm run verify` | 任务、构型、几何、导入导出与提示词自动复核 |
