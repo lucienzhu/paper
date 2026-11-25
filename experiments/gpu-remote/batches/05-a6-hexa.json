@@ -1,0 +1,127 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "A6 六旋比例补验 18 张",
+  "registration": "experiments/20261126-a6-hexa-ratio/README.md",
+  "registered_manifest": "experiments/20261126-a6-hexa-ratio/manifest.json",
+  "registered_manifest_sha256": "3d6c625958ddd751a0a02f08b9706ee13dc8e8c77d1d2973317eb89db3323afa",
+  "requests_dir": "experiments/20261126-a6-hexa-ratio/requests",
+  "files_dirs": [
+    "experiments/20261126-a6-hexa-ratio/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-A6-HA-wl0.70-r01.json",
+      "id": "A6-HA-wl0.70-r01",
+      "seed": 2026112323,
+      "sha256": "a3913d5aab70a7443730b43546779888f1d2c186bdbc54e32a41d7e682e905e3"
+    },
+    {
+      "file": "01-A6-HA-wl0.70-r02.json",
+      "id": "A6-HA-wl0.70-r02",
+      "seed": 2026112324,
+      "sha256": "8407d2c6f175b12945584c762959dcc6583e4469b2ab43a6f96bfae058aebe12"
+    },
+    {
+      "file": "01-A6-HA-wl0.70-r03.json",
+      "id": "A6-HA-wl0.70-r03",
+      "seed": 2026112325,
+      "sha256": "bcc37cd8582b0c2fbc79af7761a814bed0e13b62f3a52bdce3eb2c9bb309f8b5"
+    },
+    {
+      "file": "01-A6-HA-wl0.70-r04.json",
+      "id": "A6-HA-wl0.70-r04",
+      "seed": 2026112326,
+      "sha256": "9de237bfa2bb40bf7caa65480fe5a7c044bf310c1397841a8fe15e1a3f4055c1"
+    },
+    {
+      "file": "01-A6-HA-wl0.70-r05.json",
+      "id": "A6-HA-wl0.70-r05",
+      "seed": 2026112327,
+      "sha256": "be1f3c3a65306f160d02efc96bc2ed756b66e306378ab0654acd479fd5621ab7"
+    },
+    {
+      "file": "01-A6-HA-wl0.70-r06.json",
+      "id": "A6-HA-wl0.70-r06",
+      "seed": 2026112328,
+      "sha256": "a15f70b3b43695b612d736d6daa0ac2e4d79760db2b5b538ffae9e5a9c538583"
+    },
+    {
+      "file": "01-A6-HA-wl1.00-r01.json",
+      "id": "A6-HA-wl1.00-r01",
+      "seed": 2026112323,
+      "sha256": "1931424e2a8a59034f1fe0d7484baa7aa39648ebd1061e348d0434b943c16f19"
+    },
+    {
+      "file": "01-A6-HA-wl1.00-r02.json",
+      "id": "A6-HA-wl1.00-r02",
+      "seed": 2026112324,
+      "sha256": "b1b12c15b621ab5cc7ec80855be41b59b59d16e79f2944873640caabe01fa0ae"
+    },
+    {
+      "file": "01-A6-HA-wl1.00-r03.json",
+      "id": "A6-HA-wl1.00-r03",
+      "seed": 2026112325,
+      "sha256": "66dd72b008988f3c990ce8cac3c22c6be825f21cde9ef335c01b159b0c02ab08"
+    },
+    {
+      "file": "01-A6-HA-wl1.00-r04.json",
+      "id": "A6-HA-wl1.00-r04",
+      "seed": 2026112326,
+      "sha256": "ead5d4c021977fa994ba44fbb099880d421de34bb95d663f142f4df3efc7fca5"
+    },
+    {
+      "file": "01-A6-HA-wl1.00-r05.json",
+      "id": "A6-HA-wl1.00-r05",
+      "seed": 2026112327,
+      "sha256": "8f5a6df10ec0d6eda614531634ed7e22d62d5133a5839aae9b4ad95500a0efa9"
+    },
+    {
+      "file": "01-A6-HA-wl1.00-r06.json",
+      "id": "A6-HA-wl1.00-r06",
+      "seed": 2026112328,
+      "sha256": "104ae1c2c7c48c66270616ec73b43a063dcbbacaad362bfbeecf6114b240cea5"
+    },
+    {
+      "file": "01-A6-HA-wl1.30-r01.json",
+      "id": "A6-HA-wl1.30-r01",
+      "seed": 2026112323,
+      "sha256": "d3368dc3e409cc35369d2b2d5a3c464aa7ff89a3eb780b2fec628879835586df"
+    },
+    {
+      "file": "01-A6-HA-wl1.30-r02.json",
+      "id": "A6-HA-wl1.30-r02",
+      "seed": 2026112324,
+      "sha256": "35e77bf14b219019fbe9335542677b51a914611a91cbfb1d5d286054d6a54f57"
+    },
+    {
+      "file": "01-A6-HA-wl1.30-r03.json",
+      "id": "A6-HA-wl1.30-r03",
+      "seed": 2026112325,
+      "sha256": "624ffaac03c5fe8c0cdb7e9e362bc3b00b87f9a2015b6784a4eb0000202f4569"
+    },
+    {
+      "file": "01-A6-HA-wl1.30-r04.json",
+      "id": "A6-HA-wl1.30-r04",
+      "seed": 2026112326,
+      "sha256": "4065c76bfc3567cf3c7c57fc5bda9e747aca43299a5f694a4528db1b0e8609da"
+    },
+    {
+      "file": "01-A6-HA-wl1.30-r05.json",
+      "id": "A6-HA-wl1.30-r05",
+      "seed": 2026112327,
+      "sha256": "63681940962a85c0bf0ad1f9402c313b9d412a19d9f0d5d552659f0b827bbd65"
+    },
+    {
+      "file": "01-A6-HA-wl1.30-r06.json",
+      "id": "A6-HA-wl1.30-r06",
+      "seed": 2026112328,
+      "sha256": "a8ea557945497bfdf12f17076ab609506d5c0b117f74026d0ebb03fbf0b093bc"
+    }
+  ],
+  "files": {
+    "hexa-points-0.70.png": "c31f68c2ea22c5aa8e3ab8b483035fe7c500a37d4942dc5fb03a08942acc8293",
+    "hexa-points-1.00.png": "d0768f8dac4f240316761309551a931b022390c89d06b956bda9f7b028829f5d",
+    "hexa-points-1.30.png": "096bee936611e874728b371dbe270c3aae4e5e18a1347abccd8aa66205511142"
+  }
+}

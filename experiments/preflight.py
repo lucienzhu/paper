@@ -12,6 +12,8 @@
   [3] 种子不得重复，除非请求号以 --allow-shared-seeds 给出的前缀开头（事先登记的同种子配对）。
   [4] 保存前缀（节点 12）不得重复。
   [5] 负向词不得包含与任务不符的词：六旋／植保请求不能带四旋专用的机尾、相机句。
+      事先登记为航拍任务（相机在机头，与四旋同一简报）的六旋请求，用 --aerial-prefixes 给出请求号前缀，
+      这一项对它们不适用；植保请求（文字含 plant-protection）不受此选项影响（2026-11-26，A6）。
   [6] 输入图的机头若登记为画面下端（approved-inputs 的 nose_at），负向词不得出现任何“tail”类词，
       否则模型可能把画面下端的相机当成机尾部件抹掉。
 退出码 0 为通过；否则列出全部问题并以 1 退出。
@@ -28,7 +30,9 @@ def main():
     ap = argparse.ArgumentParser(); ap.add_argument("requests"); ap.add_argument("--inputs", required=True)
     ap.add_argument("--mask-manifest", type=Path, help="本批红通道遮罩与请求对应关系的冻结清单")
     ap.add_argument("--masks", type=Path, help="实际待提交的遮罩目录，默认与 --inputs 相同")
-    ap.add_argument("--allow-shared-seeds", default=""); a = ap.parse_args()
+    ap.add_argument("--allow-shared-seeds", default="")
+    ap.add_argument("--aerial-prefixes", default="", help="事先登记为航拍任务的六旋请求号前缀，逗号分隔"); a = ap.parse_args()
+    aerial = [p for p in a.aerial_prefixes.split(",") if p]
     approved = json.loads((ROOT / "experiments/approved-inputs.json").read_text(encoding="utf-8"))
     allowed = {**approved["guides"], **approved["parents"]}
     mask_dir = a.masks or Path(a.inputs)
@@ -93,7 +97,8 @@ def main():
                       and allowed.get(v["inputs"]["image"], {}).get("nose_at") == "lower edge"]
         if lower_nose and "tail" in neg:
             problems.append(f"[6] {rid} 的输入 {lower_nose} 机头在画面下端，负向词却含“tail”类词")
-        if "six-rotor" in text or "plant-protection" in text:
+        declared_aerial = any(rid.startswith(p) for p in aerial) and "plant-protection" not in text
+        if ("six-rotor" in text or "plant-protection" in text) and not declared_aerial:
             bad = [t for t in QUAD_ONLY_NEGATIVES if t in neg]
             if bad:
                 problems.append(f"[5] {rid} 是六旋植保请求，负向词含四旋专用词：{bad}")
