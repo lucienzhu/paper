@@ -35,6 +35,12 @@
 4. 农业植保六旋定位为可行性探测。使用已有布局量测、药箱与喷洒部件的顶视可辨性证据；A6、H3 的新图按尚缺的问题决定。
 5. 正式方案剔除 E0 闭源六张，不再补采、不计正式分母；历史登记与已有文件保留。开源布局数据的来源及适用范围单列。
 6. 正式论文全文省略 LoRA。已交导师版前三章的证据核对可以继续；作者此次只确认了这项措辞，未指定立即整体重写或扩写后续章节。
+7. **2026-11-25（作者原话）：** “We have plenty of time — there's no need to narrow the scope and no need to reduce the volume. Just push forward according to your original intent.” 即：时间充足，不缩范围，不减量，按原登记推进。据此有三条：
+   - 登记时写明“时间紧时可减”的，不减（例如 F2 里 E2 第二版的 40 张）。
+   - 后来记录里由 Claude 提议收掉、作者没有点头的，回到原登记（例如 S6、F6 的人数、A4 的完整设计、S5 混排的人数）。
+   - 登记时就写成“可选”或“作者定”的（A6、H3、F8），以及作者 11 月 22—23 日收敛的跨构型范围，仍由作者定；Claude 在现状总表第四节写了建议。
+
+   逐项见[现状总表](../STATUS.md)第四节、第五节。
 
 当前分工沿用 [#1 原安排](https://github.com/Freeloop993/paper/issues/1#issuecomment-6941346056)。Codex 接手 A1 机型表、A4 桥接登记与 C1 工作台，Claude 后续复核。作者已委托 Codex 另起子代理完成[第三份证据复核（Codex 替代件）](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/manuscript/thesis/review/2026-11-17-independent-reviews/R3-Codex-replacement.md)。原 R3 已于 11 月 18 日推送，与替代件的对照见第二节末。早期评论、实际归档图、登记与评议的关系见[数据分析与任务简报](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/evidence/20261117-r3-check/README.md)。
 
@@ -277,5 +283,11 @@ R1 与 R2 互不知情，结论高度一致，也与第一节的判断一致：
 2. 5.3 的 S5 只指第一步，还是两步都要：第二步作者 11 月 20 日定为以后做。
 3. 5.2.1 的 F6：范围和人数，见现状总表第三节 RQ2b。
 4. 5.2.1 的“A4 通过才进入 A5”：A4 现在的草案用了 11 月 19 日退役的部件图通路，要等“基准图加几何编辑写不写进方法”定了再说。
+
+**同日再记：** 作者说不缩范围、不减量，按原意推进（作者最新决定第 7 条）。所以上面 1—4 都按原登记：
+- S6 留在 3.2 的门里。
+- 5.3 的 S5 两步都要。
+- F6 找两名判读者。
+- A4 照原登记重新登记，含机身比例和 d/D 的开发；几何编辑不再拿来缩小 A4、A5。
 
 见[现状总表](../STATUS.md)第四节。
