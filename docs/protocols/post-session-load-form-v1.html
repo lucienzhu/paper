@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>场后短表</title>
+<style>
+  :root { --ink: #1d1d1f; --muted: #5f6368; --line: #d6d6d6; --accent: #1f5fbf; --bg: #ffffff; --soft: #f5f6f8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 20px; }
+  fieldset { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 0 0 16px; }
+  legend { padding: 0 6px; font-weight: 600; }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px 16px; }
+  .meta label { display: flex; flex-direction: column; font-size: 14px; color: var(--muted); }
+  .meta input, .meta select { margin-top: 4px; font: inherit; color: var(--ink); padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  .item h2 { font-size: 17px; margin: 0; }
+  .item .q { margin: 2px 0 10px; color: var(--muted); font-size: 15px; }
+  .scale { display: grid; grid-template-columns: repeat(21, 1fr); align-items: end; }
+  .scale label { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+  .scale label span { height: 14px; border-left: 1px solid var(--line); }
+  .scale label:nth-child(2n+1) span { height: 22px; border-left-color: #9aa0a6; }
+  .scale label:nth-child(11) span { height: 28px; }
+  .scale input { margin: 4px 0 0; accent-color: var(--accent); }
+  .anchors { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); margin-top: 4px; }
+  .unanswered { border-color: #c5221f; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  button { font: inherit; padding: 8px 18px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+  button.secondary { background: #fff; color: var(--accent); }
+  #status { color: var(--muted); font-size: 14px; }
+  textarea { width: 100%; min-height: 120px; font: 13px/1.4 ui-monospace, Menlo, monospace; margin-top: 10px; display: none; }
+  @media (max-width: 600px) { .scale input { transform: scale(0.85); } }
+</style>
+</head>
+<body>
+<main>
+  <h1>场后短表</h1>
+  <p class="lead">请按刚才这一场的感受回答，不用和别的比较。每一题在线上点一个位置，没有对错。</p>
+
+  <fieldset>
+    <legend>场次（由主持人先填）</legend>
+    <div class="meta">
+      <label>参与者编号<input id="participant" autocomplete="off"></label>
+      <label>场次<select id="session"><option value="">请选</option><option>1</option><option>2</option></select></label>
+      <label>方式<select id="method"><option value="">请选</option><option value="workbench">工作台</option><option value="chat-free-prompt">对话加自由提示</option></select></label>
+      <label>委托<select id="commission"><option value="">请选</option><option>A</option><option>B</option></select></label>
+    </div>
+  </fieldset>
+
+  <div id="items"></div>
+
+  <div class="actions">
+    <button id="export">导出</button>
+    <button id="show" class="secondary">显示导出内容</button>
+    <span id="status"></span>
+  </div>
+  <textarea id="out" readonly></textarea>
+</main>
+<script>
+  // NASA-TLX 原始版（不做两两比较加权）的六个分量；0—100，每格 5，共 21 格。
+  // “表现”一项按原量表的方向：0 是“完美”，100 是“失败”。
+  const ITEMS = [
+    { id: "mental", title: "脑力需求", q: "这一场需要多少思考、决定、记忆、观察和查找？任务是简单还是复杂、轻松还是费劲？", lo: "很低", hi: "很高" },
+    { id: "physical", title: "体力需求", q: "这一场需要多少动手操作（点、拖、打字等）？操作是轻松还是费力、从容还是累？", lo: "很低", hi: "很高" },
+    { id: "temporal", title: "时间压力", q: "这一场的节奏让你感到多大的时间压力？是从容还是匆忙？", lo: "很低", hi: "很高" },
+    { id: "performance", title: "表现", q: "你觉得自己把任务完成得怎么样？对自己的表现有多满意？", lo: "完美", hi: "失败" },
+    { id: "effort", title: "努力程度", q: "为了做到你刚才的表现，你花了多大力气（脑力和体力）？", lo: "很低", hi: "很高" },
+    { id: "frustration", title: "挫败感", q: "这一场里你有多不安、气馁、烦躁或恼火（相对于安心、满意、放松）？", lo: "很低", hi: "很高" },
+  ];
+  const opened = new Date().toISOString();
+  const root = document.getElementById("items");
+  for (const it of ITEMS) {
+    const fs = document.createElement("fieldset");
+    fs.className = "item"; fs.id = "f-" + it.id;
+    const ticks = Array.from({ length: 21 }, (_, k) =>
+      `<label title="${k * 5}"><span></span><input type="radio" name="${it.id}" value="${k * 5}" aria-label="${it.title} ${k * 5}"></label>`).join("");
+    fs.innerHTML = `<h2>${it.title}</h2><p class="q">${it.q}</p><div class="scale">${ticks}</div>` +
+      `<div class="anchors"><span>${it.lo}</span><span>${it.hi}</span></div>`;
+    root.appendChild(fs);
+  }
+  const firstAnswered = {};
+  root.addEventListener("change", e => {
+    const name = e.target.name;
+    if (!firstAnswered[name]) firstAnswered[name] = new Date().toISOString();
+    document.getElementById("f-" + name).classList.remove("unanswered");
+  });
+  function collect() {
+    const meta = Object.fromEntries(["participant", "session", "method", "commission"].map(k => [k, document.getElementById(k).value.trim()]));
+    const ratings = {}, missing = [];
+    for (const it of ITEMS) {
+      const v = document.querySelector(`input[name="${it.id}"]:checked`);
+      if (v) ratings[it.id] = Number(v.value); else missing.push(it);
+    }
+    return { meta, ratings, missing };
+  }
+  function build() {
+    const { meta, ratings, missing } = collect();
+    for (const it of ITEMS) document.getElementById("f-" + it.id).classList.toggle("unanswered", missing.includes(it));
+    const metaMissing = Object.entries(meta).filter(([, v]) => !v).map(([k]) => k);
+    if (metaMissing.length || missing.length) {
+      document.getElementById("status").textContent =
+        (metaMissing.length ? "场次信息没填全。" : "") + (missing.length ? `还有 ${missing.length} 题没答。` : "");
+      return null;
+    }
+    return {
+      form: "post-session-load-form", version: "v1-draft-2026-11-26",
+      instrument: "NASA-TLX raw (unweighted), 6 subscales, 0-100 in steps of 5; performance: 0 = perfect, 100 = failure",
+      ...meta, ratings, opened_at: opened, first_answered_at: firstAnswered, exported_at: new Date().toISOString(),
+    };
+  }
+  document.getElementById("export").addEventListener("click", () => {
+    const rec = build();
+    if (!rec) return;
+    const text = JSON.stringify(rec, null, 2) + "\n";
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+    a.download = `load-${rec.participant}-s${rec.session}-${rec.method}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    document.getElementById("out").value = text;
+    document.getElementById("status").textContent = "已导出。请交还主持人。";
+  });
+  document.getElementById("show").addEventListener("click", () => {
+    const rec = build();
+    if (!rec) return;
+    const out = document.getElementById("out");
+    out.value = JSON.stringify(rec, null, 2) + "\n";
+    out.style.display = "block";
+  });
+</script>
+</body>
+</html>

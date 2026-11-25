@@ -10,6 +10,8 @@
 | [run-checklist.md](run-checklist.md) | 出图防错清单与 11 月 15 日错误复盘；配套检查程序 [preflight.py](../../experiments/preflight.py) 和输入白名单 [approved-inputs.json](../../experiments/approved-inputs.json) | 开 GPU 前照做 |
 | [e5-cmf-addendum.md](e5-cmf-addendum.md) | E5 补充登记：两种配色的独立评议 | 2026-11-15 登记 |
 | [formal-collection-kit.md](formal-collection-kit.md) | 正式采集材料包草案，也是知情同意的底稿 | 待改为 3 名设计者、10 名评议者（整理清单第五节，M3） |
+| [moderator-script-v1.md](moderator-script-v1.md) | 主持人逐字稿：开场、两种方式的讲解、练习、场中提醒、结束 | 2026-11-26 草案，等作者看；作者预试用这一稿，预试后改一次再冻结。取代材料包第 3 节的旧稿 |
+| [post-session-load-form-v1.md](post-session-load-form-v1.md) | 场后短表（NASA-TLX 原始版六项），表是离线网页 [post-session-load-form-v1.html](post-session-load-form-v1.html) | 2026-11-26 草案，等作者看 |
 | [E0-E1-guide-prompt-spec.md](E0-E1-guide-prompt-spec.md) | E0、E1 条件图与提示词规格 | E0、E1 的图已退役，只留读数；本页说明那些读数是怎么来的 |
 
 开工前的人智协同预试约定不在这里，在 [paired-pilot.md](../../evidence/20261117-research-update/method/paired-pilot.md)。
