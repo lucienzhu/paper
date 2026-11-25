@@ -56,6 +56,14 @@ def object_info(inputs):
         "SetLatentNoiseMask": {"input": {"required": {"samples": ["LATENT", {}], "mask": ["MASK", {}]}}},
         "EmptySD3LatentImage": {"input": {"required": {"width": ["INT", {}], "height": ["INT", {}],
                                                        "batch_size": ["INT", {}]}}},
+        "ImageScale": {"input": {"required": {"image": ["IMAGE", {}], "upscale_method": combo(["nearest-exact", "bilinear"]),
+                                              "width": ["INT", {}], "height": ["INT", {}], "crop": combo(["disabled", "center"])}}},
+        "Canny": {"input": {"required": {"image": ["IMAGE", {}], "low_threshold": ["FLOAT", {}], "high_threshold": ["FLOAT", {}]}}},
+        "ModelPatchLoader": {"input": {"required": {"name": combo(["qwen_image_2.1_fun_controlnet_union_bf16.safetensors"])}}},
+        "QwenImageDiffsynthControlnet": {"input": {"required": {"model": ["MODEL", {}], "model_patch": ["MODEL_PATCH", {}],
+                                                                "vae": ["VAE", {}], "image": ["IMAGE", {}], "strength": ["FLOAT", {}]},
+                                                   "optional": {"mask": ["MASK", {}], "start_percent": ["FLOAT", {}],
+                                                                "end_percent": ["FLOAT", {}]}}},
     }
 
 
@@ -70,7 +78,7 @@ class State:
         if a.receipt != "none":
             receipt = {"commit": COMMIT if a.receipt == "good" else "0000000", "sources": WEIGHTS["sources"],
                        "weights": [{"path": w["path"], "sha256": w["sha256"], "bytes": w["bytes"]}
-                                   for w in WEIGHTS["weights"][:3]], "weights_verified": True}
+                                   for w in WEIGHTS["weights"]], "weights_verified": True}
             self.inputs["host-receipt.json"] = json.dumps(receipt).encode()
         for spec in a.preload or []:
             name, path = spec.split("=", 1)

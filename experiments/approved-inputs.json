@@ -62,6 +62,78 @@
   "octo-points-1.00.png": {
    "sha256": "d3fba4c9e53a29ae2d9c69e8a0b6c56a4cee1b339e8cb22b1114c60cab9c6a0d",
    "role": "平面八旋 W/L 1.00 点线图（H5；与四旋 dots-250 同对角距、同画法，由 experiments/20261126-h5-octo-x8/build.py 画）"
+  },
+  "a4-dots-wl0.600.png": {
+   "sha256": "2180917468de177542bc1fb6c718e304734fc982611f6817f4e439a0b75906c5",
+   "role": "A4 点线图（W/L 0.6；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl0.700.png": {
+   "sha256": "ece2516ef482b8020e68963a699f8e2b7a7592e61ba9e1a5d96991712dbd230e",
+   "role": "A4 点线图（W/L 0.7；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl1.046.png": {
+   "sha256": "698a2d888c2e121533c139b844389b1b59adb481a563ca572b3b40a91d580be6",
+   "role": "A4 点线图（W/L 1.046；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl1.150.png": {
+   "sha256": "43ab77ad07c8cfc23bf68d54bb0ef9af09e927f1ea852b025f500755cc2d5b55",
+   "role": "A4 点线图（W/L 1.15；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl1.343.png": {
+   "sha256": "ea7c8759c098f0d5ca3095c225681d919511a9e80eb44bfbad5c7804ead9e320",
+   "role": "A4 点线图（W/L 1.3426；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl1.350.png": {
+   "sha256": "21761c60a95465aaa3ad884a317134751c51f9a21cebe57d38b21a27650f9045",
+   "role": "A4 点线图（W/L 1.35；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl1.550.png": {
+   "sha256": "7d90a1a527e3be532d2a1a9a871ac56d628117cd0a80e42281ba1260afa3d8a7",
+   "role": "A4 点线图（W/L 1.55；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-dots-wl1.639.png": {
+   "sha256": "384864bd17d86ed5fb8aba86fcd463c1411704fe71bb9acf7dec0e59ca0b6c96",
+   "role": "A4 点线图（W/L 1.6392；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl0.70-dd0.50.png": {
+   "sha256": "d4aa1cfdbfb92b2480825dbd0d06fdee49b9b358fcdc4ec4dfffc76eca509b52",
+   "role": "A4 部件图（W/L 0.7，d/D 0.5；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.15-dd0.50.png": {
+   "sha256": "c1ae8948b86f2e150f3292fd87926629a331f70bb3c4440230687c02b0213138",
+   "role": "A4 部件图（W/L 1.15，d/D 0.5；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.46.png": {
+   "sha256": "db5e4286b5a50b91ae0cf4d0668a59f25f6b1677fe3fb666138308507c890651",
+   "role": "A4 部件图（W/L 1.35，d/D 0.46；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.50-bw0.16.png": {
+   "sha256": "9a4123c9fc7eae1161bd02dc900038fc2ff7f4648f14703c4fd341751e02646f",
+   "role": "A4 部件图（W/L 1.35，d/D 0.5，机壳宽 0.16；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.50-bw0.23.png": {
+   "sha256": "66f0804297abf31b8e004fe8b2b35dc3709de2d3319cebd38b6d9a871ee1782e",
+   "role": "A4 部件图（W/L 1.35，d/D 0.5，机壳宽 0.23；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.50-bw0.30.png": {
+   "sha256": "56ad00e5f85e16a7471b4a5d3dbdd11243950fe69f3e999b9874c0bcd62f5b9d",
+   "role": "A4 部件图（W/L 1.35，d/D 0.5，机壳宽 0.3；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.50.png": {
+   "sha256": "c3833f60be37a6644a24a5c0199a9c37c48b43730ff7f9c68381a65c5770fb16",
+   "role": "A4 部件图（W/L 1.35，d/D 0.5；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.56.png": {
+   "sha256": "e06e91fb474b18cfb06efc475c356ed81645438a7b3d037eb138a427c59bb0cd",
+   "role": "A4 部件图（W/L 1.35，d/D 0.56；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.35-dd0.66.png": {
+   "sha256": "914081bc08d01e5147fbfac8423fe5145ce69b930ae83ffcce48551ec03d7d10",
+   "role": "A4 部件图（W/L 1.35，d/D 0.66；experiments/20261126-a4-bridge/draw.py 画）"
+  },
+  "a4-parts-wl1.55-dd0.50.png": {
+   "sha256": "19c050126e3bc44a8d52e8ad2ae64928893cd7132c851d0fb6ed36856d6930da",
+   "role": "A4 部件图（W/L 1.55，d/D 0.5；experiments/20261126-a4-bridge/draw.py 画）"
   }
  }
 }

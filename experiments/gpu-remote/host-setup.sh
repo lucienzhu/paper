@@ -6,7 +6,7 @@
 #
 # 做五件事，有一项不对就停，不往下做：
 #   1. ComfyUI 固定在 e8665ca8。11 月 15 日 GPU 日的目录还在就沿用，否则从 GitHub 下载这一版的源码包。
-#   2. 三份权重：旧目录里有就沿用，否则从 ModelScope 按固定版本下载。逐份核对 SHA-256。
+#   2. 四份权重（三份生成用，另一份是 A4 两种做法要的控制分支）：旧目录里有就沿用，否则从 ModelScope 按固定版本下载。逐份核对 SHA-256。
 #   3. 核对 ComfyUI 四个源文件的摘要，与 11 月 12、15 日的记录比。
 #   4. 写主机回执 host-receipt.json（版本、摘要、显卡、torch），放进 ComfyUI 的输入目录，Claude 从网页接口读。
 #   5. 照 11 月 15 日的参数启动 ComfyUI（禁用自定义节点和合作方节点），退出就重启。
@@ -23,7 +23,8 @@ MS="https://modelscope.cn/models/Comfy-Org/Qwen-Image-2.1/resolve/$REV"
 
 WEIGHTS="diffusion_models/qwen_image_2.1_bf16.safetensors 14230280616 89f4158d066cc33906a199fca85634f766892dd78f49b6698dabf187ac86c4bc
 text_encoders/qwen3vl_8b_bf16.safetensors 17534334616 68bdc82bc1b66851162ae656225e7e2068166b603db19bd5d5a3b90eb12669a9
-vae/qwen_image_2.1_vae_bf16.safetensors 675509688 bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9"
+vae/qwen_image_2.1_vae_bf16.safetensors 675509688 bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9
+model_patches/qwen_image_2.1_fun_controlnet_union_bf16.safetensors 7550977992 1f9dea8384ba167084f39f624908f1dbf2ea8a223bb4a8108a77dafa9b55bfe1"
 SOURCES="comfy_extras/nodes_qwen.py 54ce02aa9e167c0b497ce026ac6b558f539427d2d1ed4fc1fcc2ec8e6bc529da
 comfy_extras/nodes_model_patch.py f5e024c0d9ff32f3f364166dd21fae715bd911a6f2caef0fd3ccfd7d9b5d0dc2
 comfy/ldm/qwen_image21/model.py a69dff15ff6fa369fab5ca0d3261f8aaf19aaedd3fc66414e20a1cf7df0aa5ac
@@ -71,7 +72,7 @@ fi
 "$PY" -c "import torch; assert torch.cuda.is_available()" 2>/dev/null || stop "$PY 里的 torch 看不到显卡"
 echo "Python：$PY"
 
-step "2/5 三份权重（SHA-256 逐份核对，约 3—5 分钟）"
+step "2/5 四份权重（SHA-256 逐份核对，约 4—6 分钟）"
 M="$C/models"
 NEED=0
 while read -r path bytes digest; do

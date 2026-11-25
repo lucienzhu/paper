@@ -20,7 +20,7 @@
 ### 作者
 
 1. 在 [#3](https://github.com/Freeloop993/paper/issues/3) 登记这次的授权：跑哪几批、张数上限、花费上限（见 [STATUS](../../STATUS.md) 第五节）。
-2. 租机。最好重新开 11 月 15 日那台实例：数据盘里有 ComfyUI 和三份权重，不用再下载 32 GB。新租的话，镜像选 PyTorch 2.8 / Python 3.12 / CUDA 12.8，数据盘留 40 GB 以上。
+2. 租机。最好重新开 11 月 15 日那台实例：数据盘里有 ComfyUI 和四份权重，不用再下载约 40 GB。新租的话，镜像选 PyTorch 2.8 / Python 3.12 / CUDA 12.8，数据盘留 50 GB 以上。第四份权重是 A4 两种做法要的控制分支。
 3. 在主机的终端里取脚本：
 
    ```bash
@@ -47,7 +47,7 @@
 
 地址按隧道是 `http://127.0.0.1:18189`，下面以 `$U` 代指。命令都在仓库根目录运行。
 
-1. **环境核对**（每次开机先做）。`check` 核对 ComfyUI 版本、四个源文件、三份权重、启动参数、节点和下拉选项、队列为空；再上传、出 2 张、与 11 月 15 日的原图比。
+1. **环境核对**（每次开机先做）。`check` 核对 ComfyUI 版本、四个源文件、请求用到的权重、启动参数、节点和下拉选项、队列为空；再上传、出 2 张、与 11 月 15 日的原图比。
 
    ```bash
    python3 -B experiments/gpu-remote/remote_runner.py check --comfy $U --batch experiments/gpu-remote/batches/00-env-check.json --out experiments/gpu-remote/env-check/actual
@@ -56,7 +56,18 @@
    接着用同样的 `--batch` 和 `--out` 依次跑 `upload`、`run`、`compare`（`compare` 不要 `--comfy`）。比对规则在 [env-check/manifest.json](env-check/manifest.json) 的 `rule`，开机前写定：两张里有一张“明显不同”就停，先查版本和权重。
 2. **工作台真机验收**：先 `npm run build`，再 `npm run gpu:acceptance -- --comfy-url $U --out <输出目录>`（在 `prototypes/drone-configurator` 里）。然后手动断网取回一次。它和各批不能同时跑。
 3. **F1 局部编辑开发 17 张**：批次单 [01-f1-dev.json](batches/01-f1-dev.json)，输出到 `experiments/20261117-local-edit-v2/actual/f1-dev`。按 F1 的登记，遮罩工作流报错就停、报告，不改写法顶替。
-4. 其余各批（H3、A4、八旋和 X8、A6）登记冻结后写进 `batches/`，同样 `check`、`upload`、`run`。
+4. 其余各批照同样的 `check`、`upload`、`run`，输出放进各自登记目录的 `actual/`：
+
+   | 批次单 | 批 | 份数 | 登记 |
+   | --- | --- | ---: | --- |
+   | [02-h3-confirm.json](batches/02-h3-confirm.json) | H3 喷头确认 | 4 | [登记](../20261126-h3-nozzle-confirm/README.md) |
+   | [03-h5-stage1.json](batches/03-h5-stage1.json) | 八旋与 X8 顶视 | 12 | [登记](../20261126-h5-octo-x8/README.md) |
+   | 04-h5-stage2.json（第一段出图后编） | 八旋与 X8 关联斜视 | 8 | 同上 |
+   | [05-a6-hexa.json](batches/05-a6-hexa.json) | A6 六旋比例补验 | 18 | [登记](../20261126-a6-hexa-ratio/README.md) |
+   | [06-a4-stage1.json](batches/06-a4-stage1.json) | A4 第一段 | 90 | [登记](../20261126-a4-bridge/README.md) |
+   | 07-a4-tsb.json（第一段出图后编） | A4 两段式第二步 | 30 | 同上 |
+
+   第二段的批次单在上一段跑完后，用各登记目录 `build.py` 的接续命令编出来，再过出图前检查和 `make-batch`。
 
 每批跑完：把输出目录提交进仓库，当天改 STATUS 那一行。
 

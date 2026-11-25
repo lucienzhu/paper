@@ -44,7 +44,7 @@ COMMIT = "e8665ca8e4089ab917567cdb491308e1397663d4"
 WEIGHTS = json.loads((LEGACY / "weights.json").read_text(encoding="utf-8"))
 NEED_FLAGS = ["--disable-all-custom-nodes", "--disable-partner-nodes"]
 LOADER_FILES = {"UNETLoader": ("unet_name", "diffusion_models"), "CLIPLoader": ("clip_name", "text_encoders"),
-                "VAELoader": ("vae_name", "vae")}
+                "VAELoader": ("vae_name", "vae"), "ModelPatchLoader": ("name", "model_patches")}
 IMAGE_NODES = ("LoadImage", "LoadImageMask")
 RECEIPT = "host-receipt.json"
 
@@ -215,7 +215,7 @@ def host_check(comfy, batch):
                     elif measured.get(path, {}).get("sha256") != expected[path]["sha256"]:
                         problems.append(f"主机上 {path} 的实测摘要与登记不符或没测")
         if not receipt.get("weights_verified"):
-            problems.append("主机回执没有写明三份权重已逐份核对摘要")
+            problems.append("主机回执没有写明权重已逐份核对摘要")
     record["problems"] = sorted(set(problems))
     return record
 
