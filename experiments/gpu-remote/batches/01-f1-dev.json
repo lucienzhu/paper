@@ -1,0 +1,129 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "F1 局部编辑开发（顺序 01、02）",
+  "registration": "experiments/20261117-local-edit-v2/README.md",
+  "registered_manifest": "experiments/20261117-local-edit-v2/manifest.json",
+  "registered_manifest_sha256": "e5794ec02bb2a5700102413d8af5fc464356870af329b8a80bf61eeb479aea2c",
+  "requests_dir": "experiments/20261117-local-edit-v2/requests",
+  "files_dirs": [
+    "experiments/20261117-local-edit-v2/inputs",
+    "experiments/20261117-local-edit-v2/masks"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-LE2-CAM-dev-r1.json",
+      "id": "LE2-CAM-dev-r1",
+      "seed": 2026117001,
+      "sha256": "288c3de8f52131776517b52a6996b2226d6e71f3d0f866779051b446408a8670"
+    },
+    {
+      "file": "01-LE2-CAM-dev-r2.json",
+      "id": "LE2-CAM-dev-r2",
+      "seed": 2026117002,
+      "sha256": "0596a71b86cd5c59d9635493652b641ed075fbc7ccebd06f1e1300c1055cb54a"
+    },
+    {
+      "file": "01-LE2-CAM-dev-r3.json",
+      "id": "LE2-CAM-dev-r3",
+      "seed": 2026117003,
+      "sha256": "d926cec9f10f8f7390c874f946fdf21d978f943f2bf0fc9129b3ca6b27b54892"
+    },
+    {
+      "file": "01-LE2-COVER-dev-r1.json",
+      "id": "LE2-COVER-dev-r1",
+      "seed": 2026117011,
+      "sha256": "16b6b9d49f74d3a30da87c56c31e6de288029dbdc70e821a8bb0a1b6165d57a4"
+    },
+    {
+      "file": "01-LE2-COVER-dev-r2.json",
+      "id": "LE2-COVER-dev-r2",
+      "seed": 2026117012,
+      "sha256": "2bed53f201f64b0fcf5dee733cbe0040614098891a6e356f2441bf9ec5014085"
+    },
+    {
+      "file": "01-LE2-COVER-dev-r3.json",
+      "id": "LE2-COVER-dev-r3",
+      "seed": 2026117013,
+      "sha256": "bcd0374f348e63cfc2fb5b710a5e6556d1125df4638536c72de5bd4f14a3bfb7"
+    },
+    {
+      "file": "01-LE2-ROOT-dev-r1.json",
+      "id": "LE2-ROOT-dev-r1",
+      "seed": 2026117021,
+      "sha256": "6f020e0a568ff8eb96e6dc18ae25eae050182cff10d97fe0e1e6ed266ce4484e"
+    },
+    {
+      "file": "01-LE2-ROOT-dev-r2.json",
+      "id": "LE2-ROOT-dev-r2",
+      "seed": 2026117022,
+      "sha256": "1c3839d533fec5ee4a586fa3f50279bc8363859246a05c73358b89255067db10"
+    },
+    {
+      "file": "01-LE2-ROOT-dev-r3.json",
+      "id": "LE2-ROOT-dev-r3",
+      "seed": 2026117023,
+      "sha256": "4339a07933affbdf1bd7e44c4b81385e236654948d106f1c6100500d161f6079"
+    },
+    {
+      "file": "02-E2V2-B2-NOSE-dev-whole.json",
+      "id": "E2V2-B2-NOSE-dev-whole",
+      "seed": 2026117201,
+      "sha256": "534b33f01e13cb7b534c2984b3e02b81cb815b95f0f70a95ffc35350ce2cfb46"
+    },
+    {
+      "file": "02-E2V2-B2-NOSE-dev-mask.json",
+      "id": "E2V2-B2-NOSE-dev-mask",
+      "seed": 2026117201,
+      "sha256": "dc9addb5325edf0353e8490b7ad11e9666635aeb677bc7e1317b4c0e0ae186cf"
+    },
+    {
+      "file": "02-E2V2-B2-BROAD-dev-whole.json",
+      "id": "E2V2-B2-BROAD-dev-whole",
+      "seed": 2026117202,
+      "sha256": "b6a642f1137203b8c79495cef4ec125022089077857ab49c144b4cc5c0121ba1"
+    },
+    {
+      "file": "02-E2V2-B2-BROAD-dev-mask.json",
+      "id": "E2V2-B2-BROAD-dev-mask",
+      "seed": 2026117202,
+      "sha256": "1a3edcf75efb180abb6e9705870e5690b7692b7b61bd4c8820bdeb2f851b1e8f"
+    },
+    {
+      "file": "02-E2V2-C1-NOSE-dev-whole.json",
+      "id": "E2V2-C1-NOSE-dev-whole",
+      "seed": 2026117203,
+      "sha256": "bc7cca7ca8c1e7516a98040b94f3bf47d13a0533ed8e6a20c35a1d3f019b226d"
+    },
+    {
+      "file": "02-E2V2-C1-NOSE-dev-mask.json",
+      "id": "E2V2-C1-NOSE-dev-mask",
+      "seed": 2026117203,
+      "sha256": "2a2b5ab1346446a2fbcc1ba696780ffc23ccf1369c63d3a1b484f6e3393080c6"
+    },
+    {
+      "file": "02-E2V2-C1-BROAD-dev-whole.json",
+      "id": "E2V2-C1-BROAD-dev-whole",
+      "seed": 2026117204,
+      "sha256": "1b9cc740813702c1c562cb16b7fa15dc7f78b737ed601791c1bdeaec1693175d"
+    },
+    {
+      "file": "02-E2V2-C1-BROAD-dev-mask.json",
+      "id": "E2V2-C1-BROAD-dev-mask",
+      "seed": 2026117204,
+      "sha256": "e4dd0490a62fe82aca499040430c16902b175aa9bcad81649bcc7181f402cd16"
+    }
+  ],
+  "files": {
+    "B2-L-lowkey.png": "46936781f061ecb014a2d9442ae15e5c5c3be47b189ca708b1de20cf5de32ef4",
+    "B2-no-window.png": "9726c778774296c3f164f19ef497c636edc9a23d31ef0f29c83a1b99a0e7b175",
+    "E3R3-B2.png": "be76d340065555747bff51ba2458449b12eda74f81f629c32847cc34ab1a7621",
+    "E3R3-C1.png": "cfd2d8cfb4692048b070e01296e30b1aa8ec9c5cc3a269105e5f35fcbf08512b",
+    "M-CAM-B2low.png": "c6186ee3a9a5c97324a035a0c25208133b42df5fdfe941407ab75411c3e89e29",
+    "M-COVER-B2.png": "1e846ad0b1c7f5568610d95918f0ff84059e4b5b6935d46f5b0a1885af7c04b1",
+    "M-NOSE-B2top.png": "4c114d62161765319870f5657c3e1b71e0631a2f2f7b4817272fa3fa07ed0af7",
+    "M-NOSE-C1top.png": "7ed9b323dba70313859b558ceff9af14f379f5552d4e1d0946c164f7ec4e45b5",
+    "M-ROOT-B2.png": "fcba6dedb0faf7b38874f549d7d21bb71eef7f74017c244a6dd4f8b7bf8593d8",
+    "M-ROOT-C1.png": "e8c22c590473abd02a1b641de2dd0a3e33311260943e96a7dfbf820c41e969f9"
+  }
+}
