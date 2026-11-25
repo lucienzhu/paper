@@ -41,6 +41,7 @@
    - 登记时就写成“可选”或“作者定”的（A6、H3、F8），以及作者 11 月 22—23 日收敛的跨构型范围，仍由作者定；Claude 在现状总表第四节写了建议。
 
    逐项见[现状总表](../STATUS.md)第四节、第五节。
+8. **2026-11-25（作者原话）：** “As for the GPU batches, I think you should decide those, because when I rent it I can just rent it for a day or two with unlimited use — just tell me your plan.” 即：GPU 跑哪些批次由 Claude 定；作者租 1—2 天，不限量。Claude 的租机计划在[现状总表](../STATUS.md)第五节：H3、A6、X8 放进这次租机；B2 修订二是设计上的取舍，仍等作者定；八旋以外的构型照 11-23 的决定留作以后。
 
 当前分工沿用 [#1 原安排](https://github.com/Freeloop993/paper/issues/1#issuecomment-6941346056)。Codex 接手 A1 机型表、A4 桥接登记与 C1 工作台，Claude 后续复核。作者已委托 Codex 另起子代理完成[第三份证据复核（Codex 替代件）](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/manuscript/thesis/review/2026-11-17-independent-reviews/R3-Codex-replacement.md)。原 R3 已于 11 月 18 日推送，与替代件的对照见第二节末。早期评论、实际归档图、登记与评议的关系见[数据分析与任务简报](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/evidence/20261117-r3-check/README.md)。
 
