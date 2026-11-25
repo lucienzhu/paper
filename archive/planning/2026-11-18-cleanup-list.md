@@ -150,14 +150,14 @@
 - 局部编辑：`20261115-local-edit`；
 - 评议工具：`g3-reference`、`g3-actual`、`rating-kit`、`x12-calibration`。
 
-**归档（32），移入 `archive/`：** **2026-11-20 已执行 28 个文件夹和旧六旋三件，引用一并改写（见 [archive/README.md](../archive/README.md)）；`e2-registered` 等那份“E2R 为现行”的说明写好再移，`20261117-r3-check` 主分支上没有。** 原为 34 个、约 149 MB；11/18 按 #3 第 20、21 题调整，3 个改为方法开发，加入 `20261117-r3-check`。
+**归档（32），移入 `archive/`：** **2026-11-20 已执行 28 个文件夹和旧六旋三件，引用一并改写（见 [archive/README.md](../README.md)）；`e2-registered` 等那份“E2R 为现行”的说明写好再移，`20261117-r3-check` 主分支上没有。** 原为 34 个、约 149 MB；11/18 按 #3 第 20、21 题调整，3 个改为方法开发，加入 `20261117-r3-check`。
 - [x] **GPT Image 与闭源诊断**：`gpt-image-b02-visual`、`b02-view-calibration`、`b02-parent-reference`、`d2-closed-six`、`l1-closed-reference-diagnostic`。注意 `d2-closed-six` 不是 E0 闭源组，归档时不能改标为 E0。
 - [x] **MiniMax 开发（11 月 13 日）**：`p1-param-prompt`（两处）、`p2-spec-cards`（两处）、`minimax-junction-pilot`（两处）、~~`form342-h3-pilot`、`quad-author-selection`、`section421-minimax-review`~~（改为方法开发保留）。
 - [x] **D2 调参**：`d2-tuning`（两处）。
 - [ ] **E2 旧记录线**：`h3-e2-local-edit-20261113`、`e2-registered`；连同 `recovered-originals-102/01-old-E2` 写一份说明，指明 E2R 为现行。
 - [x] **11 月 9—11 日的旧口径与旧工具**：`denominators`、`formal-reset`、`desktop-parameter-first-example`、`desktop-parameter-v2`、`operator-workbench`、`quad-guide-cmf-review`、`p04-quad-biblade`、`p05-quad-equal-blades`、`p06-quad-front-camera`、`common-control`、`hub-annotator`。
 - [x] **从未运行的登记**：`g2d`、`g3b`。
-- [x] **旧六旋（11 月 3 日）**：`evidence/README.md`、`hexa4-ai.csv`、`summarize_hexa.py`，已移入 `archive/evidence/old-hexa-20261103/`；新的 [evidence 总索引](../evidence/README.md)已写。
+- [x] **旧六旋（11 月 3 日）**：`evidence/README.md`、`hexa4-ai.csv`、`summarize_hexa.py`，已移入 `archive/evidence/old-hexa-20261103/`；新的 [evidence 总索引](../../evidence/README.md)已写。
 
 **可以删（重复，约 35 MB）：**
 - [x] （2026-11-20 执行：E0、R0 的压缩包已删，SHA-256 写在各自目录的 README；E1 的图此前已随退役删除）E0、E1、R0 的原图各存了两份：一份 ZIP，一份解包目录。我按内容哈希核对过，36/36、6/6、2/2 完全一致。**已定（第 6 题）：留解包目录，删 ZIP，把 ZIP 的 SHA-256 写进 README。** 11/18 复核：三份 ZIP 的全部成员（E0 31 个、E1 181 个、R0 11 个，含 PNG、JSON、CSV）在解包目录中都有内容相同的文件；E1 的 README 已有 ZIP 哈希，E0、R0 要补写。合并后由 Codex 执行，哈希值见 #76。
@@ -187,18 +187,18 @@
 
 | 做了什么 | 规模 | 记录 |
 | --- | --- | --- |
-| 补回 11 月 20—21 日漏掉的分支文件，取分支上的原 blob（有的改了链接，原 blob 与现 blob 都记在清单里）；其中正式证据 5 项、作者冻结的词对 v1、出图防错清单与 preflight、11 月 18 日的工单存档 | 47 个文件（新增 43，以较新版本替换 4） | [source-manifest-20261124.tsv](../evidence/20261120-branch-recovery/source-manifest-20261124.tsv) |
-| 第五节的旧计划、旧交接、旧协议、旧修订片段、旧日志移入 `archive/` | 59 个文件；全库 67 个文件里的 319 处链接一并改写 | [archive/README.md](../archive/README.md) |
+| 补回 11 月 20—21 日漏掉的分支文件，取分支上的原 blob（有的改了链接，原 blob 与现 blob 都记在清单里）；其中正式证据 5 项、作者冻结的词对 v1、出图防错清单与 preflight、11 月 18 日的工单存档 | 47 个文件（新增 43，以较新版本替换 4） | [source-manifest-20261124.tsv](../../evidence/20261120-branch-recovery/source-manifest-20261124.tsv) |
+| 第五节的旧计划、旧交接、旧协议、旧修订片段、旧日志移入 `archive/` | 59 个文件；全库 67 个文件里的 319 处链接一并改写 | [archive/README.md](../README.md) |
 | 改写前后各数一遍全库相对链接 | 按每一处链接数：整理前 97 处坏的，整理后 63 处，没有因整理新坏的（11 月 24 日初稿写的“78 → 74”是按文件与目标去重数的，而且没数图片链接） | |
-| 新建阅读清单、现行协议索引；CLAUDE.md、STATUS.md 只留现行内容，原文存档 | | [阅读清单](../READING-LIST.md) |
-| GitHub 全部 46 个工单、51 个 PR 的正文与评论存档（原文照录，只改了链接），附一览表 | | [archive/issues/](../archive/issues/README.md) |
+| 新建阅读清单、现行协议索引；CLAUDE.md、STATUS.md 只留现行内容，原文存档 | | [阅读清单](../../READING-LIST.md) |
+| GitHub 全部 46 个工单、51 个 PR 的正文与评论存档（原文照录，只改了链接），附一览表 | | [archive/issues/](../issues/README.md) |
 | 关闭自己开的 PR #75（已被工作台 4.x 取代）；清理 fork 上已并入的旧分支 | | |
 
 **复查（2026-11-24，Codex 审过之后）。** 作者转来 Codex 的三条意见，逐条核对后都成立，已改：
 
 | 意见 | 核对结果 | 改了什么 |
 | --- | --- | --- |
-| archive 里还有论文 PDF 和评论原始数据，是不是不要了 | 不是。`archive/paper-reading-room` 是评论原始数据、S2/A3/A8 的题面、对应键和取点图、一篇同专业论文；另有 `experiments/g2d`、`evidence/formal-reset`、两处 `d2-tuning`、`evidence/h3-e2-local-edit-20261113` 被现行脚本或索引按路径读取。阅读清单原来写“archive 不用读”，会把它们当成废料 | [archive/README.md](../archive/README.md) 分成“一、仍在用：不能删，不要挪”和“二、退役”；阅读清单、AGENTS、DATA.md、peer-theses.md、阅读库说明都指到这些副本。没有移动任何文件 |
+| archive 里还有论文 PDF 和评论原始数据，是不是不要了 | 不是。`archive/paper-reading-room` 是评论原始数据、S2/A3/A8 的题面、对应键和取点图、一篇同专业论文；另有 `experiments/g2d`、`evidence/formal-reset`、两处 `d2-tuning`、`evidence/h3-e2-local-edit-20261113` 被现行脚本或索引按路径读取。阅读清单原来写“archive 不用读”，会把它们当成废料 | [archive/README.md](../README.md) 分成“一、仍在用：不能删，不要挪”和“二、退役”；阅读清单、AGENTS、DATA.md、peer-theses.md、阅读库说明都指到这些副本。没有移动任何文件 |
 | 讨论存档里 12 处链接指向已删的分支；还有相对路径不对 | 12 处都在 PR #79、#96、#97 的说明里，指向 Claude 账号 fork 上已删的 3 个分支；另有 57 处按分支名写的链接指向将要删除的分支，1 处写成站内路径。相对路径：25 处指向 11 月 20 日已移入 archive 的图、11 月 19 日删掉的 E1 原图，E3 dev-r3 的 4 张图少写了 `it1/` | 讨论存档里按分支名写的 69 处链接全部改成固定提交号，1 处站内路径改成完整网址（连同下面 E1 原图的 8 处，共 77 处固定链接逐个核过，目标在那个提交里都存在）；25 处相对路径改到 archive 下的现位置或删除前的那个提交；fork 上补了 3 个同名标签，GitHub 网页上的 12 处旧链接恢复可用；交给 GPT 的清单改为删前给全部 41 个分支打同名标签 |
 | “逐字节相同”写得不准，#62 的关闭评论尤其如此 | 对。47 个补回的文件里现在 37 个与原 blob 逐字节相同，10 个只改了链接（词对 v1 改了 1 处），文件哈希已不同 | 来源清单加了原 blob、现 blob、是否相同和改了什么；11 月 20 日那份清单另做复核（1,093 个里 1,092 个仍相同）；各处措辞和 #62 的评论改准。第一次提交的提交说明里“逐字节取原 blob”这句写错了，提交说明不再改，以清单为准 |
 

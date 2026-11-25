@@ -5,7 +5,7 @@
 | 文件 | 是什么 | 状态 |
 | --- | --- | --- |
 | [word-pairs-v1-draft.md](word-pairs-v1-draft.md) | 词对 v1：按入选规则逐组核对 36 张证据卡 | 作者 2026-11-13 确认并冻结；3.2、3.3、E3、E5 沿用 |
-| [method-freeze-v1.md](method-freeze-v1.md) | 第 3 章方法冻结单 v1 | 第 2 节已按实测填写；第 3 节未签。作者 11 月 18 日定：改出以 v1.6 字典为准的 v2，并附偏离记录表（[整理清单](../../planning/2026-11-18-cleanup-list.md)第五节），v2 还没写 |
+| [method-freeze-v1.md](method-freeze-v1.md) | 第 3 章方法冻结单 v1 | 第 2 节已按实测填写；第 3 节未签。作者 11 月 18 日定：改出以 v1.6 字典为准的 v2，并附偏离记录表（[整理清单](../../archive/planning/2026-11-18-cleanup-list.md)第五节），v2 还没写 |
 | [method-freeze-evidence-20261114.md](method-freeze-evidence-20261114.md) | 冻结单 v1 第 2 节的实测依据 | 随 v1 |
 | [run-checklist.md](run-checklist.md) | 出图防错清单与 11 月 15 日错误复盘；配套检查程序 [preflight.py](../../experiments/preflight.py) 和输入白名单 [approved-inputs.json](../../experiments/approved-inputs.json) | 开 GPU 前照做 |
 | [e5-cmf-addendum.md](e5-cmf-addendum.md) | E5 补充登记：两种配色的独立评议 | 2026-11-15 登记 |

@@ -4,7 +4,7 @@
 
 依据 [正式采集材料包第 5–7 节](../../docs/protocols/formal-collection-kit.md)。本版可用于离线校准。正式采集仍需作者落实人选、同意程序、抽签登记和评分规则。研究者保管本目录，评议者只收下述 participant 文件夹。
 
-已收到[首份真实校准反馈](../../evidence/x12-calibration/README.md)。下列 calibration/participant 只供回看首轮已经取得的记录。当前 build_pack.py 新制包采用 X12-r3。先判断四项实体构型与任务细节是否可见，再分别评价造型及深化意愿。后续评议者使用同一版包。
+已收到[首份真实校准反馈](../../archive/evidence/x12-calibration/README.md)。下列 calibration/participant 只供回看首轮已经取得的记录。当前 build_pack.py 新制包采用 X12-r3。先判断四项实体构型与任务细节是否可见，再分别评价造型及深化意愿。后续评议者使用同一版包。
 
 ## 复核已封存的旧校准包（已停止发放）
 

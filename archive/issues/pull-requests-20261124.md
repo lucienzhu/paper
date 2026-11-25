@@ -1478,7 +1478,7 @@ A8 有一处要作者定：不知情的读数下 WLQ 中档命中是 3/12，`a3/
 
 工作台这边齐了。还差两样：GPU 开机后的五项核对，以及复核记录第七节留给作者定的三件事（计时以谁为准、自由提示那场模型收不收参照图、桨径起始值）。
 
-[复核记录](../../prototypes/drone-configurator/review/20261121-defaults-free-prompt/README.md) · [A8 读法](../../evidence/20261117-research-update/a8-ai/README.md) · [进度页第十九节](../../planning/research-panorama/progress-20261119.md)
+[复核记录](../prototypes/drone-configurator/review/20261121-defaults-free-prompt/README.md) · [A8 读法](../../evidence/20261117-research-update/a8-ai/README.md) · [进度页第十九节](../../planning/research-panorama/progress-20261119.md)
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 

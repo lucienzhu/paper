@@ -22,7 +22,7 @@
 
 | 环节 | 先读 | 数据与原件 | 交到论文 |
 | --- | --- | --- | --- |
-| RQ1 用户评论 → 设计意图 | [评论核查与新共词图](evidence/20261117-research-update/comments/README.md)（18 KB）· [证据卡说明](evidence/semantic-cards/README.md) | [36 张证据卡](evidence/semantic-cards/cards.csv) · [早期采集数据与分母](evidence/semantic-cards/early-crawl/README.md) · [第二编码](evidence/semantic40-second-coding-20261115/) 与[配对规则](experiments/semantic40-pairing/README.md) · [词对 v1（作者 11 月 13 日冻结）](docs/protocols/word-pairs-v1-draft.md) · [S6 词对重新编码](evidence/20261117-research-update/s6-recode/README.md) · 原始评论与商品数据的 [8 个 ZIP](archive/paper-reading-room/datasets/early-crawl/)（放在 archive 下，但仍在用，说明见 [DATA](DATA.md)）· S2 题面与对应键在 [paper-reading-room/studies](archive/paper-reading-room/studies/20261117-offline/) | 3.2、3.3 |
+| RQ1 用户评论 → 设计意图 | [评论核查与新共词图](evidence/20261117-research-update/comments/README.md)（18 KB）· [证据卡说明](evidence/semantic-cards/README.md) | [36 张证据卡](evidence/semantic-cards/cards.csv) · [早期采集数据与分母](evidence/semantic-cards/early-crawl/README.md) · [第二编码](evidence/semantic40-second-coding-20261115/) 与[配对规则](experiments/semantic40-pairing/README.md) · [词对 v1（作者 11 月 13 日冻结）](docs/protocols/word-pairs-v1-draft.md) · [S6 词对重新编码](archive/evidence/20261117-research-update/s6-recode/README.md) · 原始评论与商品数据的 [8 个 ZIP](archive/paper-reading-room/datasets/early-crawl/)（放在 archive 下，但仍在用，说明见 [DATA](DATA.md)）· S2 题面与对应键在 [paper-reading-room/studies](archive/paper-reading-room/studies/20261117-offline/) | 3.2、3.3 |
 | RQ2a 布局比例控得住吗 | [A8 真人取点](evidence/20261117-research-update/a8-click/README.md) 与[读法](evidence/20261117-research-update/a8-click/returns/reading.md) · [A8 不知情 AI 读数](evidence/20261117-research-update/a8-ai/README.md) | [A3 生成图读数](evidence/20261117-research-update/a3/README.md) · [点线图通路](experiments/l1-layout/README.md) 与[实测](evidence/l1-layout-actual/) · 部件图通路 [R0](evidence/r0-20261112/)、[E0](evidence/e0-open-20261112/)、[E1](evidence/e1-open-20261112/)（11 月 19 日退役，只留读数）· A8 的取点图与发放包在 [paper-reading-room/studies](archive/paper-reading-room/studies/20261117-offline/) | 3.4、5.1.2、5.2.1 |
 | 真实机型（RQ2 的参照） | [A1 官方规格](evidence/20261117-research-update/a1/README.md) · [A1、A4、C1 的关系](evidence/20261117-a1-a4-c1/README.md) | [A2 手册图面量测](evidence/20261117-config-review/A2/README.md) · [真实产品顶视图来源](evidence/real-product-topview/README.md) | 3.2.3 |
 | RQ2b 造型档位出得来吗 | [96 张读数与六旋](evidence/20261117-offline-review/README.md) · [v1.2 正式与 v1.6 平行批](evidence/20261115-review-takeover/README.md) | [GPU 日登记](experiments/gpu-day-20261115/README.md) 与[回收件](evidence/gpu-day-20261115/) · 造型字典开发 [form342-h3-dev 各轮](evidence/form342-h3-dev/)、[S4](evidence/qwen-shape-s4-20261114/README.md) | 5.2.1 |
@@ -52,7 +52,7 @@
 | 运行、改代码 | [工作台说明](prototypes/drone-configurator/README.md)（35 KB，先读开头的版本和运行方法）· [界面设计记录](prototypes/drone-configurator/interface-design.md) |
 | 看最近一次复核和还没验证的 | [4.4 复核记录](prototypes/drone-configurator/review/20261124-workbench-4.4/README.md) · [4.3 / 4.3.1 复核记录](prototypes/drone-configurator/review/20261123-workbench-4.3/README.md) · [4.0 评审汇总](planning/2026-11-22-workbench-4-review-summary.md)（第六、七节是要作者定的事和作者的答复） |
 
-更早的复核记录在 `prototypes/drone-configurator/review/` 下，按日期命名。
+4.3 以前的复核记录 2026-11-25 已移进 `archive/prototypes/drone-configurator/review/`；`review/20261118-round3` 留在原处，走查脚本要读里面的夹具。
 
 ## 五、作者的决定记在哪
 
@@ -61,7 +61,7 @@
 | 还没定的 | [现状总表](STATUS.md)第四节，按对后面的影响排序 |
 | 11 月 18 日以后 | 登记任务表开头的“作者最新决定”；蓝图 ② ④ 里注明“作者定”的引文；进度页各节；评审汇总第七节 |
 | 11 月 9—18 日 | 工单 #3 “作者决定与授权登记”（[存档快照](archive/issues/open-issues-20261124.md)）；最早的 F1—F5 定案在 [archive/docs/foundation.md](archive/docs/foundation.md) |
-| 仓库里什么留、什么归档 | [11 月 18 日整理清单](planning/2026-11-18-cleanup-list.md)，第八节是 11 月 24 日的执行情况；等仓库所有者执行的关 PR、删分支清单在 [2026-11-24-github-cleanup.md](planning/2026-11-24-github-cleanup.md) |
+| 仓库里什么留、什么归档 | [archive/README.md](archive/README.md)：第一节是仍在用、不能挪的，第二节是退役的各批（含 2026-11-25 移走的 62 个文件）。11 月 18 日整理清单和 11 月 24 日 GitHub 清理工单都已执行，存档在 archive/planning/ |
 
 ## 六、不用读的
 

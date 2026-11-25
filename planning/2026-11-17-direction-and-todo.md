@@ -2,7 +2,7 @@
 
 > **2026-11-25：查各任务现在到哪，看[现状总表](../STATUS.md)。** 本表各组的“状态”栏、第五节的先后和第七节的数据门都是登记时写的，原文不改；后来的变化记在各组下面带日期的说明里，也汇总在现状总表。
 
-**配置器与研究验证**　[五页签主程序、早期评论检索与配对试验的实施方案](configurator-research/README.md)。附旧库与正式语料的两种文本匹配结果，以及首次技术达标时间与终稿盲评的记录办法。
+**配置器与研究验证**　[五页签主程序、早期评论检索与配对试验的实施方案](../archive/planning/configurator-research/README.md)。附旧库与正式语料的两种文本匹配结果，以及首次技术达标时间与终稿盲评的记录办法。
 
 **最新实作（11 月 17 日）**　[C1 点选工作台、A1 厂商规格扩至 24 款、A2 图面量测扩至 6 款及其中两款轴心复点](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/evidence/20261117-config-review/README.md)。作者双场实用预试仍待进行。
 
@@ -41,6 +41,8 @@
    - 登记时就写成“可选”或“作者定”的（A6、H3、F8），以及作者 11 月 22—23 日收敛的跨构型范围，仍由作者定；Claude 在现状总表第四节写了建议。
 
    逐项见[现状总表](../STATUS.md)第四节、第五节。
+8. **2026-11-25（作者原话）：** “As for the GPU batches, I think you should decide those, because when I rent it I can just rent it for a day or two with unlimited use — just tell me your plan.” 即：GPU 跑哪些批次由 Claude 定；作者租 1—2 天，不限量。Claude 的租机计划在[现状总表](../STATUS.md)第五节：H3、A6、X8 放进这次租机；B2 修订二是设计上的取舍，仍等作者定；八旋以外的构型照 11-23 的决定留作以后。
+9. **2026-11-25（作者原话）：** “OK, please continue the research according to what we settled on at the beginning. As for irrelevant comments and repository files, you need to have a clear count and remove them — otherwise they will keep distorting your judgment.” 这是回答 Claude 的问题“要不要按蓝图需要的收回来”。即：按一开始定的研究主线（蓝图）走，S6 不做，F3 不再补人；无关的评论和仓库文件要清点清楚、移出去。移出去的做法照 11 月 18 日 #3 第 2 题的决定：移进 `archive/`，不删除研究材料。
 
 当前分工沿用 [#1 原安排](https://github.com/Freeloop993/paper/issues/1#issuecomment-6941346056)。Codex 接手 A1 机型表、A4 桥接登记与 C1 工作台，Claude 后续复核。作者已委托 Codex 另起子代理完成[第三份证据复核（Codex 替代件）](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/manuscript/thesis/review/2026-11-17-independent-reviews/R3-Codex-replacement.md)。原 R3 已于 11 月 18 日推送，与替代件的对照见第二节末。早期评论、实际归档图、登记与评议的关系见[数据分析与任务简报](https://github.com/Freeloop993/paper/blob/a98b3ecdce0330902d9f5dd99336ce41e7fc993e/evidence/20261117-r3-check/README.md)。
 
@@ -228,7 +230,7 @@ R1 与 R2 互不知情，结论高度一致，也与第一节的判断一致：
 | M6 | 清理冲突的旧记录：E1 几何记录的真人表单数、analysis-247 中已盲读却仍标“待判读”的 96 张、`STATUS.md` 的旧计数；三条 E2 记录线写一份说明，标明哪条是现行的（R3） | Codex |
 | M7 | 附录引用的文件路径与合并后的分支一致（v1.6 字典等）（R3） | 随 M1 处理 |
 
-**2026-11-24（仓库整理，上表原文不改）。** M1 的文件部分做完：11 月 18 日清单列为正式证据的 18 项都已在主分支上，11 月 20—21 日漏掉的 47 个文件已补回，取分支上的原 blob，有的改了链接，原 blob 与现 blob 都记在[来源清单](../evidence/20261120-branch-recovery/source-manifest-20261124.tsv)）。关 PR、删分支要仓库所有者执行，清单在 [2026-11-24-github-cleanup.md](2026-11-24-github-cleanup.md)。M7 只做了链接检查：全库相对链接按每一处数，坏的由 97 处减为 63 处（其余 61 处在没动过的文件里，多指向按决定删掉的图，2 处有意保留），附录里的固定提交链接还没改为相对路径。M6 没动。
+**2026-11-24（仓库整理，上表原文不改）。** M1 的文件部分做完：11 月 18 日清单列为正式证据的 18 项都已在主分支上，11 月 20—21 日漏掉的 47 个文件已补回，取分支上的原 blob，有的改了链接，原 blob 与现 blob 都记在[来源清单](../evidence/20261120-branch-recovery/source-manifest-20261124.tsv)）。关 PR、删分支要仓库所有者执行，清单在 [2026-11-24-github-cleanup.md](../archive/planning/2026-11-24-github-cleanup.md)。M7 只做了链接检查：全库相对链接按每一处数，坏的由 97 处减为 63 处（其余 61 处在没动过的文件里，多指向按决定删掉的图，2 处有意保留），附录里的固定提交链接还没改为相对路径。M6 没动。
 
 ## 四、GPU 用量
 
@@ -285,7 +287,7 @@ R1 与 R2 互不知情，结论高度一致，也与第一节的判断一致：
 4. 5.2.1 的“A4 通过才进入 A5”：A4 现在的草案用了 11 月 19 日退役的部件图通路，要等“基准图加几何编辑写不写进方法”定了再说。
 
 **同日再记：** 作者说不缩范围、不减量，按原意推进（作者最新决定第 7 条）。所以上面 1—4 都按原登记：
-- S6 留在 3.2 的门里。
+- S6 留在 3.2 的门里。（同日第三次记：作者第 9 条定 S6 不做，3.2 的门改为 S1—S4。）
 - 5.3 的 S5 两步都要。
 - F6 找两名判读者。
 - A4 照原登记重新登记，含机身比例和 d/D 的开发；几何编辑不再拿来缩小 A4、A5。

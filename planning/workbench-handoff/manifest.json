@@ -84,7 +84,7 @@
     {
       "path": "planning/workbench-handoff/context/运行证据.md",
       "format": "text-lf",
-      "sha256": "22a9a1f663562d66e2f07791c6b7c4420b21d039f9ac66b2a63c71db09685d32"
+      "sha256": "e32c563d07f038f61532b9cce3757024c629274aeb0c801e75a7cfc80a259ca0"
     },
     {
       "path": "planning/workbench-handoff/literature/.gitignore",
@@ -244,7 +244,7 @@
     {
       "path": "planning/workbench-handoff/v3.2-review.md",
       "format": "text-lf",
-      "sha256": "876b2de76fa7650556326c5877d03b8285aef3bc1b0818e0c513c2f0b57868b9"
+      "sha256": "4aeab6977dcdac16aae62bd4b44551a747731262ae5e76439920676a6efbd8da"
     },
     {
       "path": "planning/workbench-handoff/verify_checkout.py",
@@ -264,7 +264,7 @@
     {
       "path": "prototypes/drone-configurator/README.md",
       "format": "text-lf",
-      "sha256": "a97a7be3ce15a77475ce8b14a104b78c48334cc8d04486cf9e7285aa3865f35c"
+      "sha256": "8d90546062832e9b30019fa01c390901e3763d6e6cdb4971367c24930a8d54c2"
     },
     {
       "path": "prototypes/drone-configurator/configurator-offline.zip",
