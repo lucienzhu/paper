@@ -58,6 +58,10 @@
   "wl-1.00-dd-0.50.png": {
    "sha256": "4dd33589a21d710153d912ac8dada8d0fc26fe0ac029883794461e53b0f4628e",
    "role": "四旋双叶部件图（几何批与 E1 对照）"
+  },
+  "octo-points-1.00.png": {
+   "sha256": "d3fba4c9e53a29ae2d9c69e8a0b6c56a4cee1b339e8cb22b1114c60cab9c6a0d",
+   "role": "平面八旋 W/L 1.00 点线图（H5；与四旋 dots-250 同对角距、同画法，由 experiments/20261126-h5-octo-x8/build.py 画）"
   }
  }
 }
