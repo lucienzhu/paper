@@ -7,6 +7,7 @@ import { roundsOfSession } from './sessions';
 import { laneIntent, laneParameters, lanePath, laneTouched, newProject } from './model';
 import { useStudio } from './store';
 import { freeScope, inProject, laneScope } from './attempts';
+import { parentRefusal, usableAsParent } from '../design/imageBackend';
 
 /** 登记场次至多 9 次生成机会（失败和放弃的也算一次）；试用不限。 */
 async function checkLimit(sessionId: string) {
@@ -15,13 +16,17 @@ async function checkLimit(sessionId: string) {
   if (roundsOfSession(session, await listAttempts()).rounds.length >= sessionLimits.opportunities)
     throw new Error(`这一场已经用了 ${sessionLimits.opportunities} 次生成机会（登记的上限），不再发出。`);
 }
-/** 父图只能来自这个项目（工作台），或这一场自己的轮次（自由提示）：换了人、换了场，上一场的图不能被带进来。 */
+/**
+ * 父图只能来自这个项目（工作台），或这一场自己的轮次（自由提示）：换了人、换了场，上一场的图不能被带进来。
+ * 4.5.2：还要是这台工作台上 Qwen 出图成功的候选。浏览器里存着的旧项目可能带着 4.5 以前开发用后端出的图，它们属于“这个项目”，但不能再进生成请求。
+ */
 async function checkParent(parentCandidateId: string | undefined, sessionId: string, free: boolean) {
   if (!parentCandidateId) return;
   const parent = await findAttempt(parentCandidateId.split('/')[0]);
   const project = useStudio.getState().project;
   if (!parent || (free ? parent.sessionId !== sessionId : !inProject(parent, project)))
     throw new Error('所选父图不属于这一场，没有发出。请在这一场的候选里重新选父图。');
+  if (!usableAsParent(parent)) throw new Error(parentRefusal(parent));
 }
 
 /** 生成流程里的任务类别只用于记录：植保六旋记作 hexa，其余记作 quad。 */

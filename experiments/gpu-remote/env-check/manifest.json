@@ -1,67 +1,48 @@
 {
-  "purpose": "每次开机先做的环境核对：按原种子重出 11 月 15 日的两张归档图，与原图比对",
-  "archived_run": "11 月 15 日 GPU 日（AutoDL，RTX 4080 SUPER，ComfyUI e8665ca8，禁用自定义节点，--cache-classic）",
-  "rule": "每张重出图先与同种子原图逐像素比：完全相同记“逐像素相同”。不同时算三通道平均绝对差，再算同提示下相邻两个种子的两张原图之间的平均绝对差作对照：同种子的差不超过对照的 0.25 倍，记“只有数值差异”，照跑，把显卡型号和差值写进记录。超过就记“明显不同”，两张中有一张明显不同就先停，核对主机回执（ComfyUI 版本、四个源文件、三份权重）、torch 版本和显卡型号。回执有一项不符，修好环境再做一次环境核对，修好之前不跑任何批次。回执全部相符、只是显卡型号或 torch 不同，记成“这台机器复现不了 11 月 15 日的像素”，照跑这次租机的各批，但这次的图只在本次各批内部比较，不与 11 月 15 日的图合进同一个分母。这条规则 2026-11-26 在开机前写定。",
+  "purpose": "每次开机先做的环境核对：同一份请求在这台主机上出两次，看两次是否一样",
+  "workbench": {
+    "version": "4.5.2",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-Co7FOXPy.js",
+    "bundle_sha256": "ff9c9c881c8751da4836555a48c85c1e31bc2c039d7ef5f8791d765865be81da",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
+  },
+  "rule": "ENV-A-r1 与 ENV-A-r2 是同一份请求（同文字、同条件图、同种子），中间隔一份只换种子的 ENV-N，免得第二次命中缓存。两张先逐像素比：完全相同记“逐像素相同”。不同时算三通道平均绝对差，再算 ENV-A-r1 与 ENV-N 的平均绝对差作对照：同种子的差不超过对照的 0.25 倍，记“只有数值差异”，照跑，把显卡型号和差值写进记录。超过就记“明显不同”，先停：核对主机回执（ComfyUI 版本、四个源文件、权重摘要）、启动参数、torch 版本和显卡型号，修好再做一次环境核对，修好之前不跑任何批次。这条规则 2026-11-26 在开机前写定。它核对的是这台主机按登记的执行图出图、同一请求可以重复；不与任何旧图比。",
   "requests": [
     {
       "order": 1,
-      "id": "ENV-S12-S0-r05",
-      "seed": 2026112005,
-      "request_sha256": "e7b42ca153cf325194d32140906ddb323ff1f584892b253759fbad4f3f8c280d",
-      "source": {
-        "path": "experiments/gpu-day-20261115/queue/11-S12-S0-r05.json",
-        "sha256": "ad3011eb2163978236cba84c7e971133fedc8ae16f0347405fdd51930d13ed66",
-        "batch": "5.2.1 造型响应（字典 v1.2）"
-      },
-      "change": "只改节点 12 的保存前缀：S12-S0-r05 → ENV-S12-S0-r05",
-      "compare": {
-        "original": {
-          "path": "experiments/gpu-day-20261115/recovered-originals-102/03-S12-extension/S12-S0-r05.png",
-          "sha256": "faa2f83ffa2f2445bc561516da6ed67cb3f72fc55e35185f8d8be95dc87974bc",
-          "seed": 2026112005,
-          "embedded_prompt_matches_request": true
-        },
-        "neighbour": {
-          "path": "experiments/gpu-day-20261115/recovered-originals-102/03-S12-extension/S12-S0-r06.png",
-          "sha256": "45ea3d957005120bb51af10d72dfbacc7f714cbecbb139166c2a8cedd672a020",
-          "seed": 2026112006,
-          "embedded_prompt_matches_request": true
-        },
-        "rule_ratio": 0.25
-      }
+      "id": "ENV-A-r1",
+      "seed": 2026112691,
+      "state": "F6-S0",
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "895ade1177911e702b3dacae222b40c6cb18d307c3f4319d7dbf19c969f9a313"
     },
     {
-      "order": 1,
-      "id": "ENV-COMBO-pod-inside-single-r1",
-      "seed": 2026112221,
-      "request_sha256": "779a91ee49f27e582afa5021f29f90aa6763c1ef9bdaf1f368a82be7ad336b5a",
-      "source": {
-        "path": "experiments/gpu-day-20261115/queue/10-COMBO-pod-inside-single-r1.json",
-        "sha256": "c1676f9bd6017fc35a031846ccf42085c957fd1488a8fa0cf255ca216965991c",
-        "batch": "三参数组合（v1.6）"
-      },
-      "change": "只改节点 12 的保存前缀：COMBO-pod-inside-single-r1 → ENV-COMBO-pod-inside-single-r1",
+      "order": 2,
+      "id": "ENV-N",
+      "seed": 2026112692,
+      "state": "F6-S0",
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "a29ee380990fb5e548206c4395a6c11cab70c670f38ab838572f77afa0763644"
+    },
+    {
+      "order": 3,
+      "id": "ENV-A-r2",
+      "seed": 2026112691,
+      "state": "F6-S0",
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "3c3cbc80192dd44cebe625d35882a3f9dcb9e4b05e0a1940e8bb0745c42f2a2c",
       "compare": {
-        "original": {
-          "path": "experiments/gpu-day-20261115/recovered-originals-102/02-COMBO/COMBO-pod-inside-single-r1.png",
-          "sha256": "4511252a4d0b4f0500d701dff0958850508b35965a430d7c8a34da2ccdf1f15e",
-          "seed": 2026112221,
-          "embedded_prompt_matches_request": true
-        },
-        "neighbour": {
-          "path": "experiments/gpu-day-20261115/recovered-originals-102/02-COMBO/COMBO-pod-inside-single-r2.png",
-          "sha256": "46055dcc2aa731312cab3968061aff8c4ab56d9ac46a818b228884559418d41c",
-          "seed": 2026112222,
-          "embedded_prompt_matches_request": true
-        },
+        "repeat_of": "ENV-A-r1",
+        "contrast": "ENV-N",
         "rule_ratio": 0.25
       }
     }
   ],
   "inputs": [
     {
-      "input": "qwen-shape-dots-250-15c5ad1c924b.png",
-      "sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338"
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
     }
   ]
 }

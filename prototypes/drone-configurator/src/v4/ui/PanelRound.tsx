@@ -8,7 +8,7 @@ import { candidateRetained, recordDecision } from '../../design/candidateRecords
 import { abandonRound, generationStatus, isGenerationPending, retryCollection } from '../../design/generation';
 import { computeLayout } from '../../design/design';
 import { diffParameters } from '../../design/fields';
-import { useImageBackend } from '../../design/imageBackend';
+import { parentRefusal, usableAsParent, useImageBackend } from '../../design/imageBackend';
 import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { GuideView } from '../../components/Studio/Stage';
 import { laneIntent, laneParameters, layerInfo, layers, sharedBy, laneNode, newId, spaced, staleFields, type Layer, type Project } from '../model';
@@ -121,9 +121,13 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
   const current = lane ? laneParameters(project, laneId) : null;
   const drift = current ? staleFields(frozen, current) : [];
   const isFinal = final?.kind === 'final' && final.attemptId === attemptId && final.candidateId === candidateId;
+  // 4.5.2：旧版本留下的非 Qwen 记录照原样显示，但不能作父图、不能定为终稿。
+  const usable = usableAsParent(attempt);
+  const refusal = parentRefusal(attempt);
   // 每一次取舍都可以写一句为什么；没写时记一句默认的话，并在记录里看得出是默认的。
   // 终稿只有一个当前值：新定的替换旧的；把当前终稿点了“不要”，终稿随之撤下（不退回更早的那张）。
   const decide = async (kind: 'accept' | 'reject' | 'final') => {
+    if (kind === 'final' && !usable) { setError(refusal); return; }
     const why = reason.trim();
     const text = kind === 'final' ? '定为终稿' + (why ? '：' + why : '。') : kind === 'accept' ? (why || '设计者保留这张候选（没写理由）。') : (why || '设计者不要这张候选（没写理由）。');
     try {
@@ -134,6 +138,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
     } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
   };
   async function ask() {
+    if (!usable) { setError(refusal); return; }
     if (!message.trim() || !lane) return;
     setBusy(true); setError('');
     const sentAt = new Date().toISOString();
@@ -146,6 +151,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
     finally { setBusy(false); }
   }
   async function applyRevision() {
+    if (!usable) { setError(refusal); return; }
     if (!revision || !lane) return;
     setBusy(true); setError('');
     try {
@@ -183,7 +189,7 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
     <div className="row4">
       <button type="button" className={'b4' + (retained ? '' : ' pri')} data-testid="keep" disabled={retained || !candidate.firstShown} onClick={() => void decide('accept')}><Check size={14} />{retained ? '已保留' : '保留'}</button>
       <button type="button" className="b4" data-testid="reject" disabled={!candidate.firstShown} onClick={() => void decide('reject')}><X size={14} />不要</button>
-      <button type="button" className={'b4' + (isFinal ? ' pri' : '')} data-testid="final" disabled={!candidate.firstShown || isFinal} title="这张作为这次的终稿（锁稿），替换之前定的终稿，写进记录" onClick={() => void decide('final')}><Flag size={14} />{isFinal ? '这张是终稿' : '定为终稿'}</button>
+      <button type="button" className={'b4' + (isFinal ? ' pri' : '')} data-testid="final" disabled={!candidate.firstShown || isFinal || !usable} title="这张作为这次的终稿（锁稿），替换之前定的终稿，写进记录" onClick={() => void decide('final')}><Flag size={14} />{isFinal ? '这张是终稿' : '定为终稿'}</button>
       <button type="button" className="b4" aria-pressed={comparing.includes(key)} onClick={() => st.toggleCompare(key)}><ArrowLeftRight size={14} />{comparing.includes(key) ? '已加入比较' : '加入比较'}</button>
       {comparing.length >= 2 && <button type="button" className="b4 ai" data-testid="open-compare" onClick={() => {
         const id = newId('cmp');
@@ -192,12 +198,13 @@ export function PanelCandidate({ attemptId, candidateId, attempts, urls }: Props
       }}>比较已选的 {comparing.length} 张</button>}
     </div>
     {error && <p className="r4-note" role="alert">{error}</p>}
+    {!usable && <p className="r4-note" data-testid="old-record">{refusal}</p>}
 
     <section className="r4-sec" aria-label="在这张图上改">
       <h3>在这张图上改</h3>
       <div className="row4" style={{ flexWrap: 'nowrap' }}>
-        <input className="in4" data-testid="revise-text" value={message} placeholder="例如：机身短一点，其他别动" onChange={e => setMessage(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') void ask(); }} />
-        <button type="button" className="b4" disabled={busy || !message.trim()} data-testid="revise-ask" onClick={() => void ask()}>{busy ? <LoaderCircle size={14} className="animate-spin" /> : <CornerDownLeft size={14} />}</button>
+        <input className="in4" data-testid="revise-text" value={message} disabled={!usable} placeholder={usable ? '例如：机身短一点，其他别动' : '旧记录不能作父图'} onChange={e => setMessage(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') void ask(); }} />
+        <button type="button" className="b4" disabled={busy || !message.trim() || !usable} data-testid="revise-ask" onClick={() => void ask()}>{busy ? <LoaderCircle size={14} className="animate-spin" /> : <CornerDownLeft size={14} />}</button>
       </div>
       {revision && <article className="sg4" data-testid="revision">
         <div className="sg4-top"><TierBadge tier={revision.tier} /><span className="grow" />{revision.mode === 'fixture' && <span className="p4 gray">规则回退</span>}</div>

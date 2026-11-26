@@ -1,0 +1,76 @@
+{
+  "batch": "H3 电机下方喷头确认",
+  "requests": [
+    {
+      "order": 1,
+      "id": "E6B-N-confirm-r1",
+      "seed": 2026112601,
+      "input_images": [
+        "hexa-points-1.00.png"
+      ],
+      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
+      "request_sha256": "d18b0ddfc51384a0157e9ef6d2ce33ce0923934aa1d3aa79787b1f96f52880bc",
+      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
+      "change": "只换种子和保存前缀"
+    },
+    {
+      "order": 1,
+      "id": "E6B-N-confirm-r2",
+      "seed": 2026112602,
+      "input_images": [
+        "hexa-points-1.00.png"
+      ],
+      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
+      "request_sha256": "1432e0010f6d9704948f48b1ee8d73a339227a35c1f50f86ff4f4475de2aa75c",
+      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
+      "change": "只换种子和保存前缀"
+    },
+    {
+      "order": 1,
+      "id": "E6B-N-confirm-r3",
+      "seed": 2026112603,
+      "input_images": [
+        "hexa-points-1.00.png"
+      ],
+      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
+      "request_sha256": "6ca0586be69c18c11e20e932e208f2d8926c0dd137c07fdb49319d1f83a1c361",
+      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
+      "change": "只换种子和保存前缀"
+    },
+    {
+      "order": 1,
+      "id": "E6B-N-confirm-r4",
+      "seed": 2026112604,
+      "input_images": [
+        "hexa-points-1.00.png"
+      ],
+      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
+      "request_sha256": "3111d919f0c5604400fb00f7e344cb37da0d0a959e3fa9fee5ae3e44cc96a2fd",
+      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
+      "change": "只换种子和保存前缀"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "hexa-points-1.00.png",
+      "sha256": "d0768f8dac4f240316761309551a931b022390c89d06b956bda9f7b028829f5d"
+    }
+  ],
+  "dev": [
+    {
+      "id": "E6B-N-dev-r1",
+      "seed": 2026112301,
+      "request_sha256": "9cc6e08d23375e7e5c82b90662b64e6aed6e80586dc44765729d5a5d4ba67ee1"
+    },
+    {
+      "id": "E6B-N-dev-r2",
+      "seed": 2026112302,
+      "request_sha256": "e783120565e1ebccf1cbcdad1f81e2d87e7f3a1a93c046cb4df266fb1ab1ced0"
+    },
+    {
+      "id": "E6B-N-dev-r3",
+      "seed": 2026112303,
+      "request_sha256": "ebc42c29fbb730cd020870df8ce7dc6deb65e27c51cd9762997b0703e48bfd85"
+    }
+  ]
+}

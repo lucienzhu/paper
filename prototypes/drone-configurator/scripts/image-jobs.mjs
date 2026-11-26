@@ -1,14 +1,17 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { link, mkdir, readFile, rename, stat, unlink, writeFile } from 'node:fs/promises';
+import { link, mkdir, readdir, readFile, rename, stat, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { homedir } from 'node:os';
 import { ChatError } from './design-chat.mjs';
 
 export const qwenModel = 'Qwen-Image-2.1';
 // 与第 4 章 E3 设计通路已归档的请求是同一套工作流和设置（experiments/e3-quad-qwen/requests/*.request.json）。
+// 4.5.2：负向词全研究统一（作者 2026-11-26 把细节交给 Claude 定）。工作台原有的 10 个词，加 5 个桨叶词；不加相机位置词（那是设计选择）。
+// 各批 GPU 请求用的也是这一份：experiments/workbench-graph 按本函数生成并逐份核对。
 export const comfyDefaults = { unet:'qwen_image_2.1_bf16.safetensors', clip:'qwen3vl_8b_bf16.safetensors', vae:'qwen_image_2.1_vae_bf16.safetensors',
   steps:40, cfg:3, sampler_name:'euler', scheduler:'simple',
-  negative_prompt:'flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera' };
+  negative_prompt:'flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, '
+    +'V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades' };
 // 不带图的自由提示与 E1 纯文字组已归档的请求同构（evidence/e1-open-20261112/E1-actual/E1-text-*/request.json）：编码器只接文字，不接 VAE。
 export function comfyGraph(id, prompt, seed, imageNames, s=comfyDefaults) {
   const encoder={clip:['2',0],...(imageNames.length ? {vae:['3',0]} : {}),prompt,negative_prompt:s.negative_prompt,resolution:1024};
@@ -75,7 +78,7 @@ export function createImageJobs({fetchImpl=globalThis.fetch,backend={provider:'q
   if (backend?.provider!=='qwen-comfy') throw new Error('出图后端只能是本机 ComfyUI 上的 Qwen-Image 2.1。');
   const comfy={...comfyDefaults,...Object.fromEntries(Object.entries(backend).filter(([,v])=>v!==undefined && v!==''))};
   const ident={provider:'qwen-comfy',model:qwenModel};
-  const baseRecord=id=>({attemptId:id,jobId:id,...ident});
+  const baseRecord=id=>({attemptId:id,jobId:id,...ident,...(fixture ? {fixture:true} : {})});
   // 软件夹具冒充后端接口时，标签直说不出真图，免得把走查截图当成真实回图。
   const realLabel='Qwen-Image 2.1（本机 ComfyUI）';
   const describe=()=>({...ident,endpoint:'/prompt',label:fixture ? '软件夹具（接口同 '+realLabel.replace(/（.*?）/,'')+'，不出真图）' : realLabel,
@@ -297,8 +300,27 @@ export function createImageJobs({fetchImpl=globalThis.fetch,backend={provider:'q
     }
     await save(record);
   }
+  // 4.5.2：父图的来源在服务端核对。父图只能是这台服务自己从 Qwen 取回、并记为成功的原图（按内容摘要在本机作业记录里找）。
+  // 浏览器里的轮次记录可能是旧版本留下的（4.5 以前开发用的托管后端），也可能被改过，页面上的标签不作数。
+  // 软件夹具出的图只在夹具服务里能当父图，真实服务不认。
+  const known=new Set();
+  async function fromQwen(sha256) {
+    if(known.has(sha256)) return true;
+    let names;
+    try { names=await readdir(directory); } catch(e){ if(e.code==='ENOENT') return false; throw e; }
+    for(const name of names){
+      if(!name.endsWith('.json') || !uuid.test(name.slice(0,-5))) continue;
+      let record; try { record=JSON.parse(await readFile(path.join(directory,name),'utf8')); } catch { continue; }
+      if(record?.provider!=='qwen-comfy' || record.status!=='succeeded' || !!record.fixture!==!!fixture) continue;
+      for(const out of record.outputs ?? []) if(/^[a-f\d]{64}$/.test(out?.sha256 ?? '')) known.add(out.sha256);
+      if(known.has(sha256)) return true;
+    }
+    return false;
+  }
   async function submit(raw) {
     const {attemptId,prompt,references,free}=validate(raw);
+    for(const ref of references) if(ref.role==='parent' && !(await fromQwen(ref.sha256)))
+      fail(422,'父图不是这台工作台从 Qwen 取回的原图，这一轮没有发出。父图只能选本机 Qwen 出图成功的候选。');
     const hashes=references.map(x=>x.sha256);
     const images=references.map(({role,sha256})=>({role,sha256}));
     // 两种方式的模型、画幅、步数、引导强度、采样器、负向词和种子规则完全相同；差别只在发什么文字、带不带布局条件图。

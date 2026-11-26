@@ -1,0 +1,29 @@
+old_path	new_path	reason
+experiments/20261126-h5-octo-x8/inputs/octo-points-1.00.png	archive/experiments/20261126-h5-octo-x8/inputs/octo-points-1.00.png	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/inputs/qwen-shape-dots-250-15c5ad1c924b.png	archive/experiments/20261126-h5-octo-x8/inputs/qwen-shape-dots-250-15c5ad1c924b.png	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/manifest.json	archive/experiments/20261126-h5-octo-x8/manifest.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-O8-r1.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-O8-r1.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-O8-r2.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-O8-r2.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-O8-r3.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-O8-r3.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-O8-r4.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-O8-r4.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-Q-r1.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-Q-r1.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-Q-r2.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-Q-r2.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-Q-r3.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-Q-r3.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-Q-r4.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-Q-r4.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-X8-r1.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-X8-r1.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-X8-r2.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-X8-r2.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-X8-r3.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-X8-r3.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-h5-octo-x8/requests/01-H5-X8-r4.json	archive/experiments/20261126-h5-octo-x8/requests/01-H5-X8-r4.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-nozzle-confirm/build.py	archive/experiments/20261126-nozzle-confirm/build.py	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-nozzle-confirm/manifest.json	archive/experiments/20261126-nozzle-confirm/manifest.json	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r1.json	archive/experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r1.json	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r2.json	archive/experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r2.json	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r3.json	archive/experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r3.json	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r4.json	archive/experiments/20261126-nozzle-confirm/requests/01-E6B-N-confirm-r4.json	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/gpu-remote/batches/00-env-check.json	archive/experiments/gpu-remote/batches/00-env-check.json	环境核对的旧登记：拿 11 月 15 日的两份旧请求重跑、与旧原图比。旧数据移出后改为同一请求出两次（2026-11-26 晚重新登记），旧版另存
+experiments/gpu-remote/batches/02-nozzle-confirm.json	archive/experiments/gpu-remote/batches/02-nozzle-confirm.json	电机下方喷头确认的旧编法：照旧 GPU 日开发批 E6B-N 的请求。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/gpu-remote/batches/03-h5-stage1.json	archive/experiments/gpu-remote/batches/03-h5-stage1.json	H5 第一段的旧编法：照旧 GPU 日模板和另画的点线图。2026-11-26 晚改为从工作台 4.5.2 取出，旧版另存
+experiments/gpu-remote/env-check/build.py	archive/experiments/gpu-remote/env-check/build.py	环境核对的旧登记：拿 11 月 15 日的两份旧请求重跑、与旧原图比。旧数据移出后改为同一请求出两次（2026-11-26 晚重新登记），旧版另存
+experiments/gpu-remote/env-check/manifest.json	archive/experiments/gpu-remote/env-check/manifest.json	环境核对的旧登记：拿 11 月 15 日的两份旧请求重跑、与旧原图比。旧数据移出后改为同一请求出两次（2026-11-26 晚重新登记），旧版另存
+experiments/gpu-remote/env-check/requests/01-ENV-COMBO-pod-inside-single-r1.json	archive/experiments/gpu-remote/env-check/requests/01-ENV-COMBO-pod-inside-single-r1.json	环境核对的旧登记：拿 11 月 15 日的两份旧请求重跑、与旧原图比。旧数据移出后改为同一请求出两次（2026-11-26 晚重新登记），旧版另存
+experiments/gpu-remote/env-check/requests/01-ENV-S12-S0-r05.json	archive/experiments/gpu-remote/env-check/requests/01-ENV-S12-S0-r05.json	环境核对的旧登记：拿 11 月 15 日的两份旧请求重跑、与旧原图比。旧数据移出后改为同一请求出两次（2026-11-26 晚重新登记），旧版另存

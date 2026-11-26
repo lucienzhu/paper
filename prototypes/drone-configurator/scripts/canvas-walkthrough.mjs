@@ -1,5 +1,5 @@
 // 设计画布走查：在隔离的浏览器数据里，从空白项目把每一步都放到画布上做完。
-// 目标（卡片上直接写）→ 依据卡上画布 → 造型（卡片里拖轴心）→ 生成 → 保留 → 以候选继续 → 参考图作输入 → 便签 → 新方向 → 研究记录 → B2 案例 → 手机宽度。
+// 目标（卡片上直接写）→ 依据卡上画布 → 造型（卡片里拖轴心）→ 生成 → 保留 → 以候选继续 → 参考图不能作输入（4.5.2）→ 便签 → 新方向 → 研究记录 → B2 案例 → 手机宽度。
 // 图像作业由软件夹具应答，证据检索用公开卡，不调用任何模型。运行前先执行 npm run build。
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -149,10 +149,10 @@ try {
   await waiting.waitFor();
   assert.equal(await page.getByTestId('generation-parent').inputValue(), referenceId);
   await page.getByTestId('generate-current').click();
-  await page.waitForFunction(() => document.querySelectorAll('[data-workflow-node^="candidate-"]').length === 3);
-  assert.equal(sent[2].images, 2);
-  assert.match(sent[2].prompt, /Image 2 is an appearance reference chosen by the designer/);
-  await page.waitForFunction(id => !!document.querySelector(`.react-flow__edge[data-id^='["${id}","run-']`), referenceId);
+  // 4.5.2：导入的参考图可以留在画布上对照，但不再进生成请求（进请求的图只能是这台工作台上 Qwen 出图成功的候选）。
+  await page.getByText(/导入的参考图不是这台工作台上 Qwen 出的图/).first().waitFor();
+  assert.equal(await page.locator('[data-workflow-node^="candidate-"]').count(), 2, '没有多出一张候选');
+  assert.equal(sent.length, 2, '带参考图的这一轮没有发给出图服务');
 
   // 7. 便签随手写在画布上，刷新后仍在。
   await page.locator('[data-dock=note]').click();
@@ -163,7 +163,7 @@ try {
   await page.reload();
   await page.getByLabel('便签内容').waitFor();
   assert.equal(await page.getByLabel('便签内容').inputValue(), '机鼻再收一点，和上一轮对照');
-  assert.equal(await page.locator('[data-workflow-node^="candidate-"]').count(), 3);
+  assert.equal(await page.locator('[data-workflow-node^="candidate-"]').count(), 2);
   // 选中便签按 Delete 移除；在便签里打字时的退格不会删掉卡片。
   await page.getByLabel('便签内容').press('Backspace');
   assert.equal(await cards('sticky').count(), 1);
@@ -195,13 +195,14 @@ try {
   // 9. 研究留档默认收起，需要时在同一块画布上展开；完整记录里能核对实发输入。
   assert.equal(await page.locator('.cv-card.is-research').count(), 0);
   await page.getByTestId('research-layer').click();
-  await page.waitForFunction(() => document.querySelectorAll('.cv-card.is-research').length === 6);
+  await page.waitForFunction(() => document.querySelectorAll('.cv-card.is-research').length === 4);
   await page.getByTestId('research-layer').click();
   await page.getByTestId('open-research').click();
   await page.locator('[data-handoff-tab=candidates]').click();
   const [download] = await Promise.all([page.waitForEvent('download'), page.locator('[data-export-attempt]').click()]);
   const record = JSON.parse(await readFile(await download.path(), 'utf8'));
-  assert.equal(record.parentId, referenceId);
+  // 导出的是最近一轮：以上一张候选为父图的那一轮（带参考图的那一轮没有发出，也没有留下轮次记录）。
+  assert.match(record.parentId, /^[a-f\d-]{36}\/1$/);
   // Qwen（ComfyUI）通路的追踪号就是入队时的 prompt_id，工作台把它定为本轮编号。
   assert.equal(record.h3.model, 'Qwen-Image-2.1');
   assert.equal(record.h3.traceId, record.id);
@@ -220,7 +221,7 @@ try {
 
   assert.deepEqual(errors, []);
   console.log(JSON.stringify({ canvasOnly: true, goalOnCard: true, evidencePinned: 'E009', hubDrag: [before, dragged], softwareRounds: sent.length,
-    parentCandidate: true, referenceAsInput: true, stickyPersisted: true, deleteKey: true, evidenceUnpinned: true, goalKeptOnFrameChange: true, directions: 2, researchNodes: 6, mobileWidth: 390,
+    parentCandidate: true, referenceAsInput: false, referenceRefused: true, stickyPersisted: true, deleteKey: true, evidenceUnpinned: true, goalKeptOnFrameChange: true, directions: 2, researchNodes: 4, mobileWidth: 390,
     realModelCalls: 0, errors }));
 } finally {
   await browser.close();

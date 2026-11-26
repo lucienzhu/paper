@@ -1,0 +1,305 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "F6 造型档位 48 张（工作台流程，S0—S5 每档 8 张）",
+  "registration": "experiments/20261126-f6-shape-levels/README.md",
+  "registered_manifest": "experiments/20261126-f6-shape-levels/manifest.json",
+  "registered_manifest_sha256": "141f86c2ad71bcf25be5f8909f01d7d3b5773861338c43b5b98bafae317a1654",
+  "requests_dir": "experiments/20261126-f6-shape-levels/requests",
+  "files_dirs": [
+    "experiments/20261126-f6-shape-levels/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-F6-S0-r01.json",
+      "id": "F6-S0-r01",
+      "seed": 2026112001,
+      "sha256": "d3471ac40fc6eb5dabdf712e91af368e9079258dafa34bff8dbc010f85da7e4f"
+    },
+    {
+      "file": "01-F6-S0-r02.json",
+      "id": "F6-S0-r02",
+      "seed": 2026112002,
+      "sha256": "61ed3a7458e6656fabde2e1622917e8449688d595c789efabd5c76abdbd837c6"
+    },
+    {
+      "file": "01-F6-S0-r03.json",
+      "id": "F6-S0-r03",
+      "seed": 2026112003,
+      "sha256": "4d43ee48f48ac1c88b226da3410803eabdef27b4dc57623646ee7d1c4e403826"
+    },
+    {
+      "file": "01-F6-S0-r04.json",
+      "id": "F6-S0-r04",
+      "seed": 2026112004,
+      "sha256": "38306a53fcbbfed0396fd13cc818ef84c23f82e9be15667fb5ddecdabb2abef4"
+    },
+    {
+      "file": "01-F6-S0-r05.json",
+      "id": "F6-S0-r05",
+      "seed": 2026112005,
+      "sha256": "ed7b61a6e52a3b0bd1dce431e904c9573351f023479995022bed947b194f6bbe"
+    },
+    {
+      "file": "01-F6-S0-r06.json",
+      "id": "F6-S0-r06",
+      "seed": 2026112006,
+      "sha256": "090359069317f1571ef4df9d2519fe92556063f23b8834d480a1843406f781f0"
+    },
+    {
+      "file": "01-F6-S0-r07.json",
+      "id": "F6-S0-r07",
+      "seed": 2026112007,
+      "sha256": "e0101140bfc7abe5728f613ded3a75fb5fadbe5076cffb7268c3a509ba0d1268"
+    },
+    {
+      "file": "01-F6-S0-r08.json",
+      "id": "F6-S0-r08",
+      "seed": 2026112008,
+      "sha256": "57174a69900513b5241b428ff805e1200aad2b24cab022808468b838212dca75"
+    },
+    {
+      "file": "01-F6-S1-r01.json",
+      "id": "F6-S1-r01",
+      "seed": 2026112013,
+      "sha256": "023318cd9a04ff7be6b67c372e69a3529b33d6b8b461c029b8d942d76a7d93dd"
+    },
+    {
+      "file": "01-F6-S1-r02.json",
+      "id": "F6-S1-r02",
+      "seed": 2026112014,
+      "sha256": "85c909c9f531d3f7486b41342967d14443fc04fbc8080042c681f87e9336d9ff"
+    },
+    {
+      "file": "01-F6-S1-r03.json",
+      "id": "F6-S1-r03",
+      "seed": 2026112015,
+      "sha256": "87dc0bed9af186d35a7bcf5ec390e748a5bf57d52888893eede9034a48d81589"
+    },
+    {
+      "file": "01-F6-S1-r04.json",
+      "id": "F6-S1-r04",
+      "seed": 2026112016,
+      "sha256": "a05e8d0affa65d59b474e3ace106c99fccdb20a2b47b3ca1123509c462acdef0"
+    },
+    {
+      "file": "01-F6-S1-r05.json",
+      "id": "F6-S1-r05",
+      "seed": 2026112017,
+      "sha256": "be05de39dc523b82283f5501a275f284c50ae8abc37a8881508536e756733d73"
+    },
+    {
+      "file": "01-F6-S1-r06.json",
+      "id": "F6-S1-r06",
+      "seed": 2026112018,
+      "sha256": "c03bb7512b8d684754cd5a152009a851b30232911058b8758361529f1649b850"
+    },
+    {
+      "file": "01-F6-S1-r07.json",
+      "id": "F6-S1-r07",
+      "seed": 2026112019,
+      "sha256": "fe45d6752695565ea962c37f887d52f7c5e8d372a171334241d8dc98c874d2b7"
+    },
+    {
+      "file": "01-F6-S1-r08.json",
+      "id": "F6-S1-r08",
+      "seed": 2026112020,
+      "sha256": "2e995e125c16e7c4ce727001e518dfb9485f70e5486c021f74447c604f1411b3"
+    },
+    {
+      "file": "01-F6-S2-r01.json",
+      "id": "F6-S2-r01",
+      "seed": 2026112025,
+      "sha256": "45d351a97ca04041e741fd588e6f0aaede21c73ed14a007aaf292a21f0f2aad7"
+    },
+    {
+      "file": "01-F6-S2-r02.json",
+      "id": "F6-S2-r02",
+      "seed": 2026112026,
+      "sha256": "6b76b5d5267575619cf5eb0a4386543a7bc3693840ab8e40ad1d0635953ea5a8"
+    },
+    {
+      "file": "01-F6-S2-r03.json",
+      "id": "F6-S2-r03",
+      "seed": 2026112027,
+      "sha256": "6f542dc2d142625f2f4a1f3aab639f7ce239dbd2c4e9bae490ef6b724c50df81"
+    },
+    {
+      "file": "01-F6-S2-r04.json",
+      "id": "F6-S2-r04",
+      "seed": 2026112028,
+      "sha256": "b5c94f50a851f7bddfc4768a4520b7c6d1b6b55a7b4a0ae8abb324d95cd2ab1d"
+    },
+    {
+      "file": "01-F6-S2-r05.json",
+      "id": "F6-S2-r05",
+      "seed": 2026112029,
+      "sha256": "8539ca2503ad06f4935b07ccdcdb24ae4182edef259d39d672ae798351ef92f0"
+    },
+    {
+      "file": "01-F6-S2-r06.json",
+      "id": "F6-S2-r06",
+      "seed": 2026112030,
+      "sha256": "31c3f000eceef825335e562a8ddb3d40f784662384f53b8b4dc1715dfb6577eb"
+    },
+    {
+      "file": "01-F6-S2-r07.json",
+      "id": "F6-S2-r07",
+      "seed": 2026112031,
+      "sha256": "1fde72d4a7f8c0e971959cc2ba7d27729f5a7ad1374a7c734db40b1a5cd3e2b7"
+    },
+    {
+      "file": "01-F6-S2-r08.json",
+      "id": "F6-S2-r08",
+      "seed": 2026112032,
+      "sha256": "3c7954bcdbd2b7dadb27838bb281ad70b05441b0061f0703f20bcf8849937df3"
+    },
+    {
+      "file": "01-F6-S3-r01.json",
+      "id": "F6-S3-r01",
+      "seed": 2026112037,
+      "sha256": "c4e053c358beaeed2a6cd404de759ad20dd87f7da669b41950121fec9cc3b872"
+    },
+    {
+      "file": "01-F6-S3-r02.json",
+      "id": "F6-S3-r02",
+      "seed": 2026112038,
+      "sha256": "ff2ff7dc393c723fa96699a90581e7f03708fce38d8c7cb7bff317d1d4003dc0"
+    },
+    {
+      "file": "01-F6-S3-r03.json",
+      "id": "F6-S3-r03",
+      "seed": 2026112039,
+      "sha256": "4592caeb2f628bd3993a3cd51b1a00a05888f8a9223ed8d1bbf281b3cb915621"
+    },
+    {
+      "file": "01-F6-S3-r04.json",
+      "id": "F6-S3-r04",
+      "seed": 2026112040,
+      "sha256": "1c45dd058fbcbcfe9918651435a0886264f776d4e4b0f862882e64a39477f1d6"
+    },
+    {
+      "file": "01-F6-S3-r05.json",
+      "id": "F6-S3-r05",
+      "seed": 2026112041,
+      "sha256": "11617ed50bbb16a03553a52f9183bff619df787fb27e004b96b721015af1deb0"
+    },
+    {
+      "file": "01-F6-S3-r06.json",
+      "id": "F6-S3-r06",
+      "seed": 2026112042,
+      "sha256": "ba1a7a1beed0dcea9737a6b2fc91310309bc7545218c00bd0a9dc66c4b6128b5"
+    },
+    {
+      "file": "01-F6-S3-r07.json",
+      "id": "F6-S3-r07",
+      "seed": 2026112043,
+      "sha256": "f1173b2ed6c7f7367932f4e11a670ca51526b2af962b17fc8b7255dd3ecf4d34"
+    },
+    {
+      "file": "01-F6-S3-r08.json",
+      "id": "F6-S3-r08",
+      "seed": 2026112044,
+      "sha256": "54d2b341bd21db3aa033a7a0f53ec81ef33359efbb102af4dcd5a3d9e377c9fc"
+    },
+    {
+      "file": "01-F6-S4-r01.json",
+      "id": "F6-S4-r01",
+      "seed": 2026112049,
+      "sha256": "a2ededc23411eeb4a76122497c8eb59ac3c185d2475ce95c8e825c95a5479f62"
+    },
+    {
+      "file": "01-F6-S4-r02.json",
+      "id": "F6-S4-r02",
+      "seed": 2026112050,
+      "sha256": "eb018c32e1a30d432671bf1842d501bb1015853a8ab5f110fb701e7a4f7e553c"
+    },
+    {
+      "file": "01-F6-S4-r03.json",
+      "id": "F6-S4-r03",
+      "seed": 2026112051,
+      "sha256": "c1414814d48d2f807259a5d6f82c6d53d184de3e99fed888512493c361556124"
+    },
+    {
+      "file": "01-F6-S4-r04.json",
+      "id": "F6-S4-r04",
+      "seed": 2026112052,
+      "sha256": "d7f106f752f28c8897116d6db44f78d9bab22bd8651d043c74716b3707572c85"
+    },
+    {
+      "file": "01-F6-S4-r05.json",
+      "id": "F6-S4-r05",
+      "seed": 2026112053,
+      "sha256": "f282afd20d2a85b28b6cfcd636fb4bf915d447af6180dcbd94723439cd2885cd"
+    },
+    {
+      "file": "01-F6-S4-r06.json",
+      "id": "F6-S4-r06",
+      "seed": 2026112054,
+      "sha256": "f128b121ededdce01bd4b50519e5f711c84c76eb2d51c311291addfa8d521bb1"
+    },
+    {
+      "file": "01-F6-S4-r07.json",
+      "id": "F6-S4-r07",
+      "seed": 2026112055,
+      "sha256": "1f8423240b8fbadeb54ed99f698e226476b7694cfe54d5f13afeabcbfa9eafb7"
+    },
+    {
+      "file": "01-F6-S4-r08.json",
+      "id": "F6-S4-r08",
+      "seed": 2026112056,
+      "sha256": "0c315f96ce98c0412a73fe829cf8a178c7e5d060c903b015c69fa1d30a1aa82a"
+    },
+    {
+      "file": "01-F6-S5-r01.json",
+      "id": "F6-S5-r01",
+      "seed": 2026112061,
+      "sha256": "87185d7011aee6ca04f589a8ff0a0c89f48e07201a9395c7898b763e441fa7b6"
+    },
+    {
+      "file": "01-F6-S5-r02.json",
+      "id": "F6-S5-r02",
+      "seed": 2026112062,
+      "sha256": "d46d0f8cd837eca05e8189bc9c7fcc6fcb97f028af769da1642743a576bed0c2"
+    },
+    {
+      "file": "01-F6-S5-r03.json",
+      "id": "F6-S5-r03",
+      "seed": 2026112063,
+      "sha256": "77bf761b6e709186b32d82d1e2a637ef4303ba1889bc647cb330202a591a4c64"
+    },
+    {
+      "file": "01-F6-S5-r04.json",
+      "id": "F6-S5-r04",
+      "seed": 2026112064,
+      "sha256": "eaba121b57c19adfd0add59ca31c163fb367daac3378b9600d2aeed948b26165"
+    },
+    {
+      "file": "01-F6-S5-r05.json",
+      "id": "F6-S5-r05",
+      "seed": 2026112065,
+      "sha256": "8c5852aa5e41670570932ec7c191d9fb91251a933376e168fd4dfa14f9b32425"
+    },
+    {
+      "file": "01-F6-S5-r06.json",
+      "id": "F6-S5-r06",
+      "seed": 2026112066,
+      "sha256": "291f7df06785c3ca3de0fcdcd67293d6e9087816d0a63859b9a09f10512f0a57"
+    },
+    {
+      "file": "01-F6-S5-r07.json",
+      "id": "F6-S5-r07",
+      "seed": 2026112067,
+      "sha256": "4f23e2c82ed8eb44151524a6dcaa93e8c0f6e0c03b8266fdc61df11fdc2b1d31"
+    },
+    {
+      "file": "01-F6-S5-r08.json",
+      "id": "F6-S5-r08",
+      "seed": 2026112068,
+      "sha256": "7df91336c92cb2c1dde13c912ee31a59ace740dfc8a9ffd27f64d67827bf28c3"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

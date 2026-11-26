@@ -95,7 +95,7 @@ def make_png(state, prefix, seed):
         src = Path(a.echo_dir) / (prefix[4:] if prefix.startswith("ENV-") else prefix)
         w, h, px = pngread.rgb(src.with_suffix(".png").read_bytes())
         if a.noise:
-            rnd = random.Random(seed)
+            rnd = random.Random(f"{seed}/{prefix}")  # 按请求号取：同种子的两份请求扰动不同
             px = bytes(min(255, max(0, v + rnd.randint(-a.noise, a.noise))) for v in px)
         return pngread.encode_rgb(w, h, px, {"prompt": "fake"})
     rnd = random.Random(seed)

@@ -7,7 +7,7 @@ import { Send, LoaderCircle, Sparkles, Check, ArrowLeftRight, X, CornerUpLeft, F
 import type { FrozenAttempt } from '../../design/candidateRecords';
 import { candidateRetained, recordDecision } from '../../design/candidateRecords';
 import { askAi } from '../aiSession';
-import { useImageBackend } from '../../design/imageBackend';
+import { parentRefusal, usableAsParent, useImageBackend } from '../../design/imageBackend';
 import { generationStatus } from '../../design/generation';
 import WorkflowImage from '../../design/workflow/WorkflowImage';
 import { newId } from '../model';
@@ -42,6 +42,9 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
   const [reason, setReason] = useState('');
   const final = useCurrentFinal();
   async function decide(attemptId: string, candidateId: string, kind: 'accept' | 'reject' | 'final', round: number) {
+    // 4.5.2：旧版本留下的非 Qwen 记录不能定为终稿。
+    const row = rounds.find(a => a.id === attemptId);
+    if (kind === 'final' && row && !usableAsParent(row)) { setError(parentRefusal(row)); return; }
     const why = reason.trim();
     const text = kind === 'final' ? '定为终稿' + (why ? '：' + why : '。') : kind === 'accept' ? (why || '设计者保留这张候选（没写理由）。') : (why || '设计者不要这张候选（没写理由）。');
     try {
@@ -99,15 +102,15 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
           {rounds.flatMap((a, i) => a.candidates.length ? a.candidates.map(c => { const key = candidateKey(a.id, c.id); const kept = candidateRetained(a, c.id);
             return <div key={key} className="n4" style={{ cursor: 'default' }} data-free-candidate={c.id}>
-              <div className="n4-h">第 {i + 1} 轮<span className="grow" />{final?.kind === 'final' && final.attemptId === a.id && final.candidateId === c.id && <span className="p4 ok">终稿</span>}{kept && <span className="p4 ok">保留</span>}{a.parentImage && <span className="p4 gray">有父图</span>}</div>
+              <div className="n4-h">第 {i + 1} 轮<span className="grow" />{final?.kind === 'final' && final.attemptId === a.id && final.candidateId === c.id && <span className="p4 ok">终稿</span>}{kept && <span className="p4 ok">保留</span>}{a.parentImage && <span className="p4 gray">有父图</span>}{!usableAsParent(a) && <span className="p4 gray" data-testid="old-record" title={parentRefusal(a)}>旧记录</span>}</div>
               <WorkflowImage className="cand" node={{ id: c.id, image: urls.get(key), firstShown: c.firstShown, candidateId: c.id, attemptId: a.id }} alt={'第 ' + (i + 1) + ' 轮'} />
               <div className="n4-s n4-clamp">{a.confirmedText}</div>
               <div className="row4">
                 <button type="button" className="b4 sm" disabled={kept || !c.firstShown} onClick={() => void decide(a.id, c.id, 'accept', i + 1)}><Check size={12} />保留</button>
                 <button type="button" className="b4 sm quiet" title="不要" aria-label="不要" disabled={!c.firstShown} onClick={() => void decide(a.id, c.id, 'reject', i + 1)}><X size={12} /></button>
-                <button type="button" className="b4 sm quiet" title="定为终稿" aria-label="定为终稿" data-testid="free-final" disabled={!c.firstShown} onClick={() => void decide(a.id, c.id, 'final', i + 1)}><Flag size={12} /></button>
+                <button type="button" className="b4 sm quiet" title="定为终稿" aria-label="定为终稿" data-testid="free-final" disabled={!c.firstShown || !usableAsParent(a)} onClick={() => void decide(a.id, c.id, 'final', i + 1)}><Flag size={12} /></button>
                 <button type="button" className="b4 sm" aria-pressed={comparing.includes(key)} onClick={() => st.toggleCompare(key)}><ArrowLeftRight size={12} />{comparing.includes(key) ? '已选' : '比较'}</button>
-                <button type="button" className="b4 sm quiet" title="以此为父图" onClick={() => setParent(c.id)}><CornerUpLeft size={12} /></button>
+                <button type="button" className="b4 sm quiet" title="以此为父图" disabled={!usableAsParent(a)} onClick={() => setParent(c.id)}><CornerUpLeft size={12} /></button>
               </div>
             </div>; }) : [<div key={a.id} className="n4" style={{ cursor: 'default' }} data-free-round={a.id}><div className="n4-h">第 {i + 1} 轮</div><div className="n4-t">{generationStatus(a).title}</div>
               <div className="n4-s">{generationStatus(a).detail}</div><div className="n4-s n4-clamp">{a.confirmedText}</div><RoundRecovery a={a} /></div>])}

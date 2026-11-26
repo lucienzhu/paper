@@ -1,0 +1,9 @@
+{
+  "task": "consumer_camera",
+  "note": "H5 第一段顶视。三种构型用同一份航拍简报和同一个基准造型（与 F6 的 S0 相同），只换机架构型；平面八旋另把桨径改为 3.5 英寸（250 mm 对角距下八个电机相邻约 96 mm，5 英寸桨会重叠）。工作台界面只给四旋和植保六旋，八旋和共轴由请求管线直接写入构型，文字仍由工作台同一个编译函数写出。",
+  "states": [
+    { "name": "H5-Q", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "seamless", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "H5-O8", "values": { "frame.frame_type": "Radial Octo", "propulsion.prop_diameter_inch": 3.5, "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "seamless", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "H5-X8", "values": { "frame.frame_type": "Coax X8", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "seamless", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } }
+  ]
+}

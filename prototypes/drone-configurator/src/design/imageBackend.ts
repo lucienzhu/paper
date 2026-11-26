@@ -12,6 +12,16 @@ export const qwenBackend: ImageBackend = { provider: 'qwen-comfy', model: 'Qwen-
 export const backendOf = (model?: string): ImageBackend =>
   model === undefined || model === qwenBackend.model ? qwenBackend : { ...qwenBackend, label: `非 Qwen 的旧记录（${model}），不计入研究数据` };
 export const modelLabel = (model?: string) => backendOf(model).label;
+/**
+ * 4.5.2：一轮的候选能不能再进生成请求（作父图）或定为终稿，只看它是不是这台工作台上 Qwen 出图成功的记录。
+ * 4.5 以前留在浏览器里的旧记录（开发用的托管后端）照原样保留、照实标出，但不能再用。服务端另按内容摘要核对父图。
+ */
+export const usableAsParent = (round: { h3?: { model?: string; status?: string } }) =>
+  round.h3?.model === qwenBackend.model && round.h3.status === 'succeeded';
+export const parentRefusal = (round: { h3?: { model?: string; status?: string } }) =>
+  round.h3?.model && round.h3.model !== qwenBackend.model
+    ? `这张候选是旧记录（${round.h3.model}），不是 Qwen 出的图：不能作父图，也不能定为终稿。请在 Qwen 出图成功的候选里选。`
+    : '这张候选不是这台工作台上 Qwen 出图成功的记录：不能作父图，也不能定为终稿。';
 
 let current: Promise<ImageBackend> | undefined;
 export function imageBackend(): Promise<ImageBackend> {
