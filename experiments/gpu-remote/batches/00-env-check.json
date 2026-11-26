@@ -1,0 +1,29 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "环境核对（每次开机先做）",
+  "registration": "experiments/gpu-remote/env-check/manifest.json",
+  "registered_manifest": "experiments/gpu-remote/env-check/manifest.json",
+  "registered_manifest_sha256": "a6e7430d971bb3dc12a01051e73d43a392b3c4e6acae6d7a85263df877adddca",
+  "requests_dir": "experiments/gpu-remote/env-check/requests",
+  "files_dirs": [
+    "experiments/20261117-local-edit-v2/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-ENV-S12-S0-r05.json",
+      "id": "ENV-S12-S0-r05",
+      "seed": 2026112005,
+      "sha256": "e7b42ca153cf325194d32140906ddb323ff1f584892b253759fbad4f3f8c280d"
+    },
+    {
+      "file": "01-ENV-COMBO-pod-inside-single-r1.json",
+      "id": "ENV-COMBO-pod-inside-single-r1",
+      "seed": 2026112221,
+      "sha256": "779a91ee49f27e582afa5021f29f90aa6763c1ef9bdaf1f368a82be7ad336b5a"
+    }
+  ],
+  "files": {
+    "qwen-shape-dots-250-15c5ad1c924b.png": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338"
+  }
+}

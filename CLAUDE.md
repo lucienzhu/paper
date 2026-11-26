@@ -10,6 +10,6 @@
 
 工作台需要读语义、论文或构型依据时，使用[研究资料库与 JSON 接口](planning/research-library/README.md)。[方法框架](planning/research-library/method.md)给出设计者确认、证据留存和回图验证的先后关系。接手工作台从[双机交接](planning/workbench-handoff/README.md)开始。先做系统与实验，再据真实结果写全文。
 
-分工：Claude 主责全局、章节、文献证据、任务排序与写作；Codex 负责实际技术执行和数据分析。不要另行启动同组生成。作者对设计目标、研究范围、经费与参与者安排作决定。已验证的四旋研究方向不再询问。协作规则见 [AGENTS](AGENTS.md) 和 [CONTRIBUTING](CONTRIBUTING.md)。
+分工：2026-11-25 起全部任务由 Claude 负责，包括技术执行、出图提交和数据分析；Codex 不再参与（作者最新决定第 10 条）。要作者评图或审看的，开 PR 给作者。同一时间只有一个提交方，不并行提交同一组生成。作者对设计目标、研究范围、经费与参与者安排作决定。已验证的四旋研究方向不再询问。协作规则见 [AGENTS](AGENTS.md) 和 [CONTRIBUTING](CONTRIBUTING.md)。
 
 不要从 [archive/](archive/README.md) 取数据写论文。这一页 11 月 23 日以前的全文（11 月 12—14 日的历史分工、工单回执要求、首次接入步骤）存档在 [archive/entry-history/CLAUDE-20261123.md](archive/entry-history/CLAUDE-20261123.md)。

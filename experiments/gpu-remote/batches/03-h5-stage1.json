@@ -1,0 +1,90 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "H5 八旋一轮与共轴 X8：第一段顶视 12 张",
+  "registration": "experiments/20261126-h5-octo-x8/README.md",
+  "registered_manifest": "experiments/20261126-h5-octo-x8/manifest.json",
+  "registered_manifest_sha256": "515a14625734b68ba1df2f39598ff6a1d12be3001190a95cb4d4cd6705683e82",
+  "requests_dir": "experiments/20261126-h5-octo-x8/requests",
+  "files_dirs": [
+    "experiments/20261126-h5-octo-x8/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-H5-Q-r1.json",
+      "id": "H5-Q-r1",
+      "seed": 2026112611,
+      "sha256": "e743edc5b3866e1ea9165b6856ea7a14339c34a3a73b91f30060b2e51a4664e7"
+    },
+    {
+      "file": "01-H5-Q-r2.json",
+      "id": "H5-Q-r2",
+      "seed": 2026112612,
+      "sha256": "d899d9bbcf2b8216caadf74fa43909e829f15121290ca93656a8fe1c966f6ede"
+    },
+    {
+      "file": "01-H5-Q-r3.json",
+      "id": "H5-Q-r3",
+      "seed": 2026112613,
+      "sha256": "fe455e13364e476fdbdf9ca80fd45b72d3d7cca56bbf689f6f035c7ecc81a6ab"
+    },
+    {
+      "file": "01-H5-Q-r4.json",
+      "id": "H5-Q-r4",
+      "seed": 2026112614,
+      "sha256": "e2e4011af4889e1509a5c1c1a0255c80be5cca9534f89bbcb094391d4724f65c"
+    },
+    {
+      "file": "01-H5-O8-r1.json",
+      "id": "H5-O8-r1",
+      "seed": 2026112611,
+      "sha256": "3d63420195017a15a5f7d198bc05e7e012e6fd2df8cbb039b2b9a3bda07bcc95"
+    },
+    {
+      "file": "01-H5-O8-r2.json",
+      "id": "H5-O8-r2",
+      "seed": 2026112612,
+      "sha256": "ebfef2f61d15a778ab8317d4f8d8a39806da7aef154b7562fbc3102b2ef55072"
+    },
+    {
+      "file": "01-H5-O8-r3.json",
+      "id": "H5-O8-r3",
+      "seed": 2026112613,
+      "sha256": "f59517937d0ed7ab22c758b0dff616b610a14b856063b6739da1d0ea9c383fc9"
+    },
+    {
+      "file": "01-H5-O8-r4.json",
+      "id": "H5-O8-r4",
+      "seed": 2026112614,
+      "sha256": "2552ead1468dff671d6c117e16c37e568ed76fe2121a0e8b59e5a2635d30616c"
+    },
+    {
+      "file": "01-H5-X8-r1.json",
+      "id": "H5-X8-r1",
+      "seed": 2026112611,
+      "sha256": "76386b906303857fed0a60ca7573637aded89ed37b0caac25edbf1af30183619"
+    },
+    {
+      "file": "01-H5-X8-r2.json",
+      "id": "H5-X8-r2",
+      "seed": 2026112612,
+      "sha256": "941b942cc0e5da1b718ae453ba12cb765ca035325cb3ed770855d845c284a023"
+    },
+    {
+      "file": "01-H5-X8-r3.json",
+      "id": "H5-X8-r3",
+      "seed": 2026112613,
+      "sha256": "ee8b83af5a62fef11a7951197110774f9b3378cfbaab8b3aac9eb058bc8ffb00"
+    },
+    {
+      "file": "01-H5-X8-r4.json",
+      "id": "H5-X8-r4",
+      "seed": 2026112614,
+      "sha256": "69ddeea713b0bb12fa4afa1130fb36c73241c6b3de27b5e44bdb81bdd8bd31fd"
+    }
+  ],
+  "files": {
+    "octo-points-1.00.png": "d3fba4c9e53a29ae2d9c69e8a0b6c56a4cee1b339e8cb22b1114c60cab9c6a0d",
+    "qwen-shape-dots-250-15c5ad1c924b.png": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338"
+  }
+}

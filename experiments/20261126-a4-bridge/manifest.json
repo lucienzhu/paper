@@ -1,0 +1,1823 @@
+{
+  "batch": "A4 布局桥接开发（第一段）",
+  "base_request": {
+    "path": "experiments/gpu-day-20261115/queue/05-WLQ-1.00-r01.json",
+    "sha256": "6b5ffd40163da4b0f9377dc1e7f1d6837a1d8421839b23112c3ec1c7fd922fa0"
+  },
+  "seeds": [
+    2026112701,
+    2026112702,
+    2026112703
+  ],
+  "tolerance": {
+    "WL": 0.1,
+    "BW": 0.035,
+    "DD": 0.05
+  },
+  "hold": {
+    "wl": 1.35,
+    "dd": 0.5,
+    "body_length_over_D": 0.62
+  },
+  "calibration": {
+    "wlq_blind_ai_median": {
+      "0.70": 1.0321,
+      "1.00": 1.119,
+      "1.30": 1.3213
+    },
+    "wlq_measurable": {
+      "0.70": 11,
+      "1.00": 12,
+      "1.30": 12
+    },
+    "inputs": {
+      "0.70": {
+        "input": 0.6,
+        "how": "外推得 -0.447，低于几何下限，截到 0.6"
+      },
+      "1.15": {
+        "input": 1.046,
+        "how": "内插"
+      },
+      "1.35": {
+        "input": 1.343,
+        "how": "外推"
+      },
+      "1.55": {
+        "input": 1.639,
+        "how": "外推"
+      }
+    }
+  },
+  "guides": {
+    "a4-dots-wl0.600.png": {
+      "kind": "dots",
+      "wl": 0.6,
+      "dd": null,
+      "bw": null,
+      "sha256": "2180917468de177542bc1fb6c718e304734fc982611f6817f4e439a0b75906c5",
+      "hubs": [
+        [
+          664.8,
+          766.66
+        ],
+        [
+          359.2,
+          766.66
+        ],
+        [
+          359.2,
+          257.34
+        ],
+        [
+          664.8,
+          257.34
+        ]
+      ],
+      "span_ratio": 0.6,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl0.700.png": {
+      "kind": "dots",
+      "wl": 0.7,
+      "dd": null,
+      "bw": null,
+      "sha256": "ece2516ef482b8020e68963a699f8e2b7a7592e61ba9e1a5d96991712dbd230e",
+      "hubs": [
+        [
+          682.31,
+          755.3
+        ],
+        [
+          341.69,
+          755.3
+        ],
+        [
+          341.69,
+          268.7
+        ],
+        [
+          682.31,
+          268.7
+        ]
+      ],
+      "span_ratio": 0.7,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl1.046.png": {
+      "kind": "dots",
+      "wl": 1.046,
+      "dd": null,
+      "bw": null,
+      "sha256": "698a2d888c2e121533c139b844389b1b59adb481a563ca572b3b40a91d580be6",
+      "hubs": [
+        [
+          726.67,
+          717.22
+        ],
+        [
+          297.33,
+          717.22
+        ],
+        [
+          297.33,
+          306.78
+        ],
+        [
+          726.67,
+          306.78
+        ]
+      ],
+      "span_ratio": 1.046,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl1.150.png": {
+      "kind": "dots",
+      "wl": 1.15,
+      "dd": null,
+      "bw": null,
+      "sha256": "43ab77ad07c8cfc23bf68d54bb0ef9af09e927f1ea852b025f500755cc2d5b55",
+      "hubs": [
+        [
+          736.11,
+          706.88
+        ],
+        [
+          287.89,
+          706.88
+        ],
+        [
+          287.89,
+          317.12
+        ],
+        [
+          736.11,
+          317.12
+        ]
+      ],
+      "span_ratio": 1.15,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl1.343.png": {
+      "kind": "dots",
+      "wl": 1.3426,
+      "dd": null,
+      "bw": null,
+      "sha256": "ea7c8759c098f0d5ca3095c225681d919511a9e80eb44bfbad5c7804ead9e320",
+      "hubs": [
+        [
+          750.18,
+          689.4
+        ],
+        [
+          273.82,
+          689.4
+        ],
+        [
+          273.82,
+          334.6
+        ],
+        [
+          750.18,
+          334.6
+        ]
+      ],
+      "span_ratio": 1.3426,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl1.350.png": {
+      "kind": "dots",
+      "wl": 1.35,
+      "dd": null,
+      "bw": null,
+      "sha256": "21761c60a95465aaa3ad884a317134751c51f9a21cebe57d38b21a27650f9045",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl1.550.png": {
+      "kind": "dots",
+      "wl": 1.55,
+      "dd": null,
+      "bw": null,
+      "sha256": "7d90a1a527e3be532d2a1a9a871ac56d628117cd0a80e42281ba1260afa3d8a7",
+      "hubs": [
+        [
+          761.56,
+          673.0
+        ],
+        [
+          262.44,
+          673.0
+        ],
+        [
+          262.44,
+          351.0
+        ],
+        [
+          761.56,
+          351.0
+        ]
+      ],
+      "span_ratio": 1.55,
+      "min_disc_gap_px": null
+    },
+    "a4-dots-wl1.639.png": {
+      "kind": "dots",
+      "wl": 1.6392,
+      "dd": null,
+      "bw": null,
+      "sha256": "384864bd17d86ed5fb8aba86fcd463c1411704fe71bb9acf7dec0e59ca0b6c96",
+      "hubs": [
+        [
+          765.53,
+          666.66
+        ],
+        [
+          258.47,
+          666.66
+        ],
+        [
+          258.47,
+          357.34
+        ],
+        [
+          765.53,
+          357.34
+        ]
+      ],
+      "span_ratio": 1.6392,
+      "min_disc_gap_px": null
+    },
+    "a4-parts-wl0.70-dd0.50.png": {
+      "kind": "parts",
+      "wl": 0.7,
+      "dd": 0.5,
+      "bw": null,
+      "sha256": "d4aa1cfdbfb92b2480825dbd0d06fdee49b9b358fcdc4ec4dfffc76eca509b52",
+      "hubs": [
+        [
+          682.31,
+          755.3
+        ],
+        [
+          341.69,
+          755.3
+        ],
+        [
+          341.69,
+          268.7
+        ],
+        [
+          682.31,
+          268.7
+        ]
+      ],
+      "span_ratio": 0.7,
+      "min_disc_gap_px": 43.6
+    },
+    "a4-parts-wl1.15-dd0.50.png": {
+      "kind": "parts",
+      "wl": 1.15,
+      "dd": 0.5,
+      "bw": null,
+      "sha256": "c1ae8948b86f2e150f3292fd87926629a331f70bb3c4440230687c02b0213138",
+      "hubs": [
+        [
+          736.11,
+          706.88
+        ],
+        [
+          287.89,
+          706.88
+        ],
+        [
+          287.89,
+          317.12
+        ],
+        [
+          736.11,
+          317.12
+        ]
+      ],
+      "span_ratio": 1.15,
+      "min_disc_gap_px": 92.8
+    },
+    "a4-parts-wl1.35-dd0.46.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.46,
+      "bw": null,
+      "sha256": "db5e4286b5a50b91ae0cf4d0668a59f25f6b1677fe3fb666138308507c890651",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": 80.3
+    },
+    "a4-parts-wl1.35-dd0.50-bw0.16.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.5,
+      "bw": 0.16,
+      "sha256": "9a4123c9fc7eae1161bd02dc900038fc2ff7f4648f14703c4fd341751e02646f",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": 56.6
+    },
+    "a4-parts-wl1.35-dd0.50-bw0.23.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.5,
+      "bw": 0.23,
+      "sha256": "66f0804297abf31b8e004fe8b2b35dc3709de2d3319cebd38b6d9a871ee1782e",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": 56.6
+    },
+    "a4-parts-wl1.35-dd0.50-bw0.30.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.5,
+      "bw": 0.3,
+      "sha256": "56ad00e5f85e16a7471b4a5d3dbdd11243950fe69f3e999b9874c0bcd62f5b9d",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": 56.6
+    },
+    "a4-parts-wl1.35-dd0.50.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.5,
+      "bw": null,
+      "sha256": "c3833f60be37a6644a24a5c0199a9c37c48b43730ff7f9c68381a65c5770fb16",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": 56.6
+    },
+    "a4-parts-wl1.35-dd0.56.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.56,
+      "bw": null,
+      "sha256": "e06e91fb474b18cfb06efc475c356ed81645438a7b3d037eb138a427c59bb0cd",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": 20.9
+    },
+    "a4-parts-wl1.35-dd0.66.png": {
+      "kind": "parts",
+      "wl": 1.35,
+      "dd": 0.66,
+      "bw": null,
+      "sha256": "914081bc08d01e5147fbfac8423fe5145ce69b930ae83ffcce48551ec03d7d10",
+      "hubs": [
+        [
+          750.64,
+          688.77
+        ],
+        [
+          273.36,
+          688.77
+        ],
+        [
+          273.36,
+          335.23
+        ],
+        [
+          750.64,
+          335.23
+        ]
+      ],
+      "span_ratio": 1.35,
+      "min_disc_gap_px": -38.5
+    },
+    "a4-parts-wl1.55-dd0.50.png": {
+      "kind": "parts",
+      "wl": 1.55,
+      "dd": 0.5,
+      "bw": null,
+      "sha256": "19c050126e3bc44a8d52e8ad2ae64928893cd7132c851d0fb6ed36856d6930da",
+      "hubs": [
+        [
+          761.56,
+          673.0
+        ],
+        [
+          262.44,
+          673.0
+        ],
+        [
+          262.44,
+          351.0
+        ],
+        [
+          761.56,
+          351.0
+        ]
+      ],
+      "span_ratio": 1.55,
+      "min_disc_gap_px": 25.0
+    }
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.16-s1",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.16,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "3c7e788aa25ad85152ad3f0c971d0f306a1fc86244be877b90c025a11e505e9d"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.16-s2",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.16,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "2da9216936822045a783873bdc3d573ced008b7c9136c7295a20da610f42ddd8"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.16-s3",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.16,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "63bc8b3763bc4bf60e4782482342845b2c79c6081b2e5351562da5f30212c469"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.23-s1",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.23,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "a23fb9956d9adc97e43ac0c82609d2fa4c243bc05611e5cb2c9bec7d3460e8a2"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.23-s2",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.23,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "a73625bf65a5cc1626cd9bb6f6a18a46d44abf8e06703422f6625a0e710299c3"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.23-s3",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.23,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "6b1d16223f686b3ff8f605887deac5973ca6c9c3f06e53baf2aa213f1b370d0e"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.30-s1",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.3,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "ac5b0d5746aa5139f6af004b100e38a72355088b1414f54077a19a2399e29cb4"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.30-s2",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.3,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "1f854e97164218a72db4ce95f770caf4069b64f129211e53a19450d95c9c2e98"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.30-s3",
+      "factor": "BW",
+      "method": "CB",
+      "tier": 0.3,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "908e27bbea2eb246e8602f6e0a47d7e3dbf4eff6b549d01b69b1828fe897bc13"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.16-s1",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.16,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.16.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "a15c53636a846377ebd49037a18308bcc48e232c057bf8231c5793a01929f1c8"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.16-s2",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.16,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.16.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "e5f46c162a0fbe28867923c6c0923ea843476fd01c7313beba94129f910df23c"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.16-s3",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.16,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.16.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "8c3dea326e91dbe79bd5c2f695e4253058871172638e43a0e8709ad57402cad9"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.23-s1",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.23,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.23.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "aa86f7887e0ea770aa67aa9d5bc4caae6c6be2d73a0872e69993ee99da146c19"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.23-s2",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.23,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.23.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "d2d13a37dc78f4ae634cc0476cfafa65845a8c3c275c801fd5d264f9e0ac6c3b"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.23-s3",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.23,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.23.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "9a0d3e267511246b21f34ef89ab9d4694bccabf78c9c598bcd9b241533eb0358"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.30-s1",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.3,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.30.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "9708ac568fea4267f12ce6c0e8715c6fa3775ee99e7accbe6b574fcecd48bc04"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.30-s2",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.3,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.30.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "685f6ac032902c344085b8de631aeace4b4c9b67aedb4232e1965c47e7ad5759"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-MG-0.30-s3",
+      "factor": "BW",
+      "method": "MG",
+      "tier": 0.3,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.30.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "7a1517831bd3247abcf142b205ecef69988fb943ab43b166bbb268305179d37f"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.16-s1",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.16,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.16.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "9f85f69ff8447418e145b6d7bb3903640ba54d8eac1f85be6d2e0987e6849652"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.16-s2",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.16,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.16.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "53d6508a1bace4b7ffb26aa3214d7483ada5f9e4f95a1fa7b2a6c4177e6bf6bd"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.16-s3",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.16,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.16.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "83e279348e9aa556f29b1a80316c703a806ff8e028a57b79caa732eb2267d1f8"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.23-s1",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.23,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.23.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "d9a2bb09ba9e8671e891f632ded67f1cd160546b01a61de9bdf5fec309b821e8"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.23-s2",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.23,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.23.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "33e0041786639ea89a135a05e53a1a3a5833a6e24f4e3785f7b466b682138e4b"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.23-s3",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.23,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.23.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "caf4ebdbf799088b94c1218249c4b21e9f1d84c2fda2e3fc1d05445fa0f7b804"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.30-s1",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.3,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.30.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "d0240908586fe9bef898960114370bdc1b1349b3f2e348c32e1db4ae80e69f5e"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.30-s2",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.3,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.30.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "1b3d251e223ead234b19caad1a5cccd4a8c85d520aa318884a982bae46ff3329"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TSa-0.30-s3",
+      "factor": "BW",
+      "method": "TSa",
+      "tier": 0.3,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50-bw0.30.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "177c8711ee22b1adff85a1d890bff16719c4f60a6463404e58112ac247fe8551"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.46-s1",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "436a44f5da7424269bc80399c5c8408f717595bd17f37e384592848c8c2913c0"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.46-s2",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "59e5bc5d80e4c7431132512bb469504cc7ea69ff882654e52533bdda6da93523"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.46-s3",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "527cdbbe2d7503c30d8da1a85c24f2e58c0ed55be3b44e4d8f575e64222c33d0"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.56-s1",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "e202983a43180e35be379f69b23b721ff0a69333dacc8cc61ff139946d9160c3"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.56-s2",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "a3114cf4d0168e02f05ed3bd3dbec094ee426eb98509e7443ab72aa6f1bf774f"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.56-s3",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "b1303aefdb1d67c3ce998da4fd06eb0c1d8fcf4493e8312d7aa4ca7391785603"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.66-s1",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "46bc26dc005266c67ecbf0919e5b68851a6f90398b27e7c64546655230163835"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.66-s2",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "1224607f07355444cec488a246f212c438be0db61b2c60cccb964152fc2d6ecd"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.66-s3",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "19935f6978472f34a151839a8c77f7803519e82c0b417cf3606e5365c56323dc"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.46-s1",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.46,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.46.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "039cb22a32d111aed9908629268a9b11d68d5d0999a37d1ffe1e2be39fead327"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.46-s2",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.46,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.46.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "a4a888716862ed9a503c15494ffa4d52ee24e7f240663fca146f93933313b6f7"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.46-s3",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.46,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.46.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "764603388e1f73540719fee943c9831acb2d876018381778bd8ef16874362aac"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.56-s1",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.56,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.56.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "db0d5848c6279c9b96a86e7aa36d6b2cfb281e6e6b4798b76471b15837c2c5b9"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.56-s2",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.56,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.56.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "7826fc2b3c9c50fbf7103bfd82f7efc8ef4e7fa554e27a9b0507e1bc6a89b835"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.56-s3",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.56,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.56.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "1a812b26b20e7ca06b0494bbccbb7864e301e8b77baad363b63bea42d71878b0"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.66-s1",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.66,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.66.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "cd81b19cc126033dabb6e36ce7146acd0040023cecfe241c824e2ab47f27affc"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.66-s2",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.66,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.66.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "ca9fea0c3d5ec99cc96689fb6f78fce02d9e31596fe26d4a90f01c2d4d918599"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-MG-0.66-s3",
+      "factor": "DD",
+      "method": "MG",
+      "tier": 0.66,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.66.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "286da5ebf3456a2066b91ae45c6ce55a583969209aeabc8be7273dc60a65ce2d"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.46-s1",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.46,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.46.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "0ba38585975b062e6a8e7577e649b71d6bbd7d9bd33642e003c3d96bfdaaddb1"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.46-s2",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.46,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.46.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "fe66105bc260a22e9893667b06f1e0c989ee2d46319f04436e9422135f64ce00"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.46-s3",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.46,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.46.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "a83039c17844327a0a9015b057e473ddf185ae3e86b309700cb67a73d33fae79"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.56-s1",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.56,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.56.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "5a9ed0d56dabf9ea92e7fd671a62ef440afd75c924c788722b2b8bcfbbd1ad86"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.56-s2",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.56,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.56.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "1cd9af3c705c035d43b55ba887376c3b125522cbf32a28f63460e90391e00e4e"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.56-s3",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.56,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.56.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "1244889ff1e0cf6c2445b44a366607d33923e3b1bd4d54b2337dcb9a9bf3171b"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.66-s1",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.66,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.66.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "3f36a16cadc9196f67161e8bde67fdc3bb610dfcf7469c2f5edde456f4f284b1"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.66-s2",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.66,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.66.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "1ac638b4cdb2d5a95c864138fc851829c150668793f04a27d92b44e13c571d26"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TSa-0.66-s3",
+      "factor": "DD",
+      "method": "TSa",
+      "tier": 0.66,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.66.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "ed7624c802831eea28bf64185b4768e2a5e9c63123ab91207055ce2241c8447a"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-0.70-s1",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 0.7,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl0.600.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "4141e4a8a02790d577f898b16eee66e9af008f701fe528edc498b09e98ce2f52"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-0.70-s2",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 0.7,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl0.600.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "e96fe3a5aba232d662bafc42aecc8f142b7facf85a864656d215ad44a489a8af"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-0.70-s3",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 0.7,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl0.600.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "313a65559f4110d1c5fcca3d6fc12551acdd016260e1abacb096498398bad0e8"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.15-s1",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.046.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "831b9719b39fef0bb967a8f2efad1a98f50c9055e8cc908103d1b51e559e16b5"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.15-s2",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.046.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "31d1c142bbaf27235a1aff15558739ccfe9fea8e0ba3873dcd3d5feaca54bcb1"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.15-s3",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.046.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "866da0349d10b6f7e023b8f1a288e7d042d958207f4236d32c92813e615f618d"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.35-s1",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "b681bfb7c880395872c5925d6d27860ae2f5b6f240f657babf4e455362122daa"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.35-s2",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "c5a1bb57f196731e3310ef7d726d7beb03cde2737e7a3be7f43925c406d314a0"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.35-s3",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.343.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "f284081397af521325341af8e26c7385ed2b5e9a255fa0f7d76577c5923120d5"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.55-s1",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-dots-wl1.639.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "f696d739a0176cea1464ed77890cbe98ee3c3fd7e72eb509a9cd994b7833c520"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.55-s2",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-dots-wl1.639.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "d82f2f63d22d93752e57e14d269c3edd326a128fb9e2924535d10e1987f566bd"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.55-s3",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-dots-wl1.639.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "9be0f65bf953b0f559ca1a9371704a53862fa27d549e5e38b8fddcbf3a2f18b5"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-0.70-s1",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 0.7,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl0.70-dd0.50.png",
+        "a4-dots-wl0.700.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "8ca8c328a7f44426802553c521dbf3ad23f29548c2d0917311fba54ddc40a9a5"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-0.70-s2",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 0.7,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl0.70-dd0.50.png",
+        "a4-dots-wl0.700.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "610d5fd46a13784fd8d6be3a9c992b7efb1541db9f7a3baa8e6e918b8d23f97d"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-0.70-s3",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 0.7,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl0.70-dd0.50.png",
+        "a4-dots-wl0.700.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "08e3ee4a65d6d49845444242db8f28690a7f50e3af1ebcfde03800dc8bffab90"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.15-s1",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.15,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.15-dd0.50.png",
+        "a4-dots-wl1.150.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "f8267bd08772d1dc9bfe98df8a1ec023b7bc8ee464cc730cf0ab04e1af664077"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.15-s2",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.15,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.15-dd0.50.png",
+        "a4-dots-wl1.150.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "08838eec107a483ee4c94e589fa9fcba579e621d006242baf69d72ec0f51257d"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.15-s3",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.15,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.15-dd0.50.png",
+        "a4-dots-wl1.150.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "f81a05642e49b2192018442f9c1396ac53f9a7500a2c11860e8de71ea7f4944b"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.35-s1",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.35,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "fabd91eba15e262baa51dff7341dc8ab2dc70604de18cf1b54277eb8a50c05ba"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.35-s2",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.35,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "47f5257ddef2efdc12f56a0534f1f1fd5161e5ef5fc9d96ee5f7340a5ba3ccbc"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.35-s3",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.35,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50.png",
+        "a4-dots-wl1.350.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "e38f4eb91e4ff5776bd3e98d85ecaff0f7b56893ac8b66e821f9b3742134afb4"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.55-s1",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.55,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.55-dd0.50.png",
+        "a4-dots-wl1.550.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "430f0c59b15f09f66609f7fb546c0e2b070f40dd70446f2fd3c9559697012f12"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.55-s2",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.55,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.55-dd0.50.png",
+        "a4-dots-wl1.550.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "d1f4dfea44205926ce5cd940a133b5630b738aca40a0338af4ddc21bea38e97a"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-MG-1.55-s3",
+      "factor": "WL",
+      "method": "MG",
+      "tier": 1.55,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.55-dd0.50.png",
+        "a4-dots-wl1.550.png"
+      ],
+      "cfg": 3,
+      "request_sha256": "bf815452c5b70e48eac5d3050de3579a751a46133f2fdef57c474d85b1e02e6d"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-0.70-s1",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 0.7,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl0.70-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "c458d0ea0bd34d8fd947d6c9ed9ac714211d2f51160dd049232fa52dc881c92a"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-0.70-s2",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 0.7,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl0.70-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "9cb5a8d13c186793f5a560f2c0ed612a68a9c85c729558b1ecca485b9277c190"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-0.70-s3",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 0.7,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl0.70-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "7d20baa250df5493dd3c4f42c2cfba4eed1a13fc68c9d0110ea8ddbb05225635"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.15-s1",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.15,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.15-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "ea9db81dd0b6c6fd15b36b52c0a84d35e8d9cceb4f31f65fe785b12fb9f7a59e"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.15-s2",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.15,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.15-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "6cce380b56ea6251ac718e4baf175c68f014d3d0046739c366e98f1e3fdc6e39"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.15-s3",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.15,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.15-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "e847065fa22b2dc759319d6080fc9b9ab3d2bb8529a6ea68d9b1140b911e60d6"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.35-s1",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.35,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "ae2d5262adb55c71ceb8e25eef0e0ce2a824761d241e8b2277aa73205946c6cd"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.35-s2",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.35,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "6e2f426730f0670b595a87e05498c075f72af0e93861df9635795fe1855d6d11"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.35-s3",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.35,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.35-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "156766fb9d7643208b1fef27945aa87e91dee13a13088427edc59f0c6f86828e"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.55-s1",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.55,
+      "seed": 2026112701,
+      "input_images": [
+        "a4-parts-wl1.55-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "7c99259edb115f3274c8f2329af0c209bd9e676f79719bf069339feaffbafdb9"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.55-s2",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.55,
+      "seed": 2026112702,
+      "input_images": [
+        "a4-parts-wl1.55-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "cacf111537123ffec04009aff7df19f19ed3ee537b423136cb6829d428bc66b4"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TSa-1.55-s3",
+      "factor": "WL",
+      "method": "TSa",
+      "tier": 1.55,
+      "seed": 2026112703,
+      "input_images": [
+        "a4-parts-wl1.55-dd0.50.png"
+      ],
+      "cfg": 1,
+      "request_sha256": "621d4babab66c1820b4d3a35f2387c418100d19e6c7073673c36eeb56f8f5ad0"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "a4-dots-wl0.600.png",
+      "sha256": "2180917468de177542bc1fb6c718e304734fc982611f6817f4e439a0b75906c5"
+    },
+    {
+      "input": "a4-dots-wl0.700.png",
+      "sha256": "ece2516ef482b8020e68963a699f8e2b7a7592e61ba9e1a5d96991712dbd230e"
+    },
+    {
+      "input": "a4-dots-wl1.046.png",
+      "sha256": "698a2d888c2e121533c139b844389b1b59adb481a563ca572b3b40a91d580be6"
+    },
+    {
+      "input": "a4-dots-wl1.150.png",
+      "sha256": "43ab77ad07c8cfc23bf68d54bb0ef9af09e927f1ea852b025f500755cc2d5b55"
+    },
+    {
+      "input": "a4-dots-wl1.343.png",
+      "sha256": "ea7c8759c098f0d5ca3095c225681d919511a9e80eb44bfbad5c7804ead9e320"
+    },
+    {
+      "input": "a4-dots-wl1.350.png",
+      "sha256": "21761c60a95465aaa3ad884a317134751c51f9a21cebe57d38b21a27650f9045"
+    },
+    {
+      "input": "a4-dots-wl1.550.png",
+      "sha256": "7d90a1a527e3be532d2a1a9a871ac56d628117cd0a80e42281ba1260afa3d8a7"
+    },
+    {
+      "input": "a4-dots-wl1.639.png",
+      "sha256": "384864bd17d86ed5fb8aba86fcd463c1411704fe71bb9acf7dec0e59ca0b6c96"
+    },
+    {
+      "input": "a4-parts-wl0.70-dd0.50.png",
+      "sha256": "d4aa1cfdbfb92b2480825dbd0d06fdee49b9b358fcdc4ec4dfffc76eca509b52"
+    },
+    {
+      "input": "a4-parts-wl1.15-dd0.50.png",
+      "sha256": "c1ae8948b86f2e150f3292fd87926629a331f70bb3c4440230687c02b0213138"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.46.png",
+      "sha256": "db5e4286b5a50b91ae0cf4d0668a59f25f6b1677fe3fb666138308507c890651"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.50-bw0.16.png",
+      "sha256": "9a4123c9fc7eae1161bd02dc900038fc2ff7f4648f14703c4fd341751e02646f"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.50-bw0.23.png",
+      "sha256": "66f0804297abf31b8e004fe8b2b35dc3709de2d3319cebd38b6d9a871ee1782e"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.50-bw0.30.png",
+      "sha256": "56ad00e5f85e16a7471b4a5d3dbdd11243950fe69f3e999b9874c0bcd62f5b9d"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.50.png",
+      "sha256": "c3833f60be37a6644a24a5c0199a9c37c48b43730ff7f9c68381a65c5770fb16"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.56.png",
+      "sha256": "e06e91fb474b18cfb06efc475c356ed81645438a7b3d037eb138a427c59bb0cd"
+    },
+    {
+      "input": "a4-parts-wl1.35-dd0.66.png",
+      "sha256": "914081bc08d01e5147fbfac8423fe5145ce69b930ae83ffcce48551ec03d7d10"
+    },
+    {
+      "input": "a4-parts-wl1.55-dd0.50.png",
+      "sha256": "19c050126e3bc44a8d52e8ad2ae64928893cd7132c851d0fb6ed36856d6930da"
+    }
+  ],
+  "tsb_template": {
+    "prompt": "Edit this drone image. It is the layout of a compact quadcopter for everyday aerial photography, in a strict orthographic top view with the nose toward the top edge. Turn it into the finished product. Keep the four motor centres, the arm directions and the length of the propeller blades exactly as they are in the image{body}. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, never a V shape. No propeller guards.\n{rest}",
+    "body": ", and keep the width of the central body exactly as it is in the image",
+    "rest": "The nose points to the top edge of the image. The rear end of the fuselage is a closed, plain light grey shell: no dark part, opening, camera or module at the tail.\nA rounded pod with a continuous curved outline.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.\nA plain top cover with no seams crossing it.\nArms in the same matte light grey as the shell.\nMatte light grey shell and arms in one continuous colour, dark grey motors, black propellers.\nShow the complete product on a plain light background. Omit guide marks and lettering.",
+    "cfg": 3,
+    "rule": "输入为同号两段式第一步的原图，不裁不改；种子与第一步相同；其余与 WLQ 请求相同"
+  }
+}

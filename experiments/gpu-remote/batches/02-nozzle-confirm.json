@@ -1,0 +1,41 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "电机下方喷头确认 4 张（任务表 H3；ComfyUI 上的 Qwen）",
+  "registration": "experiments/20261126-nozzle-confirm/README.md",
+  "registered_manifest": "experiments/20261126-nozzle-confirm/manifest.json",
+  "registered_manifest_sha256": "2dc67cd8b756b8b1e74146c084d1757efbab1ad19b901695c9cfac2986af439c",
+  "requests_dir": "experiments/20261126-nozzle-confirm/requests",
+  "files_dirs": [
+    "experiments/gpu-day-20261115/afternoon-dev/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-E6B-N-confirm-r1.json",
+      "id": "E6B-N-confirm-r1",
+      "seed": 2026112601,
+      "sha256": "d18b0ddfc51384a0157e9ef6d2ce33ce0923934aa1d3aa79787b1f96f52880bc"
+    },
+    {
+      "file": "01-E6B-N-confirm-r2.json",
+      "id": "E6B-N-confirm-r2",
+      "seed": 2026112602,
+      "sha256": "1432e0010f6d9704948f48b1ee8d73a339227a35c1f50f86ff4f4475de2aa75c"
+    },
+    {
+      "file": "01-E6B-N-confirm-r3.json",
+      "id": "E6B-N-confirm-r3",
+      "seed": 2026112603,
+      "sha256": "6ca0586be69c18c11e20e932e208f2d8926c0dd137c07fdb49319d1f83a1c361"
+    },
+    {
+      "file": "01-E6B-N-confirm-r4.json",
+      "id": "E6B-N-confirm-r4",
+      "seed": 2026112604,
+      "sha256": "3111d919f0c5604400fb00f7e344cb37da0d0a959e3fa9fee5ae3e44cc96a2fd"
+    }
+  ],
+  "files": {
+    "hexa-points-1.00.png": "d0768f8dac4f240316761309551a931b022390c89d06b956bda9f7b028829f5d"
+  }
+}
