@@ -1,0 +1,243 @@
+{
+  "rule": {
+    "hit_min": 6,
+    "false_alarm_max": 2,
+    "per_level": 8
+  },
+  "readers": {
+    "1": {
+      "levels": {
+        "S1": {
+          "item": "shell",
+          "target": "box",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 0,
+          "reached": true,
+          "non_target_held": {
+            "roots": 8,
+            "camera": 7,
+            "cover": 8
+          }
+        },
+        "S2": {
+          "item": "roots",
+          "target": "socket",
+          "hits": 4,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {
+            "hinge": 4
+          },
+          "baseline_false_alarms": 0,
+          "reached": false,
+          "non_target_held": {
+            "shell": 8,
+            "camera": 8,
+            "cover": 5
+          }
+        },
+        "S3": {
+          "item": "roots",
+          "target": "hinge",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 0,
+          "reached": true,
+          "non_target_held": {
+            "shell": 8,
+            "camera": 7,
+            "cover": 8
+          }
+        },
+        "S4": {
+          "item": "camera",
+          "target": "underslung",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 1,
+          "reached": true,
+          "non_target_held": {
+            "shell": 8,
+            "roots": 8,
+            "cover": 4
+          }
+        },
+        "S5": {
+          "item": "cover",
+          "target": "multi",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 0,
+          "reached": true,
+          "non_target_held": {
+            "shell": 8,
+            "roots": 8,
+            "camera": 8
+          }
+        },
+        "S0": {
+          "baseline_read_as_baseline": {
+            "shell": 8,
+            "roots": 8,
+            "camera": 7,
+            "cover": 7
+          },
+          "of": 8
+        }
+      },
+      "s2_s3_confusion": {
+        "S2_read_as_hinge": 4,
+        "S3_read_as_socket": 0
+      },
+      "product_yes": 48,
+      "images": 48
+    },
+    "2": {
+      "levels": {
+        "S1": {
+          "item": "shell",
+          "target": "box",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 0,
+          "reached": true,
+          "non_target_held": {
+            "roots": 8,
+            "camera": 0,
+            "cover": 8
+          }
+        },
+        "S2": {
+          "item": "roots",
+          "target": "socket",
+          "hits": 4,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {
+            "hinge": 4
+          },
+          "baseline_false_alarms": 0,
+          "reached": false,
+          "non_target_held": {
+            "shell": 8,
+            "camera": 1,
+            "cover": 6
+          }
+        },
+        "S3": {
+          "item": "roots",
+          "target": "hinge",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 0,
+          "reached": true,
+          "non_target_held": {
+            "shell": 8,
+            "camera": 1,
+            "cover": 8
+          }
+        },
+        "S4": {
+          "item": "camera",
+          "target": "underslung",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 8,
+          "reached": false,
+          "non_target_held": {
+            "shell": 8,
+            "roots": 8,
+            "cover": 7
+          }
+        },
+        "S5": {
+          "item": "cover",
+          "target": "multi",
+          "hits": 8,
+          "of": 8,
+          "unclear": 0,
+          "mixed": 0,
+          "other_readings": {},
+          "baseline_false_alarms": 0,
+          "reached": true,
+          "non_target_held": {
+            "shell": 8,
+            "roots": 8,
+            "camera": 2
+          }
+        },
+        "S0": {
+          "baseline_read_as_baseline": {
+            "shell": 8,
+            "roots": 8,
+            "camera": 0,
+            "cover": 8
+          },
+          "of": 8
+        }
+      },
+      "s2_s3_confusion": {
+        "S2_read_as_hinge": 4,
+        "S3_read_as_socket": 0
+      },
+      "product_yes": 48,
+      "images": 48
+    }
+  },
+  "agreement": {
+    "1-2": {
+      "shell": {
+        "same": 48,
+        "of": 48
+      },
+      "roots": {
+        "same": 48,
+        "of": 48
+      },
+      "camera": {
+        "same": 15,
+        "of": 48
+      },
+      "cover": {
+        "same": 43,
+        "of": 48
+      },
+      "product": {
+        "same": 48,
+        "of": 48
+      },
+      "camera_end": {
+        "same": 48,
+        "of": 48
+      },
+      "lens_up": {
+        "same": 11,
+        "of": 48
+      }
+    }
+  }
+}

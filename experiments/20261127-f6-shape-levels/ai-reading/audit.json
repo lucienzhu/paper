@@ -1,0 +1,126 @@
+[
+ {
+  "reader": "reader1",
+  "tool_calls": {
+   "Read": 157,
+   "Bash": 58,
+   "Write": 1,
+   "Edit": 15
+  },
+  "shell_words": {
+   "cd": 58,
+   "tool.py list": 1,
+   "tool.py ": 1,
+   "tool.py crop": 107,
+   "echo": 1,
+   "tool.py check": 2,
+   "head": 1
+  },
+  "images_opened": 48,
+  "crops": 107,
+  "outside_allowed": []
+ },
+ {
+  "reader": "reader2",
+  "tool_calls": {
+   "Read": 156,
+   "Bash": 59,
+   "Write": 1,
+   "Edit": 23
+  },
+  "shell_words": {
+   "cd": 59,
+   "tool.py list": 1,
+   "tool.py help": 1,
+   "tool.py ": 1,
+   "tool.py crop": 107,
+   "tool.py check": 2
+  },
+  "images_opened": 48,
+  "crops": 107,
+  "outside_allowed": []
+ },
+ {
+  "reader": "reader1",
+  "tool_calls": {
+   "Read": 155,
+   "Bash": 66,
+   "Write": 1
+  },
+  "shell_words": {
+   "cd": 66,
+   "tool.py list": 1,
+   "tool.py crop": 106,
+   "cat": 12,
+   "8c0e11a9e972,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,": 1,
+   "af21131fcc45,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机": 1,
+   "8997c721602c,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,": 1,
+   "3364443ce6f9,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,相机舱顶面另有一个小黑槽": 1,
+   "c633bdc53806,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,": 1,
+   "d161c6b80c59,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,": 1,
+   "2dd1cdd7acff,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机": 1,
+   "EOF": 12,
+   "59382dfb06d9,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,臂根有横缝和圆形铰块，判为铰链": 1,
+   "7ad5811d074b,round,?,?,?,?,underslung,top,no,single,yes,四个臂根各有一个小椭圆凹位或圆形凸点，臂上无缝，不能确定是铰链还是顺滑": 1,
+   "99c175a1cd77,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,": 1,
+   "56125b1bcd14,round,socket,socket,socket,socket,underslung,top,no,two,yes,臂根进入带横缝的承座块，未见轴销": 1,
+   "a29213140b9f,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,右前臂根旁有一个小黑点，看不出是否轴销": 1,
+   "a2dde7990190,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,": 1,
+   "01fbf6747312,round,hinge,hinge,hinge,hinge,flush,top,?,?,yes,窗带右端有一个小圆形件，说不准是否朝上的镜片；顶盖有内嵌面板及侧边短线，分块数说不准": 1,
+   "271a2529676f,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,": 1,
+   "4ae7e4f4a943,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,": 1,
+   "fc456b7ec2c8,round,socket,socket,socket,socket,underslung,top,no,single,yes,": 1,
+   "ee4745775bc4,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,": 1,
+   "76b03d68e7f7,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,相机舱前端另有一小块深色件": 1,
+   "161fd370d7f0,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机": 1,
+   "338b4d7351ed,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,": 1,
+   "d63b24729f72,round,?,?,?,?,underslung,top,no,single,yes,四个臂根都有一道很淡的短弧线或小刻痕，不像完整横缝也不完全顺滑": 1,
+   "50484083f0e5,round,socket,socket,socket,socket,underslung,top,no,single,yes,左后臂上有几道不规则细线": 1,
+   "2a5f764e0b02,round,hinge,hinge,hinge,hinge,underslung,top,no,two,yes,": 1,
+   "5244ab3109b6,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,机鼻窗带所在的前段与顶盖之间有台阶，按探出的相机舱判": 1,
+   "a6938df3df9a,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,机鼻窗带前段略窄于机身并探出，flush/underslung": 1,
+   "f68b3753365a,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,顶盖为小圆角矩形，下方机架后端为切角，按方正机壳判；臂根有椭圆孔不是接缝": 1,
+   "d4b9a43a7609,round,?,?,?,?,underslung,top,no,multi,yes,四个臂根各有一道短横线，只横过臂的一部分，看不出是否独立承座": 1,
+   "67707066a065,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,": 1,
+   "ab1f43c897d0,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机": 1,
+   "7461b458da84,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,窗带所在的机鼻前段略窄并探出，flush/underslung": 1,
+   "ad09884768c5,round,socket,socket,socket,socket,underslung,top,no,single,yes,臂插入机身两侧的圆形凸缘，接口处有横缝": 1,
+   "2bc086874acc,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,": 1,
+   "f60ccf577569,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,臂根有椭圆孔，不是接缝": 1,
+   "6abe43b79662,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,机身前段窄于中段，轮廓有台阶": 1,
+   "1a9d0516b6c8,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机": 1,
+   "9035869234f8,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,": 1,
+   "263e6175ec73,box,smooth,smooth,smooth,smooth,?,top,no,single,yes,机鼻前缘既有一条齐平的深色窗带，又有一个小深色舱体探出，两种相机装法都像": 1,
+   "94d8e19e2096,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,": 1,
+   "9a1d8612301f,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,中央面板四角各有一道线通到外缘，按多块盖板判；机鼻前为云台相机": 1,
+   "05b6ba950df1,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,": 1,
+   "77a6496fac61,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机": 1,
+   "07cd6d64de14,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,窗带所在的机鼻前段略窄并探出，flush/underslung": 1,
+   "tool.py check": 1
+  },
+  "images_opened": 48,
+  "crops": 106,
+  "outside_allowed": []
+ },
+ {
+  "reader": "reader2",
+  "tool_calls": {
+   "Read": 166,
+   "Bash": 58,
+   "Write": 3,
+   "Edit": 13
+  },
+  "shell_words": {
+   "cd": 58,
+   "tool.py list": 1,
+   "tool.py crop": 116,
+   "python3": 1,
+   "EOF": 1,
+   "echo": 1,
+   "tool.py check": 1
+  },
+  "images_opened": 48,
+  "crops": 116,
+  "outside_allowed": []
+ }
+]
