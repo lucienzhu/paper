@@ -108,9 +108,10 @@ for (const type of ['True X', 'Wide X', 'Deadcat', 'H-Frame']) {
   check('四旋的直杆不转', propBarTurnDeg(computeLayout(base())) === 0);
   const p8 = withFrame('Radial Octo', { span_ratio_wl: 1 }), x8 = withFrame('Coax X8', { span_ratio_wl: 1 });
   check('平面八旋的布局句写明八根机臂从中心的机身伸出', prompt(p8).text.includes('all radiate from the fuselage at the centre of the octagon'));
-  check('共轴 X8 的桨句写明每处臂端上下两副、顶视里只见一副；四旋的桨句不变',
-    prompt(x8).text.includes('Each arm end carries two stationary two-blade propellers stacked on one vertical axis') && prompt(x8).text.includes('so each arm end shows one propeller.')
-    && prompt(base()).text.includes('Each motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller'));
+  check('共轴 X8 的桨句与四旋相同（4.7.3 退回原句）；八旋另有“机身就是毂”一句，四旋和 X8 没有',
+    prompt(x8).text.includes('Each motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller')
+    && prompt(p8).text.includes('The fuselage is the hub of the aircraft: all eight arms attach directly to its sides')
+    && !prompt(x8).text.includes('The fuselage is the hub') && !prompt(base()).text.includes('The fuselage is the hub'));
 }
 check('条件图读法那一句写明直杆是桨，桨句是 v1.6 的原句',
   prompt(base()).text.includes("the straight bar across each dot marks that motor's propeller") && prompt(base()).text.includes('forming one straight blade 180 degrees across, never a V shape'));

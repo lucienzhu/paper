@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-27T06:48:23+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/00u-config-dev-round4.json",
+  "uploaded": [
+    {
+      "file": "wbguide-crossbars-acdd1173f244.png",
+      "sha256": "acdd1173f244ff5228553d42f5a0447bdcebd95a9d6528883591f368e0321f97",
+      "bytes": 9664
+    }
+  ],
+  "readback_problems": []
+}

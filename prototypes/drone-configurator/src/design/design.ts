@@ -30,6 +30,8 @@ export interface FrameRule {
   /** 给设计者看的一句话说明。 */
   desc: string;
   shape_en: string;
+  /** 有的构型要另写一句机身在哪、机头朝哪（见 partPrompt 的 hub 句）；四旋、六旋不写。 */
+  hub_en?: string;
 }
 
 export const frameRules: Record<FrameType, FrameRule> = {
@@ -80,6 +82,8 @@ export const frameRules: Record<FrameType, FrameRule> = {
     wl: { value: 1, min: 1, max: 1, adjustable: false },
     basis: 'definition', rule: '八处单层轴位位于正八边形顶点。',
     desc: '八个独立轴位，每处一副旋翼。', shape_en: 'eight distinct horizontal axes at the corners of a regular octagon, on eight arms that all radiate from the fuselage at the centre of the octagon',
+    // 4.7.3：八臂交在一点时，模型常把交点画成一个小毂、把机身另放在前面，或把机头画反；加这一句后 4 张里 3 张对（experiments/20261127-config-dev 第三小批）。
+    hub_en: 'The fuselage is the hub of the aircraft: all eight arms attach directly to its sides, and its nose, which carries the camera, points to the top edge of the image.',
   },
   'Coax Y6': {
     zh: '共轴六旋 Y6', en: 'Coaxial Y6', topology: 'coax_hex', hubs: 3, layers: 2,

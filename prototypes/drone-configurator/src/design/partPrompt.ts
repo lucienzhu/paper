@@ -73,6 +73,7 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
       `${spanDescription} ${fmt(frame.wheelbase_mm, 1)} mm; motor-centre width-to-length span ratio W/L ${effectiveWl(frame).toFixed(2)}; ` +
       `adjacent arm angles clockwise from the ${first} motor: ${layout.adjacent_deg.map(a => fmt(a, 1) + '°').join(', ')}.`,
   });
+  if (rule.hub_en) add({ id: 'hub', group: 'frame', source: src('frame.frame_type'), zh: '机身在机臂的交点上、机头朝上', fields: ['frame.frame_type'], text: rule.hub_en });
   add({
     id: 'guide', group: 'task', source: 'fixed', zh: '随附点线图的读法', fields: [],
     // 4.5.3：这一句不写点和线的颜色。写了“red dots…blue lines”时，颜色会进到产品上（真机开发小批：现行写法 4 张里 3 张机臂发蓝，去掉颜色词后 0/4；
@@ -87,11 +88,9 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     id: 'propulsion', group: 'propulsion',
     source: src('propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'),
     zh: '桨径、每轴桨叶数、电机倾角', fields: ['propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'],
-    // 4.7.2：共轴（每处轴位上下两副桨）另写一句，说明顶视里每处臂端看得见的是什么。原先照“每个电机一副桨”写，真机上有的图桨和机身都不照条件图（experiments/20261127-config-dev）。
-    text: (topology.layers_per_axis === 2
-      ? `Each arm end carries two stationary ${blades === 2 ? 'two' : blades}-blade propellers stacked on one vertical axis, each ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) in diameter. ` +
-        'In this top view the upper propeller hides the lower one, so each arm end shows one propeller.'
-      : `Each motor carries one stationary ${blades === 2 ? 'two' : blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.`) +
+    // 4.7.3：共轴不另写桨句（4.7.2 试过“每处臂端上下两副、顶视只见一副”，真机上每处臂端画出三四片乱排的桨叶，0/4，比原句的 2/4 更差；
+    // experiments/20261127-config-dev）。共轴 X8 还没有过开发门。
+    text: `Each motor carries one stationary ${blades === 2 ? 'two' : blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.` +
       // 4.7.0：双叶改回 v1.6 的原句（4.6 以前被缩短，丢了“成一条直线、不是 V 形”）。
       (blades === 2 ? ' The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, ' +
         'forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.' : '') +

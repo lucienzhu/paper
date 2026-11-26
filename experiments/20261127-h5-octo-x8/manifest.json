@@ -1,0 +1,169 @@
+{
+  "batch": "H5 第一段顶视：四旋参照与平面八旋（工作台 4.7.3，2026-11-27 重新登记）",
+  "workbench": {
+    "version": "4.7.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-DXfipyUQ.js",
+    "bundle_sha256": "99c598542dd21b94bf7aa15f7c9ac9277c38e89643e41867cae4ea74c3cc10fd",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "states": {
+    "Q": {
+      "state": "H5-Q",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec"
+    },
+    "O8": {
+      "state": "H5-O8",
+      "values": {
+        "frame.frame_type": "Radial Octo",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 3.5
+      },
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11"
+    }
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+  "requests": [
+    {
+      "order": 1,
+      "id": "H5-Q-r1",
+      "config": "Q",
+      "config_note": "四旋参照",
+      "seed": 2026112991,
+      "state": "H5-Q",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "0dcc4a8034608937f795a5a2314ea6c3c1b3884f6f231a845783b9fd335d8d80"
+    },
+    {
+      "order": 1,
+      "id": "H5-Q-r2",
+      "config": "Q",
+      "config_note": "四旋参照",
+      "seed": 2026112992,
+      "state": "H5-Q",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "af65f7781d3345da4925c2cf68f3f35f24f6feaf30eaffab494d6cf47ed3206f"
+    },
+    {
+      "order": 1,
+      "id": "H5-Q-r3",
+      "config": "Q",
+      "config_note": "四旋参照",
+      "seed": 2026112993,
+      "state": "H5-Q",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "277b656407ed17014d8b9653431be090bffdcf3cc153126dca70387b3dd53c94"
+    },
+    {
+      "order": 1,
+      "id": "H5-Q-r4",
+      "config": "Q",
+      "config_note": "四旋参照",
+      "seed": 2026112994,
+      "state": "H5-Q",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "b8d2bf1462d8b87abee94123679fde867a15ecae0c7905c1e33833e900f1ac6d"
+    },
+    {
+      "order": 1,
+      "id": "H5-O8-r1",
+      "config": "O8",
+      "config_note": "平面八旋",
+      "seed": 2026112991,
+      "state": "H5-O8",
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "625a2ee5ab36caced2bf682a90a8a779544c969c45ce2a4d82dabac0b6b555a5"
+    },
+    {
+      "order": 1,
+      "id": "H5-O8-r2",
+      "config": "O8",
+      "config_note": "平面八旋",
+      "seed": 2026112992,
+      "state": "H5-O8",
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "0d4b2248c718466e7a07d5bc63683171a68da4eda75df9ef37d6e7606fc49686"
+    },
+    {
+      "order": 1,
+      "id": "H5-O8-r3",
+      "config": "O8",
+      "config_note": "平面八旋",
+      "seed": 2026112993,
+      "state": "H5-O8",
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "06b622fcb4942f90ef91d9ada0da0d88d9a29411abaed61bf9c6fee7c89521f4"
+    },
+    {
+      "order": 1,
+      "id": "H5-O8-r4",
+      "config": "O8",
+      "config_note": "平面八旋",
+      "seed": 2026112994,
+      "state": "H5-O8",
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "92a4e90537f8638384db65a4b18a1b3ad1b8dac12b18f7a459bcf89c892d8906"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-7fee96027dbc.png",
+      "sha256": "7fee96027dbc85278ebee8345eafa2a21a8160b2ea84f91528959e6c9f0b2d35"
+    },
+    {
+      "input": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+    }
+  ],
+  "not_run": {
+    "X8": "共轴 X8 没有过开发门（experiments/20261127-config-dev），顶视 4 张和第二段斜视 8 张这一次不出"
+  }
+}

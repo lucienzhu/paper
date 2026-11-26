@@ -1,0 +1,309 @@
+{
+  "intro": [
+    "这里有若干张多旋翼无人机的顶视效果图。请一张一张看，只凭图上看得见的东西点选；不要推测图是怎么生成的，也不要因为别的图是什么样就猜这一张。",
+    "每一张都请实际看清楚再选，看不清的地方可以点图放大。确实看不清或拿不准，就选“看不清”，不要硬选。图的上方是机头方向。",
+    "进度自动存在这台电脑的浏览器里，中途可以关掉再打开。全部填完后点右上角“导出读数”，把下载到的 reading.csv 发回给研究者。请独立完成，不要和别的读者商量。"
+  ],
+  "fields": [
+    {
+      "column": "axes",
+      "label": "看得见几处旋翼的轴位",
+      "group": "旋翼和机臂",
+      "help": "每一处有电机和桨的位置算一处。",
+      "options": [
+        {
+          "value": "3",
+          "label": "3",
+          "help": ""
+        },
+        {
+          "value": "4",
+          "label": "4",
+          "help": ""
+        },
+        {
+          "value": "5",
+          "label": "5",
+          "help": ""
+        },
+        {
+          "value": "6",
+          "label": "6",
+          "help": ""
+        },
+        {
+          "value": "7",
+          "label": "7",
+          "help": ""
+        },
+        {
+          "value": "8",
+          "label": "8",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "数不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "arms",
+      "label": "从机身伸到电机的机臂有几根",
+      "group": "旋翼和机臂",
+      "help": "",
+      "options": [
+        {
+          "value": "3",
+          "label": "3",
+          "help": ""
+        },
+        {
+          "value": "4",
+          "label": "4",
+          "help": ""
+        },
+        {
+          "value": "5",
+          "label": "5",
+          "help": ""
+        },
+        {
+          "value": "6",
+          "label": "6",
+          "help": ""
+        },
+        {
+          "value": "7",
+          "label": "7",
+          "help": ""
+        },
+        {
+          "value": "8",
+          "label": "8",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "数不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "layers",
+      "label": "每一处轴位上看得见几层桨",
+      "group": "旋翼和机臂",
+      "help": "",
+      "options": [
+        {
+          "value": "one",
+          "label": "都只有一副",
+          "help": "每一处都只看得见一副桨"
+        },
+        {
+          "value": "two",
+          "label": "有上下两副",
+          "help": "有的轴位上看得见上下两副桨"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "blades",
+      "label": "每副桨的桨叶",
+      "group": "旋翼和机臂",
+      "help": "",
+      "options": [
+        {
+          "value": "two",
+          "label": "都是双叶",
+          "help": "每副桨都是两片桨叶"
+        },
+        {
+          "value": "other",
+          "label": "有的不是",
+          "help": "多叶、少一片或没有桨"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "shell",
+      "label": "机身轮廓",
+      "group": "机身",
+      "help": "",
+      "options": [
+        {
+          "value": "round",
+          "label": "流线舱",
+          "help": "圆润连续：轮廓是连续的曲线"
+        },
+        {
+          "value": "box",
+          "label": "方正机壳",
+          "help": "侧边平直，转角是切角"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": "看不清，或两样都像"
+        }
+      ]
+    },
+    {
+      "column": "roots",
+      "label": "机臂根部（所有机臂合起来选一次）",
+      "group": "机身",
+      "help": "只有颜色变化、没有缝线或台阶的，不算接缝，选“顺滑”。",
+      "options": [
+        {
+          "value": "smooth",
+          "label": "顺滑",
+          "help": "机臂从机壳上顺滑地长出来，没有接缝"
+        },
+        {
+          "value": "socket",
+          "label": "承座",
+          "help": "机臂插进独立的承座或凸缘，有横向的接缝"
+        },
+        {
+          "value": "hinge",
+          "label": "铰链",
+          "help": "有看得见的折叠铰链或转轴"
+        },
+        {
+          "value": "mixed",
+          "label": "各处不一样",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "camera",
+      "label": "相机怎样装在机身上",
+      "group": "相机和顶盖",
+      "help": "",
+      "options": [
+        {
+          "value": "flush",
+          "label": "内嵌",
+          "help": "与机壳齐平：只看见那一端最前缘一条窄的窗带"
+        },
+        {
+          "value": "underslung",
+          "label": "探出舱体",
+          "help": "一个小的相机舱体从机身一端探出一点"
+        },
+        {
+          "value": "none",
+          "label": "看不到相机",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "camera_end",
+      "label": "看上去像相机的部件在画面哪一端",
+      "group": "相机和顶盖",
+      "help": "",
+      "options": [
+        {
+          "value": "top",
+          "label": "上端",
+          "help": ""
+        },
+        {
+          "value": "bottom",
+          "label": "下端",
+          "help": ""
+        },
+        {
+          "value": "both",
+          "label": "两端都有",
+          "help": ""
+        },
+        {
+          "value": "none",
+          "label": "都没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "cover",
+      "label": "顶盖",
+      "group": "相机和顶盖",
+      "help": "机壳的外周轮廓线和装饰线不算分缝。",
+      "options": [
+        {
+          "value": "single",
+          "label": "一整块",
+          "help": "没有贯穿顶盖的分缝"
+        },
+        {
+          "value": "two",
+          "label": "两块",
+          "help": "一道分缝"
+        },
+        {
+          "value": "multi",
+          "label": "三块或更多",
+          "help": "盖板之间有分缝"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "product",
+      "label": "整体看上去是不是一件完整的产品",
+      "group": "整体",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "是",
+          "help": "一件完整的、合乎常理的产品"
+        },
+        {
+          "value": "no",
+          "label": "不是",
+          "help": "平涂剪影、部件拼贴、示意图，或有明显断开、缺失、多余的部件"
+        },
+        {
+          "value": "?",
+          "label": "拿不准",
+          "help": ""
+        }
+      ]
+    }
+  ]
+}
