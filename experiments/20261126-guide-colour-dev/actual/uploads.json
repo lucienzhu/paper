@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-26T20:49:44+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/00b-guide-colour-dev.json",
+  "uploaded": [
+    {
+      "file": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52",
+      "bytes": 32552
+    },
+    {
+      "file": "wbguide-neutral-78716dae3031.png",
+      "sha256": "78716dae3031a0b18f9ef4dad80b9ee3f424de8584758c144a142b422212aff2",
+      "bytes": 6906
+    }
+  ],
+  "readback_problems": []
+}

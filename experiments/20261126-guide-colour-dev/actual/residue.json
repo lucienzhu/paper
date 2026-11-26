@@ -1,0 +1,118 @@
+{
+  "thresholds": {
+    "blue_pct": 0.1,
+    "red_pct": 0.05
+  },
+  "images": [
+    {
+      "id": "GC-V0-s1",
+      "variant": "V0",
+      "seed": 2026112801,
+      "blue_pct": 0.594,
+      "red_pct": 0.097,
+      "residue": true
+    },
+    {
+      "id": "GC-V1-s1",
+      "variant": "V1",
+      "seed": 2026112801,
+      "blue_pct": 0.002,
+      "red_pct": 0.007,
+      "residue": false
+    },
+    {
+      "id": "GC-V2-s1",
+      "variant": "V2",
+      "seed": 2026112801,
+      "blue_pct": 0.003,
+      "red_pct": 0.006,
+      "residue": false
+    },
+    {
+      "id": "GC-V0-s2",
+      "variant": "V0",
+      "seed": 2026112802,
+      "blue_pct": 0.002,
+      "red_pct": 0.028,
+      "residue": false
+    },
+    {
+      "id": "GC-V1-s2",
+      "variant": "V1",
+      "seed": 2026112802,
+      "blue_pct": 0.001,
+      "red_pct": 0.016,
+      "residue": false
+    },
+    {
+      "id": "GC-V2-s2",
+      "variant": "V2",
+      "seed": 2026112802,
+      "blue_pct": 0.0,
+      "red_pct": 0.014,
+      "residue": false
+    },
+    {
+      "id": "GC-V0-s3",
+      "variant": "V0",
+      "seed": 2026112803,
+      "blue_pct": 0.244,
+      "red_pct": 0.017,
+      "residue": true
+    },
+    {
+      "id": "GC-V1-s3",
+      "variant": "V1",
+      "seed": 2026112803,
+      "blue_pct": 0.0,
+      "red_pct": 0.0,
+      "residue": false
+    },
+    {
+      "id": "GC-V2-s3",
+      "variant": "V2",
+      "seed": 2026112803,
+      "blue_pct": 0.0,
+      "red_pct": 0.007,
+      "residue": false
+    },
+    {
+      "id": "GC-V0-s4",
+      "variant": "V0",
+      "seed": 2026112804,
+      "blue_pct": 2.168,
+      "red_pct": 0.001,
+      "residue": true
+    },
+    {
+      "id": "GC-V1-s4",
+      "variant": "V1",
+      "seed": 2026112804,
+      "blue_pct": 0.0,
+      "red_pct": 0.0,
+      "residue": false
+    },
+    {
+      "id": "GC-V2-s4",
+      "variant": "V2",
+      "seed": 2026112804,
+      "blue_pct": 0.0,
+      "red_pct": 0.003,
+      "residue": false
+    }
+  ],
+  "summary": {
+    "V0": {
+      "with_residue": 3,
+      "of": 4
+    },
+    "V1": {
+      "with_residue": 0,
+      "of": 4
+    },
+    "V2": {
+      "with_residue": 0,
+      "of": 4
+    }
+  }
+}
