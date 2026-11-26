@@ -167,12 +167,11 @@ function CmfControls({ laneId }: { laneId: string }) {
         {custom && <span className="r4-muted">已用自定义颜色 {colour}</span>}
       </div>
     </Field>
-    {/* 4.6：按部件配色。主色只管机身外壳；机臂、电机、桨叶各选各的，不选就不写进文字。 */}
-    {!!colour && !p.accessories.arm_color && !p.accessories.motor_color && !p.accessories.prop_color &&
-      <p className="r4-note" data-testid="one-colour-hint">只选了机身主色：出图时整机多半会变成这一个颜色。真实产品的机臂、电机和桨叶各有各的颜色，在下面三项里分别选。</p>}
-    {([['accessories.arm_color', '机臂颜色', p.accessories.arm_color ?? ''], ['accessories.motor_color', '电机颜色', p.accessories.motor_color ?? ''],
-      ['accessories.prop_color', '桨叶颜色', p.accessories.prop_color ?? '']] as [string, string, string][]).map(([path, label, value]) =>
-      <Field key={path} path={path} hint={path === 'accessories.arm_color' ? '真实产品很少整机一个颜色。主色管机身外壳，这三项分别管机臂、电机和桨叶。' : undefined}>
+    {/* 4.6：按部件配色。主色只管机身外壳；机臂、桨叶各选各的，不选就不写进文字。电机颜色真机上控不住，不设这一项。 */}
+    {!!colour && !p.accessories.arm_color && !p.accessories.prop_color &&
+      <p className="r4-note" data-testid="one-colour-hint">只选了机身主色：出图时整机多半会变成这一个颜色。真实产品的机臂和桨叶各有各的颜色，在下面两项里分别选。</p>}
+    {([['accessories.arm_color', '机臂颜色', p.accessories.arm_color ?? ''], ['accessories.prop_color', '桨叶颜色', p.accessories.prop_color ?? '']] as [string, string, string][]).map(([path, label, value]) =>
+      <Field key={path} path={path} hint={path === 'accessories.arm_color' ? '真实产品很少整机一个颜色。主色管机身外壳，这两项分别管机臂和桨叶。电机的颜色出图时控不住，没有设这一项。' : undefined}>
         <div className="row4" role="radiogroup" aria-label={label} data-testid={'part-colour-' + path.split('.')[1]}>
           <button type="button" role="radio" aria-checked={!value} className={'b4 sm' + (!value ? ' pri' : '')} onClick={() => set(path, '')}>不指定</button>
           {colourSwatches.map(c => <button key={c.value} type="button" role="radio" aria-checked={value === c.value} title={c.zh} aria-label={c.zh} data-colour={c.value}

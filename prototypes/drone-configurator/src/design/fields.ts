@@ -184,9 +184,8 @@ export const fields: FieldDef[] = [
     format: p => opt(spraySystemOptions, p.accessories.spray_system ?? ''), relevant: p => p.accessories.spray_system !== undefined,
   },
   { path: 'accessories.drone_primary_color', group: 'accessories', label: '主色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.drone_primary_color) },
-  // 4.6：按部件配色。真实产品不是整机一个颜色；主色管机身外壳，机臂、电机、桨叶各有一项。
+  // 4.6：按部件配色。真实产品不是整机一个颜色；主色管机身外壳，机臂、桨叶各有一项（电机颜色真机上控不住，不设）。
   { path: 'accessories.arm_color', group: 'accessories', label: '机臂颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.arm_color ?? '') },
-  { path: 'accessories.motor_color', group: 'accessories', label: '电机颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.motor_color ?? '') },
   { path: 'accessories.prop_color', group: 'accessories', label: '桨叶颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.prop_color ?? '') },
   { path: 'accessories.surface_finish', group: 'accessories', label: '表面处理', kind: 'styling', visibility: 'text', format: p => opt(finishOptions, p.accessories.surface_finish) },
   {

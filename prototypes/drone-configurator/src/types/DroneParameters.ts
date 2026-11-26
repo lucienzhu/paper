@@ -50,9 +50,11 @@ export interface AccessoriesParameters {
   custom_prompt_additions: string;
   /** 主色：机身外壳的颜色。空字符串表示留白。 */
   drone_primary_color: string;
-  /** 4.6：按部件配色。机臂、电机、桨叶各自的颜色；空字符串或没有这个键表示留白（不写进文字）。 */
+  /**
+   * 4.6：按部件配色。机臂、桨叶各自的颜色；空字符串或没有这个键表示留白（不写进文字）。
+   * 电机颜色试过两种写法，真机上都控不住（0/4、0/4），所以不设这一项：给了选项却出不来，等于假选项。
+   */
   arm_color?: string;
-  motor_color?: string;
   prop_color?: string;
   /** 表面处理。空字符串表示留白。 */
   surface_finish: '' | 'matte' | 'satin' | 'gloss' | 'metallic' | 'textured';

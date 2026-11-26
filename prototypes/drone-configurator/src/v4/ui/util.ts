@@ -19,7 +19,7 @@ export function formatValue(field: string, value: unknown): string {
   if (value === '' || value === null || value === undefined) return '不指定';
   if (typeof value === 'boolean') return field === 'accessories.has_camera_gimbal' ? (value ? '装相机' : '不装相机') : value ? '是' : '否';
   if (field === 'frame.frame_type') return frameRules[value as keyof typeof frameRules]?.zh ?? String(value);
-  if (['accessories.drone_primary_color', 'accessories.arm_color', 'accessories.motor_color', 'accessories.prop_color'].includes(field)) return colourName(String(value))?.zh ?? String(value);
+  if (['accessories.drone_primary_color', 'accessories.arm_color', 'accessories.prop_color'].includes(field)) return colourName(String(value))?.zh ?? String(value);
   if (field === 'propulsion.prop_guard') return value === 'ring' ? '环形护圈' : '不加护圈';
   if (field === 'frame.span_ratio_wl') return Number(value).toFixed(2);
   if (typeof value === 'number') return (Number.isInteger(value) ? String(value) : value.toFixed(1)) + (units[field] ?? '');
@@ -94,7 +94,7 @@ export function layerSummary(layer: Layer, p: DroneParameters) {
   if (layer === 'propulsion') return `${p.propulsion.prop_diameter_inch} 英寸 · ${parseInt(p.propulsion.prop_blade_count, 10)} 叶${p.propulsion.prop_guard === 'ring' ? ' · 护圈' : ''}`;
   if (layer === 'body') return `${p.fuselage.fuselage_dimensions_mm.length} × ${p.fuselage.fuselage_dimensions_mm.width} mm · ${f('fuselage.fuselage_style', p.fuselage.fuselage_style)}`;
   if (layer === 'details') return `臂根${f('frame.arm_root', p.frame.arm_root)} · ${p.accessories.has_camera_gimbal ? '相机' + f('accessories.camera_mount', p.accessories.camera_mount) : '不装相机'}`;
-  const parts = [p.accessories.arm_color, p.accessories.motor_color, p.accessories.prop_color].filter(Boolean).length;
+  const parts = [p.accessories.arm_color, p.accessories.prop_color].filter(Boolean).length;
   return `${f('accessories.drone_primary_color', p.accessories.drone_primary_color)}${parts ? `，另 ${parts} 个部件配色` : ''} · ${f('accessories.surface_finish', p.accessories.surface_finish)}`;
 }
 

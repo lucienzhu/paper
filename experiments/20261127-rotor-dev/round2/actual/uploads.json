@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-27T01:44:09+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/00i-rotor-dev-round2.json",
+  "uploaded": [
+    {
+      "file": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52",
+      "bytes": 32552
+    }
+  ],
+  "readback_problems": []
+}

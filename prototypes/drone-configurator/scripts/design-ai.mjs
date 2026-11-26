@@ -62,7 +62,6 @@ const fieldSpec = {
   'accessories.drone_primary_color': { kind: 'colour' },
   // 4.6：按部件配色。
   'accessories.arm_color': { kind: 'colour' },
-  'accessories.motor_color': { kind: 'colour' },
   'accessories.prop_color': { kind: 'colour' },
   'accessories.surface_finish': { kind: 'enum', values: ['', ...enumOf(finishOptions)] },
   'frame.material_visual': { kind: 'enum', values: ['', ...enumOf(armMaterialOptions)] },

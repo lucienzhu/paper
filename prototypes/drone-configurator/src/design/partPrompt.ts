@@ -150,12 +150,12 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
           : `Tall landing legs with ${gear.landing_gear_height_mm} mm ground clearance.`,
   });
 
-  // 4.6：按部件配色。真实产品不是整机一个颜色（作者 2026-11-26）：主色只管机身外壳，机臂、电机、桨叶各有一项；选了哪几项就写哪几项。
+  // 4.6：按部件配色。真实产品不是整机一个颜色（作者 2026-11-26）：主色只管机身外壳，机臂、桨叶各有一项；选了哪几项就写哪几项。
+  // 真机开发小批：机身、机臂、桨叶 4/4 各归各的颜色；电机颜色两种写法都是 0/4，所以没有电机这一项。
   const colourOf = (value: string) => `${colourName(value)?.en ?? 'custom colour'} (${value})`;
   const partColours = ([
     ['body shell', 'accessories.drone_primary_color', accessories.drone_primary_color],
     ['arms', 'accessories.arm_color', accessories.arm_color ?? ''],
-    ['motors', 'accessories.motor_color', accessories.motor_color ?? ''],
     ['propellers', 'accessories.prop_color', accessories.prop_color ?? ''],
   ] as [string, string, string][]).filter(part => part[2]);
   if (partColours.length)
@@ -207,7 +207,7 @@ const topics: { topic: AuditItem['topic']; label: string; pattern: RegExp; allow
   {
     topic: 'colour', label: '颜色',
     pattern: /#[0-9a-f]{6}\b|\b(black|white|grey|gray|orange|red|blue|green|purple|pink|yellow|silver|golden?|charcoal)\b|colou?r|配色|黑|灰|橙/i,
-    allowed: p => (p.accessories.drone_primary_color || p.accessories.arm_color || p.accessories.motor_color || p.accessories.prop_color ? ['colour'] : []),
+    allowed: p => (p.accessories.drone_primary_color || p.accessories.arm_color || p.accessories.prop_color ? ['colour'] : []),
   },
   {
     topic: 'carbon', label: '碳纤维纹理', pattern: /carbon|weave|碳/i,
