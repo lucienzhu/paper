@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { computeLayout, layoutExport, frameRules } from '../src/design/design.ts';
+import { computeLayout, layoutExport, frameRules, propBarsPx } from '../src/design/design.ts';
 import { compilePrompt, diffSentences, auditPrompt } from '../src/design/partPrompt.ts';
 import { openDecisions } from '../src/design/fields.ts';
 import { buildExport, parseImported } from '../src/design/exporters.ts';
@@ -77,6 +77,23 @@ const e20 = buildExport({ parameters: p20, touched: { 'frame.arm_width_mm': true
 check('JSON 的臂宽与提示词同值', e20.parameters.frame.arm_width_mm === '20mm' && e20.prompt.text.includes('20 mm wide') && e20.selection_status.find(s => s.path === 'frame.arm_width_mm').status === 'chosen');
 const l10 = layoutExport(computeLayout(p10)), l20 = layoutExport(computeLayout(p20));
 check('臂宽不改变轴心坐标', JSON.stringify(l10.hubs) === JSON.stringify(l20.hubs));
+
+// 5b. 条件图上表示桨的直杆（4.7.0）：每个电机一根，过轴心，与“机架中心到轴心”的方向垂直，长度等于桨径
+for (const type of ['True X', 'Wide X', 'Deadcat', 'H-Frame']) {
+  const layout = computeLayout(withFrame(type));
+  const bars = propBarsPx(layout), c = layout.guide.size / 2, want = layout.prop_diameter_mm * layout.guide.px_per_mm;
+  const ok = bars.length === layout.hubs.length && bars.every(([x, y, u, v], i) => {
+    const h = layout.hubs[i];
+    const through = near((x + u) / 2, h.x_px, 1e-6) && near((y + v) / 2, h.y_px, 1e-6);
+    const length = near(Math.hypot(u - x, v - y), want, 1e-6);
+    const perpendicular = near((u - x) * (h.x_px - c) + (v - y) * (h.y_px - c), 0, 1e-6);
+    return through && length && perpendicular;
+  });
+  check(`${type}：条件图上每个电机一根表示桨的直杆，过轴心、与机臂方向垂直、长度等于桨径`, ok, `${bars.length} 根，各 ${want.toFixed(1)} px`);
+}
+check('条件图读法那一句写明直杆是桨，桨句是 v1.6 的原句',
+  prompt(base()).text.includes("the straight bar across each dot marks that motor's propeller") && prompt(base()).text.includes('forming one straight blade 180 degrees across, never a V shape'));
+check('导出的布局带直杆的像素坐标', layoutExport(computeLayout(base())).prop_bars_px.length === 4);
 
 // 6. 默认状态：模板不自行加入护圈、颜色、碳纹；留白项不成句
 const def = prompt(base());
