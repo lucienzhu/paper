@@ -1,0 +1,768 @@
+{
+  "at": "2026-11-27T01:15:52+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "system_stats": {
+    "system": {
+      "os": "linux",
+      "ram_total": 96636764160,
+      "ram_free": 93684101120,
+      "comfyui_version": "0.39.0",
+      "required_frontend_version": "1.55.14",
+      "installed_templates_version": "0.11.78",
+      "required_templates_version": "0.11.78",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.55.14",
+          "required": "1.55.14"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.78",
+          "required": "0.11.78"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.13",
+          "required": "0.5.13"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.37",
+          "required": "0.2.37"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.5.6",
+          "required": "0.5.6"
+        }
+      ],
+      "python_version": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]",
+      "pytorch_version": "2.8.0+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "/root/autodl-tmp/gpu-run/ComfyUI-e8665ca8e4089ab917567cdb491308e1397663d4/main.py",
+        "--listen",
+        "127.0.0.1",
+        "--port",
+        "8189",
+        "--disable-auto-launch",
+        "--disable-all-custom-nodes",
+        "--disable-partner-nodes",
+        "--cache-classic",
+        "--input-directory",
+        "/root/autodl-tmp/gpu-run/inputs",
+        "--output-directory",
+        "/root/autodl-tmp/gpu-run/output",
+        "--temp-directory",
+        "/root/autodl-tmp/gpu-run/temp",
+        "--user-directory",
+        "/root/autodl-tmp/gpu-run/user"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 4080 SUPER : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 33794359296,
+        "vram_free": 6685205420,
+        "torch_vram_total": 100663296,
+        "torch_vram_free": 91104172
+      }
+    ]
+  },
+  "object_info": {
+    "CLIPLoader": {
+      "input": {
+        "required": {
+          "clip_name": [
+            [
+              "qwen3vl_8b_bf16.safetensors"
+            ]
+          ],
+          "type": [
+            [
+              "stable_diffusion",
+              "stable_cascade",
+              "sd3",
+              "stable_audio",
+              "mochi",
+              "ltxv",
+              "pixart",
+              "cosmos",
+              "lumina2",
+              "wan",
+              "hidream",
+              "chroma",
+              "ace",
+              "omnigen2",
+              "qwen_image",
+              "hunyuan_image",
+              "flux2",
+              "ovis",
+              "longcat_image",
+              "cogvideox",
+              "lens",
+              "pixeldit",
+              "ideogram4",
+              "boogu",
+              "krea2",
+              "joyimage",
+              "mage",
+              "minimax",
+              "yue2"
+            ]
+          ]
+        },
+        "optional": {
+          "device": [
+            [
+              "default",
+              "cpu"
+            ],
+            {
+              "advanced": true
+            }
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "clip_name",
+          "type"
+        ],
+        "optional": [
+          "device"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "CLIP"
+      ],
+      "output_is_list": [
+        false
+      ],
+      "output_name": [
+        "CLIP"
+      ],
+      "name": "CLIPLoader",
+      "display_name": "Load CLIP",
+      "description": "Recipes:\nsd: clip-l\nstable cascade: clip-g\nsd3: t5 xxl / clip-g / clip-l\nstable audio: t5 base\nmochi: t5 xxl\ncogvideox: t5 xxl (226-token padding)\ncosmos: old t5 xxl\nlumina2: gemma 2 2B\nwan: umt5 xxl\nhidream: llama-3.1 (Recommend) or t5\nomnigen2: qwen vl 2.5 3B\njoyimage: qwen3-vl 8B\nlens: gpt-oss-20b\npixeldit: gemma 2 2B elm\nminimax: MiniMax H3 Qwen3-VL or Music3 Qwen/RVQ",
+      "python_module": "nodes",
+      "category": "model/loaders",
+      "output_node": false,
+      "has_intermediate_output": false,
+      "search_aliases": []
+    },
+    "KSampler": {
+      "input": {
+        "required": {
+          "model": [
+            "MODEL",
+            {
+              "tooltip": "The model used for denoising the input latent."
+            }
+          ],
+          "seed": [
+            "INT",
+            {
+              "default": 0,
+              "min": 0,
+              "max": 18446744073709551615,
+              "control_after_generate": true,
+              "tooltip": "The random seed used for creating the noise."
+            }
+          ],
+          "steps": [
+            "INT",
+            {
+              "default": 20,
+              "min": 1,
+              "max": 10000,
+              "tooltip": "The number of steps used in the denoising process."
+            }
+          ],
+          "cfg": [
+            "FLOAT",
+            {
+              "default": 8.0,
+              "min": 0.0,
+              "max": 100.0,
+              "step": 0.1,
+              "round": 0.01,
+              "tooltip": "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality."
+            }
+          ],
+          "sampler_name": [
+            [
+              "euler",
+              "euler_cfg_pp",
+              "euler_ancestral",
+              "euler_ancestral_cfg_pp",
+              "heun",
+              "heunpp2",
+              "exp_heun_2_x0",
+              "exp_heun_2_x0_sde",
+              "dpm_2",
+              "dpm_2_ancestral",
+              "lms",
+              "dpm_fast",
+              "dpm_adaptive",
+              "dpmpp_2s_ancestral",
+              "dpmpp_2s_ancestral_cfg_pp",
+              "dpmpp_sde",
+              "dpmpp_sde_gpu",
+              "dpmpp_2m",
+              "dpmpp_2m_cfg_pp",
+              "dpmpp_2m_sde",
+              "dpmpp_2m_sde_gpu",
+              "dpmpp_2m_sde_heun",
+              "dpmpp_2m_sde_heun_gpu",
+              "dpmpp_3m_sde",
+              "dpmpp_3m_sde_gpu",
+              "ddpm",
+              "lcm",
+              "ipndm",
+              "ipndm_v",
+              "deis",
+              "cfgpp_ud10_ab",
+              "res_multistep",
+              "res_multistep_cfg_pp",
+              "res_multistep_ancestral",
+              "res_multistep_ancestral_cfg_pp",
+              "gradient_estimation",
+              "gradient_estimation_cfg_pp",
+              "er_sde",
+              "seeds_2",
+              "seeds_3",
+              "sa_solver",
+              "sa_solver_pece",
+              "ddim",
+              "uni_pc",
+              "uni_pc_bh2"
+            ],
+            {
+              "tooltip": "The algorithm used when sampling, this can affect the quality, speed, and style of the generated output."
+            }
+          ],
+          "scheduler": [
+            [
+              "simple",
+              "sgm_uniform",
+              "karras",
+              "exponential",
+              "ddim_uniform",
+              "beta",
+              "normal",
+              "linear_quadratic",
+              "kl_optimal"
+            ],
+            {
+              "tooltip": "The scheduler controls how noise is gradually removed to form the image."
+            }
+          ],
+          "positive": [
+            "CONDITIONING",
+            {
+              "tooltip": "The conditioning describing the attributes you want to include in the image."
+            }
+          ],
+          "negative": [
+            "CONDITIONING",
+            {
+              "tooltip": "The conditioning describing the attributes you want to exclude from the image."
+            }
+          ],
+          "latent_image": [
+            "LATENT",
+            {
+              "tooltip": "The latent image to denoise."
+            }
+          ],
+          "denoise": [
+            "FLOAT",
+            {
+              "default": 1.0,
+              "min": 0.0,
+              "max": 1.0,
+              "step": 0.01,
+              "tooltip": "The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling."
+            }
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "model",
+          "seed",
+          "steps",
+          "cfg",
+          "sampler_name",
+          "scheduler",
+          "positive",
+          "negative",
+          "latent_image",
+          "denoise"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "LATENT"
+      ],
+      "output_is_list": [
+        false
+      ],
+      "output_name": [
+        "LATENT"
+      ],
+      "name": "KSampler",
+      "display_name": "KSampler",
+      "description": "Uses the provided model, positive and negative conditioning to denoise the latent image.",
+      "python_module": "nodes",
+      "category": "model/sampling",
+      "output_node": false,
+      "has_intermediate_output": false,
+      "output_tooltips": [
+        "The denoised latent."
+      ],
+      "search_aliases": [
+        "sampler",
+        "sample",
+        "generate",
+        "denoise",
+        "diffuse",
+        "txt2img",
+        "img2img"
+      ]
+    },
+    "LoadImage": {
+      "input": {
+        "required": {
+          "image": [
+            [
+              "wbguide-deb3284ef6b5.png"
+            ],
+            {
+              "image_upload": true
+            }
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "image"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "IMAGE",
+        "MASK"
+      ],
+      "output_is_list": [
+        false,
+        false
+      ],
+      "output_name": [
+        "IMAGE",
+        "MASK"
+      ],
+      "name": "LoadImage",
+      "display_name": "Load Image",
+      "description": "",
+      "python_module": "nodes",
+      "category": "image",
+      "output_node": false,
+      "has_intermediate_output": false,
+      "search_aliases": [
+        "load image",
+        "open image",
+        "import image",
+        "image input",
+        "upload image",
+        "read image",
+        "image loader"
+      ],
+      "essentials_category": "Basics"
+    },
+    "SaveImage": {
+      "input": {
+        "required": {
+          "images": [
+            "IMAGE",
+            {
+              "tooltip": "The images to save."
+            }
+          ],
+          "filename_prefix": [
+            "STRING",
+            {
+              "default": "ComfyUI",
+              "tooltip": "The prefix for the file to save. This may include formatting information such as %date:yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes."
+            }
+          ]
+        },
+        "hidden": {
+          "prompt": "PROMPT",
+          "extra_pnginfo": "EXTRA_PNGINFO"
+        }
+      },
+      "input_order": {
+        "required": [
+          "images",
+          "filename_prefix"
+        ],
+        "hidden": [
+          "prompt",
+          "extra_pnginfo"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "IMAGE"
+      ],
+      "output_is_list": [
+        false
+      ],
+      "output_name": [
+        "images"
+      ],
+      "name": "SaveImage",
+      "display_name": "Save Image",
+      "description": "Saves the input images to your ComfyUI output directory.",
+      "python_module": "nodes",
+      "category": "image",
+      "output_node": true,
+      "has_intermediate_output": false,
+      "search_aliases": [
+        "save",
+        "save image",
+        "export image",
+        "output image",
+        "write image",
+        "download"
+      ],
+      "essentials_category": "Basics"
+    },
+    "TextEncodeQwenImage21": {
+      "input": {
+        "required": {
+          "clip": [
+            "CLIP",
+            {}
+          ],
+          "prompt": [
+            "STRING",
+            {
+              "multiline": true,
+              "dynamicPrompts": true
+            }
+          ],
+          "negative_prompt": [
+            "STRING",
+            {
+              "multiline": true,
+              "dynamicPrompts": true
+            }
+          ],
+          "resolution": [
+            "INT",
+            {
+              "tooltip": "Reference images are resized to about resolution x resolution pixels, at multiples of 32, preserving aspect ratio. 0 keeps each reference at its own size, rounded to a multiple of 32. ",
+              "default": 1024,
+              "min": 0,
+              "max": 4096,
+              "step": 32
+            }
+          ],
+          "images": [
+            "COMFY_AUTOGROW_V3",
+            {
+              "tooltip": "Reference images, seen by the text encoder and spliced into the sequence as VAE latents.",
+              "template": {
+                "input": {
+                  "required": {
+                    "image": [
+                      "IMAGE",
+                      {}
+                    ]
+                  }
+                },
+                "names": [
+                  "image_1",
+                  "image_2",
+                  "image_3",
+                  "image_4",
+                  "image_5",
+                  "image_6",
+                  "image_7",
+                  "image_8",
+                  "image_9",
+                  "image_10",
+                  "image_11",
+                  "image_12",
+                  "image_13",
+                  "image_14",
+                  "image_15",
+                  "image_16"
+                ],
+                "min": 0
+              }
+            }
+          ]
+        },
+        "optional": {
+          "vae": [
+            "VAE",
+            {}
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "clip",
+          "prompt",
+          "negative_prompt",
+          "resolution",
+          "images"
+        ],
+        "optional": [
+          "vae"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "CONDITIONING",
+        "CONDITIONING",
+        "LATENT"
+      ],
+      "output_is_list": [
+        false,
+        false,
+        false
+      ],
+      "output_name": [
+        "positive",
+        "negative",
+        "latent"
+      ],
+      "output_tooltips": [
+        null,
+        null,
+        "Empty latent on the first reference image's size, to match with sampling as any other size shifts the edit."
+      ],
+      "output_matchtypes": null,
+      "name": "TextEncodeQwenImage21",
+      "display_name": "Text Encode Qwen Image 2.1",
+      "description": "",
+      "python_module": "comfy_extras.nodes_qwen",
+      "category": "model/conditioning/qwen image",
+      "output_node": false,
+      "deprecated": false,
+      "experimental": false,
+      "dev_only": false,
+      "api_node": false,
+      "price_badge": null,
+      "search_aliases": null,
+      "essentials_category": null,
+      "has_intermediate_output": false
+    },
+    "UNETLoader": {
+      "input": {
+        "required": {
+          "unet_name": [
+            [
+              "qwen_image_2.1_bf16.safetensors"
+            ]
+          ],
+          "weight_dtype": [
+            [
+              "default",
+              "fp8_e4m3fn",
+              "fp8_e4m3fn_fast",
+              "fp8_e5m2"
+            ],
+            {
+              "advanced": true
+            }
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "unet_name",
+          "weight_dtype"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "MODEL"
+      ],
+      "output_is_list": [
+        false
+      ],
+      "output_name": [
+        "MODEL"
+      ],
+      "name": "UNETLoader",
+      "display_name": "Load Diffusion Model",
+      "description": "",
+      "python_module": "nodes",
+      "category": "model/loaders",
+      "output_node": false,
+      "has_intermediate_output": false,
+      "search_aliases": []
+    },
+    "VAEDecode": {
+      "input": {
+        "required": {
+          "samples": [
+            "LATENT",
+            {
+              "tooltip": "The latent to be decoded."
+            }
+          ],
+          "vae": [
+            "VAE",
+            {
+              "tooltip": "The VAE model used for decoding the latent."
+            }
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "samples",
+          "vae"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "IMAGE"
+      ],
+      "output_is_list": [
+        false
+      ],
+      "output_name": [
+        "IMAGE"
+      ],
+      "name": "VAEDecode",
+      "display_name": "VAE Decode",
+      "description": "Decodes latent images back into pixel space images.",
+      "python_module": "nodes",
+      "category": "model/latent",
+      "output_node": false,
+      "has_intermediate_output": false,
+      "output_tooltips": [
+        "The decoded image."
+      ],
+      "search_aliases": [
+        "decode",
+        "decode latent",
+        "latent to image",
+        "render latent"
+      ]
+    },
+    "VAELoader": {
+      "input": {
+        "required": {
+          "vae_name": [
+            [
+              "qwen_image_2.1_vae_bf16.safetensors",
+              "pixel_space"
+            ]
+          ]
+        }
+      },
+      "input_order": {
+        "required": [
+          "vae_name"
+        ]
+      },
+      "is_input_list": false,
+      "output": [
+        "VAE"
+      ],
+      "output_is_list": [
+        false
+      ],
+      "output_name": [
+        "VAE"
+      ],
+      "name": "VAELoader",
+      "display_name": "Load VAE",
+      "description": "",
+      "python_module": "nodes",
+      "category": "model/loaders",
+      "output_node": false,
+      "has_intermediate_output": false,
+      "search_aliases": []
+    }
+  },
+  "queue": {
+    "queue_running": 0,
+    "queue_pending": 0
+  },
+  "receipt": {
+    "at": "2026-11-26T19:40:24+0800",
+    "hostname": "autodl-container-d9d74196c3-fb58b3e4",
+    "commit": "e8665ca8e4089ab917567cdb491308e1397663d4",
+    "comfy_dir": "/root/autodl-tmp/gpu-run/ComfyUI-e8665ca8e4089ab917567cdb491308e1397663d4",
+    "python": "/root/autodl-tmp/gpu-run/venv/bin/python",
+    "python_version": "3.12.3",
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "gpu": [
+      "NVIDIA GeForce RTX 4080 SUPER, 32760 MiB, 580.105.08"
+    ],
+    "launch_flags": [
+      "--listen",
+      "127.0.0.1",
+      "--port",
+      "8189",
+      "--disable-auto-launch",
+      "--disable-all-custom-nodes",
+      "--disable-partner-nodes",
+      "--cache-classic",
+      "--input-directory",
+      "/root/autodl-tmp/gpu-run/inputs",
+      "--output-directory",
+      "/root/autodl-tmp/gpu-run/output",
+      "--temp-directory",
+      "/root/autodl-tmp/gpu-run/temp",
+      "--user-directory",
+      "/root/autodl-tmp/gpu-run/user"
+    ],
+    "sources": {
+      "comfy_extras/nodes_qwen.py": "54ce02aa9e167c0b497ce026ac6b558f539427d2d1ed4fc1fcc2ec8e6bc529da",
+      "comfy_extras/nodes_model_patch.py": "f5e024c0d9ff32f3f364166dd21fae715bd911a6f2caef0fd3ccfd7d9b5d0dc2",
+      "comfy/ldm/qwen_image21/model.py": "a69dff15ff6fa369fab5ca0d3261f8aaf19aaedd3fc66414e20a1cf7df0aa5ac",
+      "comfy/supported_models.py": "5943d81bc0257b9b72b065a4ecb2f57c51c826e91f86c333b98fbe8a830e0cef"
+    },
+    "weights": [
+      {
+        "path": "diffusion_models/qwen_image_2.1_bf16.safetensors",
+        "bytes": 14230280616,
+        "sha256": "89f4158d066cc33906a199fca85634f766892dd78f49b6698dabf187ac86c4bc"
+      },
+      {
+        "path": "text_encoders/qwen3vl_8b_bf16.safetensors",
+        "bytes": 17534334616,
+        "sha256": "68bdc82bc1b66851162ae656225e7e2068166b603db19bd5d5a3b90eb12669a9"
+      },
+      {
+        "path": "vae/qwen_image_2.1_vae_bf16.safetensors",
+        "bytes": 675509688,
+        "sha256": "bb21f7473051e1ac368515dd3f2e15cd44d7a11748ee8823e1ddca3e4876b7c9"
+      },
+      {
+        "path": "model_patches/qwen_image_2.1_fun_controlnet_union_bf16.safetensors",
+        "bytes": 7550977992,
+        "sha256": "1f9dea8384ba167084f39f624908f1dbf2ea8a223bb4a8108a77dafa9b55bfe1"
+      }
+    ],
+    "weights_verified": true
+  },
+  "problems": []
+}
