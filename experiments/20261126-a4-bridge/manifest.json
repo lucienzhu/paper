@@ -1,10 +1,10 @@
 {
   "batch": "A4 布局桥接开发：闭环臂第一轮（工作台流程在各档名义值下的出图）",
   "workbench": {
-    "version": "4.5.2",
+    "version": "4.5.3",
     "model": "Qwen-Image-2.1",
-    "bundle": "assets/index-Co7FOXPy.js",
-    "bundle_sha256": "ff9c9c881c8751da4836555a48c85c1e31bc2c039d7ef5f8791d765865be81da",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
     "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
   },
   "seeds": [
@@ -71,7 +71,7 @@
         "accessories.drone_primary_color": "#c7cbd1",
         "accessories.surface_finish": "matte"
       },
-      "prompt_sha256": "354e8579e8b8eb9401c1209ce2dceb1a5a99c8faee8eef949c431ffede1e1acc"
+      "prompt_sha256": "22c95532808c1ea9b762845b83ae9a11dcbf044513584e5486ad2f1c398d4b0d"
     },
     "WL-1.35": {
       "state": "A4-WL-1.35",
@@ -86,7 +86,7 @@
         "accessories.drone_primary_color": "#c7cbd1",
         "accessories.surface_finish": "matte"
       },
-      "prompt_sha256": "833a0709b4cf0b8a76378832a3642a77d0448581e6d93fb41f0afda1e89bb6e9"
+      "prompt_sha256": "6bce291c3180fafb5ee08fdd11334375e70443ee459651040ea81538ff1b5cff"
     },
     "WL-1.55": {
       "state": "A4-WL-1.55",
@@ -101,7 +101,7 @@
         "accessories.drone_primary_color": "#c7cbd1",
         "accessories.surface_finish": "matte"
       },
-      "prompt_sha256": "cd0f818ee9a586a2d8c7b10967d9c4793356b62453812445f8d31f1298cf88f7"
+      "prompt_sha256": "6fd0a90d2f7312a94854e5fee9d8cdc558ea0dae7eb73f806c8d11c4f2c42b1b"
     },
     "WL-0.70": {
       "state": "A4-WL-0.70",
@@ -116,7 +116,7 @@
         "accessories.drone_primary_color": "#c7cbd1",
         "accessories.surface_finish": "matte"
       },
-      "prompt_sha256": "8599c7cbaa5bc1a55e20163765b22337223f09093c8aa46447ba0b9f5702bef5"
+      "prompt_sha256": "09b473f7a0e9eb18d9a202bab22a327817768ea30cf7f0d6cd55ed64c2999865"
     },
     "BW-0.16": {
       "state": "A4-BW-0.16",
@@ -132,7 +132,7 @@
         "accessories.surface_finish": "matte",
         "fuselage.fuselage_dimensions_mm.width": 40
       },
-      "prompt_sha256": "71ea0389c42859f0b97ba9e664175a863d9314406c68f8d03d4ac719dd2798a0"
+      "prompt_sha256": "8485581a3cb041ff80e75d62d19f003dd4af999fa98f668482d9a9cac659783f"
     },
     "BW-0.23": {
       "state": "A4-BW-0.23",
@@ -148,7 +148,7 @@
         "accessories.surface_finish": "matte",
         "fuselage.fuselage_dimensions_mm.width": 57.5
       },
-      "prompt_sha256": "d7df84842c216e1dbd0dc5b8c930a4cbc20b47fec575612366f384b2af53ca10"
+      "prompt_sha256": "4b5ea8c8a640882a18e2db84533b1d04b1c1726212ce517c03e83baeca9c70b7"
     },
     "BW-0.30": {
       "state": "A4-BW-0.30",
@@ -164,7 +164,7 @@
         "accessories.surface_finish": "matte",
         "fuselage.fuselage_dimensions_mm.width": 75
       },
-      "prompt_sha256": "88f8b4c1c53ec5bcf9d4e3387dfe710e07fc04a3a93363cd1c7738c7eb44d76d"
+      "prompt_sha256": "3c3b023c73180c90b5d208667db54358d88f5893c7bc88e1983b02d709898145"
     },
     "DD-0.46": {
       "state": "A4-DD-0.46",
@@ -180,7 +180,7 @@
         "accessories.surface_finish": "matte",
         "propulsion.prop_diameter_inch": 4.52755905511811
       },
-      "prompt_sha256": "05d3a7c80a35cd179d0ed99db154ce17fa932210dc3f9224a5effe230cbad353"
+      "prompt_sha256": "b304ffda3fb240ed51b9ad042c62d49ef4202d79a879a68e7a9d81a14e265dd7"
     },
     "DD-0.56": {
       "state": "A4-DD-0.56",
@@ -196,7 +196,7 @@
         "accessories.surface_finish": "matte",
         "propulsion.prop_diameter_inch": 5.511811023622047
       },
-      "prompt_sha256": "d88c61256040bea9a703f9ffa8115f164d2992f1c01f4ea46467ff3d30ba39de"
+      "prompt_sha256": "a365cb89c2098d25f8940f79a0956f5a9284f06a632d5d1404ebd4dc393f20dd"
     },
     "DD-0.66": {
       "state": "A4-DD-0.66",
@@ -212,7 +212,7 @@
         "accessories.surface_finish": "matte",
         "propulsion.prop_diameter_inch": 6.496062992125984
       },
-      "prompt_sha256": "4bf62193583872271c58e34df33abccd6cf60dea1951b22ca0e89e667f34609f"
+      "prompt_sha256": "4e51591e32effd7e08c75428511748cfd83eea346e5a0339a3fc32abaad91d23"
     }
   },
   "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
@@ -230,8 +230,8 @@
       "input_images": [
         "wbguide-e412fdd102b6.png"
       ],
-      "prompt_sha256": "354e8579e8b8eb9401c1209ce2dceb1a5a99c8faee8eef949c431ffede1e1acc",
-      "request_sha256": "5d4abefd4505337323fae7566945e5a617b86b9893397d9a49db43396aa72314"
+      "prompt_sha256": "22c95532808c1ea9b762845b83ae9a11dcbf044513584e5486ad2f1c398d4b0d",
+      "request_sha256": "66896c44eb833493ad547ee2d3793bb942465e82be05b70a667f8521e639b0a6"
     },
     {
       "order": 1,
@@ -246,8 +246,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "833a0709b4cf0b8a76378832a3642a77d0448581e6d93fb41f0afda1e89bb6e9",
-      "request_sha256": "caff40d9ea9107dc01c8cd85a4b112cb1a42c786ba9f7b781211d7a2407d7c9a"
+      "prompt_sha256": "6bce291c3180fafb5ee08fdd11334375e70443ee459651040ea81538ff1b5cff",
+      "request_sha256": "59c432d0b37bd35d84280a93b38ea792cf109f6342838536f8117fd9b844629e"
     },
     {
       "order": 1,
@@ -262,8 +262,8 @@
       "input_images": [
         "wbguide-f8258332f50c.png"
       ],
-      "prompt_sha256": "cd0f818ee9a586a2d8c7b10967d9c4793356b62453812445f8d31f1298cf88f7",
-      "request_sha256": "5603a0494075afcabcdca305fea01dc6bcb726e5d040c13b212f689a9fc0711a"
+      "prompt_sha256": "6fd0a90d2f7312a94854e5fee9d8cdc558ea0dae7eb73f806c8d11c4f2c42b1b",
+      "request_sha256": "a09c49bd6a3d62b5dd079d08da5de7dffed6fc2b634d4fba06f9e5e7b2d8a7cd"
     },
     {
       "order": 1,
@@ -278,8 +278,8 @@
       "input_images": [
         "wbguide-f7f9ec1c9758.png"
       ],
-      "prompt_sha256": "8599c7cbaa5bc1a55e20163765b22337223f09093c8aa46447ba0b9f5702bef5",
-      "request_sha256": "946de0636ca6df73c0fab93788cd5c33db9deeb39a3a8a3d30f93180f6cd3a91"
+      "prompt_sha256": "09b473f7a0e9eb18d9a202bab22a327817768ea30cf7f0d6cd55ed64c2999865",
+      "request_sha256": "ed1390f5307c76f2cdf49e245d64896ccaf848d8e28f8722c7c6863d6657e33b"
     },
     {
       "order": 1,
@@ -294,8 +294,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "71ea0389c42859f0b97ba9e664175a863d9314406c68f8d03d4ac719dd2798a0",
-      "request_sha256": "8600076c497f6d28f461078feab527bc9eeb227cfc84dc387327617cf8d35eb0"
+      "prompt_sha256": "8485581a3cb041ff80e75d62d19f003dd4af999fa98f668482d9a9cac659783f",
+      "request_sha256": "1bba943aa5a5a856399c89ff82d7282c0cc4006e29bf368bae8ecf00970cee3d"
     },
     {
       "order": 1,
@@ -310,8 +310,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "d7df84842c216e1dbd0dc5b8c930a4cbc20b47fec575612366f384b2af53ca10",
-      "request_sha256": "7801d53f706c96d89b7e6395320c0faaee148b88759b0b98e6150b8da4b12b74"
+      "prompt_sha256": "4b5ea8c8a640882a18e2db84533b1d04b1c1726212ce517c03e83baeca9c70b7",
+      "request_sha256": "e95571ff6fdfc2932f0a9c59ce73f4bfe06027ca49d36bead383c83f8c491bc5"
     },
     {
       "order": 1,
@@ -326,8 +326,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "88f8b4c1c53ec5bcf9d4e3387dfe710e07fc04a3a93363cd1c7738c7eb44d76d",
-      "request_sha256": "2963281a7bc8ee432e86ea49ae87251a191b6cc3bedb8e1ee1e5206bab05e73a"
+      "prompt_sha256": "3c3b023c73180c90b5d208667db54358d88f5893c7bc88e1983b02d709898145",
+      "request_sha256": "ea6b876b9b95bc60b15583bd82c8d08ed79dc6a20b4901b03e22fc3e01343a26"
     },
     {
       "order": 1,
@@ -342,8 +342,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "05d3a7c80a35cd179d0ed99db154ce17fa932210dc3f9224a5effe230cbad353",
-      "request_sha256": "77059b89e3d53acc870fe28db6ebe812f85575132cf7c9c294be926837864a9c"
+      "prompt_sha256": "b304ffda3fb240ed51b9ad042c62d49ef4202d79a879a68e7a9d81a14e265dd7",
+      "request_sha256": "22e5773973498711fa645aae2bb0a5d857a9bcb90e4678072a3bcf202b6f3b89"
     },
     {
       "order": 1,
@@ -358,8 +358,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "d88c61256040bea9a703f9ffa8115f164d2992f1c01f4ea46467ff3d30ba39de",
-      "request_sha256": "5e61ca5bce59eafcd37b8bdbe002bf140bf33d2b3371be7dd268c2013b28c0f5"
+      "prompt_sha256": "a365cb89c2098d25f8940f79a0956f5a9284f06a632d5d1404ebd4dc393f20dd",
+      "request_sha256": "8b452300171ff8848c925825f83b40e3754878b2ca33e8e100ecc26a9f70ba67"
     },
     {
       "order": 1,
@@ -374,8 +374,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "4bf62193583872271c58e34df33abccd6cf60dea1951b22ca0e89e667f34609f",
-      "request_sha256": "578f0688369a480a12caa32f15b42502a63584c778704a79c7c9e85e51a57679"
+      "prompt_sha256": "4e51591e32effd7e08c75428511748cfd83eea346e5a0339a3fc32abaad91d23",
+      "request_sha256": "d2f765703093755d0872ac90cb5ead1406fa6ea057b86339d909ebcfa8bab58c"
     },
     {
       "order": 2,
@@ -390,8 +390,8 @@
       "input_images": [
         "wbguide-e412fdd102b6.png"
       ],
-      "prompt_sha256": "354e8579e8b8eb9401c1209ce2dceb1a5a99c8faee8eef949c431ffede1e1acc",
-      "request_sha256": "e2dc812fb9ee358c9e77a8719fa4de2bbe780a997627c1ece0396af97e2a1efc"
+      "prompt_sha256": "22c95532808c1ea9b762845b83ae9a11dcbf044513584e5486ad2f1c398d4b0d",
+      "request_sha256": "6bedb5d80d545f386b9878a6e0bd14be135b7e193883003bf23a3a868780d431"
     },
     {
       "order": 2,
@@ -406,8 +406,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "833a0709b4cf0b8a76378832a3642a77d0448581e6d93fb41f0afda1e89bb6e9",
-      "request_sha256": "b408781f22bf38d71ed50976d37b31f83622bb7ea28e1310022b681f5de4df4a"
+      "prompt_sha256": "6bce291c3180fafb5ee08fdd11334375e70443ee459651040ea81538ff1b5cff",
+      "request_sha256": "8718ee141ccf78e94bfa07b6d3d4f382492c00ef25023400aba3dd3902683584"
     },
     {
       "order": 2,
@@ -422,8 +422,8 @@
       "input_images": [
         "wbguide-f8258332f50c.png"
       ],
-      "prompt_sha256": "cd0f818ee9a586a2d8c7b10967d9c4793356b62453812445f8d31f1298cf88f7",
-      "request_sha256": "438e68994502a14ebfe7f456e4e127fa8f855a1e7f7c82b208a496fe75a1c60e"
+      "prompt_sha256": "6fd0a90d2f7312a94854e5fee9d8cdc558ea0dae7eb73f806c8d11c4f2c42b1b",
+      "request_sha256": "8ce94c892d3a355a22fa9e2aad53138fe7697844a1354156a878f38d8ee61999"
     },
     {
       "order": 2,
@@ -438,8 +438,8 @@
       "input_images": [
         "wbguide-f7f9ec1c9758.png"
       ],
-      "prompt_sha256": "8599c7cbaa5bc1a55e20163765b22337223f09093c8aa46447ba0b9f5702bef5",
-      "request_sha256": "5708d97c485c27428bd110e12025a217a4dc60bbb0c58ef27e74f3386b70828c"
+      "prompt_sha256": "09b473f7a0e9eb18d9a202bab22a327817768ea30cf7f0d6cd55ed64c2999865",
+      "request_sha256": "6d23e0c85a565ecfea72c435c078680db9b6d2b6bdd121ca582ed7aa84a07109"
     },
     {
       "order": 2,
@@ -454,8 +454,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "71ea0389c42859f0b97ba9e664175a863d9314406c68f8d03d4ac719dd2798a0",
-      "request_sha256": "2d260313da6547e82e852889960aa864c3389f9282ef92912407fc5dc61a598f"
+      "prompt_sha256": "8485581a3cb041ff80e75d62d19f003dd4af999fa98f668482d9a9cac659783f",
+      "request_sha256": "1c08b09c45bf56dfd482aa24a29b5e4c4a600ff9af7fad71e65e81051ef4c88c"
     },
     {
       "order": 2,
@@ -470,8 +470,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "d7df84842c216e1dbd0dc5b8c930a4cbc20b47fec575612366f384b2af53ca10",
-      "request_sha256": "82581a177c1fb1cb718f907f83ceb6ccd25de2d62d5578fbcaa8cea296215d1c"
+      "prompt_sha256": "4b5ea8c8a640882a18e2db84533b1d04b1c1726212ce517c03e83baeca9c70b7",
+      "request_sha256": "04e017ca9ccbe9dbce6257f4271b7a00d2dca7976f83ee6383bea03f3aa1f82f"
     },
     {
       "order": 2,
@@ -486,8 +486,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "88f8b4c1c53ec5bcf9d4e3387dfe710e07fc04a3a93363cd1c7738c7eb44d76d",
-      "request_sha256": "f06b3bccd2c11a1e6ecb8e208dfc96fbc806ec6765ddd85c42e800506d74638d"
+      "prompt_sha256": "3c3b023c73180c90b5d208667db54358d88f5893c7bc88e1983b02d709898145",
+      "request_sha256": "53a42cca8eee592f701bc36072ac002ced8061327d4cc18f8f5926325b4e6b3d"
     },
     {
       "order": 2,
@@ -502,8 +502,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "05d3a7c80a35cd179d0ed99db154ce17fa932210dc3f9224a5effe230cbad353",
-      "request_sha256": "c09a5cb977021ff040513c03e674d7fe5ef55ceb4568eb8b3f4012bec6d3d5a2"
+      "prompt_sha256": "b304ffda3fb240ed51b9ad042c62d49ef4202d79a879a68e7a9d81a14e265dd7",
+      "request_sha256": "215c8afbb64f8be17575844b11a386f4569266167d058abdf6f6a5202bcf610d"
     },
     {
       "order": 2,
@@ -518,8 +518,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "d88c61256040bea9a703f9ffa8115f164d2992f1c01f4ea46467ff3d30ba39de",
-      "request_sha256": "54f2a2561153e66bf301cff0838b461c161e4d34158e628b20eb637ef74deff2"
+      "prompt_sha256": "a365cb89c2098d25f8940f79a0956f5a9284f06a632d5d1404ebd4dc393f20dd",
+      "request_sha256": "d47cbca6913d2563acd496690f5cb60a74bdc1409a7ec0cbdb5aafa4629b6181"
     },
     {
       "order": 2,
@@ -534,8 +534,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "4bf62193583872271c58e34df33abccd6cf60dea1951b22ca0e89e667f34609f",
-      "request_sha256": "83318988afd06ead5e45bb7905028c96ea2cf4acf3464f32332829d3a169f16f"
+      "prompt_sha256": "4e51591e32effd7e08c75428511748cfd83eea346e5a0339a3fc32abaad91d23",
+      "request_sha256": "843c52edf7b8c63af4ad6f0b849b765aa58493423fd6550c131d81b303e7a802"
     },
     {
       "order": 3,
@@ -550,8 +550,8 @@
       "input_images": [
         "wbguide-e412fdd102b6.png"
       ],
-      "prompt_sha256": "354e8579e8b8eb9401c1209ce2dceb1a5a99c8faee8eef949c431ffede1e1acc",
-      "request_sha256": "f3f5238b68bb11ddb4d65ea897b12ced16e0811f40749cc8e5e2af69fe48de5f"
+      "prompt_sha256": "22c95532808c1ea9b762845b83ae9a11dcbf044513584e5486ad2f1c398d4b0d",
+      "request_sha256": "4059ca536c59251dfba2b4b54198fd16383aa76a92eb011b61483470a06b1c8e"
     },
     {
       "order": 3,
@@ -566,8 +566,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "833a0709b4cf0b8a76378832a3642a77d0448581e6d93fb41f0afda1e89bb6e9",
-      "request_sha256": "7691bc23f44c4797a3c8ead8dce0d74ad195e98bfc7fdf0dacea07bdc1997e71"
+      "prompt_sha256": "6bce291c3180fafb5ee08fdd11334375e70443ee459651040ea81538ff1b5cff",
+      "request_sha256": "ee9e93f371f346ef7944e7acbc349c294842f995c76660c5d4e51ebc6491deb3"
     },
     {
       "order": 3,
@@ -582,8 +582,8 @@
       "input_images": [
         "wbguide-f8258332f50c.png"
       ],
-      "prompt_sha256": "cd0f818ee9a586a2d8c7b10967d9c4793356b62453812445f8d31f1298cf88f7",
-      "request_sha256": "bfae66c9603608f26217a16f85f9ecf60de3b3e015622062ebf8d5dd87b9861b"
+      "prompt_sha256": "6fd0a90d2f7312a94854e5fee9d8cdc558ea0dae7eb73f806c8d11c4f2c42b1b",
+      "request_sha256": "8ba80219cd7535430a4e2b9040682c805e64211c6c3a1c1bbe3bed7047e8fd10"
     },
     {
       "order": 3,
@@ -598,8 +598,8 @@
       "input_images": [
         "wbguide-f7f9ec1c9758.png"
       ],
-      "prompt_sha256": "8599c7cbaa5bc1a55e20163765b22337223f09093c8aa46447ba0b9f5702bef5",
-      "request_sha256": "23558e165032c25cfc9722271c5cb26b2ad276e26c31af079f14a0339c3affe0"
+      "prompt_sha256": "09b473f7a0e9eb18d9a202bab22a327817768ea30cf7f0d6cd55ed64c2999865",
+      "request_sha256": "18098c04dd8e2d1da90869288479389102a33ae818c523f065539dd5cac99b3f"
     },
     {
       "order": 3,
@@ -614,8 +614,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "71ea0389c42859f0b97ba9e664175a863d9314406c68f8d03d4ac719dd2798a0",
-      "request_sha256": "8457645e73c85ff26d60ef5d25edb0788ee7388acd337f02c52edef70cfb0e83"
+      "prompt_sha256": "8485581a3cb041ff80e75d62d19f003dd4af999fa98f668482d9a9cac659783f",
+      "request_sha256": "d7480c081f7d43d79058ed2a0ce9dbbcaa8aa80eaa67fc3c11f3e396a3d0b159"
     },
     {
       "order": 3,
@@ -630,8 +630,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "d7df84842c216e1dbd0dc5b8c930a4cbc20b47fec575612366f384b2af53ca10",
-      "request_sha256": "b11e08f9bea2fa88cd5f7a6ddc8f266623f038c3ac6abab18cd8ccc0c675fec9"
+      "prompt_sha256": "4b5ea8c8a640882a18e2db84533b1d04b1c1726212ce517c03e83baeca9c70b7",
+      "request_sha256": "9f0ef2dd0420e9941cef77ead8264d10b671f9f043fb5c7a4f788f06b8519b32"
     },
     {
       "order": 3,
@@ -646,8 +646,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "88f8b4c1c53ec5bcf9d4e3387dfe710e07fc04a3a93363cd1c7738c7eb44d76d",
-      "request_sha256": "91922ace3b63d318ae72406142e42c383881c65a107fe3df58c055e593885380"
+      "prompt_sha256": "3c3b023c73180c90b5d208667db54358d88f5893c7bc88e1983b02d709898145",
+      "request_sha256": "43a81b439c77d354a4215cd0c47251a259af131b34bb163be0ed64abc3c4f4d6"
     },
     {
       "order": 3,
@@ -662,8 +662,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "05d3a7c80a35cd179d0ed99db154ce17fa932210dc3f9224a5effe230cbad353",
-      "request_sha256": "cc981fc00ee3c68b40206dd5a582f69c5eb7f3b69da9dd5258b2eacde3fa7c45"
+      "prompt_sha256": "b304ffda3fb240ed51b9ad042c62d49ef4202d79a879a68e7a9d81a14e265dd7",
+      "request_sha256": "c4194a008fe3d0e13e5886e238ad5230b79ca34bbfae14010baf582ab5aafc9e"
     },
     {
       "order": 3,
@@ -678,8 +678,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "d88c61256040bea9a703f9ffa8115f164d2992f1c01f4ea46467ff3d30ba39de",
-      "request_sha256": "517de4f2656d1635ad13686edf832b88013c1c66ba8aecc6140b5c06a21f4f4c"
+      "prompt_sha256": "a365cb89c2098d25f8940f79a0956f5a9284f06a632d5d1404ebd4dc393f20dd",
+      "request_sha256": "8f4dd1acaba78c432e97a6d2d104a12386d0eef0733b7a9d087ece5df64c847c"
     },
     {
       "order": 3,
@@ -694,8 +694,8 @@
       "input_images": [
         "wbguide-19834924b19c.png"
       ],
-      "prompt_sha256": "4bf62193583872271c58e34df33abccd6cf60dea1951b22ca0e89e667f34609f",
-      "request_sha256": "7ccc8f168be40f7873953b2076e94efc5df2a9cadb7c9f28d690dd05437e6873"
+      "prompt_sha256": "4e51591e32effd7e08c75428511748cfd83eea346e5a0339a3fc32abaad91d23",
+      "request_sha256": "9f03344c0147fe7e620e204798b60c3bc6674f21197ee248300981f4fab6789b"
     }
   ],
   "inputs": [

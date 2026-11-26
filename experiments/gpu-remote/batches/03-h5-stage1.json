@@ -3,7 +3,7 @@
   "batch": "H5 八旋一轮与共轴 X8：第一段顶视 12 张（工作台流程）",
   "registration": "experiments/20261126-h5-octo-x8/README.md",
   "registered_manifest": "experiments/20261126-h5-octo-x8/manifest.json",
-  "registered_manifest_sha256": "aa2afe6593436a108d148f1a19e7d2b470099ad4614e3a303ca3b35610fcf4d1",
+  "registered_manifest_sha256": "9057970cc29b1b3bf4df598efa291030d538b5d1d48569fef472f46c4d97474b",
   "requests_dir": "experiments/20261126-h5-octo-x8/requests",
   "files_dirs": [
     "experiments/20261126-h5-octo-x8/inputs"
@@ -14,73 +14,73 @@
       "file": "01-H5-Q-r1.json",
       "id": "H5-Q-r1",
       "seed": 2026112611,
-      "sha256": "066bfaa386467a9593ddb890595bbc6699450cbf09126e1497553bc856398372"
+      "sha256": "1f35527646e5a807cd72772009fa8041a2eb33b5b5208522aed6ab47ac3ed5f5"
     },
     {
       "file": "01-H5-Q-r2.json",
       "id": "H5-Q-r2",
       "seed": 2026112612,
-      "sha256": "3ee7b6d6ce40aefa218c79fa020917b30af499eef14f4f17083fd357b0ca3adc"
+      "sha256": "2d3c98e7067fdba7895d419cb4c56979e87b6643051f52312cc284cd69569dbb"
     },
     {
       "file": "01-H5-Q-r3.json",
       "id": "H5-Q-r3",
       "seed": 2026112613,
-      "sha256": "0facde3d37cba2a3bf258503c8cab3404f71f3489a4ecd598ff0e5818dadc903"
+      "sha256": "b94bbf177ef410ff814607e40a14ecd1df01bc4c6f17790b7e3a6e09a095d9a0"
     },
     {
       "file": "01-H5-Q-r4.json",
       "id": "H5-Q-r4",
       "seed": 2026112614,
-      "sha256": "395ea1271ce03adf4d0b4a6cff56d0af7c04b1f0ee77038a618e95bcc5596d2c"
+      "sha256": "68a67dc1124c81e32027da4bf1b9551901dde86c6b2df7404211161ba81eb05a"
     },
     {
       "file": "01-H5-O8-r1.json",
       "id": "H5-O8-r1",
       "seed": 2026112611,
-      "sha256": "3e93867d17a0c9ebf90a54b491648f23e8bfeecf312ff2680ed4b7483453a0ca"
+      "sha256": "fff5d5f5df696577c6956529d66e73d620ef596101f86939ae369acf5950c2c1"
     },
     {
       "file": "01-H5-O8-r2.json",
       "id": "H5-O8-r2",
       "seed": 2026112612,
-      "sha256": "3ff6a7a00b98ad304fcf0fa954166a1c57d1b8b8d29997ad9d2b2dd1311c22cc"
+      "sha256": "d2335f5beb14eec69200d5855bc25b22f3b340dc8bc4545ad6e541be76cdc785"
     },
     {
       "file": "01-H5-O8-r3.json",
       "id": "H5-O8-r3",
       "seed": 2026112613,
-      "sha256": "44d4e6835062e4187700d65c714e014010cbc5dd23b4cc431dfb1c8fcd70d7ec"
+      "sha256": "a110df9a700527c8ab5216bca2579d27fe9766616a48d1718871a0cebe017651"
     },
     {
       "file": "01-H5-O8-r4.json",
       "id": "H5-O8-r4",
       "seed": 2026112614,
-      "sha256": "e7a7504ff912dabb12e49c69556f502e5f6fb778a3bc8ecf034eb3237b351b5b"
+      "sha256": "9a9c23850b41949d51066f09e33b231041198fee1cf3d97a71e7801c76f52444"
     },
     {
       "file": "01-H5-X8-r1.json",
       "id": "H5-X8-r1",
       "seed": 2026112611,
-      "sha256": "9b4c5527893e80d2fdbb723738dccada64efd7b54f277060fac5e1be4491e14b"
+      "sha256": "142a08f79ab5751f8c612d1200ac1dd9c4e0270fa12f36c7fbdcb416ecf7941a"
     },
     {
       "file": "01-H5-X8-r2.json",
       "id": "H5-X8-r2",
       "seed": 2026112612,
-      "sha256": "17376238cbd04c85c5119568c529eca4c2e3b3a308a35cc6b4a1ebba3ee92dd6"
+      "sha256": "a5da640b661766ca3ca5ecf866df775c3214e16f7eca290ac29a38c5d9ae9f8d"
     },
     {
       "file": "01-H5-X8-r3.json",
       "id": "H5-X8-r3",
       "seed": 2026112613,
-      "sha256": "97144ba31d231138209af8a827562a82856d4b924c9e6c533596b8bcb5c0dd34"
+      "sha256": "36b4d0476105e12ab15882e11a1f372dbdbc36ccdc2edf0de176aa6b0448c857"
     },
     {
       "file": "01-H5-X8-r4.json",
       "id": "H5-X8-r4",
       "seed": 2026112614,
-      "sha256": "a1d58cf07bcc37ce24ccb5ba831a15da5aeba18be4f57d412fcdcc1c10c47a56"
+      "sha256": "b25e43671b466c0a32a7588cea4a736687f687e72d574f5689b1c73481ef449d"
     }
   ],
   "files": {

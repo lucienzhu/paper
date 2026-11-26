@@ -1,10 +1,10 @@
 {
   "purpose": "每次开机先做的环境核对：同一份请求在这台主机上出两次，看两次是否一样",
   "workbench": {
-    "version": "4.5.2",
+    "version": "4.5.3",
     "model": "Qwen-Image-2.1",
-    "bundle": "assets/index-Co7FOXPy.js",
-    "bundle_sha256": "ff9c9c881c8751da4836555a48c85c1e31bc2c039d7ef5f8791d765865be81da",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
     "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
   },
   "rule": "ENV-A-r1 与 ENV-A-r2 是同一份请求（同文字、同条件图、同种子），中间隔一份只换种子的 ENV-N，免得第二次命中缓存。两张先逐像素比：完全相同记“逐像素相同”。不同时算三通道平均绝对差，再算 ENV-A-r1 与 ENV-N 的平均绝对差作对照：同种子的差不超过对照的 0.25 倍，记“只有数值差异”，照跑，把显卡型号和差值写进记录。超过就记“明显不同”，先停：核对主机回执（ComfyUI 版本、四个源文件、权重摘要）、启动参数、torch 版本和显卡型号，修好再做一次环境核对，修好之前不跑任何批次。这条规则 2026-11-26 在开机前写定。它核对的是这台主机按登记的执行图出图、同一请求可以重复；不与任何旧图比。",
@@ -14,24 +14,24 @@
       "id": "ENV-A-r1",
       "seed": 2026112691,
       "state": "F6-S0",
-      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
-      "request_sha256": "895ade1177911e702b3dacae222b40c6cb18d307c3f4319d7dbf19c969f9a313"
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "899ade37574df8ef5bcf737753610ab03c232146ea93efad2a83fa65e0ed9345"
     },
     {
       "order": 2,
       "id": "ENV-N",
       "seed": 2026112692,
       "state": "F6-S0",
-      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
-      "request_sha256": "a29ee380990fb5e548206c4395a6c11cab70c670f38ab838572f77afa0763644"
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "fb41f39987e1dcc232aabdf4e2e68bcf27f5fcabf4949f3db1069b360e3db489"
     },
     {
       "order": 3,
       "id": "ENV-A-r2",
       "seed": 2026112691,
       "state": "F6-S0",
-      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
-      "request_sha256": "3c3cbc80192dd44cebe625d35882a3f9dcb9e4b05e0a1940e8bb0745c42f2a2c",
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "63df5080eeb972c87cb53ab6ee3fd3e666b15c282549c63d9107ecd1420f27a1",
       "compare": {
         "repeat_of": "ENV-A-r1",
         "contrast": "ENV-N",

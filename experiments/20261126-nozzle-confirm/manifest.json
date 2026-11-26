@@ -1,10 +1,10 @@
 {
   "batch": "农业植保六旋：横向喷杆 6 张、电机下方喷头确认 4 张（工作台流程）",
   "workbench": {
-    "version": "4.5.2",
+    "version": "4.5.3",
     "model": "Qwen-Image-2.1",
-    "bundle": "assets/index-Co7FOXPy.js",
-    "bundle_sha256": "ff9c9c881c8751da4836555a48c85c1e31bc2c039d7ef5f8791d765865be81da",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
     "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
   },
   "states": {
@@ -12,11 +12,11 @@
       "values": {
         "accessories.spray_system": "motor-nozzles"
       },
-      "prompt_sha256": "c2c49e396cace564459f4a322d67e0b6620111b3b8273ab5828880b3368bf0ab"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3"
     },
     "H2-boom": {
       "values": {},
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423"
     }
   },
   "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
@@ -31,8 +31,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "c2c49e396cace564459f4a322d67e0b6620111b3b8273ab5828880b3368bf0ab",
-      "request_sha256": "8f92a80bce6421c766efb1d98b03c3ee0ded56e8d12f46ebe5442bebc2ca02e5"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "39e01c217bac4b29a7a5d7935c69886231ba9557de1a8e0da8ce71fa75eae896"
     },
     {
       "order": 1,
@@ -44,8 +44,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "c2c49e396cace564459f4a322d67e0b6620111b3b8273ab5828880b3368bf0ab",
-      "request_sha256": "07b56684eea03221d5efc85eea53d2d7dbf5fcd76f5feb3a0b8f7b19a6513f55"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "2efe60218a0932400ff9db97863dafb15a05024b0837f124ead0e268a845a43f"
     },
     {
       "order": 1,
@@ -57,8 +57,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "c2c49e396cace564459f4a322d67e0b6620111b3b8273ab5828880b3368bf0ab",
-      "request_sha256": "ab90ba2e88f2e85b706d73e534c02c2d9188a66ed827f76b70f253b0b1119630"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "3826d7c2f33eb37f4cd7c5271a4c338b6bdbcb6af205b4b2b93f6585eac301bd"
     },
     {
       "order": 1,
@@ -70,8 +70,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "c2c49e396cace564459f4a322d67e0b6620111b3b8273ab5828880b3368bf0ab",
-      "request_sha256": "65aab8b7a2e05cb4daad314178b4921fff41b16d4f0023b93406e4853b49ba71"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "3ade1c4dc7b20fe2e227a04aa718cd16670265c539de2610ea44e3ccc94019d0"
     },
     {
       "order": 1,
@@ -83,8 +83,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245",
-      "request_sha256": "c1557e3b058e8ba185d6ea4055591e01b97ea25510d10082187c473227a230ea"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "925aea73f8517d7ddbe97311cb1fd5ebbd4219949e5240515a09cd208f7bcb10"
     },
     {
       "order": 1,
@@ -96,8 +96,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245",
-      "request_sha256": "d0b4498b9b22b35aaf5642eb3d34188c993a46090d7d2f0c592b3df6588b9014"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "71f9c399234880f2b05a34d2507a9ebf6fe104bf73e04e5ea83d0e3d52616418"
     },
     {
       "order": 1,
@@ -109,8 +109,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245",
-      "request_sha256": "653bbb9f7ca9b6ed1391dda7017683c3901a688c7562d86ed88bf890de1b9366"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "4b28c9550a05064af420d1e8c357d2ecbcd6172d0ee300f5a43e388ce83a76f4"
     },
     {
       "order": 1,
@@ -122,8 +122,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245",
-      "request_sha256": "66b7735e8d1d78c83320a0118f68c6ab28be28003ab0be7df4f9c2c5ce23676d"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "b24f642f88b639b8cafb4dfa730891567296a2410e95d42278f886d6a679f760"
     },
     {
       "order": 1,
@@ -135,8 +135,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245",
-      "request_sha256": "97e3b6805353c0137371a3b706aa4105f8835dafba0e90404017c5427b06b4d0"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "2709bea54b84213f3e9dcf406dbd18306cdb5207b73f51759699b65421b4218a"
     },
     {
       "order": 1,
@@ -148,8 +148,8 @@
       "input_images": [
         "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "564d40334d4f4e9681a50a55599452135b3e400ac5df1845e8650e1fe06af245",
-      "request_sha256": "5a6f7b5b9b9225133ecca932ec468a3d9bf0ba4d6f6748701da163d53d313961"
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "a54709a983c430644b4e4dbfd4bae77ed55c4e762abb3df8b6dd08b2de0c458b"
     }
   ],
   "inputs": [

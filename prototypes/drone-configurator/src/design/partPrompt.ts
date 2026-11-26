@@ -75,7 +75,9 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
   });
   add({
     id: 'guide', group: 'task', source: 'fixed', zh: '随附点线图的读法', fields: [],
-    text: 'Match the motor centres and frame links in the attached layout image: red dots mark motor centres, blue lines mark frame links. Do not reproduce the dots or lines in the result.',
+    // 4.5.3：这一句不写点和线的颜色。写了“red dots…blue lines”时，颜色会进到产品上（真机开发小批：现行写法 4 张里 3 张机臂发蓝，去掉颜色词后 0/4；
+    // experiments/20261126-guide-colour-dev）。条件图本身的画法不变。
+    text: 'Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines mark frame links. Do not reproduce the dots or lines in the result.',
   });
 
   const blades = parseInt(propulsion.prop_blade_count, 10);

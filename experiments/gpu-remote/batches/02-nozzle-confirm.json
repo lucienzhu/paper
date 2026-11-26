@@ -3,7 +3,7 @@
   "batch": "农业植保六旋 10 张：电机下方喷头确认 4、横向喷杆 6（任务表 H2、H3；工作台流程）",
   "registration": "experiments/20261126-nozzle-confirm/README.md",
   "registered_manifest": "experiments/20261126-nozzle-confirm/manifest.json",
-  "registered_manifest_sha256": "a635e6edc009d829d4d9e1883ff8cac22e3a2b3bd2fda91f17bff66a1e10792a",
+  "registered_manifest_sha256": "139519178e25a5c851a0a47878bb158a01ca8684dea9a36a4d7e497626ccf237",
   "requests_dir": "experiments/20261126-nozzle-confirm/requests",
   "files_dirs": [
     "experiments/20261126-nozzle-confirm/inputs"
@@ -14,61 +14,61 @@
       "file": "01-E6B-N-confirm-r1.json",
       "id": "E6B-N-confirm-r1",
       "seed": 2026112601,
-      "sha256": "8f92a80bce6421c766efb1d98b03c3ee0ded56e8d12f46ebe5442bebc2ca02e5"
+      "sha256": "39e01c217bac4b29a7a5d7935c69886231ba9557de1a8e0da8ce71fa75eae896"
     },
     {
       "file": "01-E6B-N-confirm-r2.json",
       "id": "E6B-N-confirm-r2",
       "seed": 2026112602,
-      "sha256": "07b56684eea03221d5efc85eea53d2d7dbf5fcd76f5feb3a0b8f7b19a6513f55"
+      "sha256": "2efe60218a0932400ff9db97863dafb15a05024b0837f124ead0e268a845a43f"
     },
     {
       "file": "01-E6B-N-confirm-r3.json",
       "id": "E6B-N-confirm-r3",
       "seed": 2026112603,
-      "sha256": "ab90ba2e88f2e85b706d73e534c02c2d9188a66ed827f76b70f253b0b1119630"
+      "sha256": "3826d7c2f33eb37f4cd7c5271a4c338b6bdbcb6af205b4b2b93f6585eac301bd"
     },
     {
       "file": "01-E6B-N-confirm-r4.json",
       "id": "E6B-N-confirm-r4",
       "seed": 2026112604,
-      "sha256": "65aab8b7a2e05cb4daad314178b4921fff41b16d4f0023b93406e4853b49ba71"
+      "sha256": "3ade1c4dc7b20fe2e227a04aa718cd16670265c539de2610ea44e3ccc94019d0"
     },
     {
       "file": "01-H2-boom-r1.json",
       "id": "H2-boom-r1",
       "seed": 2026112621,
-      "sha256": "c1557e3b058e8ba185d6ea4055591e01b97ea25510d10082187c473227a230ea"
+      "sha256": "925aea73f8517d7ddbe97311cb1fd5ebbd4219949e5240515a09cd208f7bcb10"
     },
     {
       "file": "01-H2-boom-r2.json",
       "id": "H2-boom-r2",
       "seed": 2026112622,
-      "sha256": "d0b4498b9b22b35aaf5642eb3d34188c993a46090d7d2f0c592b3df6588b9014"
+      "sha256": "71f9c399234880f2b05a34d2507a9ebf6fe104bf73e04e5ea83d0e3d52616418"
     },
     {
       "file": "01-H2-boom-r3.json",
       "id": "H2-boom-r3",
       "seed": 2026112623,
-      "sha256": "653bbb9f7ca9b6ed1391dda7017683c3901a688c7562d86ed88bf890de1b9366"
+      "sha256": "4b28c9550a05064af420d1e8c357d2ecbcd6172d0ee300f5a43e388ce83a76f4"
     },
     {
       "file": "01-H2-boom-r4.json",
       "id": "H2-boom-r4",
       "seed": 2026112624,
-      "sha256": "66b7735e8d1d78c83320a0118f68c6ab28be28003ab0be7df4f9c2c5ce23676d"
+      "sha256": "b24f642f88b639b8cafb4dfa730891567296a2410e95d42278f886d6a679f760"
     },
     {
       "file": "01-H2-boom-r5.json",
       "id": "H2-boom-r5",
       "seed": 2026112625,
-      "sha256": "97e3b6805353c0137371a3b706aa4105f8835dafba0e90404017c5427b06b4d0"
+      "sha256": "2709bea54b84213f3e9dcf406dbd18306cdb5207b73f51759699b65421b4218a"
     },
     {
       "file": "01-H2-boom-r6.json",
       "id": "H2-boom-r6",
       "seed": 2026112626,
-      "sha256": "5a6f7b5b9b9225133ecca932ec468a3d9bf0ba4d6f6748701da163d53d313961"
+      "sha256": "a54709a983c430644b4e4dbfd4bae77ed55c4e762abb3df8b6dd08b2de0c458b"
     }
   ],
   "files": {

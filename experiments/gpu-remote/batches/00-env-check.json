@@ -3,7 +3,7 @@
   "batch": "环境核对 3 张（同一请求出两次，中间隔一份换种子的）",
   "registration": "experiments/gpu-remote/env-check/manifest.json",
   "registered_manifest": "experiments/gpu-remote/env-check/manifest.json",
-  "registered_manifest_sha256": "aa697b3a29c16e7c223f74e920b1f8177c8bc337fb56a1083cbb52a47aba0a2c",
+  "registered_manifest_sha256": "1000b20dd52dca1cf1916d3bf388028c695c4faba58175c031b3196d5f203e69",
   "requests_dir": "experiments/gpu-remote/env-check/requests",
   "files_dirs": [
     "experiments/gpu-remote/env-check/inputs"
@@ -14,19 +14,19 @@
       "file": "01-ENV-A-r1.json",
       "id": "ENV-A-r1",
       "seed": 2026112691,
-      "sha256": "895ade1177911e702b3dacae222b40c6cb18d307c3f4319d7dbf19c969f9a313"
+      "sha256": "899ade37574df8ef5bcf737753610ab03c232146ea93efad2a83fa65e0ed9345"
     },
     {
       "file": "02-ENV-N.json",
       "id": "ENV-N",
       "seed": 2026112692,
-      "sha256": "a29ee380990fb5e548206c4395a6c11cab70c670f38ab838572f77afa0763644"
+      "sha256": "fb41f39987e1dcc232aabdf4e2e68bcf27f5fcabf4949f3db1069b360e3db489"
     },
     {
       "file": "03-ENV-A-r2.json",
       "id": "ENV-A-r2",
       "seed": 2026112691,
-      "sha256": "3c3cbc80192dd44cebe625d35882a3f9dcb9e4b05e0a1940e8bb0745c42f2a2c"
+      "sha256": "63df5080eeb972c87cb53ab6ee3fd3e666b15c282549c63d9107ecd1420f27a1"
     }
   ],
   "files": {
