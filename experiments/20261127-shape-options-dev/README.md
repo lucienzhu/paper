@@ -21,3 +21,26 @@
 - 每张判：这一档改的那一项出没出来（出来、没出来、拿不准）；其余几项是不是还和基准一样（相机内嵌、单盖、无缝臂根、流线舱，除去这一档改的那项）；顶视、机头朝上、四个电机、完整的产品、没有起落架的脚、配色照登记的。
 - Claude 知条件地逐张写下；每一档一张总览图交给作者，作者的判断为准。出一档看一档，不等全部出完。
 - **规则：** 一档的 3 张里至少 2 张“出来”，这一档进确认批。不到 2 张的，先改这一档的句子再出一小批；改了仍出不来的，照实写“这个选项在这条流程上出不来”，不进确认批，工作台里这个选项要标明或去掉。
+
+## 头两档的结果和第二小批（2026-11-27，第一小批还在出后三档时写定）
+
+出一档看一档。S4、S5 的 6 张出来了，总览图 [overview-S4-S5.png](overview-S4-S5.png)，S4 的机鼻裁图 [nose-crops-S4.png](nose-crops-S4.png)。Claude 知条件的判断（作者的判断为准）：
+
+| 档 | 改的那一项 | 其余 |
+| --- | --- | --- |
+| S4 机鼻下挂 | 3/3 机鼻前缘都探出一个深色的相机舱体：出来了 | **3/3 的镜头都正对着观察者**。相机该朝机头前方，顶视里不该看见镜片。作者最早说的“朝上、和视角对不上”就是这个 |
+| S5 多块顶盖 | 3/3 顶盖上都有分缝；但“三块或更多”只有第 2 个种子是，第 1、3 个种子是两块：1/3，不到 2 张 | 第 2 个种子的桨是四叶（要的是双叶） |
+
+**原因和改法：**
+
+- S4：工作台编译时把 v1.6 原句里讲镜头朝向的那半句删了（“the lens faces straight forward toward the top edge of the image, so no lens glass is visible from above”）。改回 v1.6 的原句，和“内嵌机鼻”那一句的处理一样。
+- S5：现在的句子就是 v1.6 的原句（“Three or more distinct top cover panels separated by seams.”），出来的多是两块。换一个把块数和缝的走向写明的句子。
+
+**第二小批，6 张**（种子同第一小批的 2026112841—43，便于逐张对照；接在第一小批后面跑）：
+
+| 组 | 改的那一句 |
+| --- | --- |
+| S4b | The gimbal camera hangs underneath the front of the fuselage, as on modern foldable camera drones. Seen from directly above, only the top edge of a small dark grey camera housing peeks out just ahead of the nose; the lens faces straight forward toward the top edge of the image, so no lens glass is visible from above. The camera sits low and tight against the nose, with no neck, stalk or post. |
+| S5b | The top cover is divided into three separate panels by two transverse seams: a nose cap, a centre cover and a rear cover. |
+
+**怎么看：** S4b：舱体探出，且看不见正对观察者的镜片，两样都成立才算“出来”。S5b：顶盖上数得出三块或更多。规则照上面：3 张里至少 2 张。过了的句子写进工作台；S5b 是新写的句子，写进去以前请作者看图定。

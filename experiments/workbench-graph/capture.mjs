@@ -40,7 +40,7 @@ const layerFields = {
     'fuselage.fuselage_style', 'fuselage.top_cover', 'accessories.spray_tank'],
   details: ['frame.arm_root', 'accessories.has_camera_gimbal', 'accessories.camera_mount', 'landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm',
     'accessories.spray_system'],
-  cmf: ['accessories.drone_primary_color', 'accessories.arm_color', 'accessories.motor_color', 'accessories.prop_color',
+  cmf: ['accessories.drone_primary_color', 'accessories.arm_color', 'accessories.prop_color',
     'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
 };
 const layerOf = path => Object.keys(layerFields).find(layer => layerFields[layer].includes(path));
