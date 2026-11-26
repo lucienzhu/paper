@@ -8,32 +8,11 @@
       "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
       "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
     },
-    "S1": {
-      "version": "4.7.0",
+    "S4": {
+      "version": "4.7.1",
       "model": "Qwen-Image-2.1",
-      "bundle": "assets/index-YPZXpxR6.js",
-      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
-      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
-    },
-    "S2": {
-      "version": "4.7.0",
-      "model": "Qwen-Image-2.1",
-      "bundle": "assets/index-YPZXpxR6.js",
-      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
-      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
-    },
-    "S3": {
-      "version": "4.7.0",
-      "model": "Qwen-Image-2.1",
-      "bundle": "assets/index-YPZXpxR6.js",
-      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
-      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
-    },
-    "S5": {
-      "version": "4.7.0",
-      "model": "Qwen-Image-2.1",
-      "bundle": "assets/index-YPZXpxR6.js",
-      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+      "bundle": "assets/index-CzVKTWgy.js",
+      "bundle_sha256": "805e1316daaa1b25cffa85d06dd973dc8235596ffa4f0cebc842bc0b5593cdc7",
       "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
     }
   },
@@ -127,6 +106,24 @@
         "accessories.surface_finish": "matte"
       },
       "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86"
+    },
+    "S4": {
+      "state": "F6-S4",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "underslung",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95"
     }
   },
   "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
@@ -690,6 +687,118 @@
       ],
       "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
       "request_sha256": "ac2c8790a0048556092f881bc7d2a913e5c3c8efac16ae103b90ae06a9768b57"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r01",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112949,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "7a8f10f839e4e9f30107ae80bcb8101a47955519cee3d3a3770423bc3edf589e"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r02",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112950,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "242a75ca8488736ac1e15a341d58edd6b36885eafe109abe8697b57a4a4cce3f"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r03",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112951,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "99ac61a49afde176343f0bfafa98d1669f386ecfedbd06dca5b6bec920a857b1"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r04",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112952,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "9863922251111314e7a1a49aa4a05a8759f4ac2fc9e3740a4f6a9dfd2f4efd25"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r05",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112953,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "fb9e84f50bbf2150e2cb9e7ea03e65a70baee513a2c05c804fe8e1d5b31063cc"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r06",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112954,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "7a0de4a121d30aabe9ee2cf6c60a93338d9d2fdb24e304d4a58c04c8496abda7"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r07",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112955,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "db4f4645e827b1ae45bc9b2863a478bbb93a708dfcd7247e719bd2ddf0b609c5"
+    },
+    {
+      "order": 2,
+      "id": "F6-S4-r08",
+      "level": "S4",
+      "level_note": "相机改为机鼻下挂",
+      "seed": 2026112956,
+      "state": "F6-S4",
+      "workbench_version": "4.7.1",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "731dff19225675c8a88e9def11e47ae7f31f73ebc14a65fb9a10a98d27ceed95",
+      "request_sha256": "95c349d7d88b1d10b083671d83fc96e30e92e76cc666feb6a6cc2526b200bada"
     }
   ],
   "inputs": [

@@ -64,9 +64,10 @@ export const cameraMountOptions: Option<DroneParameters['accessories']['camera_m
   },
   {
     value: 'underslung', zh: '机鼻下挂', hint: '从正上方只见舱体前缘略微探出',
-    // 4.7.0：改回 v1.6 的原句，只去掉“dark grey”（模板不自带颜色，自检会拦）。此前缩短时丢了讲镜头朝向的半句，真机开发小批里 3 张镜头都正对观察者（experiments/20261127-shape-options-dev）。
-    en: 'The gimbal camera hangs underneath the front of the fuselage, as on modern foldable camera drones. Seen from directly above, only the top edge of a small camera housing peeks out just ahead of the nose; ' +
-      'the lens faces straight forward toward the top edge of the image, so no lens glass is visible from above. The camera sits low and tight against the nose, with no neck, stalk or post.',
+    // 4.7.1：v1.6 原句里否定镜片的半句（“so no lens glass is visible from above”）换成正面描述顶面。提到镜片（哪怕是否定）时真机上镜头都正对观察者
+    // （4.6 的短句 3/3、v1.6 原句 3/3）；不提 camera housing 时舱体不出来（4/4）；这一句在开发小批里舱体探出且不露镜片（experiments/20261127-shape-options-dev 第四小批）。
+    en: 'The gimbal camera hangs underneath the front of the fuselage. Seen from directly above, only the top edge of a small camera housing peeks out just ahead of the nose; the top of the housing is a plain closed cap. ' +
+      'The camera looks straight forward toward the top edge of the image and sits low and tight against the nose, with no neck, stalk or post.',
   },
 ];
 export const finishOptions: Option<DroneParameters['accessories']['surface_finish']>[] = [

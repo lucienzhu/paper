@@ -1,0 +1,65 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "F6 造型档位确认批第二部分 8 张：S4 机鼻下挂（工作台 4.7.1）",
+  "registration": "experiments/20261127-f6-shape-levels/README.md",
+  "registered_manifest": "experiments/20261127-f6-shape-levels/manifest.json",
+  "registered_manifest_sha256": "4603384a9ec53dc2c3415301fd5028e4873cb260288a4f99f99d4ba445845c6b",
+  "requests_dir": "experiments/20261127-f6-shape-levels/requests",
+  "files_dirs": [
+    "experiments/20261127-f6-shape-levels/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "02-F6-S4-r01.json",
+      "id": "F6-S4-r01",
+      "seed": 2026112949,
+      "sha256": "7a8f10f839e4e9f30107ae80bcb8101a47955519cee3d3a3770423bc3edf589e"
+    },
+    {
+      "file": "02-F6-S4-r02.json",
+      "id": "F6-S4-r02",
+      "seed": 2026112950,
+      "sha256": "242a75ca8488736ac1e15a341d58edd6b36885eafe109abe8697b57a4a4cce3f"
+    },
+    {
+      "file": "02-F6-S4-r03.json",
+      "id": "F6-S4-r03",
+      "seed": 2026112951,
+      "sha256": "99ac61a49afde176343f0bfafa98d1669f386ecfedbd06dca5b6bec920a857b1"
+    },
+    {
+      "file": "02-F6-S4-r04.json",
+      "id": "F6-S4-r04",
+      "seed": 2026112952,
+      "sha256": "9863922251111314e7a1a49aa4a05a8759f4ac2fc9e3740a4f6a9dfd2f4efd25"
+    },
+    {
+      "file": "02-F6-S4-r05.json",
+      "id": "F6-S4-r05",
+      "seed": 2026112953,
+      "sha256": "fb9e84f50bbf2150e2cb9e7ea03e65a70baee513a2c05c804fe8e1d5b31063cc"
+    },
+    {
+      "file": "02-F6-S4-r06.json",
+      "id": "F6-S4-r06",
+      "seed": 2026112954,
+      "sha256": "7a0de4a121d30aabe9ee2cf6c60a93338d9d2fdb24e304d4a58c04c8496abda7"
+    },
+    {
+      "file": "02-F6-S4-r07.json",
+      "id": "F6-S4-r07",
+      "seed": 2026112955,
+      "sha256": "db4f4645e827b1ae45bc9b2863a478bbb93a708dfcd7247e719bd2ddf0b609c5"
+    },
+    {
+      "file": "02-F6-S4-r08.json",
+      "id": "F6-S4-r08",
+      "seed": 2026112956,
+      "sha256": "95c349d7d88b1d10b083671d83fc96e30e92e76cc666feb6a6cc2526b200bada"
+    }
+  ],
+  "files": {
+    "wbguide-fc9b23f98221.png": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+  }
+}
