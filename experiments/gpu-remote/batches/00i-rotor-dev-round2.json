@@ -1,0 +1,65 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "旋翼开发第二小批 8 张",
+  "registration": "experiments/20261127-rotor-dev/README.md",
+  "registered_manifest": "experiments/20261127-rotor-dev/round2/manifest.json",
+  "registered_manifest_sha256": "350fc7dd4d4f7f360ff0826fa1240ee30b08562401c11066b3d18b28b224d665",
+  "requests_dir": "experiments/20261127-rotor-dev/round2/requests",
+  "files_dirs": [
+    "experiments/20261127-rotor-dev/round2/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-ROT-R3-s1.json",
+      "id": "ROT-R3-s1",
+      "seed": 2026112851,
+      "sha256": "1bff48b32e27348dc9a06749f1e18486bf346261be4a1f4ef4806e762756c6fa"
+    },
+    {
+      "file": "01-ROT-R4-s1.json",
+      "id": "ROT-R4-s1",
+      "seed": 2026112851,
+      "sha256": "d59351151051a71e022045f9a97dbf4a4e5944e029e27e0a90e4698d2fa344ba"
+    },
+    {
+      "file": "02-ROT-R3-s2.json",
+      "id": "ROT-R3-s2",
+      "seed": 2026112852,
+      "sha256": "10939e026996d00870ca994b7de8bc889bc3b48df00d2edee2fe540e2b8e969e"
+    },
+    {
+      "file": "02-ROT-R4-s2.json",
+      "id": "ROT-R4-s2",
+      "seed": 2026112852,
+      "sha256": "753198ae38e213fdb488f69a750d0d4eac7e4bacf8938f32df46f66e91839215"
+    },
+    {
+      "file": "03-ROT-R3-s3.json",
+      "id": "ROT-R3-s3",
+      "seed": 2026112853,
+      "sha256": "61982d643637836d30e3f7c87c69c9225ce57b1ff3621ff80de19044465ed0a0"
+    },
+    {
+      "file": "03-ROT-R4-s3.json",
+      "id": "ROT-R4-s3",
+      "seed": 2026112853,
+      "sha256": "2c059a79b0fe96de75be5489b1eb4c5324b974d13e1b15b48db9f920b5f4c333"
+    },
+    {
+      "file": "04-ROT-R3-s4.json",
+      "id": "ROT-R3-s4",
+      "seed": 2026112854,
+      "sha256": "f022ea4195b9e8f911995f8cb6fa76c97bab80c899246860f46534034eedf44c"
+    },
+    {
+      "file": "04-ROT-R4-s4.json",
+      "id": "ROT-R4-s4",
+      "seed": 2026112854,
+      "sha256": "b316d138c5ea22d3c7b489f467a4a62332c3b45392bd85dcd24393f45ab7e947"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

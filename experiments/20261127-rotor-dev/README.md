@@ -22,3 +22,18 @@
 - 同时按验收标准把整张图其余各项都看一遍，逐张记。
 - **规则：** 4 张里旋翼“对”的至少 3 张，这种做法才可取。可取的里面选改动小的（R1 先于 R2）。都不可取，再改写法出下一小批。其余各项不能因为改了桨这一句而变坏（BASE 检查小批里成立的各项仍至少 3/4）。
 - 选出的写法写进工作台，改版本号。
+
+## 第一个种子的情形和第二小批（2026-11-27 01:27，第一小批还在出时写定）
+
+第一个种子的三张（R0、R1、R2）出来了：三张的桨仍然都是 V 形。改回 v1.6 的长句、再加叶数的负向词，在这个种子上都没用。其余三个种子出完再记全；先把下一步备好，接在后面跑。
+
+**推测。** 模型把小型航拍机的桨画成折叠桨（两片各自铰接在桨毂上，停着时收成 V 形），这是它对这类产品的成见；只说“两片相反方向”压不住。换一个说法：直说是一体的、不能折的桨。
+
+**第二小批，8 张**（种子同第一小批 2026112851—54，逐张对照）：
+
+| 做法 | 桨那一句 | 负向词 |
+| --- | --- | --- |
+| R3 | Each motor carries one rigid, one-piece two-blade propeller, 5-inch (127 mm) diameter, not a folding propeller: seen from above it is a single straight bar through the hub, its two blades exactly opposite each other and equal in length. | 现行 19 个 |
+| R4 | 同 R3 | 现行 19 个，加 folding propeller, hinged propeller blades, three-blade propeller, four-blade propeller |
+
+判法和规则同上：四副桨逐副看，4 张里至少 3 张旋翼“对”才可取；R3 先于 R4。
