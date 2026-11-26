@@ -151,6 +151,12 @@
       "role": "工作台布局条件图：四旋、对角轴距 250 mm，W/L 取 A4 的各档（A4 闭环臂）",
       "nose_at": "upper edge",
       "source": "工作台 4.5.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-neutral-78716dae3031.png": {
+      "sha256": "78716dae3031a0b18f9ef4dad80b9ee3f424de8584758c144a142b422212aff2",
+      "role": "开发用：工作台布局条件图（真 X、250 mm）换成中性色，点白线灰，位置不动（条件图颜色残留开发小批）",
+      "nose_at": "upper edge",
+      "source": "experiments/20261126-guide-colour-dev/build.py 由 wbguide-deb3284ef6b5.png 换色"
     }
   }
 }
