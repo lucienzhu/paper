@@ -55,7 +55,7 @@
 
    接着用同样的 `--batch` 和 `--out` 依次跑 `upload`、`run`、`compare`（`compare` 不要 `--comfy`）。比对规则在 [env-check/manifest.json](env-check/manifest.json) 的 `rule`，开机前写定：两张里有一张“明显不同”就停，先查版本和权重。
 2. **工作台真机验收**：先 `npm run build`，再 `npm run gpu:acceptance -- --comfy-url $U --out <输出目录>`（在 `prototypes/drone-configurator` 里）。然后手动断网取回一次。它和各批不能同时跑。
-3. **F1 局部编辑开发 17 张**：批次单 [01-f1-dev.json](batches/01-f1-dev.json)，输出到 `experiments/20261117-local-edit-v2/actual/f1-dev`。按 F1 的登记，遮罩工作流报错就停、报告，不改写法顶替。
+3. **F1 局部编辑开发 17 张**：批次单 [01-f1-dev.json](../../archive/experiments/gpu-remote/batches/01-f1-dev.json)，输出到 `experiments/20261117-local-edit-v2/actual/f1-dev`。按 F1 的登记，遮罩工作流报错就停、报告，不改写法顶替。
 4. 其余各批照同样的 `check`、`upload`、`run`，输出放进各自登记目录的 `actual/`：
 
    | 批次单 | 批 | 份数 | 登记 |

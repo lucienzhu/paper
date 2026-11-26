@@ -17,6 +17,6 @@
 
 [三方向并排](abc-whole.jpg) · [三方向机头与臂根](abc-detail.jpg) · [三个方向的知条件 AI 初读](abc-reading.json)
 
-其他已经发布的阶段：[3.4.2 H3 三轮与盲读](../form342-h3-dev/) · [4.2.1 轴距与方向卡](../section421-h3-span/) · [E0](../../../evidence/e0-open-20261112/) · [E1](../../../evidence/e1-open-20261112/) · [L1](../../../evidence/l1-layout-actual/) · [D2](../d2-tuning/) · [Qwen 六档和 S4](../../../evidence/qwen-shape-s4-20261114/)。本页为开发证据；各阶段分母和独立性分别见原记录。
+其他已经发布的阶段：[3.4.2 H3 三轮与盲读](../form342-h3-dev/) · [4.2.1 轴距与方向卡](../section421-h3-span/) · [E0](../e0-open-20261112/) · [E1](../e1-open-20261112/) · [L1](../l1-layout-actual/) · [D2](../d2-tuning/) · [Qwen 六档和 S4](../qwen-shape-s4-20261114/)。本页为开发证据；各阶段分母和独立性分别见原记录。
 
 历史整包也可从 [11 月 13 日 GitHub Release](https://github.com/Freeloop993/paper/releases/tag/guide-choice-evidence-20261113) 下载；本页把部分原先需下载整包的原图和请求整理成主分支可逐张直接打开的入口。

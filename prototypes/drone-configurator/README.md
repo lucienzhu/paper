@@ -220,7 +220,7 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 | 设计对话 | [DesignChat.tsx](src/components/Studio/DesignChat.tsx) |
 | 布局空间图、设计提示、参考机型 | [SpaceMap.tsx](src/components/Studio/SpaceMap.tsx)、[Hints.tsx](src/components/Studio/Hints.tsx)、[References.tsx](src/components/Studio/References.tsx) |
 | 研究详情与导出：提示词面板、规格卡与导出 | [HandoffPage.tsx](src/components/Handoff/HandoffPage.tsx)、[PromptGenerator.tsx](src/components/DevPreview/PromptGenerator.tsx)、[ParameterOverview.tsx](src/components/Overview/ParameterOverview.tsx) |
-| 历史提交、候选原件、人工取舍与历史回放 | [ModelDispatch.tsx](src/components/Handoff/ModelDispatch.tsx)、[candidateRecords.ts](src/design/candidateRecords.ts)、[HistoryReplay.tsx](src/components/Handoff/HistoryReplay.tsx) |
+| 历史提交、候选原件、人工取舍与历史回放 | [ModelDispatch.tsx](src/components/Handoff/ModelDispatch.tsx)、[candidateRecords.ts](src/design/candidateRecords.ts)、[HistoryReplay.tsx](../../archive/prototypes/drone-configurator/src/components/Handoff/HistoryReplay.tsx) |
 | 出图（Qwen）、参考图转换、同一轮次恢复与本机代理 | [generation.ts](src/design/generation.ts)、[image-jobs.mjs](scripts/image-jobs.mjs) |
 | 轴心几何、构型画法与依据、条件图 | [design.ts](src/design/design.ts) |
 | 设计提示的算法（桨盘重叠、相机视野、桨与机身） | [checks.ts](src/design/checks.ts) |

@@ -7,7 +7,7 @@
 - 登记任务：任务表 H3 一行，“电机下方喷头方案是否做 4 个种子的确认”，原为“作者定，4 张”。作者 2026-11-25 把 GPU 批次交给 Claude 定（作者最新决定第 8 条），这次租机跑。
 - 结果写进 5.5.2，不新增章节，不加别的测量。
 
-**为什么做。** 11 月 15 日的[开发批](../gpu-day-20261115/afternoon-dev/README.md) E6B-N 用了一句新写法：“取消喷杆，改为电机下方喷头”。3 张都过了开发门，但读者是知条件的 AI 初读（[N3](../../evidence/20261117-offline-review/README.md)，逐张读数在 [afternoon-nine.json](../../evidence/20261117-offline-review/afternoon-nine.json)）。工作台给植保六旋的“电机下方喷头”选项，用的就是这句原句（`prototypes/drone-configurator/src/design/fields.ts`）。开发图只有 3 张，读者又知道条件，所以要换新种子、由不知条件的读者再读一次。
+**为什么做。** 11 月 15 日的[开发批](../gpu-day-20261115/afternoon-dev/README.md) E6B-N 用了一句新写法：“取消喷杆，改为电机下方喷头”。3 张都过了开发门，但读者是知条件的 AI 初读（[N3](../../archive/evidence/20261117-offline-review/README.md)，逐张读数在 [afternoon-nine.json](../../archive/evidence/20261117-offline-review/afternoon-nine.json)）。工作台给植保六旋的“电机下方喷头”选项，用的就是这句原句（`prototypes/drone-configurator/src/design/fields.ts`）。开发图只有 3 张，读者又知道条件，所以要换新种子、由不知条件的读者再读一次。
 
 ## 请求
 

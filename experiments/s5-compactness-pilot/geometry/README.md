@@ -13,7 +13,7 @@
 
 ## 二、怎么量的
 
-坐标是 1024×1024 评议用图的像素。定义沿用 [A3 的图面口径](../../../evidence/20261117-research-update/a3/README.md)，并推广到六、八旋翼，公式在 [metrics.py](metrics.py) 开头。
+坐标是 1024×1024 评议用图的像素。定义沿用 [A3 的图面口径](../../../archive/evidence/20261117-research-update/a3/README.md)，并推广到六、八旋翼，公式在 [metrics.py](metrics.py) 开头。
 
 | 量 | 定义 |
 | --- | --- |

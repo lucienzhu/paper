@@ -6,10 +6,10 @@
 
 | 条件图 | 参考图 | Qwen 对应原图 | GPT 原始输出 | GPT 原始像素 |
 |---|---|---|---|---|
-| A · 0.70 | [轴心与方向线](../../../experiments/l1-layout/guides/line-wl0.70.png) | [原 PNG](../../../evidence/l1-layout-actual/L1-actual/L1-A-wl0.70-r1/original.png) | [原 PNG](A-0.70.png) | 1254 × 1254 |
-| A · 1.30 | [轴心与方向线](../../../experiments/l1-layout/guides/line-wl1.30.png) | [原 PNG](../../../evidence/l1-layout-actual/L1-actual/L1-A-wl1.30-r1/original.png) | [原 PNG](A-1.30.png) | 1430 × 1100 |
-| B · 0.70 | [另含双叶轮廓](../../../experiments/l1-layout/guides/blades-wl0.70.png) | [原 PNG](../../../evidence/l1-layout-actual/L1-actual/L1-B-wl0.70-r1/original.png) | [原 PNG](B-0.70.png) | 1254 × 1254 |
-| B · 1.30 | [另含双叶轮廓](../../../experiments/l1-layout/guides/blades-wl1.30.png) | [原 PNG](../../../evidence/l1-layout-actual/L1-actual/L1-B-wl1.30-r1/original.png) | [原 PNG](B-1.30.png) | 1254 × 1254 |
+| A · 0.70 | [轴心与方向线](../../experiments/l1-layout/guides/line-wl0.70.png) | [原 PNG](../l1-layout-actual/L1-actual/L1-A-wl0.70-r1/original.png) | [原 PNG](A-0.70.png) | 1254 × 1254 |
+| A · 1.30 | [轴心与方向线](../../experiments/l1-layout/guides/line-wl1.30.png) | [原 PNG](../l1-layout-actual/L1-actual/L1-A-wl1.30-r1/original.png) | [原 PNG](A-1.30.png) | 1430 × 1100 |
+| B · 0.70 | [另含双叶轮廓](../../experiments/l1-layout/guides/blades-wl0.70.png) | [原 PNG](../l1-layout-actual/L1-actual/L1-B-wl0.70-r1/original.png) | [原 PNG](B-0.70.png) | 1254 × 1254 |
+| B · 1.30 | [另含双叶轮廓](../../experiments/l1-layout/guides/blades-wl1.30.png) | [原 PNG](../l1-layout-actual/L1-actual/L1-B-wl1.30-r1/original.png) | [原 PNG](B-1.30.png) | 1254 × 1254 |
 
 每列复用同一条件 PNG 和实际 Qwen 正向提示词。闭源入口接收原 PNG，原负向词以文本尾注 “Avoid:” 写入。实际入口为 Codex 内置 GPT 图像生成工具。作者指定 GPT Image 2.6，工具没有暴露可选模型 ID 或返回版本，此处版本记为未知。闭源种子、CFG、采样器、步数、Canny 和 ControlNet 的强度或区间均不可对齐。四份原图保持原始画幅，展示缩略图等比缩放。完整提示词、请求来源、图像摘要与尺寸见[输入输出记录](requests-and-originals.json)。
 

@@ -1,6 +1,6 @@
 # Codex 任务批次 02（Claude 统筹派发，G2 失败之后）
 
-**输入版本：** main `7773f2b`。依据：[G2 结果](../../../evidence/g2-six/README.md)、[G2b 规格](../protocols/G2b-structure-screen-spec.md)、冻结单（作者已选 D1 方案 B：Qwen＋参考图，可省略 LoRA）。
+**输入版本：** main `7773f2b`。依据：[G2 结果](../../evidence/g2-six/README.md)、[G2b 规格](../protocols/G2b-structure-screen-spec.md)、冻结单（作者已选 D1 方案 B：Qwen＋参考图，可省略 LoRA）。
 
 **规则：**
 - 离线准备不计调用。
