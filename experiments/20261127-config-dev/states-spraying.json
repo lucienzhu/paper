@@ -1,0 +1,16 @@
+{
+  "task": "agricultural_spraying",
+  "note": "构型开发检查：农业植保六旋。CD-boom 是工作台里这个任务的起始状态（横向喷杆）；CD-nozzle 只把喷洒部件改为电机下方喷头。",
+  "states": [
+    {
+      "name": "CD-boom",
+      "values": {}
+    },
+    {
+      "name": "CD-nozzle",
+      "values": {
+        "accessories.spray_system": "motor-nozzles"
+      }
+    }
+  ]
+}

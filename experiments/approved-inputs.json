@@ -169,6 +169,18 @@
       "role": "开发用：工作台 4.7.0 的布局条件图（真 X、250 mm，带表示桨的直杆）",
       "nose_at": "upper edge",
       "source": "工作台 4.7.0 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-1e1f9e7c146b.png": {
+      "sha256": "1e1f9e7c146b9e2b537077814b0a4be102b42b7f280a88f62871e4ce34c1e7d6",
+      "role": "开发用：工作台 4.7.0 的布局条件图（农业植保六旋，带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.0 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-93d76dbaaed1.png": {
+      "sha256": "93d76dbaaed18d54adac5298480a689f6f17970b58e169b474c0bef5e5aeb525",
+      "role": "开发用：工作台 4.7.0 的布局条件图（平面八旋、250 mm，带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.0 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
     }
   }
 }
