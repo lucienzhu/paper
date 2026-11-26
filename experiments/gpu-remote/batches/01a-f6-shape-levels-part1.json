@@ -3,7 +3,7 @@
   "batch": "F6 造型档位确认批第一部分 40 张：S0、S1、S2、S3、S5（工作台 4.7.0）",
   "registration": "experiments/20261127-f6-shape-levels/README.md",
   "registered_manifest": "experiments/20261127-f6-shape-levels/manifest.json",
-  "registered_manifest_sha256": "0181778f58436223834f86525190251254abee267f036381933eb5b13e24c862",
+  "registered_manifest_sha256": "4603384a9ec53dc2c3415301fd5028e4873cb260288a4f99f99d4ba445845c6b",
   "requests_dir": "experiments/20261127-f6-shape-levels/requests",
   "files_dirs": [
     "experiments/20261127-f6-shape-levels/inputs"

@@ -1,0 +1,8 @@
+{
+  "task": "agricultural_spraying",
+  "note": "农业植保六旋。H2-boom 是工作台里这个任务的起始状态（横向喷杆，一项没改）；H3-nozzle 只把喷洒部件改为电机下方喷头。",
+  "states": [
+    { "name": "H2-boom", "values": {} },
+    { "name": "H3-nozzle", "values": { "accessories.spray_system": "motor-nozzles" } }
+  ]
+}
