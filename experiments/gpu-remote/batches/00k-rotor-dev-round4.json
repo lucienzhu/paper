@@ -1,0 +1,66 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "旋翼开发第四小批 8 张：全文不出现折字（探路）",
+  "registration": "experiments/20261127-rotor-dev/README.md",
+  "registered_manifest": "experiments/20261127-rotor-dev/round4/manifest.json",
+  "registered_manifest_sha256": "a833acbd3e83e8ff9e01a69584fea8e0c72c64c130b84cc8dc2ea369405fddef",
+  "requests_dir": "experiments/20261127-rotor-dev/round4/requests",
+  "files_dirs": [
+    "experiments/20261127-rotor-dev/round4/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-ROT-R6-s1.json",
+      "id": "ROT-R6-s1",
+      "seed": 2026112851,
+      "sha256": "1a22d5128c31fbb55129aa9cc840f5aa65bc9012040462713f2f3a25f644c8c1"
+    },
+    {
+      "file": "01-ROT-R7-s1.json",
+      "id": "ROT-R7-s1",
+      "seed": 2026112851,
+      "sha256": "e61ae78405825ccfd7a17feadd3525a048af1d07bd250c63930071166e9c392c"
+    },
+    {
+      "file": "01-ROT-R8-s1.json",
+      "id": "ROT-R8-s1",
+      "seed": 2026112851,
+      "sha256": "cdd6c0f741ec9a0468d8acaa7a28e6aff9463131c37f84bb5880c7cf9c64ac64"
+    },
+    {
+      "file": "01-ROT-R9-s1.json",
+      "id": "ROT-R9-s1",
+      "seed": 2026112851,
+      "sha256": "ff4fa53b6acfa202fb7ac3281e922923b722cfdfaa13d5c196c225ea46077c8e"
+    },
+    {
+      "file": "02-ROT-R6-s2.json",
+      "id": "ROT-R6-s2",
+      "seed": 2026112852,
+      "sha256": "3b4922adc2d1d73a3998a739a5ff9514e3e9da5cae815e69933cbcb364db7d96"
+    },
+    {
+      "file": "02-ROT-R7-s2.json",
+      "id": "ROT-R7-s2",
+      "seed": 2026112852,
+      "sha256": "a45dccb2c821fdf56f5e8378f6e12683aa3d1668026e13c92a98a98909a9a80f"
+    },
+    {
+      "file": "02-ROT-R8-s2.json",
+      "id": "ROT-R8-s2",
+      "seed": 2026112852,
+      "sha256": "d105e2529d265c9cb29f134c0f271d1e3d26b59153ac2ae83eecad30a5118bc1"
+    },
+    {
+      "file": "02-ROT-R9-s2.json",
+      "id": "ROT-R9-s2",
+      "seed": 2026112852,
+      "sha256": "fb0405a148a8a85163d6c829c7df3fc290554479f9e5d18811780b56c546bfe3"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52",
+    "wbguide-propbars-ef7365442206.png": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f"
+  }
+}

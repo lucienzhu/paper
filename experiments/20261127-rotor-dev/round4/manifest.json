@@ -1,0 +1,117 @@
+{
+  "batch": "旋翼开发第四小批（探路：四种做法 × 2 个种子）",
+  "base_state": "BASE",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "sentences": {
+    "view": "Strict orthographic top view, nose toward the top edge of the image, arms fully extended in the flight-ready state.",
+    "propeller": "Each motor carries one rigid two-blade propeller, 5-inch (127 mm) diameter, moulded as a single straight piece: seen from above it is one straight bar through the hub, its two blades exactly opposite each other and equal in length.",
+    "propeller_with_analogy": "Each motor carries one rigid two-blade propeller, 5-inch (127 mm) diameter, moulded as a single straight piece: seen from above it is one straight bar through the hub, its two blades exactly opposite each other and equal in length, like the propeller of a model aeroplane.",
+    "guide_with_bars": "Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "ROT-R6-s1",
+      "variant": "R6",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "fe655f091eab83ce9d15c0c4177b92a5b81eadf8abe15537393e1726b7cb5caa",
+      "request_sha256": "1a22d5128c31fbb55129aa9cc840f5aa65bc9012040462713f2f3a25f644c8c1"
+    },
+    {
+      "order": 1,
+      "id": "ROT-R7-s1",
+      "variant": "R7",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "235e24eaf05187e42a8b980df462c466e16f4ea7065de445cbfef4b46541f7ae",
+      "request_sha256": "e61ae78405825ccfd7a17feadd3525a048af1d07bd250c63930071166e9c392c"
+    },
+    {
+      "order": 1,
+      "id": "ROT-R8-s1",
+      "variant": "R8",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "cc7a6e2017b7499c8c7a6ae6c2abed4eb488265ba42e779eaa39aec138743e7c",
+      "request_sha256": "cdd6c0f741ec9a0468d8acaa7a28e6aff9463131c37f84bb5880c7cf9c64ac64"
+    },
+    {
+      "order": 1,
+      "id": "ROT-R9-s1",
+      "variant": "R9",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "10ca1ea70f74e2bdfedb2de7ec0a104253a069e2153600a6fa812d40d39aaed0",
+      "request_sha256": "ff4fa53b6acfa202fb7ac3281e922923b722cfdfaa13d5c196c225ea46077c8e"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R6-s2",
+      "variant": "R6",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "fe655f091eab83ce9d15c0c4177b92a5b81eadf8abe15537393e1726b7cb5caa",
+      "request_sha256": "3b4922adc2d1d73a3998a739a5ff9514e3e9da5cae815e69933cbcb364db7d96"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R7-s2",
+      "variant": "R7",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "235e24eaf05187e42a8b980df462c466e16f4ea7065de445cbfef4b46541f7ae",
+      "request_sha256": "a45dccb2c821fdf56f5e8378f6e12683aa3d1668026e13c92a98a98909a9a80f"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R8-s2",
+      "variant": "R8",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "cc7a6e2017b7499c8c7a6ae6c2abed4eb488265ba42e779eaa39aec138743e7c",
+      "request_sha256": "d105e2529d265c9cb29f134c0f271d1e3d26b59153ac2ae83eecad30a5118bc1"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R9-s2",
+      "variant": "R9",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "10ca1ea70f74e2bdfedb2de7ec0a104253a069e2153600a6fa812d40d39aaed0",
+      "request_sha256": "fb0405a148a8a85163d6c829c7df3fc290554479f9e5d18811780b56c546bfe3"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    },
+    {
+      "input": "wbguide-propbars-ef7365442206.png",
+      "sha256": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f"
+    }
+  ]
+}
