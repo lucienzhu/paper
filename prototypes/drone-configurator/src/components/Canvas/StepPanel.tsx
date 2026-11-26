@@ -55,7 +55,6 @@ export interface PanelOps {
   newDirection: () => void;
   removeNode: (node: WorkflowNode) => void;
   removeReference: (edgeId: string) => void;
-  copyReference: (node: WorkflowNode) => void;
   openResearch: (node?: WorkflowNode) => void;
   report: (message: string) => void;
   pins: EvidencePins;
@@ -384,14 +383,13 @@ export default function StepPanel({ board, node, nodes, edges, attempts, steps, 
       <button type="button" className="canvas-icon-button" onClick={onClose} aria-label="收起面板"><PanelRightClose size={16}/></button>
     </header>
     <div key={mode + (node?.id ?? '')} className="cv-panel-scroll scroll-thin" hidden={showing !== 'step'}>
-      {mode === 'overview' && (project ? <Overview nodes={nodes} ops={ops}/> : <div className="cv-overview"><h2>B2 · 四旋翼外观深化</h2>
-        <p>这是一份只读的历史档案：从原始候选追踪相机安装位置的两条人工深化分支。点任一张卡片查看来源和记录；图片可以引用到「我的项目」。</p></div>)}
+      {mode === 'overview' && <Overview nodes={nodes} ops={ops}/>}
       {mode === 'goal' && <GoalPanel pins={ops.pins}/>}
       {mode === 'design' && node && <DesignPanel node={node} ops={ops}/>}
       {mode === 'generate' && node && <GeneratePanel key={node.id} node={node} nodes={nodes} attempts={attempts} steps={steps} starting={starting} ops={ops}/>}
       {mode === 'candidate' && node && <CandidatePanel node={node} nodes={nodes} edges={edges} attempts={attempts} ops={ops}/>}
       {mode === 'detail' && node && <GraphInspector node={node} nodes={nodes} edges={edges} boardId={board} onSelect={ops.select} onBranch={ops.saveVersion} onRestore={ops.restore}
-        onHandoff={ops.openResearch} onGenerateFrom={n => ops.continueFrom(n)} onRemove={ops.removeNode} onRemoveReference={ops.removeReference} onCopyReference={ops.copyReference}/>}
+        onHandoff={ops.openResearch} onGenerateFrom={n => ops.continueFrom(n)} onRemove={ops.removeNode} onRemoveReference={ops.removeReference}/>}
     </div>
     {chat && showing === 'chat' && <div className="cv-panel-chat"><ChatTab pins={ops.pins}/></div>}
   </aside>;

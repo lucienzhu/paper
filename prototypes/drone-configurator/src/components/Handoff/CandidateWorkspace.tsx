@@ -6,7 +6,6 @@ import { compilePrompt } from '../../design/partPrompt';
 import { computeLayout, frameRules, topologyOf, taskLabels } from '../../design/design';
 import { attachReceipt, exportRecord, freezeAttempt, listAttempts, markPresented, recordDecision, type DecisionKind, type FrozenAttempt } from '../../design/candidateRecords';
 import ModelDispatch from './ModelDispatch';
-import HistoryReplay from './HistoryReplay';
 import CandidatePreview from './CandidatePreview';
 
 const input='mt-1 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink';
@@ -123,6 +122,5 @@ export default function CandidateWorkspace({initialAttempt, initialParent,onPare
           <AttemptView key={attempt.id} attempt={attempt} onParent={id=>{chooseParent(id);form.current?.scrollIntoView({block:'start'});}}/></>:<p className="mt-3 rounded-xl border border-dashed border-line p-5 text-sm text-ink-soft">暂无设计轮次。冻结一份输入后，在这里核对回执、查看候选和记录取舍。</p>}
       </section>
     </div>
-    <HistoryReplay/>
   </div>;
 }

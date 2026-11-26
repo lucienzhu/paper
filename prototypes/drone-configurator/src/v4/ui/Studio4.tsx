@@ -1,6 +1,6 @@
 // 4.0 工作台：一块画布（逐层搭建的决定链）加一个跟着选中节点走的面板，底部一条语言输入。
 // 4.4：主持人用的东西（开场、计时、交接与暂停、结束本场、导出、研究记录）收进“主持人”面板；登记场次里参与者的界面
-// 不再出现研究记录、旧版（带 B2 案例）和场次设置，打开主持人面板要先确认，并记一笔。两种方式开场先看同一张任务卡。
+// 不再出现研究记录、旧版和场次设置，打开主持人面板要先确认，并记一笔。两种方式开场先看同一张任务卡。
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Undo2, Redo2, FileSearch, X, Workflow, History, Download, UserCog } from 'lucide-react';
 import { DroneStoreContext, taskStores } from '../../store/droneStore';
@@ -55,9 +55,9 @@ function TopBar({ onDrawer, onModerator, aiInfo }: { onDrawer: () => void; onMod
     {!registered && <span className={'t4-chip hide-narrow' + (aiInfo?.mode === 'model' ? ' is-ai' : '')} title={'文字模型：' + (aiInfo?.label ?? '读取中')} data-testid="ai-chip">文字 · {short(aiInfo?.label ?? '…')}</span>}
     <button type="button" className="t4-btn" title="撤销" disabled={!past.length} onClick={st.undo}><Undo2 size={14} /><span className="label">撤销</span></button>
     <button type="button" className="t4-btn" title="重做" disabled={!future.length} onClick={st.redo}><Redo2 size={14} /></button>
-    {/* 登记场次里，研究记录、导出和旧版只在主持人面板里；旧版带 B2 案例，会给参与者多一份设计参照。 */}
+    {/* 登记场次里，研究记录、导出和旧版只在主持人面板里。 */}
     {!registered && <button type="button" className="t4-btn" data-testid="open-records" onClick={onDrawer}><FileSearch size={14} /><span className="label">研究记录与导出</span></button>}
-    {!registered && <a className="t4-btn" href="#v=3" data-testid="old-version" title="打开 3.6 版与 B2 案例"><History size={14} /><span className="label">旧版</span></a>}
+    {!registered && <a className="t4-btn" href="#v=3" data-testid="old-version" title="打开 3.6 版"><History size={14} /><span className="label">旧版</span></a>}
     <button type="button" className="t4-btn" data-testid="open-moderator" title="开场、计时、交接与暂停、结束本场、导出" onClick={onModerator}><UserCog size={14} /><span className="label">主持人</span></button>
   </header>;
 }
@@ -68,7 +68,7 @@ function ModeratorDrawer({ onClose, onRecords }: { onClose: () => void; onRecord
     <div className="t4" style={{ position: 'sticky', top: 0, zIndex: 2 }}><b>主持人面板</b><span className="t4-gap" />
       <button type="button" className="t4-btn" data-testid="open-records-moderator" onClick={onRecords}><FileSearch size={14} />研究记录（逐轮）</button>
       {/* 登记场次里顶栏不放“旧版”，由主持人从这里进；离开工作台不结束这一场，记录留在本机。 */}
-      <a className="t4-btn" href="#v=3" data-testid="old-version-moderator" title="打开 3.6 版与 B2 案例；这一场不会因此结束"><History size={14} />旧版与 B2 案例</a>
+      <a className="t4-btn" href="#v=3" data-testid="old-version-moderator" title="打开 3.6 版；这一场不会因此结束"><History size={14} />旧版</a>
       <button type="button" className="t4-btn" data-testid="close-moderator" onClick={onClose}><X size={14} />回到工作台</button></div>
     <div style={{ maxWidth: 760, margin: '0 auto', padding: '16px 20px 40px' }}><SessionSetup open onDone={onClose} /></div>
   </div>;

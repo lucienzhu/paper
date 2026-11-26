@@ -14,7 +14,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RUNNER = [sys.executable, "-B", str(HERE / "remote_runner.py")]
-F1 = str(HERE / "batches/01-f1-dev.json")
+# 2026-11-26：原先用 F1 的批次单作夹具；F1 的旧登记随旧数据移进 archive，改用现行的 H3 喷头确认批次单（4 份请求）。
+F1 = str(HERE / "batches/02-nozzle-confirm.json")
 ENV = str(HERE / "batches/00-env-check.json")
 NO_PROXY = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 results = []
@@ -92,16 +93,16 @@ def main():
         code, log = runner("run", f, F1, out)
         expect("重跑不重复提交", code == 0 and len(f.posts()) == before == n_f1, log)
 
-    with Fake("--fail-prefix", "LE2-CAM-dev-r2") as f:
+    with Fake("--fail-prefix", "E6B-N-confirm-r2") as f:
         out = tmp / "fail"
         runner("upload", f, F1, out)
         code, log = runner("run", f, F1, out)
         states = [(r["id"], r["state"]) for r in journal(out)]
-        expect("执行错即停", code == 2 and states == [("LE2-CAM-dev-r1", "completed"), ("LE2-CAM-dev-r2", "isolated_error")], log)
+        expect("执行错即停", code == 2 and states == [("E6B-N-confirm-r1", "completed"), ("E6B-N-confirm-r2", "isolated_error")], log)
         code, log = runner("run", f, F1, out)
-        expect("有未结记录时不再往下提交", code == 2 and f.posts().count("LE2-CAM-dev-r3") == 0, log)
+        expect("有未结记录时不再往下提交", code == 2 and f.posts().count("E6B-N-confirm-r3") == 0, log)
 
-    with Fake("--drop-prefix", "LE2-CAM-dev-r1") as f:
+    with Fake("--drop-prefix", "E6B-N-confirm-r1") as f:
         out = tmp / "drop"
         runner("upload", f, F1, out)
         code, log = runner("run", f, F1, out)
@@ -109,16 +110,16 @@ def main():
         time.sleep(1)
         code, log = runner("reconcile", f, F1, out)
         expect("对账按主机历史补回原图", code == 0 and journal(out)[-1]["state"] == "reconciled"
-               and (out / "LE2-CAM-dev-r1" / "LE2-CAM-dev-r1.png").is_file(), log)
+               and (out / "E6B-N-confirm-r1" / "E6B-N-confirm-r1.png").is_file(), log)
         code, log = runner("run", f, F1, out)
-        expect("对账后接着跑完，第一份只提交过一次", code == 0 and f.posts().count("LE2-CAM-dev-r1") == 1
+        expect("对账后接着跑完，第一份只提交过一次", code == 0 and f.posts().count("E6B-N-confirm-r1") == 1
                and len(f.posts()) == n_f1, log)
 
-    with Fake("--cache-sampler-prefix", "LE2-CAM-dev-r1") as f:
+    with Fake("--cache-sampler-prefix", "E6B-N-confirm-r1") as f:
         out = tmp / "cache"
         runner("upload", f, F1, out)
         code, log = runner("run", f, F1, out)
-        expect("采样节点命中缓存即停", code == 2 and "缓存" in (out / "LE2-CAM-dev-r1" / "error.txt").read_text(encoding="utf-8"), log)
+        expect("采样节点命中缓存即停", code == 2 and "缓存" in (out / "E6B-N-confirm-r1" / "error.txt").read_text(encoding="utf-8"), log)
 
     for flag, name in ((["--argv-missing"], "没禁用自定义节点"), (["--receipt", "bad"], "ComfyUI 版本不对"),
                        (["--receipt", "none"], "没有主机回执")):
@@ -126,8 +127,8 @@ def main():
             code, log = runner("check", f, F1, tmp / ("check-" + flag[-1]))
             expect(f"主机检查拦下：{name}", code == 1, log)
 
-    other = ROOT / "experiments/20261117-local-edit-v2/inputs/E3R3-C1.png"
-    with Fake("--preload", f"B2-no-window.png={other}") as f:
+    other = ROOT / "experiments/20261126-a6-hexa-ratio/inputs/hexa-points-0.70.png"
+    with Fake("--preload", f"hexa-points-1.00.png={other}") as f:
         code, log = runner("upload", f, F1, tmp / "conflict")
         expect("主机上有同名不同内容的文件时不覆盖、停下", code != 0 and "同名" in log, log)
 

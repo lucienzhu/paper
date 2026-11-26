@@ -1,6 +1,7 @@
 import type { Snapshot } from '../../store/droneStore';
 
-export type WorkflowBoard = 'history' | 'project';
+/** 4.5.1 起只有设计者自己的项目；旧的 B2 案例画板随旧数据移进 archive（作者 2026-11-26 最新决定第 12 条）。 */
+export type WorkflowBoard = 'project';
 export interface WorkflowNode extends Partial<Snapshot> {
   id: string;
   kind: 'brief' | 'spec' | 'run' | 'image' | 'decision' | 'edit' | 'note' | 'evidence';

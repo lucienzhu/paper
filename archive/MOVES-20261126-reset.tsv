@@ -1582,7 +1582,6 @@ experiments/gpu-day-20261115/resume-reviewed.sh	archive/experiments/gpu-day-2026
 experiments/gpu-day-20261115/review-continuation/start.py	archive/experiments/gpu-day-20261115/review-continuation/start.py	11 月 17 日以前的出图及其请求、回执、读数和说明（旧路径，含 Qwen）。作者 11-26 定：旧路径的出图全部移出，研究按重建后的链条和新登记重来（作者最新决定第 12 条）
 experiments/gpu-day-20261115/reviewed-files.sha256	archive/experiments/gpu-day-20261115/reviewed-files.sha256	11 月 17 日以前的出图及其请求、回执、读数和说明（旧路径，含 Qwen）。作者 11-26 定：旧路径的出图全部移出，研究按重建后的链条和新登记重来（作者最新决定第 12 条）
 experiments/gpu-day-20261115/run_e2r.py	archive/experiments/gpu-day-20261115/run_e2r.py	11 月 17 日以前的出图及其请求、回执、读数和说明（旧路径，含 Qwen）。作者 11-26 定：旧路径的出图全部移出，研究按重建后的链条和新登记重来（作者最新决定第 12 条）
-experiments/gpu-day-20261115/weights.json	archive/experiments/gpu-day-20261115/weights.json	11 月 17 日以前的出图及其请求、回执、读数和说明（旧路径，含 Qwen）。作者 11-26 定：旧路径的出图全部移出，研究按重建后的链条和新登记重来（作者最新决定第 12 条）
 experiments/gpu-remote/batches/01-f1-dev.json	archive/experiments/gpu-remote/batches/01-f1-dev.json	F1/F2 第二版局部编辑的登记：父图是旧 E3 图（E3R3-B2、E3R3-C1 及其深化图），随旧图作废；F1/F2 按新通路的父图重新登记（作者最新决定第 12 条）
 experiments/hexa-plant-protection/README.md	archive/experiments/hexa-plant-protection/README.md	11 月 17 日以前的出图及其请求、回执、读数和说明（旧路径，含 Qwen）。作者 11-26 定：旧路径的出图全部移出，研究按重建后的链条和新登记重来（作者最新决定第 12 条）
 experiments/hexa-plant-protection/draft-request.json	archive/experiments/hexa-plant-protection/draft-request.json	11 月 17 日以前的出图及其请求、回执、读数和说明（旧路径，含 Qwen）。作者 11-26 定：旧路径的出图全部移出，研究按重建后的链条和新登记重来（作者最新决定第 12 条）
@@ -1784,3 +1783,23 @@ prototypes/drone-configurator/src/data/history/hex-guide.png	archive/prototypes/
 prototypes/drone-configurator/src/data/history/hex.webp	archive/prototypes/drone-configurator/src/data/history/hex.webp	工作台里的 B2 案例画板和历史回放：内容是旧 E3 的 B2 版本链和旧六旋图，随旧图移出（作者最新决定第 12 条）
 prototypes/drone-configurator/src/data/history/quad.webp	archive/prototypes/drone-configurator/src/data/history/quad.webp	工作台里的 B2 案例画板和历史回放：内容是旧 E3 的 B2 版本链和旧六旋图，随旧图移出（作者最新决定第 12 条）
 prototypes/drone-configurator/src/design/workflow/history.ts	archive/prototypes/drone-configurator/src/design/workflow/history.ts	工作台里的 B2 案例画板和历史回放：内容是旧 E3 的 B2 版本链和旧六旋图，随旧图移出（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/README.md	archive/experiments/gpu-day-20261115/afternoon-dev/README.md	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/build.py	archive/experiments/gpu-day-20261115/afternoon-dev/build.py	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/inputs/B2-L-lowkey.png	archive/experiments/gpu-day-20261115/afternoon-dev/inputs/B2-L-lowkey.png	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/requests/01-E6B-R-dev-r1.json	archive/experiments/gpu-day-20261115/afternoon-dev/requests/01-E6B-R-dev-r1.json	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/requests/01-E6B-R-dev-r2.json	archive/experiments/gpu-day-20261115/afternoon-dev/requests/01-E6B-R-dev-r2.json	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/requests/01-E6B-R-dev-r3.json	archive/experiments/gpu-day-20261115/afternoon-dev/requests/01-E6B-R-dev-r3.json	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/requests/03-M-L-dev-r1.json	archive/experiments/gpu-day-20261115/afternoon-dev/requests/03-M-L-dev-r1.json	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/requests/03-M-L-dev-r2.json	archive/experiments/gpu-day-20261115/afternoon-dev/requests/03-M-L-dev-r2.json	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+experiments/gpu-day-20261115/afternoon-dev/requests/03-M-L-dev-r3.json	archive/experiments/gpu-day-20261115/afternoon-dev/requests/03-M-L-dev-r3.json	旧开发批里现行构建不读的文件（旧 B2 深化底图、E6B-R 与 M-L 开发请求、这批的说明与编法）；H3 喷头确认只读 E6B-N 的请求与清单（作者最新决定第 12 条）
+manuscript/thesis/thesis-complete.docx	archive/manuscript/thesis/thesis-complete.docx	论文旧稿的 Word 文件与构建报告（第 4—6 章与摘要的旧内容、用旧图做的图都在里面）；源文件改为骨架后重新构建（作者最新决定第 12 条）
+manuscript/thesis/thesis-draft.docx	archive/manuscript/thesis/thesis-draft.docx	论文旧稿的 Word 文件与构建报告（第 4—6 章与摘要的旧内容、用旧图做的图都在里面）；源文件改为骨架后重新构建（作者最新决定第 12 条）
+manuscript/thesis/build-report.md	archive/manuscript/thesis/build-report.md	论文旧稿的 Word 文件与构建报告（第 4—6 章与摘要的旧内容、用旧图做的图都在里面）；源文件改为骨架后重新构建（作者最新决定第 12 条）
+manuscript/thesis/build-report-complete.md	archive/manuscript/thesis/build-report-complete.md	论文旧稿的 Word 文件与构建报告（第 4—6 章与摘要的旧内容、用旧图做的图都在里面）；源文件改为骨架后重新构建（作者最新决定第 12 条）
+manuscript/thesis/src/ch4.md	archive/manuscript/thesis/src/ch4.md	另存一份：旧稿全文（原处已改为待写骨架或删去旧轮次结果；作者最新决定第 12 条）
+manuscript/thesis/src/ch5.md	archive/manuscript/thesis/src/ch5.md	另存一份：旧稿全文（原处已改为待写骨架或删去旧轮次结果；作者最新决定第 12 条）
+manuscript/thesis/src/ch6.md	archive/manuscript/thesis/src/ch6.md	另存一份：旧稿全文（原处已改为待写骨架或删去旧轮次结果；作者最新决定第 12 条）
+manuscript/thesis/src/abstract-cn.md	archive/manuscript/thesis/src/abstract-cn.md	另存一份：旧稿全文（原处已改为待写骨架或删去旧轮次结果；作者最新决定第 12 条）
+manuscript/thesis/src/abstract-en.md	archive/manuscript/thesis/src/abstract-en.md	另存一份：旧稿全文（原处已改为待写骨架或删去旧轮次结果；作者最新决定第 12 条）
+manuscript/thesis/src/appendix.md	archive/manuscript/thesis/src/appendix.md	另存一份：旧稿全文（原处已改为待写骨架或删去旧轮次结果；作者最新决定第 12 条）
+planning/workbench-handoff/context/visuals/b2-history-canvas.png	archive/planning/workbench-handoff/context/visuals/b2-history-canvas.png	工作台交接包里的 B2 关系画布截图：图里载着旧 E3 的 B2 版本链（原图、去窗底图、上下端相机）；随旧图移出（作者最新决定第 12 条）

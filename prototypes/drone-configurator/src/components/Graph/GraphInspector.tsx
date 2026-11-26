@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import {
   ArrowDownRight, ArrowRight, ArrowUpLeft, CheckCheck, ChevronRight, ExternalLink,
-  FileText, GitBranch, Image as ImageIcon, Layers, Link2, LockKeyhole, Maximize2,
+  FileText, GitBranch, Image as ImageIcon, Layers, Link2, Maximize2,
   PanelRight, Pencil, Quote, SlidersHorizontal, Sparkles, StickyNote, Trash2, Unlink, Workflow, X,
 } from 'lucide-react';
 import { computeLayout } from '../../design/design';
@@ -23,7 +23,6 @@ interface GraphInspectorProps {
   onGenerateFrom?: (node: WorkflowNode) => void;
   onRemove?: (node: WorkflowNode) => void;
   onRemoveReference?: (edgeId: string) => void;
-  onCopyReference?: (node: WorkflowNode) => void;
 }
 
 const kinds = {
@@ -128,7 +127,7 @@ function Parameters({ node }: { node: WorkflowNode }) {
 }
 
 /** 画布上没有专用面板的卡片（证据、保存的版本、参考图、取舍、历史档案）的通用详情。 */
-export default function GraphInspector({ node, nodes, edges, boardId, onSelect, onBranch, onRestore, onHandoff, onGenerateFrom, onRemove, onRemoveReference, onCopyReference }: GraphInspectorProps) {
+export default function GraphInspector({ node, nodes, edges, boardId, onSelect, onBranch, onRestore, onHandoff, onGenerateFrom, onRemove, onRemoveReference }: GraphInspectorProps) {
   const title = useRef<HTMLHeadingElement>(null);
   const followingRelation = useRef(false);
   useLayoutEffect(() => {
@@ -140,7 +139,7 @@ export default function GraphInspector({ node, nodes, edges, boardId, onSelect, 
   return <aside className="graph-inspector" aria-label="所选节点" data-testid="graph-inspector">
     {!node ? <div className="gi-empty"><Layers size={25}/><p>选择一张卡片查看详情</p></div> : <>
       <header className="gi-node-heading">
-        <div className="gi-kind"><KindIcon size={13}/>{kinds[node.kind].title}{!project && <small><LockKeyhole size={10}/>只读档案</small>}</div>
+        <div className="gi-kind"><KindIcon size={13}/>{kinds[node.kind].title}</div>
         <h2 ref={title} tabIndex={-1}>{node.title}</h2>
         {node.subtitle && node.subtitle !== node.title && <p>{node.subtitle}</p>}
       </header>
@@ -149,9 +148,6 @@ export default function GraphInspector({ node, nodes, edges, boardId, onSelect, 
         {node.detail && node.detail !== node.subtitle && !node.editable && <p className="gi-description">{node.detail}</p>}
         <Parameters node={node}/>
         {node.kind === 'evidence' && <Source node={node}/>}
-        {!project && node.image && onCopyReference && <div className="gi-actions">
-          <button type="button" onClick={() => onCopyReference(node)}><Link2 size={14}/>引用到我的项目</button>
-        </div>}
         {project && <div className="gi-actions">
           {node.canRestore && <button type="button" className="gi-primary" onClick={() => onRestore(node.id)}><Pencil size={14}/>从此版本继续编辑</button>}
           {node.canBranch && <button type="button" onClick={() => onBranch(node.id)}><GitBranch size={14}/>存为分支</button>}

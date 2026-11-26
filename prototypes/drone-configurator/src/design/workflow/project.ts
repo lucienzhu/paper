@@ -4,7 +4,6 @@ import { frameRules, taskLabels, type Task } from '../design';
 import { wordPairs } from '../fields';
 import { appendAttempts } from './attempts';
 import { appendEvidence } from './evidence';
-import { historyGraph } from './history';
 import { referenceProblem, relation, type WorkflowGraph, type WorkflowNode } from './types';
 import type { BoardRecords } from './workspaceRecords';
 
@@ -30,12 +29,12 @@ export function buildProject(draft: ProjectDraft, attempts: FrozenAttempt[], rec
       detail: branch.copied ? '从所选版本复制规格，作为新的编辑起点。' : '保存当时的编辑草稿，包括参数、设计目标和已选字段。' });
   }
   for (const img of records.images) {
-    const history = img.historyNodeId ? historyGraph.nodes.find(n => n.id === img.historyNodeId) : undefined;
+    // 4.5.1 以前从 B2 案例引用来的参考图：案例已随旧数据移出（作者 2026-11-26），这里只留一张没有图的卡片说明来历。
+    const legacy = Boolean(img.historyNodeId);
     nodes.push({ id: img.id, kind: 'image', removable: true, title: img.title, createdAt: img.createdAt,
-      source: history?.source ?? '设计者上传的参考图', sourceUrl: history?.sourceUrl,
-      subtitle: history ? '历史案例参考图' : '上传参考图', image: history?.image ?? images.get(img.id),
-      facts: history ? [{ label: '历史节点', value: history.id }, { label: '来源图', value: history.title }]
-        : img.file ? [{ label: '原文件', value: img.file.name }] : [] });
+      source: legacy ? '旧 B2 案例的参考图（已移出，不再显示）' : '设计者上传的参考图',
+      subtitle: legacy ? '已移出的旧案例参考图' : '上传参考图', image: legacy ? undefined : images.get(img.id),
+      facts: img.file ? [{ label: '原文件', value: img.file.name }] : legacy ? [{ label: '原历史节点', value: img.historyNodeId! }] : [] });
   }
 
   appendAttempts(graph, attempts, draft.task, images);
