@@ -1,0 +1,59 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "旋翼开发第五小批 7 张：v1.6 桨句放到出过错桨的状态和种子上",
+  "registration": "experiments/20261127-rotor-dev/README.md",
+  "registered_manifest": "experiments/20261127-rotor-dev/round5/manifest.json",
+  "registered_manifest_sha256": "641e88fd3f058451f4949ec73935caac679b6e39b08b7eb34fccf915ddbe8f62",
+  "requests_dir": "experiments/20261127-rotor-dev/round5/requests",
+  "files_dirs": [
+    "experiments/20261127-rotor-dev/round5/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-ROT-R1f-BASE-s2.json",
+      "id": "ROT-R1f-BASE-s2",
+      "seed": 2026112832,
+      "sha256": "a17d77fdb63960a181f01e2f820c791d06d75c851c9574c1fd24d571d9d897e2"
+    },
+    {
+      "file": "02-ROT-R1f-S1-s1.json",
+      "id": "ROT-R1f-S1-s1",
+      "seed": 2026112841,
+      "sha256": "df558b017e203c396343df235ce43b46575ea8229cc16ecb437af98715e2825e"
+    },
+    {
+      "file": "03-ROT-R1f-S1-s2.json",
+      "id": "ROT-R1f-S1-s2",
+      "seed": 2026112842,
+      "sha256": "b5d6876d9f275d133b56a1b984f4af44e34c14653f43583d4a24f48e07c7f5e0"
+    },
+    {
+      "file": "04-ROT-R1f-S2-s1.json",
+      "id": "ROT-R1f-S2-s1",
+      "seed": 2026112841,
+      "sha256": "f8e3cb7da90d141f73571f949b1a499017d619bf54e7773dd89015fb7a501090"
+    },
+    {
+      "file": "05-ROT-R1f-S3-s1.json",
+      "id": "ROT-R1f-S3-s1",
+      "seed": 2026112841,
+      "sha256": "db20eef2334e38b54b6499b1e94cd91b34234fd4ea150626caca52393301c5b8"
+    },
+    {
+      "file": "06-ROT-R1f-S5-s1.json",
+      "id": "ROT-R1f-S5-s1",
+      "seed": 2026112841,
+      "sha256": "dab7c107328676d98764925340a8d933cf51ed7e42c6f6b6d443429a5f15e015"
+    },
+    {
+      "file": "07-ROT-R1f-S5-s2.json",
+      "id": "ROT-R1f-S5-s2",
+      "seed": 2026112842,
+      "sha256": "150cd3bab17c06a4add91155e4a052d95a2e532061fb884e95ef58e85f7cce53"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

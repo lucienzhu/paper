@@ -1,0 +1,23 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "旋翼开发第五小批第 8 张：S2 第 2 个种子",
+  "registration": "experiments/20261127-rotor-dev/README.md",
+  "registered_manifest": "experiments/20261127-rotor-dev/round5/manifest.json",
+  "registered_manifest_sha256": "730d84890c16951a25ed0ced581abfe3cf248f7e8b8ba7acc8980f1ae5818d09",
+  "requests_dir": "experiments/20261127-rotor-dev/round5/requests",
+  "files_dirs": [
+    "experiments/20261127-rotor-dev/round5/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "08-ROT-R1f-S2-s2.json",
+      "id": "ROT-R1f-S2-s2",
+      "seed": 2026112842,
+      "sha256": "e672dbaadcac0899805dc73edee72919e8bc7cd30466068cd863d3272ce1def2"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

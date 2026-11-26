@@ -1,0 +1,119 @@
+{
+  "batch": "旋翼开发第六小批（条件图上画桨 + v1.6 桨句，8 个出过错桨的状态 × 种子）",
+  "sentences": {
+    "propeller": "Each motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.",
+    "guide": "Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "ROT-R10-BASE-s2",
+      "variant": "R10",
+      "state": "BASE",
+      "seed": 2026112832,
+      "earlier_image_with_current_sentence": "BASE-s2",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "f7235848bc44146e8b4017a552568887e3d95424f925ca2242a819929ec59d3c"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R10-S1-s1",
+      "variant": "R10",
+      "state": "S1",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S1-s1",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "07b128668efd6f2a653107cce70d2fd8664e1ec46f1affc374a8a35afa14e83b"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R10-S1-s2",
+      "variant": "R10",
+      "state": "S1",
+      "seed": 2026112842,
+      "earlier_image_with_current_sentence": "SD-S1-s2",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "9cf4272c9ca53e93c5811aa30a2562df2c41902d32dd4e711d454cc32345362a"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R10-S2-s1",
+      "variant": "R10",
+      "state": "S2",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S2-s1",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "61eeea35acdd7f40cfa63dc92783d138520272330513a1189b1e02100396eae0"
+    },
+    {
+      "order": 5,
+      "id": "ROT-R10-S3-s1",
+      "variant": "R10",
+      "state": "S3",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S3-s1",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "36097049a7fc4e8ec2aa410e406b5c755df9bb32eb8d007ee9c7e7560aabfb16"
+    },
+    {
+      "order": 6,
+      "id": "ROT-R10-S5-s1",
+      "variant": "R10",
+      "state": "S5",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S5-s1",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "9ede69911e6e9e37b5b7eca54bd3d1836e968d22feeff6d7a8f2d0d7f9897e40",
+      "request_sha256": "e8a974e692877bd83ded8f09e26dda00df254c8a7b1c8cb3d19caf450ba37ee9"
+    },
+    {
+      "order": 7,
+      "id": "ROT-R10-S5-s2",
+      "variant": "R10",
+      "state": "S5",
+      "seed": 2026112842,
+      "earlier_image_with_current_sentence": "SD-S5-s2",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "9ede69911e6e9e37b5b7eca54bd3d1836e968d22feeff6d7a8f2d0d7f9897e40",
+      "request_sha256": "5e8d118b6303a40f447dc09bd5fbfa6c1472293d36b1445c58887baa6372eae6"
+    },
+    {
+      "order": 8,
+      "id": "ROT-R10-S2-s2",
+      "variant": "R10",
+      "state": "S2",
+      "seed": 2026112842,
+      "earlier_image_with_current_sentence": "SD-S2-s2",
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "8158b09f2746d0b85e143284b11d436aecf24cd3c416836a08b46ca096b397b3"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-propbars-ef7365442206.png",
+      "sha256": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f"
+    }
+  ]
+}

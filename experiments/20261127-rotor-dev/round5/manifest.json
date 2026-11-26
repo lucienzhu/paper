@@ -1,0 +1,126 @@
+{
+  "batch": "旋翼开发第五小批（R1 放到现行写法出过错桨的 8 个状态 × 种子上）",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "sentence": {
+    "current": "Each motor carries one stationary 2-blade propeller, 5-inch (127 mm) diameter. The two blades point in exactly opposite directions from the hub.",
+    "v16": "Each motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "ROT-R1f-BASE-s2",
+      "variant": "R1",
+      "state": "BASE",
+      "seed": 2026112832,
+      "earlier_image_with_current_sentence": "BASE-s2",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "request_sha256": "a17d77fdb63960a181f01e2f820c791d06d75c851c9574c1fd24d571d9d897e2"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R1f-S1-s1",
+      "variant": "R1",
+      "state": "S1",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S1-s1",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "aef01aab4d597a2897b429dcaaa6e495e89266e62fea2728e886bb515dd2ae36",
+      "request_sha256": "df558b017e203c396343df235ce43b46575ea8229cc16ecb437af98715e2825e"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R1f-S1-s2",
+      "variant": "R1",
+      "state": "S1",
+      "seed": 2026112842,
+      "earlier_image_with_current_sentence": "SD-S1-s2",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "aef01aab4d597a2897b429dcaaa6e495e89266e62fea2728e886bb515dd2ae36",
+      "request_sha256": "b5d6876d9f275d133b56a1b984f4af44e34c14653f43583d4a24f48e07c7f5e0"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R1f-S2-s1",
+      "variant": "R1",
+      "state": "S2",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S2-s1",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "725a1a9b385f897edf1d2284685d0fb1423cdc377128e5d713a269acf867f0d3",
+      "request_sha256": "f8e3cb7da90d141f73571f949b1a499017d619bf54e7773dd89015fb7a501090"
+    },
+    {
+      "order": 5,
+      "id": "ROT-R1f-S3-s1",
+      "variant": "R1",
+      "state": "S3",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S3-s1",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "49879a5e003806aa476fb5c8b89c4d0850b2112d1efcc5cebf51d99318680c04",
+      "request_sha256": "db20eef2334e38b54b6499b1e94cd91b34234fd4ea150626caca52393301c5b8"
+    },
+    {
+      "order": 6,
+      "id": "ROT-R1f-S5-s1",
+      "variant": "R1",
+      "state": "S5",
+      "seed": 2026112841,
+      "earlier_image_with_current_sentence": "SD-S5-s1",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "9b76d8d412a5c32959a75251644ade736de9d04b04c723f396b6de646376bf4e",
+      "request_sha256": "dab7c107328676d98764925340a8d933cf51ed7e42c6f6b6d443429a5f15e015"
+    },
+    {
+      "order": 7,
+      "id": "ROT-R1f-S5-s2",
+      "variant": "R1",
+      "state": "S5",
+      "seed": 2026112842,
+      "earlier_image_with_current_sentence": "SD-S5-s2",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "9b76d8d412a5c32959a75251644ade736de9d04b04c723f396b6de646376bf4e",
+      "request_sha256": "150cd3bab17c06a4add91155e4a052d95a2e532061fb884e95ef58e85f7cce53"
+    },
+    {
+      "order": 8,
+      "id": "ROT-R1f-S2-s2",
+      "variant": "R1",
+      "state": "S2",
+      "seed": 2026112842,
+      "earlier_image_with_current_sentence": "SD-S2-s2",
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "725a1a9b385f897edf1d2284685d0fb1423cdc377128e5d713a269acf867f0d3",
+      "request_sha256": "e672dbaadcac0899805dc73edee72919e8bc7cd30466068cd863d3272ce1def2"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}
