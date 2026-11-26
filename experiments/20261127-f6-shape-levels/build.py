@@ -27,29 +27,41 @@ PER_LEVEL = 8
 
 
 def main():
-    recs = {lvl: wbgraph.load(HERE / "captures", f"F6-{lvl}") for lvl in LEVELS}
+    """python3 build.py            写 S0—S3、S5 五档（第一部分，order 1）
+    python3 build.py S4         写 S4 一档（第二部分，order 2；S4 的记录取自 captures-s4/，见 README 第三节）"""
+    part2 = sys.argv[1:] == ["S4"]
+    wanted = ["S4"] if part2 else ["S0", "S1", "S2", "S3", "S5"]
+    recs = {lvl: wbgraph.load(HERE / ("captures-s4" if lvl == "S4" and part2 else "captures"), f"F6-{lvl}") for lvl in set(wanted) | {"S0"}}
     base = recs["S0"]["prompt"].split("\n")
     (HERE / "requests").mkdir(exist_ok=True)
-    rows, seeds = [], set()
-    for lvl, (what, first) in LEVELS.items():
+    mpath = HERE / "manifest.json"
+    kept = [r for r in json.loads(mpath.read_bytes())["requests"] if r["level"] not in wanted] if mpath.exists() else []
+    rows, seeds = [], {r["seed"] for r in kept}
+    for lvl in wanted:
+        what, first = LEVELS[lvl]
         rec = recs[lvl]
         changed = [i for i, (a, b) in enumerate(zip(base, rec["prompt"].split("\n"))) if a != b]
         assert len(base) == len(rec["prompt"].split("\n")) and len(changed) == (0 if lvl == "S0" else 1), f"{lvl} 与基准不是只差一句"
+        assert rec["negative_prompt"] == recs["S0"]["negative_prompt"] and rec["guide"]["sha256"] == recs["S0"]["guide"]["sha256"], f"{lvl} 的负向词或条件图与基准不同"
+        order = 2 if lvl == "S4" else 1
         for i in range(PER_LEVEL):
             rid, seed = f"F6-{lvl}-r{i + 1:02d}", first + i
             assert seed not in seeds
             seeds.add(seed)
             raw = wbgraph.stamp(rec, rid, seed)
-            (HERE / "requests" / f"01-{rid}.json").write_bytes(raw)
-            rows.append({"order": 1, "id": rid, "level": lvl, "level_note": what, "seed": seed, "state": rec["name"],
+            (HERE / "requests" / f"{order:02d}-{rid}.json").write_bytes(raw)
+            rows.append({"order": order, "id": rid, "level": lvl, "level_note": what, "seed": seed, "state": rec["name"], "workbench_version": rec["workbench"]["version"],
                          "input_images": [rec["guide"]["file"]], "prompt_sha256": rec["prompt_sha256"], "request_sha256": wbgraph.sha(raw)})
     inputs = wbgraph.copy_guides(recs.values(), HERE / "inputs")
     wbgraph.register_guides(recs.values(), "工作台 4.7.0 的布局条件图：真 X、W/L 1.00、对角轴距 250 mm，带表示桨的直杆（F6 确认批）")
-    manifest = {"batch": "F6 造型档位确认批（工作台 4.7.0，S0—S5 每档 8 张，2026-11-27 重新登记）", "workbench": wbgraph.workbench_of(list(recs.values())),
-                "states": {lvl: {"state": r["name"], "values": r["values"], "prompt_sha256": r["prompt_sha256"]} for lvl, r in recs.items()},
+    rows = sorted(kept + rows, key=lambda r: (r["order"], r["id"]))
+    manifest = {"batch": "F6 造型档位确认批（S0—S5 每档 8 张，2026-11-27 重新登记；S0—S3、S5 先出，S4 后出）",
+                "workbench": {lvl: recs[lvl]["workbench"] for lvl in sorted(recs)},
+                "states": {**(json.loads(mpath.read_bytes()).get("states", {}) if mpath.exists() else {}),
+                           **{lvl: {"state": r["name"], "values": r["values"], "prompt_sha256": r["prompt_sha256"]} for lvl, r in recs.items() if lvl in wanted}},
                 "negative_prompt": recs["S0"]["negative_prompt"], "requests": rows, "inputs": inputs}
-    (HERE / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"写出 {len(rows)} 份请求，{len(inputs)} 张条件图")
+    mpath.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"写出 {len(wanted) * PER_LEVEL} 份请求（{'、'.join(wanted)}），清单共 {len(rows)} 份，{len(inputs)} 张条件图")
 
 
 if __name__ == "__main__":

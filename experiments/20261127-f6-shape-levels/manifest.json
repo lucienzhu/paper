@@ -1,0 +1,701 @@
+{
+  "batch": "F6 造型档位确认批（S0—S5 每档 8 张，2026-11-27 重新登记；S0—S3、S5 先出，S4 后出）",
+  "workbench": {
+    "S0": {
+      "version": "4.7.0",
+      "model": "Qwen-Image-2.1",
+      "bundle": "assets/index-YPZXpxR6.js",
+      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+    },
+    "S1": {
+      "version": "4.7.0",
+      "model": "Qwen-Image-2.1",
+      "bundle": "assets/index-YPZXpxR6.js",
+      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+    },
+    "S2": {
+      "version": "4.7.0",
+      "model": "Qwen-Image-2.1",
+      "bundle": "assets/index-YPZXpxR6.js",
+      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+    },
+    "S3": {
+      "version": "4.7.0",
+      "model": "Qwen-Image-2.1",
+      "bundle": "assets/index-YPZXpxR6.js",
+      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+    },
+    "S5": {
+      "version": "4.7.0",
+      "model": "Qwen-Image-2.1",
+      "bundle": "assets/index-YPZXpxR6.js",
+      "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+      "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+    }
+  },
+  "states": {
+    "S0": {
+      "state": "F6-S0",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec"
+    },
+    "S3": {
+      "state": "F6-S3",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "hinge",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5"
+    },
+    "S5": {
+      "state": "F6-S5",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "multi",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91"
+    },
+    "S1": {
+      "state": "F6-S1",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Boxy Enclosure",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307"
+    },
+    "S2": {
+      "state": "F6-S2",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "socket",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86"
+    }
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+  "requests": [
+    {
+      "order": 1,
+      "id": "F6-S0-r01",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112901,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "a037f9788e2f50a88440002013626d9c1de18ca91bab411bd6ee3ad15df7133f"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r02",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112902,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "bea9397976ce12e9c61281cb4ecd927dbbfce9068d3511f2db49fb6f3affff14"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r03",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112903,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "7eee3e27df0a92b5fefa4c788139020a47756cfde1157f882ab61f70e7a5d10a"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r04",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112904,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "78a722f1d071d69ce052abd7efc3fd1b5cdb6da9679fa79d898b56e5cc034783"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r05",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112905,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "4346d68d9b4a88e30db4477e6781b2a181c8cec38a6f8be8c1bb75ea1be06dea"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r06",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112906,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "6b3a53082dbe687c2765b0877fbe89b1766166825ccb9749959772b8067951f6"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r07",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112907,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "3363fdaee1a217ede31e3b5fc30c852f7384adbbf3ef49068e3512b2b39dde7e"
+    },
+    {
+      "order": 1,
+      "id": "F6-S0-r08",
+      "level": "S0",
+      "level_note": "基准：流线舱、无缝臂根、内嵌机鼻、单盖、不设独立起落架",
+      "seed": 2026112908,
+      "state": "F6-S0",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "fe5780992642a6281df7a6ba10029b6d9194f96309896a61b0e9a9215c965797"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r01",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112913,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "4d063142fb151425866042677c43027d76ecca8138e2d1ee04b3d9ef18f98e6d"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r02",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112914,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "3f7f8ddb8622522f50f0c10c47a4683a786032cf81b5e7a9c21b3f1ff6654e30"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r03",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112915,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "2956c2407edb50729c3484fc5614b49be761fb6c34f0e9c5faa7edfc5f575246"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r04",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112916,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "9b59ad8485d1deb649d7c262a67b2bdbc1d1cbb3265a4952aa5b604067918855"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r05",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112917,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "6048cc83489eeda36bc1ccc4df601c9f00cdc9d76bb9a967b9a907d579e6c457"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r06",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112918,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "816ff36babaa8a72c753f13f0d50faef5b2d9e0b35ef42115a975d1dde80d4c7"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r07",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112919,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "5f3a0681cbe965dbb0d50342eb8fe485cadb5af36614c51f66fca31e0e49d4f4"
+    },
+    {
+      "order": 1,
+      "id": "F6-S1-r08",
+      "level": "S1",
+      "level_note": "机身轮廓改为方正机壳",
+      "seed": 2026112920,
+      "state": "F6-S1",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "ec77cedcaefac878b1014abb2321770e1280692f0d767902d8afca39e281373d"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r01",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112925,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "f2c634748b8036103790dab12863836e50b832d5106594e092a77d819ace91f7"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r02",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112926,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "f89b72816ba8cc0e7575ccfe7c43ee7fc0fd857c887ceed2d8c76835150157c1"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r03",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112927,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "305feb300b62b73cb9b91947ea91883c1bcaca6cf5da45156e9f900913e0e4c1"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r04",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112928,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "894dd103e167eef732d371877b79ec8f501ad6b5513af4175d31a9592dc89b7f"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r05",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112929,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "55e32db2c83c2f6febe227681c6e3d5d3ec6dda0477b9c5e63c87b506f60a5f0"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r06",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112930,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "8e98acbdc278d9f854e6beb7a0d7385ebf4227ac7fb50a61a424734375b1eb79"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r07",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112931,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "10b8c2f369c179d43aa69a4955c2140d3de94aa421ba0a3247257cd100605cf0"
+    },
+    {
+      "order": 1,
+      "id": "F6-S2-r08",
+      "level": "S2",
+      "level_note": "臂根改为外露承座",
+      "seed": 2026112932,
+      "state": "F6-S2",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "a6c33ee9e2d514cb13cf59ce23d59a37ea7c9e2e0392cb3287a5fe8c4537ffdc"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r01",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112937,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "27555cf85e8b9114bc77e2d918ae7501cb932ca111f1ec02bfb683503fb75a0e"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r02",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112938,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "2e6b13adbc71c529bb7f35e27c5611b9a99ad776961c9943a6caf76b1225a98e"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r03",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112939,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "5cf5eb50551b9ef4a2dd3136dac0182e3d973cffce39105bbc8fd51c66a72e58"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r04",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112940,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "5792db2dbeed086ef10e43b38ad340976a81f13ab83c3bfcd760b5664dac8b23"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r05",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112941,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "3303a6acacf03a91e96e9984f9d71afaf79264b0d3136b3bf67701decfe37b93"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r06",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112942,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "11f83704698bbba960ce44cfe787f8ed6a2bc3b907e92afb27af4cfd0f4ea029"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r07",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112943,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "3ef150cb07b2517e1ff5a21be0ac71abc5af0e8a5b6e6427a699e6ad180e6766"
+    },
+    {
+      "order": 1,
+      "id": "F6-S3-r08",
+      "level": "S3",
+      "level_note": "臂根改为折叠铰接",
+      "seed": 2026112944,
+      "state": "F6-S3",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "e35306777f0f45f6ed71c9dcd0ab60c8873e7dbf4c60aa816dc0a2a99bc72213"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r01",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112961,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "44ada00c19ec1aa504a75bd0b82a776e50a549310634084df7fccc442df5109a"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r02",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112962,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "3a2603c9ba0befd7343d70fc2100daf2f66f23f2fd18bc279c3acd9629342e36"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r03",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112963,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "dcc5fdcab70e0c960b64e1596fc10ba2b808f856469408dbeb964697a2863747"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r04",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112964,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "2781e0eba09e669e35137071d4bcb2f4093c4041c896fb00608bdcbeb2088af0"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r05",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112965,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "8b7d69c9a2f3671f3543a4416423fded5d80d469db17abb5e347b4ea777b68f5"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r06",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112966,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "85ea94a6a85e088ff8f9c1be43183b3ec2929073618907bd9d133ca3e6976c98"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r07",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112967,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "812f748944acb6b941d968c22fe63c62c4f9f01f515d1d52bf4acbafb19eb7aa"
+    },
+    {
+      "order": 1,
+      "id": "F6-S5-r08",
+      "level": "S5",
+      "level_note": "顶盖改为多块",
+      "seed": 2026112968,
+      "state": "F6-S5",
+      "workbench_version": "4.7.0",
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "ac2c8790a0048556092f881bc7d2a913e5c3c8efac16ae103b90ae06a9768b57"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+    }
+  ]
+}

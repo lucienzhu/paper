@@ -123,3 +123,18 @@
 | S4d | 同 S4c，再把每张图都有的那句相机总述也换成不提镜片的：“The camera looks horizontally forward from the nose, toward the top edge of the image, so its optics are hidden in this view; nothing camera-like appears at the tail.” |
 
 **怎么看：** 机鼻前缘探出一个小舱体，且顶视里看不见正对观察者的镜片，两样都成立才算“出来”；其余各项照整张图的标准。**规则：** 3 张里至少 2 张“出来”才可取；两组都可取选改动小的（S4c 先于 S4d）。S4d 动了每张图都有的那一句，取它的话要把基准和其余各档再出一小批看有没有变坏。两组都不可取，照实写“机鼻下挂在这条流程的顶视图里出不来不露镜片的样子”，F6 的 S4 一档怎么办交作者定（F6 其余五档不等它）。
+
+## 第三小批的结果和第四小批（2026-11-27 03:25 写定，第三小批出了 4 张时）
+
+第三小批头两个种子的 4 张（S4c、S4d 各 2 张）：镜片没有了，但**舱体也没有了**，机鼻就是一个光的圆头，看不出下挂相机。“只见舱体光滑的顶面”这种写法，模型干脆什么都不画。S4c、S4d 各已有 2 张“没出来”，到不了 2/3，按 STOP 停下（第 3 个种子的两张不出）。S4c 和 S4d 的图几乎一样：每张图都有的那句相机总述不是症结，以后只动“相机安装”那一句。
+
+到这里知道的：提“camera housing”，舱体出来、镜头朝上（4.6 的短句 3/3，v1.6 的原句 3/3）；不提，舱体不出来（4/4）。
+
+**第四小批，6 张**（[build_round4.py](build_round4.py)；基准、种子同第三小批）：
+
+| 组 | “相机安装”那一句 |
+| --- | --- |
+| S4e | 仍叫 gimbal pod，但写明它是探出机鼻的一个独立部件，并给出大小：“…juts out ahead of the nose as a separate part. Seen from directly above, the top of the pod is visible as a small rounded block, clearly distinct from the shell and about one third as wide as the nose, protruding just beyond the nose's front edge … The top of the pod is a plain smooth cap; its optics face forward and are hidden in this view.” |
+| S4f | 留着能把舱体叫出来的“camera housing”，把否定镜片的半句换成正面描述顶面：“…only the top edge of a small camera housing peeks out just ahead of the nose; the top of the housing is a plain closed cap. The camera looks straight forward toward the top edge of the image …” |
+
+判法和规则同第三小批（舱体探出且看不见正对观察者的镜片；3 张里至少 2 张）。两组都不可取的话，S4 的开发今晚到此为止：照实写明，交作者定（见 [F6 重新登记](../20261127-f6-shape-levels/README.md)第三节的约束）。
