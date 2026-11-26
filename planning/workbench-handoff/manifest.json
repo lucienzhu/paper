@@ -214,12 +214,12 @@
     {
       "path": "prototypes/drone-configurator/package.json",
       "format": "text-lf",
-      "sha256": "0b59d35720993c938338d46ac89c8f39fc052c76bb030290a1bba880a625749c"
+      "sha256": "9f5191425d45ab8f3ea61fcf7ce84ad7c2d191b788d54738e1725b350f87a531"
     },
     {
       "path": "prototypes/drone-configurator/package-lock.json",
       "format": "text-lf",
-      "sha256": "d19965ee45a5c99e66ba8f0cb104c70f6e6699b95e18dbb58c9f2e82be968d94"
+      "sha256": "02bac8c48504a8d1d3e5d78bed0a921e91bd6b48df1a5ffa117310a397f6be35"
     },
     {
       "path": "prototypes/drone-configurator/README.md",
@@ -229,7 +229,7 @@
     {
       "path": "prototypes/drone-configurator/configurator-offline.zip",
       "format": "binary",
-      "sha256": "569eb689580a0e90716d4f4faecf1b177bc4a40638c3209833aab39febd63466"
+      "sha256": "4e9aa3f67d340528e65f4349f092ae9641c44cc0b347cfc7d0e403247b426f37"
     },
     {
       "path": "prototypes/drone-configurator/src/data/evidenceCards.json",
