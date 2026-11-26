@@ -127,6 +127,30 @@
       "role": "工作台布局条件图：平面六旋（正六边形）、对角轴距 1400 mm（农业植保，H2、H3）",
       "nose_at": "upper edge",
       "source": "工作台 4.5.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-e412fdd102b6.png": {
+      "sha256": "e412fdd102b62b60690aaf623cfad9633450094b52d01c0805a465ccbfda7783",
+      "role": "工作台布局条件图：四旋、对角轴距 250 mm，W/L 取 A4 的各档（A4 闭环臂）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.5.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-19834924b19c.png": {
+      "sha256": "19834924b19ce43edefa959f250b30d9823c009f139d55e09f40d93b7d1f37ec",
+      "role": "工作台布局条件图：四旋、对角轴距 250 mm，W/L 取 A4 的各档（A4 闭环臂）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.5.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-f8258332f50c.png": {
+      "sha256": "f8258332f50c48e26d69d53bfef9749a54c023ae9ff51b4f5732fcc587856671",
+      "role": "工作台布局条件图：四旋、对角轴距 250 mm，W/L 取 A4 的各档（A4 闭环臂）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.5.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-f7f9ec1c9758.png": {
+      "sha256": "f7f9ec1c975892b0f973300ad72eab06e7637a1000692171a6a77edd1e07e282",
+      "role": "工作台布局条件图：四旋、对角轴距 250 mm，W/L 取 A4 的各档（A4 闭环臂）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.5.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
     }
   }
 }

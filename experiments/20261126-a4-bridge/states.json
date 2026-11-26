@@ -1,0 +1,152 @@
+{
+  "task": "consumer_camera",
+  "note": "A4 闭环臂第一轮＝工作台流程在各档名义值下的出图。基准：宽 X、W/L 1.35、对角轴距 250 mm、5 英寸桨、机身包络 150 × 55 × 30 mm（工作台的起始值），造型与 F6 的 S0 相同、银灰哑光。每个状态只改一个因素：W/L；机壳宽（0.16、0.23、0.30 × 250 mm ＝ 40、57.5、75 mm）；桨径（0.46、0.56、0.66 × 250 mm ＝ 115、140、165 mm）。",
+  "states": [
+    {
+      "name": "A4-WL-1.15",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.15,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      }
+    },
+    {
+      "name": "A4-WL-1.35",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      }
+    },
+    {
+      "name": "A4-WL-1.55",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.55,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      }
+    },
+    {
+      "name": "A4-WL-0.70",
+      "values": {
+        "frame.frame_type": "Stretch X",
+        "frame.span_ratio_wl": 0.7,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      }
+    },
+    {
+      "name": "A4-BW-0.16",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "fuselage.fuselage_dimensions_mm.width": 40
+      }
+    },
+    {
+      "name": "A4-BW-0.23",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "fuselage.fuselage_dimensions_mm.width": 57.5
+      }
+    },
+    {
+      "name": "A4-BW-0.30",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "fuselage.fuselage_dimensions_mm.width": 75
+      }
+    },
+    {
+      "name": "A4-DD-0.46",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 4.52755905511811
+      }
+    },
+    {
+      "name": "A4-DD-0.56",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 5.511811023622047
+      }
+    },
+    {
+      "name": "A4-DD-0.66",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 6.496062992125984
+      }
+    }
+  ]
+}

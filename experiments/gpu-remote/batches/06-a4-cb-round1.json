@@ -1,0 +1,200 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "A4 闭环臂第一轮 30 张（工作台流程在各档名义值下的出图）",
+  "registration": "experiments/20261126-a4-bridge/README.md",
+  "registered_manifest": "experiments/20261126-a4-bridge/manifest.json",
+  "registered_manifest_sha256": "b413ec5d48d27620fd8cfb12687068854f1996c01b6089f2fa616c91063c20d3",
+  "requests_dir": "experiments/20261126-a4-bridge/requests",
+  "files_dirs": [
+    "experiments/20261126-a4-bridge/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-A4-WL-CB-1.15-s1.json",
+      "id": "A4-WL-CB-1.15-s1",
+      "seed": 2026112701,
+      "sha256": "5d4abefd4505337323fae7566945e5a617b86b9893397d9a49db43396aa72314"
+    },
+    {
+      "file": "01-A4-WL-CB-1.35-s1.json",
+      "id": "A4-WL-CB-1.35-s1",
+      "seed": 2026112701,
+      "sha256": "caff40d9ea9107dc01c8cd85a4b112cb1a42c786ba9f7b781211d7a2407d7c9a"
+    },
+    {
+      "file": "01-A4-WL-CB-1.55-s1.json",
+      "id": "A4-WL-CB-1.55-s1",
+      "seed": 2026112701,
+      "sha256": "5603a0494075afcabcdca305fea01dc6bcb726e5d040c13b212f689a9fc0711a"
+    },
+    {
+      "file": "01-A4-WL-CB-0.70-s1.json",
+      "id": "A4-WL-CB-0.70-s1",
+      "seed": 2026112701,
+      "sha256": "946de0636ca6df73c0fab93788cd5c33db9deeb39a3a8a3d30f93180f6cd3a91"
+    },
+    {
+      "file": "01-A4-BW-CB-0.16-s1.json",
+      "id": "A4-BW-CB-0.16-s1",
+      "seed": 2026112701,
+      "sha256": "8600076c497f6d28f461078feab527bc9eeb227cfc84dc387327617cf8d35eb0"
+    },
+    {
+      "file": "01-A4-BW-CB-0.23-s1.json",
+      "id": "A4-BW-CB-0.23-s1",
+      "seed": 2026112701,
+      "sha256": "7801d53f706c96d89b7e6395320c0faaee148b88759b0b98e6150b8da4b12b74"
+    },
+    {
+      "file": "01-A4-BW-CB-0.30-s1.json",
+      "id": "A4-BW-CB-0.30-s1",
+      "seed": 2026112701,
+      "sha256": "2963281a7bc8ee432e86ea49ae87251a191b6cc3bedb8e1ee1e5206bab05e73a"
+    },
+    {
+      "file": "01-A4-DD-CB-0.46-s1.json",
+      "id": "A4-DD-CB-0.46-s1",
+      "seed": 2026112701,
+      "sha256": "77059b89e3d53acc870fe28db6ebe812f85575132cf7c9c294be926837864a9c"
+    },
+    {
+      "file": "01-A4-DD-CB-0.56-s1.json",
+      "id": "A4-DD-CB-0.56-s1",
+      "seed": 2026112701,
+      "sha256": "5e61ca5bce59eafcd37b8bdbe002bf140bf33d2b3371be7dd268c2013b28c0f5"
+    },
+    {
+      "file": "01-A4-DD-CB-0.66-s1.json",
+      "id": "A4-DD-CB-0.66-s1",
+      "seed": 2026112701,
+      "sha256": "578f0688369a480a12caa32f15b42502a63584c778704a79c7c9e85e51a57679"
+    },
+    {
+      "file": "02-A4-WL-CB-1.15-s2.json",
+      "id": "A4-WL-CB-1.15-s2",
+      "seed": 2026112702,
+      "sha256": "e2dc812fb9ee358c9e77a8719fa4de2bbe780a997627c1ece0396af97e2a1efc"
+    },
+    {
+      "file": "02-A4-WL-CB-1.35-s2.json",
+      "id": "A4-WL-CB-1.35-s2",
+      "seed": 2026112702,
+      "sha256": "b408781f22bf38d71ed50976d37b31f83622bb7ea28e1310022b681f5de4df4a"
+    },
+    {
+      "file": "02-A4-WL-CB-1.55-s2.json",
+      "id": "A4-WL-CB-1.55-s2",
+      "seed": 2026112702,
+      "sha256": "438e68994502a14ebfe7f456e4e127fa8f855a1e7f7c82b208a496fe75a1c60e"
+    },
+    {
+      "file": "02-A4-WL-CB-0.70-s2.json",
+      "id": "A4-WL-CB-0.70-s2",
+      "seed": 2026112702,
+      "sha256": "5708d97c485c27428bd110e12025a217a4dc60bbb0c58ef27e74f3386b70828c"
+    },
+    {
+      "file": "02-A4-BW-CB-0.16-s2.json",
+      "id": "A4-BW-CB-0.16-s2",
+      "seed": 2026112702,
+      "sha256": "2d260313da6547e82e852889960aa864c3389f9282ef92912407fc5dc61a598f"
+    },
+    {
+      "file": "02-A4-BW-CB-0.23-s2.json",
+      "id": "A4-BW-CB-0.23-s2",
+      "seed": 2026112702,
+      "sha256": "82581a177c1fb1cb718f907f83ceb6ccd25de2d62d5578fbcaa8cea296215d1c"
+    },
+    {
+      "file": "02-A4-BW-CB-0.30-s2.json",
+      "id": "A4-BW-CB-0.30-s2",
+      "seed": 2026112702,
+      "sha256": "f06b3bccd2c11a1e6ecb8e208dfc96fbc806ec6765ddd85c42e800506d74638d"
+    },
+    {
+      "file": "02-A4-DD-CB-0.46-s2.json",
+      "id": "A4-DD-CB-0.46-s2",
+      "seed": 2026112702,
+      "sha256": "c09a5cb977021ff040513c03e674d7fe5ef55ceb4568eb8b3f4012bec6d3d5a2"
+    },
+    {
+      "file": "02-A4-DD-CB-0.56-s2.json",
+      "id": "A4-DD-CB-0.56-s2",
+      "seed": 2026112702,
+      "sha256": "54f2a2561153e66bf301cff0838b461c161e4d34158e628b20eb637ef74deff2"
+    },
+    {
+      "file": "02-A4-DD-CB-0.66-s2.json",
+      "id": "A4-DD-CB-0.66-s2",
+      "seed": 2026112702,
+      "sha256": "83318988afd06ead5e45bb7905028c96ea2cf4acf3464f32332829d3a169f16f"
+    },
+    {
+      "file": "03-A4-WL-CB-1.15-s3.json",
+      "id": "A4-WL-CB-1.15-s3",
+      "seed": 2026112703,
+      "sha256": "f3f5238b68bb11ddb4d65ea897b12ced16e0811f40749cc8e5e2af69fe48de5f"
+    },
+    {
+      "file": "03-A4-WL-CB-1.35-s3.json",
+      "id": "A4-WL-CB-1.35-s3",
+      "seed": 2026112703,
+      "sha256": "7691bc23f44c4797a3c8ead8dce0d74ad195e98bfc7fdf0dacea07bdc1997e71"
+    },
+    {
+      "file": "03-A4-WL-CB-1.55-s3.json",
+      "id": "A4-WL-CB-1.55-s3",
+      "seed": 2026112703,
+      "sha256": "bfae66c9603608f26217a16f85f9ecf60de3b3e015622062ebf8d5dd87b9861b"
+    },
+    {
+      "file": "03-A4-WL-CB-0.70-s3.json",
+      "id": "A4-WL-CB-0.70-s3",
+      "seed": 2026112703,
+      "sha256": "23558e165032c25cfc9722271c5cb26b2ad276e26c31af079f14a0339c3affe0"
+    },
+    {
+      "file": "03-A4-BW-CB-0.16-s3.json",
+      "id": "A4-BW-CB-0.16-s3",
+      "seed": 2026112703,
+      "sha256": "8457645e73c85ff26d60ef5d25edb0788ee7388acd337f02c52edef70cfb0e83"
+    },
+    {
+      "file": "03-A4-BW-CB-0.23-s3.json",
+      "id": "A4-BW-CB-0.23-s3",
+      "seed": 2026112703,
+      "sha256": "b11e08f9bea2fa88cd5f7a6ddc8f266623f038c3ac6abab18cd8ccc0c675fec9"
+    },
+    {
+      "file": "03-A4-BW-CB-0.30-s3.json",
+      "id": "A4-BW-CB-0.30-s3",
+      "seed": 2026112703,
+      "sha256": "91922ace3b63d318ae72406142e42c383881c65a107fe3df58c055e593885380"
+    },
+    {
+      "file": "03-A4-DD-CB-0.46-s3.json",
+      "id": "A4-DD-CB-0.46-s3",
+      "seed": 2026112703,
+      "sha256": "cc981fc00ee3c68b40206dd5a582f69c5eb7f3b69da9dd5258b2eacde3fa7c45"
+    },
+    {
+      "file": "03-A4-DD-CB-0.56-s3.json",
+      "id": "A4-DD-CB-0.56-s3",
+      "seed": 2026112703,
+      "sha256": "517de4f2656d1635ad13686edf832b88013c1c66ba8aecc6140b5c06a21f4f4c"
+    },
+    {
+      "file": "03-A4-DD-CB-0.66-s3.json",
+      "id": "A4-DD-CB-0.66-s3",
+      "seed": 2026112703,
+      "sha256": "7ccc8f168be40f7873953b2076e94efc5df2a9cadb7c9f28d690dd05437e6873"
+    }
+  ],
+  "files": {
+    "wbguide-19834924b19c.png": "19834924b19ce43edefa959f250b30d9823c009f139d55e09f40d93b7d1f37ec",
+    "wbguide-e412fdd102b6.png": "e412fdd102b62b60690aaf623cfad9633450094b52d01c0805a465ccbfda7783",
+    "wbguide-f7f9ec1c9758.png": "f7f9ec1c975892b0f973300ad72eab06e7637a1000692171a6a77edd1e07e282",
+    "wbguide-f8258332f50c.png": "f8258332f50c48e26d69d53bfef9749a54c023ae9ff51b4f5732fcc587856671"
+  }
+}

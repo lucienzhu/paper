@@ -28,15 +28,15 @@
           "2",
           0
         ],
-        "prompt": "Design a compact quadcopter for everyday aerial photography. Strict orthographic top view, nose toward the top edge, arms fully unfolded.\nMatch the four motor centres and arm directions in the layout exactly, 250 mm opposite-motor span. Each motor carries one stationary two-blade, 5-inch propeller. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, never a V shape. No propeller guards.\nThe nose points to the top edge of the image. The rear end of the fuselage is a closed, plain light grey shell: no dark part, opening, camera or module at the tail.\nA rounded pod with a continuous curved outline; the pod is 75 mm wide across its middle.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.\nA plain top cover with no seams crossing it.\nArms in the same matte light grey as the shell.\nMatte light grey shell and arms in one continuous colour, dark grey motors, black propellers.\nShow the complete product on a plain light background. Omit guide marks and lettering.",
-        "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post, camera at the tail, dark module at the tail, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
+        "vae": [
+          "3",
+          0
+        ],
+        "prompt": "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.\nDesign a quadcopter for everyday carry-along aerial photography. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nFour motors in a Wide X layout: the four motor centres sit at the corners of a rectangle that is wider than it is long. Mean opposite-motor (diagonal) span 250 mm; motor-centre width-to-length span ratio W/L 1.35; adjacent arm angles clockwise from the front-left motor: 106.9°, 73.1°, 106.9°, 73.1°.\nMatch the motor centres and frame links in the attached layout image: red dots mark motor centres, blue lines mark frame links. Do not reproduce the dots or lines in the result.\nEach motor carries one stationary 2-blade propeller, 5-inch (127 mm) diameter. The two blades point in exactly opposite directions from the hub.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nFuselage design envelope 150 × 75 × 30 mm (length × width × height); this is a size limit, not a shape.\nA rounded pod with a continuous curved outline.\nA plain top cover with no seams crossing it.\nA forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin strip of its front window shows at the very front edge of the nose.\nLow landing skids with 40 mm ground clearance, tucked beneath the aircraft.\nMain shell colour: silver grey (#c7cbd1).\nShell surface finish: fine matte.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+        "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
         "resolution": 1024,
         "images.image_1": [
           "15",
-          0
-        ],
-        "vae": [
-          "3",
           0
         ]
       }
@@ -94,7 +94,7 @@
     "15": {
       "class_type": "LoadImage",
       "inputs": {
-        "image": "a4-dots-wl1.343.png"
+        "image": "wbguide-19834924b19c.png"
       }
     }
   }
