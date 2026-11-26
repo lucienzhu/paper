@@ -108,3 +108,18 @@
 | 不对：两片深色桨叶之外多一对浅色的 | S2-s2 |
 
 旋翼不对的是 15 张里 7 张（第 1 个种子 5 张里 4 张，第 2 个种子 3 张，第 3 个种子 0 张），不是 15 张。**整张图合格的是 4/15**（S1-s3、S2-s3、S3-s2、S3-s3），不是 0/15；S4 三张卡在镜头朝向，S5-s3 的顶盖是两块。各档“改的那一项”的门不受影响。结论不变：旋翼仍是整条流程的毛病，要在开发批里修好。
+
+## 第二小批没有出；第三小批（2026-11-27 03:02 写定，出图前）
+
+**第二小批（S4b、S5b，旧流程、旧种子）登记了没有出。** 两句直接写进了工作台 4.7.0（S4b 去掉了 “dark grey”，工作台自检不许模板自带颜色），放在[合在一起的检查小批](../20261127-integrated-check/README.md)里用新种子看，省一轮。
+
+**检查小批里已出的两个种子：** S5（写明三块、两道横缝）第 1 个种子出了清楚的三块；S4（v1.6 的原句）两张都是舱体探出，但**镜头仍正对观察者**。S4 的 3 张里已有 2 张不对，过不了门。v1.6 的原句里“lens”“lens glass”出现了三次，都在否定句里；文生图模型不大会读否定，提到镜片就容易画出镜片（旋翼那里“not a folding propeller”也是这样）。
+
+**第三小批，6 张**（[build_round3.py](build_round3.py)；基准是 4.7.0 的 S4 请求，种子同检查小批 2026112861—63，逐张对照）：
+
+| 组 | 改了什么 |
+| --- | --- |
+| S4c | 下挂那一句换成不提相机和镜片、只说顶视里看得见什么的写法：“A small gimbal pod hangs underneath the front of the fuselage. Seen from directly above, only the smooth, featureless top of the pod shows, as a short rounded block just ahead of the nose, low and tight against it, with no neck, stalk or post; its optics face forward and are hidden in this view.” |
+| S4d | 同 S4c，再把每张图都有的那句相机总述也换成不提镜片的：“The camera looks horizontally forward from the nose, toward the top edge of the image, so its optics are hidden in this view; nothing camera-like appears at the tail.” |
+
+**怎么看：** 机鼻前缘探出一个小舱体，且顶视里看不见正对观察者的镜片，两样都成立才算“出来”；其余各项照整张图的标准。**规则：** 3 张里至少 2 张“出来”才可取；两组都可取选改动小的（S4c 先于 S4d）。S4d 动了每张图都有的那一句，取它的话要把基准和其余各档再出一小批看有没有变坏。两组都不可取，照实写“机鼻下挂在这条流程的顶视图里出不来不露镜片的样子”，F6 的 S4 一档怎么办交作者定（F6 其余五档不等它）。

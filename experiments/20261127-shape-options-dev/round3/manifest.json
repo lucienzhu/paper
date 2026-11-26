@@ -1,0 +1,91 @@
+{
+  "batch": "造型选项开发第三小批（机鼻下挂相机两种写法 × 3 个种子）",
+  "base_state": "IC-S4",
+  "workbench": {
+    "version": "4.7.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-YPZXpxR6.js",
+    "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "sentences": {
+    "mount_old": "The gimbal camera hangs underneath the front of the fuselage, as on modern foldable camera drones. Seen from directly above, only the top edge of a small camera housing peeks out just ahead of the nose; the lens faces straight forward toward the top edge of the image, so no lens glass is visible from above. The camera sits low and tight against the nose, with no neck, stalk or post.",
+    "mount_new": "A small gimbal pod hangs underneath the front of the fuselage. Seen from directly above, only the smooth, featureless top of the pod shows, as a short rounded block just ahead of the nose, low and tight against it, with no neck, stalk or post; its optics face forward and are hidden in this view.",
+    "camera_old": "A forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.",
+    "camera_new": "The camera looks horizontally forward from the nose, toward the top edge of the image, so its optics are hidden in this view; nothing camera-like appears at the tail."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "SD-S4c-s1",
+      "variant": "S4c",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "e151c3d1a5828357a8a8390b1edb856733bf0729ac364dea8cf8affaee5ab003",
+      "request_sha256": "9f3cea623d2963d8032e462b2996d53738bfadfcc40cb966d902e5bbb7a3b058"
+    },
+    {
+      "order": 1,
+      "id": "SD-S4d-s1",
+      "variant": "S4d",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "c3a9b02c6202f41d1782fffe40c88d8b297dcd3d0b3c4b242baa0208a6391552",
+      "request_sha256": "cf69459ea5d66bb11abf3d4bd08bea217bd3653c37708aae3f988aead642a051"
+    },
+    {
+      "order": 2,
+      "id": "SD-S4c-s2",
+      "variant": "S4c",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "e151c3d1a5828357a8a8390b1edb856733bf0729ac364dea8cf8affaee5ab003",
+      "request_sha256": "80a2fb02cf603384cc227b8691364e00c1641a19bf5ecb5cbc07a0c6dc05eada"
+    },
+    {
+      "order": 2,
+      "id": "SD-S4d-s2",
+      "variant": "S4d",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "c3a9b02c6202f41d1782fffe40c88d8b297dcd3d0b3c4b242baa0208a6391552",
+      "request_sha256": "c0a3ff04ec3ac188444d6912fa338eb521224d0aec0f54d720919a92e5fa78a7"
+    },
+    {
+      "order": 3,
+      "id": "SD-S4c-s3",
+      "variant": "S4c",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "e151c3d1a5828357a8a8390b1edb856733bf0729ac364dea8cf8affaee5ab003",
+      "request_sha256": "13583526bfc984fefa6addead4835b876bdfae737e37ddbf8e65a3d2e040b7cd"
+    },
+    {
+      "order": 3,
+      "id": "SD-S4d-s3",
+      "variant": "S4d",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "c3a9b02c6202f41d1782fffe40c88d8b297dcd3d0b3c4b242baa0208a6391552",
+      "request_sha256": "16318ae48c9c288583e9055013710d7649c60c09591f27b3d5e08927f2cf44ea"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+    }
+  ]
+}

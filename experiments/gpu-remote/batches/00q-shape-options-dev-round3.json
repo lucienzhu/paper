@@ -1,0 +1,53 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "造型选项开发第三小批 6 张：机鼻下挂相机两种不提镜片的写法",
+  "registration": "experiments/20261127-shape-options-dev/README.md",
+  "registered_manifest": "experiments/20261127-shape-options-dev/round3/manifest.json",
+  "registered_manifest_sha256": "c7754026eb72bcde5b96e60c51151b14a5b02340ec1b8ca2c90542d0fbd7c946",
+  "requests_dir": "experiments/20261127-shape-options-dev/round3/requests",
+  "files_dirs": [
+    "experiments/20261127-shape-options-dev/round3/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-SD-S4c-s1.json",
+      "id": "SD-S4c-s1",
+      "seed": 2026112861,
+      "sha256": "9f3cea623d2963d8032e462b2996d53738bfadfcc40cb966d902e5bbb7a3b058"
+    },
+    {
+      "file": "01-SD-S4d-s1.json",
+      "id": "SD-S4d-s1",
+      "seed": 2026112861,
+      "sha256": "cf69459ea5d66bb11abf3d4bd08bea217bd3653c37708aae3f988aead642a051"
+    },
+    {
+      "file": "02-SD-S4c-s2.json",
+      "id": "SD-S4c-s2",
+      "seed": 2026112862,
+      "sha256": "80a2fb02cf603384cc227b8691364e00c1641a19bf5ecb5cbc07a0c6dc05eada"
+    },
+    {
+      "file": "02-SD-S4d-s2.json",
+      "id": "SD-S4d-s2",
+      "seed": 2026112862,
+      "sha256": "c0a3ff04ec3ac188444d6912fa338eb521224d0aec0f54d720919a92e5fa78a7"
+    },
+    {
+      "file": "03-SD-S4c-s3.json",
+      "id": "SD-S4c-s3",
+      "seed": 2026112863,
+      "sha256": "13583526bfc984fefa6addead4835b876bdfae737e37ddbf8e65a3d2e040b7cd"
+    },
+    {
+      "file": "03-SD-S4d-s3.json",
+      "id": "SD-S4d-s3",
+      "seed": 2026112863,
+      "sha256": "16318ae48c9c288583e9055013710d7649c60c09591f27b3d5e08927f2cf44ea"
+    }
+  ],
+  "files": {
+    "wbguide-fc9b23f98221.png": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+  }
+}
