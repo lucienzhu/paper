@@ -229,6 +229,12 @@
       "role": "开发用：工作台 4.7.2 的布局条件图（平面八旋、250 mm，直杆转 35°）",
       "nose_at": "upper edge",
       "source": "工作台 4.7.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-crossbars-acdd1173f244.png": {
+      "sha256": "acdd1173f244ff5228553d42f5a0447bdcebd95a9d6528883591f368e0321f97",
+      "role": "开发用：真 X、250 mm 的布局条件图，每处臂端一横一竖两根直杆（共轴 X8，构型开发检查第三小批）",
+      "nose_at": "upper edge",
+      "source": "experiments/20261127-config-dev/build_round3.py 由 wbguide-fc9b23f98221.png 改画"
     }
   }
 }
