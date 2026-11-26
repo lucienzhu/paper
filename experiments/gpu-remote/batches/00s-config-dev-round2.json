@@ -1,0 +1,60 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "构型开发检查第二小批 7 张：平面八旋、共轴 X8（工作台 4.7.2）",
+  "registration": "experiments/20261127-config-dev/README.md",
+  "registered_manifest": "experiments/20261127-config-dev/round2/manifest.json",
+  "registered_manifest_sha256": "cec44726cdb6fef8c41bbd19aa54acceba85a4484ead965e736f358f82b40583",
+  "requests_dir": "experiments/20261127-config-dev/round2/requests",
+  "files_dirs": [
+    "experiments/20261127-config-dev/round2/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-CD2-O8-s1.json",
+      "id": "CD2-O8-s1",
+      "seed": 2026112871,
+      "sha256": "ec08281b043e8200962ff32d79305c976cc1a5166c002607f8bd3bb99900c4bd"
+    },
+    {
+      "file": "01-CD2-X8-s1.json",
+      "id": "CD2-X8-s1",
+      "seed": 2026112871,
+      "sha256": "1adbce4d4bb72b1318af3dd264f5796be763fd8c3155571c67df9b453966cd23"
+    },
+    {
+      "file": "02-CD2-O8-s2.json",
+      "id": "CD2-O8-s2",
+      "seed": 2026112872,
+      "sha256": "9e2543e73c95494f8f9816859e2d53c520a280cf27b8886f6e5f487b6fb85c90"
+    },
+    {
+      "file": "02-CD2-X8-s2.json",
+      "id": "CD2-X8-s2",
+      "seed": 2026112872,
+      "sha256": "46550bd7a618ece7b175697f2453f9981b8f794e55efd88c7e760a4b96454692"
+    },
+    {
+      "file": "03-CD2-O8-s3.json",
+      "id": "CD2-O8-s3",
+      "seed": 2026112873,
+      "sha256": "eadf91a7f957db677088acda07c163dcfc14c2f50c70dd6f944324e4e3443ee6"
+    },
+    {
+      "file": "03-CD2-X8-s3.json",
+      "id": "CD2-X8-s3",
+      "seed": 2026112873,
+      "sha256": "134adf95a873b443c8f9094f4ac45e79fcf2483a638d545a6cfd09de98fee05d"
+    },
+    {
+      "file": "04-CD2-X8-s4.json",
+      "id": "CD2-X8-s4",
+      "seed": 2026112874,
+      "sha256": "92fd2a7f9ebcce8245670354f9c667b1c3d8a5c6cd9849f0296d7642182a0a83"
+    }
+  ],
+  "files": {
+    "wbguide-7fee96027dbc.png": "7fee96027dbc85278ebee8345eafa2a21a8160b2ea84f91528959e6c9f0b2d35",
+    "wbguide-fc9b23f98221.png": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+  }
+}

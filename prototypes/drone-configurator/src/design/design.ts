@@ -79,7 +79,7 @@ export const frameRules: Record<FrameType, FrameRule> = {
     zh: '平面八旋', en: 'Radial octo', topology: 'flat_octo', hubs: 8,
     wl: { value: 1, min: 1, max: 1, adjustable: false },
     basis: 'definition', rule: '八处单层轴位位于正八边形顶点。',
-    desc: '八个独立轴位，每处一副旋翼。', shape_en: 'eight distinct horizontal axes at the corners of a regular octagon',
+    desc: '八个独立轴位，每处一副旋翼。', shape_en: 'eight distinct horizontal axes at the corners of a regular octagon, on eight arms that all radiate from the fuselage at the centre of the octagon',
   },
   'Coax Y6': {
     zh: '共轴六旋 Y6', en: 'Coaxial Y6', topology: 'coax_hex', hubs: 3, layers: 2,
@@ -294,11 +294,22 @@ export function sideRotorAxes(layout: Layout, armThickness: number) {
  */
 export function propBarsPx(layout: Layout): [number, number, number, number][] {
   const c = layout.guide.size / 2, half = layout.prop_diameter_mm * layout.guide.px_per_mm / 2;
+  const turn = (propBarTurnDeg(layout) * Math.PI) / 180, cos = Math.cos(turn), sin = Math.sin(turn);
   return layout.hubs.map(h => {
     const ax = h.x_px - c, ay = h.y_px - c, n = Math.hypot(ax, ay);
-    const [tx, ty] = n < 1e-6 ? [1, 0] : [-ay / n, ax / n];
+    const [px, py] = n < 1e-6 ? [1, 0] : [-ay / n, ax / n];
+    const [tx, ty] = [px * cos - py * sin, px * sin + py * cos];
     return [h.x_px - tx * half, h.y_px - ty * half, h.x_px + tx * half, h.y_px + ty * half];
   });
+}
+
+/**
+ * 直杆相对“与机臂垂直”再转多少度。四旋、六旋是 0。八个及以上的独立轴位转 35°（4.7.2）：
+ * 八旋的直杆与机臂垂直时首尾几乎相接（桨径 89 mm、相邻电机 96 mm），真机上被画成了一圈连着八个电机的外框（experiments/20261127-config-dev）；
+ * 统一转一个角度以后相邻两根错开，连不成圈。
+ */
+export function propBarTurnDeg(layout: Layout): number {
+  return layout.hubs.length >= 8 ? 35 : 0;
 }
 
 /** 点线条件图：黑底、蓝色机架连接线、浅灰的桨（直杆）、红色轴心点；图内不放文字、刻度或箭头。 */

@@ -87,7 +87,11 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     id: 'propulsion', group: 'propulsion',
     source: src('propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'),
     zh: '桨径、每轴桨叶数、电机倾角', fields: ['propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'],
-    text: `Each motor carries one stationary ${blades === 2 ? 'two' : blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.` +
+    // 4.7.2：共轴（每处轴位上下两副桨）另写一句，说明顶视里每处臂端看得见的是什么。原先照“每个电机一副桨”写，真机上有的图桨和机身都不照条件图（experiments/20261127-config-dev）。
+    text: (topology.layers_per_axis === 2
+      ? `Each arm end carries two stationary ${blades === 2 ? 'two' : blades}-blade propellers stacked on one vertical axis, each ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) in diameter. ` +
+        'In this top view the upper propeller hides the lower one, so each arm end shows one propeller.'
+      : `Each motor carries one stationary ${blades === 2 ? 'two' : blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.`) +
       // 4.7.0：双叶改回 v1.6 的原句（4.6 以前被缩短，丢了“成一条直线、不是 V 形”）。
       (blades === 2 ? ' The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, ' +
         'forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.' : '') +

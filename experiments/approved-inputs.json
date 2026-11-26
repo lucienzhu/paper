@@ -223,6 +223,12 @@
       "role": "工作台 4.7.1 的布局条件图：四旋、对角轴距 250 mm，W/L 和桨径取 A4 的各档，带表示桨的直杆（A4 闭环臂）",
       "nose_at": "upper edge",
       "source": "工作台 4.7.1 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-7fee96027dbc.png": {
+      "sha256": "7fee96027dbc85278ebee8345eafa2a21a8160b2ea84f91528959e6c9f0b2d35",
+      "role": "开发用：工作台 4.7.2 的布局条件图（平面八旋、250 mm，直杆转 35°）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.2 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
     }
   }
 }
