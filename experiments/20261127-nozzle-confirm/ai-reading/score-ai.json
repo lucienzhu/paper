@@ -1,0 +1,419 @@
+{
+  "summary": {
+    "readers": [
+      "1",
+      "2"
+    ],
+    "confirmed_by": [
+      "1",
+      "2"
+    ],
+    "conclusion": "确认"
+  },
+  "by_reader": {
+    "1": {
+      "nozzle_group": {
+        "target_hit": 4,
+        "tank_and_filler_kept": 4,
+        "n": 4,
+        "nozzles": {
+          "yes": 4
+        },
+        "boom": {
+          "no": 4
+        },
+        "general": {
+          "motors_6": 4,
+          "arms_6": 4,
+          "blades_two": 4,
+          "hinge_yes": 4,
+          "camera_no": 3,
+          "product_yes": 4,
+          "n": 4
+        }
+      },
+      "boom_group": {
+        "boom_yes": 3,
+        "boom_where": {
+          "?": 1,
+          "arms": 2,
+          "none": 2,
+          "body": 1
+        },
+        "nozzles_yes": 0,
+        "nozzles": {
+          "no": 5,
+          "some": 1
+        },
+        "tank_yes": 6,
+        "filler_yes": 6,
+        "n": 6,
+        "general": {
+          "motors_6": 6,
+          "arms_6": 6,
+          "blades_two": 6,
+          "hinge_yes": 6,
+          "camera_no": 6,
+          "product_yes": 6,
+          "n": 6
+        }
+      },
+      "specific": true,
+      "confirmed": true,
+      "per_image": [
+        {
+          "request": "E6B-N-confirm-r1",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "no",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "E6B-N-confirm-r2",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "no",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "E6B-N-confirm-r3",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "no",
+          "product": "yes",
+          "note": "四个斜向电机旁有喷头，左右两个电机旁看不到"
+        },
+        {
+          "request": "E6B-N-confirm-r4",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "?",
+          "product": "yes",
+          "note": "前端圆盘状部件可能是天线也可能是相机，无法确定"
+        },
+        {
+          "request": "H2-boom-r1",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "机身前部深灰色箱顶带圆盖，后部是白色方块（可能是电池），药箱归属略有不确定"
+        },
+        {
+          "request": "H2-boom-r2",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "yes",
+          "boom_where": "arms",
+          "nozzles": "some",
+          "camera": "no",
+          "product": "yes",
+          "note": "左右两根机臂下各平行一根带卡箍的细管，末端在电机旁有小接头；斜向四个电机旁看不到喷头"
+        },
+        {
+          "request": "H2-boom-r3",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "yes",
+          "boom_where": "body",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "机身后方一根横杆两端各带一个下垂喷头，中间有接头；电机旁无喷头"
+        },
+        {
+          "request": "H2-boom-r4",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "yes",
+          "boom_where": "arms",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "左右机臂上各平行一根细杆，靠外端有一个小接头，不是电机旁的独立部件；是否算喷杆有一定不确定"
+        },
+        {
+          "request": "H2-boom-r5",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "?",
+          "boom_where": "?",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "机身后方有一根横杆，中间只有一个接头，看不出是喷杆还是起落架横撑"
+        },
+        {
+          "request": "H2-boom-r6",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "机身后方两起落架之间有一根横杆，两端止于起落架、无喷头，判为起落架横撑"
+        }
+      ]
+    },
+    "2": {
+      "nozzle_group": {
+        "target_hit": 4,
+        "tank_and_filler_kept": 4,
+        "n": 4,
+        "nozzles": {
+          "yes": 4
+        },
+        "boom": {
+          "no": 4
+        },
+        "general": {
+          "motors_6": 4,
+          "arms_6": 4,
+          "blades_two": 4,
+          "hinge_yes": 3,
+          "camera_no": 2,
+          "product_yes": 4,
+          "n": 4
+        }
+      },
+      "boom_group": {
+        "boom_yes": 2,
+        "boom_where": {
+          "?": 3,
+          "none": 1,
+          "body": 1,
+          "arms": 1
+        },
+        "nozzles_yes": 0,
+        "nozzles": {
+          "no": 5,
+          "some": 1
+        },
+        "tank_yes": 6,
+        "filler_yes": 6,
+        "n": 6,
+        "general": {
+          "motors_6": 6,
+          "arms_6": 6,
+          "blades_two": 6,
+          "hinge_yes": 4,
+          "camera_no": 6,
+          "product_yes": 6,
+          "n": 6
+        }
+      },
+      "specific": true,
+      "confirmed": true,
+      "per_image": [
+        {
+          "request": "E6B-N-confirm-r1",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "no",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "E6B-N-confirm-r2",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "?",
+          "product": "yes",
+          "note": "small dark part at front of body could be a camera or sensor; not clear"
+        },
+        {
+          "request": "E6B-N-confirm-r3",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "?",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "no",
+          "product": "yes",
+          "note": "small nozzle-like parts under the four diagonal motors only; none seen at the left and right motors; arm-root clamps show no clear pin"
+        },
+        {
+          "request": "E6B-N-confirm-r4",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "yes",
+          "camera": "?",
+          "product": "yes",
+          "note": "round dark part at the front edge of the body may be a camera or a second cap; latch blocks near the arm roots"
+        },
+        {
+          "request": "H2-boom-r1",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "?",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "no",
+          "boom_where": "none",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "arm roots have square clamp blocks but no clear pin or hinge axis; body top is split into a dark section with cap and a white block"
+        },
+        {
+          "request": "H2-boom-r2",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "?",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "yes",
+          "boom_where": "arms",
+          "nozzles": "some",
+          "camera": "no",
+          "product": "yes",
+          "note": "thin tube with clips runs under the left and right arms and ends in a small fitting by those two motors; diagonal motors have nothing beside them"
+        },
+        {
+          "request": "H2-boom-r3",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "yes",
+          "boom_where": "body",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "horizontal spray bar crosses behind the tank with fittings at its ends; nothing beside the motors"
+        },
+        {
+          "request": "H2-boom-r4",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "?",
+          "boom_where": "?",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "left and right arms carry a thin parallel rod with a small knob fitting on top; could be a boom along the arms or a latch rod"
+        },
+        {
+          "request": "H2-boom-r5",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "?",
+          "boom_where": "?",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "thin cross bar behind the body with one central connector; it spans the landing legs so it may be a gear crossbar rather than a spray bar"
+        },
+        {
+          "request": "H2-boom-r6",
+          "motors": "6",
+          "arms": "6",
+          "blades": "two",
+          "hinge": "yes",
+          "tank": "yes",
+          "filler": "yes",
+          "boom": "?",
+          "boom_where": "?",
+          "nozzles": "no",
+          "camera": "no",
+          "product": "yes",
+          "note": "thin cross tube behind the body with two banded collars joins the rear landing legs; may be a gear crossbar rather than a spray bar"
+        }
+      ]
+    }
+  }
+}

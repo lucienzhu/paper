@@ -1,0 +1,11 @@
+﻿request,motors,arms,blades,hinge,tank,filler,boom,boom_where,nozzles,camera,product,note
+E6B-N-confirm-r1,6,6,two,yes,yes,yes,no,none,yes,no,yes,
+E6B-N-confirm-r2,6,6,two,yes,yes,yes,no,none,yes,?,yes,small dark part at front of body could be a camera or sensor; not clear
+E6B-N-confirm-r3,6,6,two,?,yes,yes,no,none,yes,no,yes,small nozzle-like parts under the four diagonal motors only; none seen at the left and right motors; arm-root clamps show no clear pin
+E6B-N-confirm-r4,6,6,two,yes,yes,yes,no,none,yes,?,yes,round dark part at the front edge of the body may be a camera or a second cap; latch blocks near the arm roots
+H2-boom-r1,6,6,two,?,yes,yes,no,none,no,no,yes,arm roots have square clamp blocks but no clear pin or hinge axis; body top is split into a dark section with cap and a white block
+H2-boom-r2,6,6,two,?,yes,yes,yes,arms,some,no,yes,thin tube with clips runs under the left and right arms and ends in a small fitting by those two motors; diagonal motors have nothing beside them
+H2-boom-r3,6,6,two,yes,yes,yes,yes,body,no,no,yes,horizontal spray bar crosses behind the tank with fittings at its ends; nothing beside the motors
+H2-boom-r4,6,6,two,yes,yes,yes,?,?,no,no,yes,left and right arms carry a thin parallel rod with a small knob fitting on top; could be a boom along the arms or a latch rod
+H2-boom-r5,6,6,two,yes,yes,yes,?,?,no,no,yes,thin cross bar behind the body with one central connector; it spans the landing legs so it may be a gear crossbar rather than a spray bar
+H2-boom-r6,6,6,two,yes,yes,yes,?,?,no,no,yes,thin cross tube behind the body with two banded collars joins the rear landing legs; may be a gear crossbar rather than a spray bar
