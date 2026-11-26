@@ -1,0 +1,37 @@
+[
+ {
+  "reader": "reader1",
+  "tool_calls": {
+   "Read": 52,
+   "Bash": 10,
+   "Write": 3
+  },
+  "shell_words": {
+   "cd": 10,
+   "tool.py list": 1,
+   "tool.py crop": 42,
+   "tool.py check": 1
+  },
+  "images_opened": 8,
+  "crops": 42,
+  "outside_allowed": []
+ },
+ {
+  "reader": "reader2",
+  "tool_calls": {
+   "Read": 55,
+   "Bash": 12,
+   "Write": 1,
+   "Edit": 5
+  },
+  "shell_words": {
+   "cd": 12,
+   "tool.py list": 1,
+   "tool.py crop": 45,
+   "tool.py check": 1
+  },
+  "images_opened": 8,
+  "crops": 45,
+  "outside_allowed": []
+ }
+]
