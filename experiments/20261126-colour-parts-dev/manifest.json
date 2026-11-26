@@ -1,0 +1,159 @@
+{
+  "batch": "分部件配色：开发小批（三种写法 × 4 个种子）",
+  "base_state": "F6-S0",
+  "workbench": {
+    "version": "4.5.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
+  },
+  "sentence": {
+    "replaced": "Main shell colour: silver grey (#c7cbd1).",
+    "variants": {
+      "K0": "Main shell colour: charcoal black (#1e293b).",
+      "K1": "Body shell colour: charcoal black (#1e293b). The arms, motors and propellers are separate parts in their own colours, not the shell colour.",
+      "K2": "Colours by part: body shell charcoal black (#1e293b); arms silver grey (#c7cbd1); motors neutral grey (#8a9095); propellers white (#ffffff)."
+    }
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "COL-K0-s1",
+      "variant": "K0",
+      "seed": 2026112821,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "0bec8dbcb7720068771b7da25ce9c5ffaa3238da94c17c90c13194605b0090e8",
+      "request_sha256": "0109b7df04a6678de7c5b7366ee482d6445bc2ee5666f486ebdeaecae8755635"
+    },
+    {
+      "order": 1,
+      "id": "COL-K1-s1",
+      "variant": "K1",
+      "seed": 2026112821,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e5d9ece399e7a8a50a103d0cff5032909a9962ab9c3e7cab9cecd2588a144a23",
+      "request_sha256": "efbac5d4b84959eca8e74eb44f0a719826ee3cb499a01c26f53a33d22a3116ef"
+    },
+    {
+      "order": 1,
+      "id": "COL-K2-s1",
+      "variant": "K2",
+      "seed": 2026112821,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "4ed9769795af5f78a65baf00bd97317bc12f8f473522497d105d653ececd2643",
+      "request_sha256": "6fe304a94245d591840ffbba0602274c5b467e57d9a3fa6ca536daaf154d9cb1"
+    },
+    {
+      "order": 2,
+      "id": "COL-K0-s2",
+      "variant": "K0",
+      "seed": 2026112822,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "0bec8dbcb7720068771b7da25ce9c5ffaa3238da94c17c90c13194605b0090e8",
+      "request_sha256": "dac893c0e7544e9048e9306b64776b8ba67ccdc0ed315a3c2ff18351cbe66d79"
+    },
+    {
+      "order": 2,
+      "id": "COL-K1-s2",
+      "variant": "K1",
+      "seed": 2026112822,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e5d9ece399e7a8a50a103d0cff5032909a9962ab9c3e7cab9cecd2588a144a23",
+      "request_sha256": "2f58233978413da46f9d2f5e620db523fd110619d79d59d78403224ff6b29880"
+    },
+    {
+      "order": 2,
+      "id": "COL-K2-s2",
+      "variant": "K2",
+      "seed": 2026112822,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "4ed9769795af5f78a65baf00bd97317bc12f8f473522497d105d653ececd2643",
+      "request_sha256": "68d7f46aed4a04c171061462d577ef6451b85c46b5f19998952ba133fe76208a"
+    },
+    {
+      "order": 3,
+      "id": "COL-K0-s3",
+      "variant": "K0",
+      "seed": 2026112823,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "0bec8dbcb7720068771b7da25ce9c5ffaa3238da94c17c90c13194605b0090e8",
+      "request_sha256": "473f77f331d734dc8fe15ef540dc1a33e6f6eac653b1d325571187d5f9b8045e"
+    },
+    {
+      "order": 3,
+      "id": "COL-K1-s3",
+      "variant": "K1",
+      "seed": 2026112823,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e5d9ece399e7a8a50a103d0cff5032909a9962ab9c3e7cab9cecd2588a144a23",
+      "request_sha256": "e86ac93f19108307d20c5d850ed2f0ad743e9d772b270813db444c8e3e6a42a9"
+    },
+    {
+      "order": 3,
+      "id": "COL-K2-s3",
+      "variant": "K2",
+      "seed": 2026112823,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "4ed9769795af5f78a65baf00bd97317bc12f8f473522497d105d653ececd2643",
+      "request_sha256": "406090686d7994b96349e56a8f4a36d4c756098a0b9f39c5729635ab1b041c63"
+    },
+    {
+      "order": 4,
+      "id": "COL-K0-s4",
+      "variant": "K0",
+      "seed": 2026112824,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "0bec8dbcb7720068771b7da25ce9c5ffaa3238da94c17c90c13194605b0090e8",
+      "request_sha256": "19f5328e032e11e95cea14500af0fa4bd51b24dbbef506a90fb276266fda0830"
+    },
+    {
+      "order": 4,
+      "id": "COL-K1-s4",
+      "variant": "K1",
+      "seed": 2026112824,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e5d9ece399e7a8a50a103d0cff5032909a9962ab9c3e7cab9cecd2588a144a23",
+      "request_sha256": "8ad0d4fc3a780f21a3160a14252c574e3b11303adbb9b1d3a920c82f59072a30"
+    },
+    {
+      "order": 4,
+      "id": "COL-K2-s4",
+      "variant": "K2",
+      "seed": 2026112824,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "4ed9769795af5f78a65baf00bd97317bc12f8f473522497d105d653ececd2643",
+      "request_sha256": "78a9c61b96dce04c850b131d56aee749049d735abd57d003ff2aba09b6fdb008"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}

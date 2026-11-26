@@ -1,0 +1,89 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "分部件配色：开发小批 12 张",
+  "registration": "experiments/20261126-colour-parts-dev/README.md",
+  "registered_manifest": "experiments/20261126-colour-parts-dev/manifest.json",
+  "registered_manifest_sha256": "0b602cb44eeb820f6052bf1b6babf9f58a7b28cad76fe015b66c20794b2bfbb4",
+  "requests_dir": "experiments/20261126-colour-parts-dev/requests",
+  "files_dirs": [
+    "experiments/20261126-colour-parts-dev/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-COL-K0-s1.json",
+      "id": "COL-K0-s1",
+      "seed": 2026112821,
+      "sha256": "0109b7df04a6678de7c5b7366ee482d6445bc2ee5666f486ebdeaecae8755635"
+    },
+    {
+      "file": "01-COL-K1-s1.json",
+      "id": "COL-K1-s1",
+      "seed": 2026112821,
+      "sha256": "efbac5d4b84959eca8e74eb44f0a719826ee3cb499a01c26f53a33d22a3116ef"
+    },
+    {
+      "file": "01-COL-K2-s1.json",
+      "id": "COL-K2-s1",
+      "seed": 2026112821,
+      "sha256": "6fe304a94245d591840ffbba0602274c5b467e57d9a3fa6ca536daaf154d9cb1"
+    },
+    {
+      "file": "02-COL-K0-s2.json",
+      "id": "COL-K0-s2",
+      "seed": 2026112822,
+      "sha256": "dac893c0e7544e9048e9306b64776b8ba67ccdc0ed315a3c2ff18351cbe66d79"
+    },
+    {
+      "file": "02-COL-K1-s2.json",
+      "id": "COL-K1-s2",
+      "seed": 2026112822,
+      "sha256": "2f58233978413da46f9d2f5e620db523fd110619d79d59d78403224ff6b29880"
+    },
+    {
+      "file": "02-COL-K2-s2.json",
+      "id": "COL-K2-s2",
+      "seed": 2026112822,
+      "sha256": "68d7f46aed4a04c171061462d577ef6451b85c46b5f19998952ba133fe76208a"
+    },
+    {
+      "file": "03-COL-K0-s3.json",
+      "id": "COL-K0-s3",
+      "seed": 2026112823,
+      "sha256": "473f77f331d734dc8fe15ef540dc1a33e6f6eac653b1d325571187d5f9b8045e"
+    },
+    {
+      "file": "03-COL-K1-s3.json",
+      "id": "COL-K1-s3",
+      "seed": 2026112823,
+      "sha256": "e86ac93f19108307d20c5d850ed2f0ad743e9d772b270813db444c8e3e6a42a9"
+    },
+    {
+      "file": "03-COL-K2-s3.json",
+      "id": "COL-K2-s3",
+      "seed": 2026112823,
+      "sha256": "406090686d7994b96349e56a8f4a36d4c756098a0b9f39c5729635ab1b041c63"
+    },
+    {
+      "file": "04-COL-K0-s4.json",
+      "id": "COL-K0-s4",
+      "seed": 2026112824,
+      "sha256": "19f5328e032e11e95cea14500af0fa4bd51b24dbbef506a90fb276266fda0830"
+    },
+    {
+      "file": "04-COL-K1-s4.json",
+      "id": "COL-K1-s4",
+      "seed": 2026112824,
+      "sha256": "8ad0d4fc3a780f21a3160a14252c574e3b11303adbb9b1d3a920c82f59072a30"
+    },
+    {
+      "file": "04-COL-K2-s4.json",
+      "id": "COL-K2-s4",
+      "seed": 2026112824,
+      "sha256": "78a9c61b96dce04c850b131d56aee749049d735abd57d003ff2aba09b6fdb008"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}
