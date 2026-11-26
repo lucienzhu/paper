@@ -1,0 +1,113 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "相机约束：开发小批 16 张",
+  "registration": "experiments/20261126-camera-dev/README.md",
+  "registered_manifest": "experiments/20261126-camera-dev/manifest.json",
+  "registered_manifest_sha256": "054b99f924ffe5a90bb058df2e66f7333b9d49abf035b12adbe2ae22a5f9c460",
+  "requests_dir": "experiments/20261126-camera-dev/requests",
+  "files_dirs": [
+    "experiments/20261126-camera-dev/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-CAM-C0-s1.json",
+      "id": "CAM-C0-s1",
+      "seed": 2026112811,
+      "sha256": "52220a279b3ca9efb4f005ac86c7a410ddd8d00f32c6f9400ec4eaba791ad2bb"
+    },
+    {
+      "file": "01-CAM-C1-s1.json",
+      "id": "CAM-C1-s1",
+      "seed": 2026112811,
+      "sha256": "590f0268db121b4e18dc7e08d07da2f60aa585a1eb38fda813186a405aa5d8a8"
+    },
+    {
+      "file": "01-CAM-C2-s1.json",
+      "id": "CAM-C2-s1",
+      "seed": 2026112811,
+      "sha256": "bfee1cf05c067e3d11afd716bce489fa5319efb8e51001546668857ffaa69bca"
+    },
+    {
+      "file": "01-CAM-C3-s1.json",
+      "id": "CAM-C3-s1",
+      "seed": 2026112811,
+      "sha256": "1b0fb8ad8cc6d6a2d8d93896aa466665198e41f992b8f4e7ab0bbbb00aebae04"
+    },
+    {
+      "file": "02-CAM-C0-s2.json",
+      "id": "CAM-C0-s2",
+      "seed": 2026112812,
+      "sha256": "67b57dc05300ad878d95836225c8b794c10ae9cde7d0050624c61e6cccaca7fd"
+    },
+    {
+      "file": "02-CAM-C1-s2.json",
+      "id": "CAM-C1-s2",
+      "seed": 2026112812,
+      "sha256": "030b0b38ab9150aba416b94368ce37f03684c0812bcdc847cf5c81c29eea3938"
+    },
+    {
+      "file": "02-CAM-C2-s2.json",
+      "id": "CAM-C2-s2",
+      "seed": 2026112812,
+      "sha256": "2103e81dcfd8b9a355bff042eb3077a611281ae71c3ccbe4dae4b6b5e47cc64a"
+    },
+    {
+      "file": "02-CAM-C3-s2.json",
+      "id": "CAM-C3-s2",
+      "seed": 2026112812,
+      "sha256": "2472c997190314b802955007f1098eb08f4aed9885826dbba4076cfc4310de4f"
+    },
+    {
+      "file": "03-CAM-C0-s3.json",
+      "id": "CAM-C0-s3",
+      "seed": 2026112813,
+      "sha256": "84f4ca94b980bda992535b175c6014506cc9f05aabdd87831dcc7255ab2ed7c9"
+    },
+    {
+      "file": "03-CAM-C1-s3.json",
+      "id": "CAM-C1-s3",
+      "seed": 2026112813,
+      "sha256": "697523fdb8ff3e89579b1704c7482e20e4376fb7bfb47b27e3d56149ed29f87b"
+    },
+    {
+      "file": "03-CAM-C2-s3.json",
+      "id": "CAM-C2-s3",
+      "seed": 2026112813,
+      "sha256": "2573c6896e4c685e487c99fd589b1f2e89ea9b5a62e976ba78d4dc89e3408851"
+    },
+    {
+      "file": "03-CAM-C3-s3.json",
+      "id": "CAM-C3-s3",
+      "seed": 2026112813,
+      "sha256": "170dda89dab2e6ac713124a134040e306f29e6e9e4aa52fc7a813b31d5edde45"
+    },
+    {
+      "file": "04-CAM-C0-s4.json",
+      "id": "CAM-C0-s4",
+      "seed": 2026112814,
+      "sha256": "75affc9cdb9412f2a4504c8036e4032b5a643643fa9e91ca5d9a407cf3a136c5"
+    },
+    {
+      "file": "04-CAM-C1-s4.json",
+      "id": "CAM-C1-s4",
+      "seed": 2026112814,
+      "sha256": "331ef12d1206db14d13ca30b1971f0f1dc273e95d6e9e8da752b58aa99ed96cc"
+    },
+    {
+      "file": "04-CAM-C2-s4.json",
+      "id": "CAM-C2-s4",
+      "seed": 2026112814,
+      "sha256": "7a7b9c228a485e618b8795951023ce9b1adebbe61e67675168ed6b23eff0be79"
+    },
+    {
+      "file": "04-CAM-C3-s4.json",
+      "id": "CAM-C3-s4",
+      "seed": 2026112814,
+      "sha256": "e9eba464e20551f314202be8a65dcf8296dd68a3d6741838200ffe33c7a0f329"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

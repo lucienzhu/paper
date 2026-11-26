@@ -1,0 +1,221 @@
+{
+  "batch": "相机约束：开发小批（四种做法 × 4 个种子）",
+  "base_state": "F6-S0",
+  "workbench": {
+    "version": "4.5.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
+  },
+  "sentence": {
+    "current": "The camera sits inside the nose, flush with the shell; from directly overhead only a thin strip of its front window shows at the very front edge of the nose.",
+    "v1.6": "The camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward."
+  },
+  "extra_negative_terms": [
+    "camera lens visible from above",
+    "upward-facing lens",
+    "camera on a neck or stalk",
+    "camera on a post"
+  ],
+  "requests": [
+    {
+      "order": 1,
+      "id": "CAM-C0-s1",
+      "variant": "C0",
+      "seed": 2026112811,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 15,
+      "request_sha256": "52220a279b3ca9efb4f005ac86c7a410ddd8d00f32c6f9400ec4eaba791ad2bb"
+    },
+    {
+      "order": 1,
+      "id": "CAM-C1-s1",
+      "variant": "C1",
+      "seed": 2026112811,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 19,
+      "request_sha256": "590f0268db121b4e18dc7e08d07da2f60aa585a1eb38fda813186a405aa5d8a8"
+    },
+    {
+      "order": 1,
+      "id": "CAM-C2-s1",
+      "variant": "C2",
+      "seed": 2026112811,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 15,
+      "request_sha256": "bfee1cf05c067e3d11afd716bce489fa5319efb8e51001546668857ffaa69bca"
+    },
+    {
+      "order": 1,
+      "id": "CAM-C3-s1",
+      "variant": "C3",
+      "seed": 2026112811,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 19,
+      "request_sha256": "1b0fb8ad8cc6d6a2d8d93896aa466665198e41f992b8f4e7ab0bbbb00aebae04"
+    },
+    {
+      "order": 2,
+      "id": "CAM-C0-s2",
+      "variant": "C0",
+      "seed": 2026112812,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 15,
+      "request_sha256": "67b57dc05300ad878d95836225c8b794c10ae9cde7d0050624c61e6cccaca7fd"
+    },
+    {
+      "order": 2,
+      "id": "CAM-C1-s2",
+      "variant": "C1",
+      "seed": 2026112812,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 19,
+      "request_sha256": "030b0b38ab9150aba416b94368ce37f03684c0812bcdc847cf5c81c29eea3938"
+    },
+    {
+      "order": 2,
+      "id": "CAM-C2-s2",
+      "variant": "C2",
+      "seed": 2026112812,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 15,
+      "request_sha256": "2103e81dcfd8b9a355bff042eb3077a611281ae71c3ccbe4dae4b6b5e47cc64a"
+    },
+    {
+      "order": 2,
+      "id": "CAM-C3-s2",
+      "variant": "C3",
+      "seed": 2026112812,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 19,
+      "request_sha256": "2472c997190314b802955007f1098eb08f4aed9885826dbba4076cfc4310de4f"
+    },
+    {
+      "order": 3,
+      "id": "CAM-C0-s3",
+      "variant": "C0",
+      "seed": 2026112813,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 15,
+      "request_sha256": "84f4ca94b980bda992535b175c6014506cc9f05aabdd87831dcc7255ab2ed7c9"
+    },
+    {
+      "order": 3,
+      "id": "CAM-C1-s3",
+      "variant": "C1",
+      "seed": 2026112813,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 19,
+      "request_sha256": "697523fdb8ff3e89579b1704c7482e20e4376fb7bfb47b27e3d56149ed29f87b"
+    },
+    {
+      "order": 3,
+      "id": "CAM-C2-s3",
+      "variant": "C2",
+      "seed": 2026112813,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 15,
+      "request_sha256": "2573c6896e4c685e487c99fd589b1f2e89ea9b5a62e976ba78d4dc89e3408851"
+    },
+    {
+      "order": 3,
+      "id": "CAM-C3-s3",
+      "variant": "C3",
+      "seed": 2026112813,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 19,
+      "request_sha256": "170dda89dab2e6ac713124a134040e306f29e6e9e4aa52fc7a813b31d5edde45"
+    },
+    {
+      "order": 4,
+      "id": "CAM-C0-s4",
+      "variant": "C0",
+      "seed": 2026112814,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 15,
+      "request_sha256": "75affc9cdb9412f2a4504c8036e4032b5a643643fa9e91ca5d9a407cf3a136c5"
+    },
+    {
+      "order": 4,
+      "id": "CAM-C1-s4",
+      "variant": "C1",
+      "seed": 2026112814,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "negative_terms": 19,
+      "request_sha256": "331ef12d1206db14d13ca30b1971f0f1dc273e95d6e9e8da752b58aa99ed96cc"
+    },
+    {
+      "order": 4,
+      "id": "CAM-C2-s4",
+      "variant": "C2",
+      "seed": 2026112814,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 15,
+      "request_sha256": "7a7b9c228a485e618b8795951023ce9b1adebbe61e67675168ed6b23eff0be79"
+    },
+    {
+      "order": 4,
+      "id": "CAM-C3-s4",
+      "variant": "C3",
+      "seed": 2026112814,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "40530cc39e7a1f5e3d7ce5db59003a697a1c2b74aee145be2333f1eae015a4eb",
+      "negative_terms": 19,
+      "request_sha256": "e9eba464e20551f314202be8a65dcf8296dd68a3d6741838200ffe33c7a0f329"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}
