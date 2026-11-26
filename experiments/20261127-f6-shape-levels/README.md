@@ -52,3 +52,24 @@
 
 - 内嵌相机在三个开发种子上画法不一（一条窗带、窗带上带檐、窗带略外凸）。Claude 都判成内嵌；不知条件的读者会不会把带檐的读成下挂，是这一批要量的（基准误判）。
 - 真人读者还没有找。读数到之前只写 AI 读数并标明。
+
+## 七、读数包和判读（2026-11-27 05:20，48 张出齐以后）
+
+**读数包封在库外**（仓库是公开的；图号与请求号的对照表在判读做完以前不进仓库）：`/Users/aus001/projects/paper-private/20261127-f6/`。
+
+| 内容 | 位置 | 给谁 |
+| --- | --- | --- |
+| 读者 1、2 的匿名包（各 48 张，随机图号、各自打乱、去掉元数据；读法、空白表、[放大和核对的小工具](../reading/reader_tool.py)） | `readers/reader1`、`readers/reader2` | 两位 AI 读者（已启动，说明原文见 [ai-reading/brief.md](ai-reading/brief.md)） |
+| 读者 3、4 的匿名包，各带一个离线的点选页 `index.html`（[reader_page.py](../reading/reader_page.py) 生成，栏目和允许的词与读法逐项相同） | `readers/reader3`、`readers/reader4` | 两名有设计背景的真人 |
+| 发给真人的两个压缩包（各约 34 MB，里面有“先看这里.txt”） | `send/F6读图包-读者3.zip`、`send/F6读图包-读者4.zip` | 作者转给两位读者，一人一个，不要给同一个人 |
+| 图号与请求号的对照表 | `researcher/PRIVATE-key.csv`（AI 读者运行期间锁住） | 只给研究者 |
+
+**真人读者要做的：** 解压，双击 `index.html`，逐张点选 48 张（约 40—60 分钟），点“导出读数”，把 `reading.csv` 发回。**作者知道条件，不能自己读。**
+
+**读数回来以后：** 读者 3 的文件存成 `returns/reader3.csv`，读者 4 的存成 `returns/reader4.csv`（放在库外同一目录下），然后
+
+```bash
+python3 -B experiments/20261127-f6-shape-levels/score.py --key /Users/aus001/projects/paper-private/20261127-f6/researcher/PRIVATE-key.csv --reading 3=<读者3的reading.csv> --reading 4=<读者4的reading.csv>
+```
+
+AI 读者的两份同样计分（`--reading 1=… --reading 2=…`）。四份都回来以后，对照表和四份读数一起进仓库。
