@@ -1,0 +1,41 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "构型开发检查第四小批 4 张：共轴 X8 交叉直杆加机身句",
+  "registration": "experiments/20261127-config-dev/README.md",
+  "registered_manifest": "experiments/20261127-config-dev/round4/manifest.json",
+  "registered_manifest_sha256": "8cc3043d113e6ba0deee997ce01c3e842a64b93b3d2935a870fba98137cc1edd",
+  "requests_dir": "experiments/20261127-config-dev/round4/requests",
+  "files_dirs": [
+    "experiments/20261127-config-dev/round4/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-CD4-X8d-s1.json",
+      "id": "CD4-X8d-s1",
+      "seed": 2026112871,
+      "sha256": "06d81cb1c7e973b5a10d1b67648d5e5e5894ef1fa37c0de8314206b880df1cbf"
+    },
+    {
+      "file": "02-CD4-X8d-s2.json",
+      "id": "CD4-X8d-s2",
+      "seed": 2026112872,
+      "sha256": "05849bfddd96ac27b808e484d99edd786ab61f2d8aba98bedf1e4ae6dcbb7298"
+    },
+    {
+      "file": "03-CD4-X8d-s3.json",
+      "id": "CD4-X8d-s3",
+      "seed": 2026112873,
+      "sha256": "7c04c4998fe0055fb45dc5a6000ef8fe33b3437a689e785a645d230ac6cb9e23"
+    },
+    {
+      "file": "04-CD4-X8d-s4.json",
+      "id": "CD4-X8d-s4",
+      "seed": 2026112874,
+      "sha256": "4f7e546e07c7e22713b56af3ee61773c5b9435d23bb37f2a486b21d49791c346"
+    }
+  ],
+  "files": {
+    "wbguide-crossbars-acdd1173f244.png": "acdd1173f244ff5228553d42f5a0447bdcebd95a9d6528883591f368e0321f97"
+  }
+}

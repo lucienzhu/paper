@@ -1,0 +1,56 @@
+{
+  "batch": "构型开发检查第四小批（共轴 X8：交叉直杆 + 机身句，4 个种子）",
+  "sentence": "The fuselage is the hub of the aircraft: all four arms attach directly to its sides, with the point where the arms meet at the middle of the fuselage, and its nose, which carries the camera, points to the top edge of the image.",
+  "requests": [
+    {
+      "order": 1,
+      "id": "CD4-X8d-s1",
+      "variant": "X8d",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "8fb18dcdd76740e8c779594811f26ca53d48302d19ea07260ae52bb5416752c6",
+      "request_sha256": "06d81cb1c7e973b5a10d1b67648d5e5e5894ef1fa37c0de8314206b880df1cbf"
+    },
+    {
+      "order": 2,
+      "id": "CD4-X8d-s2",
+      "variant": "X8d",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "8fb18dcdd76740e8c779594811f26ca53d48302d19ea07260ae52bb5416752c6",
+      "request_sha256": "05849bfddd96ac27b808e484d99edd786ab61f2d8aba98bedf1e4ae6dcbb7298"
+    },
+    {
+      "order": 3,
+      "id": "CD4-X8d-s3",
+      "variant": "X8d",
+      "seed": 2026112873,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "8fb18dcdd76740e8c779594811f26ca53d48302d19ea07260ae52bb5416752c6",
+      "request_sha256": "7c04c4998fe0055fb45dc5a6000ef8fe33b3437a689e785a645d230ac6cb9e23"
+    },
+    {
+      "order": 4,
+      "id": "CD4-X8d-s4",
+      "variant": "X8d",
+      "seed": 2026112874,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "8fb18dcdd76740e8c779594811f26ca53d48302d19ea07260ae52bb5416752c6",
+      "request_sha256": "4f7e546e07c7e22713b56af3ee61773c5b9435d23bb37f2a486b21d49791c346"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-crossbars-acdd1173f244.png",
+      "sha256": "acdd1173f244ff5228553d42f5a0447bdcebd95a9d6528883591f368e0321f97"
+    }
+  ]
+}
