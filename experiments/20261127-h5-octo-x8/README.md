@@ -45,3 +45,19 @@ X8 试了四种做法、十四张图，没有一种过开发门（要 4 张里 3
 - 8 份请求过了出图前检查（`--allow-shared-seeds H5-`：两种构型共用种子成区组，是登记的设计）。
 - 8 份与工作台执行图逐份相同（`check.mjs`）。
 - 批次单：[03a-h5-stage1-q-o8.json](../gpu-remote/batches/03a-h5-stage1-q-o8.json)。
+
+## 六、读数包和判读（2026-11-27 07:15，8 张出齐以后）
+
+读数包封在库外：`/Users/aus001/projects/paper-private/20261127-pack-c/`（做法与 [F6 的](../20261127-f6-shape-levels/README.md#七读数包和判读)相同；四旋参照和平面八旋 8 张混在一个包里）。
+
+| 内容 | 位置 | 给谁 |
+| --- | --- | --- |
+| 读者 1、2 的匿名包 | `readers/reader1`、`readers/reader2` | 两位 AI 读者（[任务说明](ai-reading/brief.md)） |
+| 读者 3、4 的匿名包，各带离线点选页 | 压缩包 `send/多旋翼读图包C-读者3.zip`、`…读者4.zip` | 真人读者，一人一个，约 10 分钟 |
+| 对照表 | `researcher/PRIVATE-key.csv` | 只给研究者 |
+
+计分：
+
+```bash
+python3 -B experiments/20261127-h5-octo-x8/score.py --key /Users/aus001/projects/paper-private/20261127-pack-c/researcher/PRIVATE-key.csv --reading 3=<读者3的reading.csv> --reading 4=<读者4的reading.csv>
+```
