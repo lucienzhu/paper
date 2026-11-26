@@ -38,3 +38,21 @@
 - 读法：[reader-rules.txt](reader-rules.txt)。栏目：电机个数、机臂根数、桨（都是双叶 / 有的不是）、折叠铰接、药箱顶面、加注口、有没有横向喷杆、喷杆在哪、电机旁有没有喷头、有没有相机、是不是完整的产品。读者不知道这批有哪两组；10 张混在一个包里（喷杆 6 张就是喷头 4 张的对照图）。
 - 计分：[score.py](score.py)，判据照 11-26 登记的原文：喷头组“可辨”＝电机旁有喷头且没有横向喷杆，至少 3/4；药箱与加注口保持至少 3/4；喷杆组里读出喷头的超过一半（4 张以上），这位读者的确认不算数。通用项和喷杆组的喷杆可辨性逐项报告。
 - 真人读者用同一份读法做成的点选页（[reader-fields.json](reader-fields.json)，`experiments/reading/reader_page.py`），导出同一格式的读数表，用同一个计分程序。
+
+## 六、读数包和判读（2026-11-27 05:45，10 张出齐以后）
+
+读数包封在库外：`/Users/aus001/projects/paper-private/20261127-nozzle/`（做法、目录结构与 [F6 的](../20261127-f6-shape-levels/README.md#七读数包和判读)相同）。
+
+| 内容 | 位置 | 给谁 |
+| --- | --- | --- |
+| 读者 1、2 的匿名包（各 10 张：喷头 4 张和喷杆 6 张混在一起，读者不知道有两组） | `readers/reader1`、`readers/reader2` | 两位 AI 读者（任务说明见 [ai-reading/brief.md](ai-reading/brief.md)） |
+| 读者 3、4 的匿名包，各带离线点选页 | `readers/reader3`、`readers/reader4`；压缩包 `send/植保六旋读图包-读者3.zip`、`…读者4.zip`（各约 7 MB） | 真人读者，一人一个（任务表 H2：药箱、喷洒部件的可辨性要有一部分真人判读） |
+| 对照表 | `researcher/PRIVATE-key.csv` | 只给研究者 |
+
+真人读者约 10—15 分钟读完，导出 `reading.csv` 发回。计分：
+
+```bash
+python3 -B experiments/20261127-nozzle-confirm/score.py --key /Users/aus001/projects/paper-private/20261127-nozzle/researcher/PRIVATE-key.csv --reading 3=<读者3的reading.csv> --reading 4=<读者4的reading.csv>
+```
+
+H5（八旋、X8）的图出来以后另成一包；任务表原想把 H2 和 H5 放进同一份题面，现在先各自成包，免得六旋的判读等八旋。
