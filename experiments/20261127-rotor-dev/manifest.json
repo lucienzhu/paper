@@ -1,0 +1,171 @@
+{
+  "batch": "旋翼：开发小批（三种做法 × 4 个种子）",
+  "base_state": "BASE",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "sentence": {
+    "current": "Each motor carries one stationary 2-blade propeller, 5-inch (127 mm) diameter. The two blades point in exactly opposite directions from the hub.",
+    "v1.6": "Each motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle."
+  },
+  "extra_negative_terms": [
+    "three-blade propeller",
+    "four-blade propeller"
+  ],
+  "requests": [
+    {
+      "order": 1,
+      "id": "ROT-R0-s1",
+      "variant": "R0",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "negative_terms": 19,
+      "request_sha256": "d189e284647cff2026ce7efecea8ee453ea4d2fd25f04998ed1fe15868a73176"
+    },
+    {
+      "order": 1,
+      "id": "ROT-R1-s1",
+      "variant": "R1",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 19,
+      "request_sha256": "a07e603cf378be5539adb67a7b37ce4eeae199cb623be4a67fef49a878c8223f"
+    },
+    {
+      "order": 1,
+      "id": "ROT-R2-s1",
+      "variant": "R2",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 21,
+      "request_sha256": "d603b01e4e285c309e591226243900a595fd7d0e785758fdbd2a11f617268c5d"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R0-s2",
+      "variant": "R0",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "negative_terms": 19,
+      "request_sha256": "a87a010301c17583ad1c156f9a71d5b5ebad50d3d15fde640efc2d77bf31830e"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R1-s2",
+      "variant": "R1",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 19,
+      "request_sha256": "e3bc4c4f4be718989d8193ee72411528f4eb260b7a50b0232b493181e7fa2420"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R2-s2",
+      "variant": "R2",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 21,
+      "request_sha256": "fa647ed1da5385561c45b0e7571f160defc03a3e1b588f1565c8843c6151ce85"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R0-s3",
+      "variant": "R0",
+      "seed": 2026112853,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "negative_terms": 19,
+      "request_sha256": "0e885695912455e3bf27944520ba7e2cc70febc662c37d68c7f806a1135b9265"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R1-s3",
+      "variant": "R1",
+      "seed": 2026112853,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 19,
+      "request_sha256": "9623c003d73f9329f473d746540408789a1197d8c5f76411df5bc2cabf6c614d"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R2-s3",
+      "variant": "R2",
+      "seed": 2026112853,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 21,
+      "request_sha256": "d02242c7d9a479bf72c620b9030bc25d2be775a758aeec3b92a9a3d067fc98c5"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R0-s4",
+      "variant": "R0",
+      "seed": 2026112854,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "negative_terms": 19,
+      "request_sha256": "417e45f2ba61362d77dda047ac8ca875bb70da33a5ee9c9e745990f6e9c7457a"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R1-s4",
+      "variant": "R1",
+      "seed": 2026112854,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 19,
+      "request_sha256": "09c23988995f492aa55078de0f35871c597b17727161c154e7d368d45f9d0a97"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R2-s4",
+      "variant": "R2",
+      "seed": 2026112854,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "647a698c6fa3d9d78c6f9e3087a75360c7f8a79f1f9ac4b2897dd558d23275c0",
+      "negative_terms": 21,
+      "request_sha256": "88a06e3aae299f4dc39691657dea8058b8e1c90f7e7795afd14cf3f808db0a53"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}

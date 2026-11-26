@@ -1,0 +1,51 @@
+# 2026-11-27 夜间出图：计划、标准、进度（Claude 值守）
+
+**作者 2026-11-27 的交代（原话摘录）：** “the GPU can keep generating images all night tonight, and you're the one mainly responsible for acceptance. You can't just look at the camera — you also need to check the other parts: the airframe, the rotors, every region. … If something doesn't meet the standard, or doesn't meet your requirements, re-run it — you don't need to ask me, just push tonight's tasks forward automatically. … You're standing in for me now — you are the one making the judgment calls. … remember to set your own reminder times and keep accepting results continuously … until the assets are all done. Tomorrow I can start the new tasks in our blueprint directly, such as human image judging, getting people started on the formal workbench experiments, etc. And you must keep watching at all times whether our requirements have drifted away from the requirements of our GitHub experimental blueprint.”
+
+即：今晚 GPU 一直开着，验收由 Claude 负责，整张图逐项看，不合格就改、就重出，不用问；自己定时提醒，一批接一批验收，直到素材齐；随时对着蓝图，不走偏。明天作者要直接开始真人判图和工作台的正式场次。
+
+## 怎么做
+
+- **验收标准：** [出图验收标准](../reading/acceptance-standard.md)。每一批每一张逐项看：视图、布局、旋翼、机身、臂根、相机、起落架、配色、画面、产品。
+- **先开发、过门、再确认**（蓝图 A4→A5、F1→F2 的做法）。开发批小（不超过 16 张），判据出图前写定；没过门就改写法再出。
+- **确认批不挑图、不单张替换。** 同一种错成片出现，回到开发修好，用新种子把整批重出；先出的留档作开发材料。
+- **每一批都先登记、提交，再出图。**
+- **提醒：** 本会话里设了每 15 分钟一次的定时提醒（会话内有效，会话一断就没了）；每一批另有一个到点就返回的看守。会话要是重启，从这一页接着做。
+- **连接：** 主机地址和口令不写进仓库。隧道是本机 `ssh -N -L 18189:127.0.0.1:8189` 的自重连循环；单批提交用 scratchpad 里的 `one.sh <标签> <批次单> <输出目录>`（检查、上传、提交；断线后按主机历史对账，不重交）。
+
+## 对着蓝图：今晚要齐的素材，各自交到哪
+
+| 素材 | 研究问题 → 论文哪一节 | 明天谁用 | 状态 |
+| --- | --- | --- | --- |
+| 工作台冻结版本和真机验收 | RQ3 → 4.5；工具 → 4.1 | 作者预试（C2）和外部设计者（C3）的场次 | 开发中的修正还没收口；验收未做 |
+| F6 造型档位确认批 48 张 | RQ2b → 5.2.1 | 2 名有设计背景的真人判读者；两位不知条件的 AI | 等造型选项开发过门 |
+| 农业植保六旋 10 张（H2、H3） | RQ4 → 5.5.1 | 真人判读题面 | 等六旋的开发检查 |
+| H5 第一段顶视 12 张、第二段斜视 8 张 | RQ4 → 5.5.2 | 真人判读题面；AI 读者 | 等八旋、X8 的开发检查 |
+| A4 闭环臂第一轮 30 张 | RQ2a → 5.2.1（开发，选做法） | AI 读者取点；之后 A5 | 等基准收口 |
+
+不在今晚的：F1/F2（要先有 F6 的读数选父图、画遮罩）、A5（等 A4 过门）、A4 的两段式和单次合并两臂（待按工作台流程重新登记）、A6（工作台写不出，等作者定）。**今晚不新增研究问题、不新增测量。**
+
+## 进度记录（按时间）
+
+| 时间（本机） | 批 | 张数 | 验收 | 下一步 |
+| --- | --- | ---: | --- | --- |
+| 11-26 晚 | 条件图颜色残留开发 | 12 | 现行写法 3/4 有残留，去掉颜色词 0/4 | 写进 4.5.3 |
+| 11-26 晚 | F6 头 14 张（旧基准） | 14 | 基准相机 3/8 外突；转为开发材料 | 相机开发 |
+| 11-26 夜 | 相机开发 | 16 | C3（两样都改）4/4 内嵌，作者确认 | 写进 4.6 |
+| 11-27 00 时 | 分部件配色开发 | 12 | 机身、机臂、桨叶 4/4；电机 0/4 | 机臂、桨叶两项写进 4.6；电机不设（4.6.1） |
+| 11-27 00 时 | 修正后基准检查 | 8 | 相机、起落架、配色过；**旋翼当时只数了叶数，漏了 V 形，要按新标准重判** | 旋翼开发 |
+| 11-27 01 时 | 造型选项开发第一小批 | 15 | S4：舱体出来但镜头朝上 3/3；S5：多为两块；后三档在出 | 第二小批换句子 |
+
+## 队列（依次；每一批跑完先验收）
+
+1. 造型选项开发第一小批后三档（S2、S3、S1）：在跑。
+2. 旋翼开发 12 张（[登记](../20261127-rotor-dev/README.md)）。
+3. 造型选项开发第二小批 6 张（S4b、S5b）。
+4. 按结果把过门的写法写进工作台（改版本号）、全套检查、重新取请求。
+5. 合在一起的基准和五个选项再出一小批，整张图验收。过了才往下。
+6. F6 确认批（新种子，重新登记）。
+7. 六旋开发检查 → 农业植保六旋 10 张。
+8. 八旋、X8 开发检查 → H5 第一段 12 张 → 第二段 8 张。
+9. A4 闭环臂第一轮 30 张。
+10. 工作台真机验收（冻结版本）。
+11. 早上的汇总：写进本页和现状总表。
