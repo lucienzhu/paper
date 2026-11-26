@@ -1,0 +1,128 @@
+{
+  "batch": "修正后的基准：检查小批（BASE 与 MOT 各 4 张）",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "state": {
+    "values": {
+      "frame.frame_type": "True X",
+      "frame.span_ratio_wl": 1,
+      "frame.wheelbase_mm": 250,
+      "fuselage.fuselage_style": "Aerodynamic Pod",
+      "frame.arm_root": "seamless",
+      "accessories.camera_mount": "flush",
+      "fuselage.top_cover": "single",
+      "landing_gear.landing_gear_style": "无独立起落架",
+      "accessories.drone_primary_color": "#c7cbd1",
+      "accessories.arm_color": "#c7cbd1",
+      "accessories.prop_color": "#1e293b",
+      "accessories.surface_finish": "matte"
+    },
+    "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab"
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+  "motor_sentence": {
+    "base": "Colours by part: body shell silver grey (#c7cbd1); arms silver grey (#c7cbd1); propellers charcoal black (#1e293b).",
+    "mot": "Colours by part: body shell silver grey (#c7cbd1); arms silver grey (#c7cbd1); motor housings neutral grey (#8a9095); propellers charcoal black (#1e293b)."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "BASE-s1",
+      "group": "BASE",
+      "seed": 2026112831,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "request_sha256": "568d44d6420eb354ccf43e2ca88b35c09ae4c41a19231338b0577fd58383b83e"
+    },
+    {
+      "order": 1,
+      "id": "MOT-s1",
+      "group": "MOT",
+      "seed": 2026112831,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6091fb2bac85ba209c90a9a3dc4569da1be9b5aa271066e902918bff39cb8d31",
+      "request_sha256": "67bebaacead5f7eb00bc68fc96b6e54c462925c4216922f2c55c5c7643a9b2b5"
+    },
+    {
+      "order": 2,
+      "id": "BASE-s2",
+      "group": "BASE",
+      "seed": 2026112832,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "request_sha256": "4b7bde086b145155bfcbc31e6ccb04db943bb07c2925efcbf7bf98bbe570071c"
+    },
+    {
+      "order": 2,
+      "id": "MOT-s2",
+      "group": "MOT",
+      "seed": 2026112832,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6091fb2bac85ba209c90a9a3dc4569da1be9b5aa271066e902918bff39cb8d31",
+      "request_sha256": "997c647acb11662e039ecdef2188737644440c017f3630a6d8fda611e423c72a"
+    },
+    {
+      "order": 3,
+      "id": "BASE-s3",
+      "group": "BASE",
+      "seed": 2026112833,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "request_sha256": "c020a59ad4f0716b1c17d5bc06d9ff04cb1f508b2f727c38df5f7cbb3b128465"
+    },
+    {
+      "order": 3,
+      "id": "MOT-s3",
+      "group": "MOT",
+      "seed": 2026112833,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6091fb2bac85ba209c90a9a3dc4569da1be9b5aa271066e902918bff39cb8d31",
+      "request_sha256": "f0bf3b6f122fc251d822e842e22a73439d74c8d96ff361513f208b5408015e1a"
+    },
+    {
+      "order": 4,
+      "id": "BASE-s4",
+      "group": "BASE",
+      "seed": 2026112834,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "e6d4f8a9e5d2f0dfeff98a3c5a4dde885278fa45863c41e8cd088e130a3b97ab",
+      "request_sha256": "b596f6005f23e05baaea40b4e71dd891b7dc038e1e81ac0807da61f870ea4c72"
+    },
+    {
+      "order": 4,
+      "id": "MOT-s4",
+      "group": "MOT",
+      "seed": 2026112834,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6091fb2bac85ba209c90a9a3dc4569da1be9b5aa271066e902918bff39cb8d31",
+      "request_sha256": "38f6d077c0e64e7d6a89b885e4963fa2bc27ffc9d5c7c556ad7b66dcad52a045"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}

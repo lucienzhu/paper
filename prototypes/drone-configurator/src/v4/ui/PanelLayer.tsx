@@ -150,7 +150,7 @@ function CmfControls({ laneId }: { laneId: string }) {
   const set = (path: string, value: unknown) => useStudio.getState().setField(laneId, path, value);
   const applyHex = (value: string) => { const v = value.trim().toLowerCase(); if (/^#[0-9a-f]{6}$/.test(v)) set('accessories.drone_primary_color', v); };
   return <>
-    <Field path="accessories.drone_primary_color" hint="不指定就不写进文字。色板以外的颜色用“自定义”，也可以在下面的说明里写颜色的名字。">
+    <Field path="accessories.drone_primary_color" hint="机身外壳的颜色。不指定就不写进文字。色板以外的颜色用“自定义”，也可以在下面的说明里写颜色的名字。">
       <div className="row4" role="radiogroup" aria-label="主色">
         <button type="button" role="radio" aria-checked={!colour} className={'b4 sm' + (!colour ? ' pri' : '')} onClick={() => set('accessories.drone_primary_color', '')}>不指定</button>
         {colourSwatches.map(c => <button key={c.value} type="button" role="radio" aria-checked={colour === c.value} title={c.zh} aria-label={c.zh} data-colour={c.value}
@@ -167,6 +167,19 @@ function CmfControls({ laneId }: { laneId: string }) {
         {custom && <span className="r4-muted">已用自定义颜色 {colour}</span>}
       </div>
     </Field>
+    {/* 4.6：按部件配色。主色只管机身外壳；机臂、电机、桨叶各选各的，不选就不写进文字。 */}
+    {!!colour && !p.accessories.arm_color && !p.accessories.motor_color && !p.accessories.prop_color &&
+      <p className="r4-note" data-testid="one-colour-hint">只选了机身主色：出图时整机多半会变成这一个颜色。真实产品的机臂、电机和桨叶各有各的颜色，在下面三项里分别选。</p>}
+    {([['accessories.arm_color', '机臂颜色', p.accessories.arm_color ?? ''], ['accessories.motor_color', '电机颜色', p.accessories.motor_color ?? ''],
+      ['accessories.prop_color', '桨叶颜色', p.accessories.prop_color ?? '']] as [string, string, string][]).map(([path, label, value]) =>
+      <Field key={path} path={path} hint={path === 'accessories.arm_color' ? '真实产品很少整机一个颜色。主色管机身外壳，这三项分别管机臂、电机和桨叶。' : undefined}>
+        <div className="row4" role="radiogroup" aria-label={label} data-testid={'part-colour-' + path.split('.')[1]}>
+          <button type="button" role="radio" aria-checked={!value} className={'b4 sm' + (!value ? ' pri' : '')} onClick={() => set(path, '')}>不指定</button>
+          {colourSwatches.map(c => <button key={c.value} type="button" role="radio" aria-checked={value === c.value} title={c.zh} aria-label={c.zh} data-colour={c.value}
+            onClick={() => set(path, c.value)}
+            style={{ width: 24, height: 24, borderRadius: 6, background: c.value, border: value === c.value ? '2px solid var(--ink)' : '1px solid var(--line-2)', boxShadow: value === c.value ? '0 0 0 2px var(--surface) inset' : undefined, cursor: 'pointer' }} />)}
+        </div>
+      </Field>)}
     <Field path="accessories.surface_finish"><OpenChoice path="accessories.surface_finish" options={finishOptions} /></Field>
     <Field path="frame.material_visual" hint="机臂表面看上去的样子；其他局部纹理写在下面的说明里。"><OpenChoice path="frame.material_visual" options={armMaterialOptions} /></Field>
     <Field path="accessories.custom_prompt_additions" hint="选项里没有的，自己写：颜色的名字、分色、局部材质、纹理、标识位置……原样写进生成的文字，AI 不改这一栏。">

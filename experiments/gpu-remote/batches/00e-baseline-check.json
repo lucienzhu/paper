@@ -1,0 +1,65 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "修正后的基准：检查小批 8 张（工作台 4.6.0）",
+  "registration": "experiments/20261127-baseline-check/README.md",
+  "registered_manifest": "experiments/20261127-baseline-check/manifest.json",
+  "registered_manifest_sha256": "27f09cacd0aac68472be68eaf724056ca255601aed6b1e3638657e7628e53379",
+  "requests_dir": "experiments/20261127-baseline-check/requests",
+  "files_dirs": [
+    "experiments/20261127-baseline-check/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-BASE-s1.json",
+      "id": "BASE-s1",
+      "seed": 2026112831,
+      "sha256": "568d44d6420eb354ccf43e2ca88b35c09ae4c41a19231338b0577fd58383b83e"
+    },
+    {
+      "file": "01-MOT-s1.json",
+      "id": "MOT-s1",
+      "seed": 2026112831,
+      "sha256": "67bebaacead5f7eb00bc68fc96b6e54c462925c4216922f2c55c5c7643a9b2b5"
+    },
+    {
+      "file": "02-BASE-s2.json",
+      "id": "BASE-s2",
+      "seed": 2026112832,
+      "sha256": "4b7bde086b145155bfcbc31e6ccb04db943bb07c2925efcbf7bf98bbe570071c"
+    },
+    {
+      "file": "02-MOT-s2.json",
+      "id": "MOT-s2",
+      "seed": 2026112832,
+      "sha256": "997c647acb11662e039ecdef2188737644440c017f3630a6d8fda611e423c72a"
+    },
+    {
+      "file": "03-BASE-s3.json",
+      "id": "BASE-s3",
+      "seed": 2026112833,
+      "sha256": "c020a59ad4f0716b1c17d5bc06d9ff04cb1f508b2f727c38df5f7cbb3b128465"
+    },
+    {
+      "file": "03-MOT-s3.json",
+      "id": "MOT-s3",
+      "seed": 2026112833,
+      "sha256": "f0bf3b6f122fc251d822e842e22a73439d74c8d96ff361513f208b5408015e1a"
+    },
+    {
+      "file": "04-BASE-s4.json",
+      "id": "BASE-s4",
+      "seed": 2026112834,
+      "sha256": "b596f6005f23e05baaea40b4e71dd891b7dc038e1e81ac0807da61f870ea4c72"
+    },
+    {
+      "file": "04-MOT-s4.json",
+      "id": "MOT-s4",
+      "seed": 2026112834,
+      "sha256": "38f6d077c0e64e7d6a89b885e4963fa2bc27ffc9d5c7c556ad7b66dcad52a045"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

@@ -58,7 +58,8 @@ export const topCoverOptions: Option<DroneParameters['fuselage']['top_cover']>[]
 export const cameraMountOptions: Option<DroneParameters['accessories']['camera_mount']>[] = [
   {
     value: 'flush', zh: '内嵌机鼻', hint: '从正上方只见机鼻前缘一条窗带',
-    en: 'The camera sits inside the nose, flush with the shell; from directly overhead only a thin strip of its front window shows at the very front edge of the nose.',
+    // 4.6：改回 v1.6 字典的原句（thin dark strip，另加朝向那一句）。真机开发小批里，这一句连同 4 个相机负向词一起用，基准的相机 4/4 内嵌。
+    en: 'The camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.',
   },
   {
     value: 'underslung', zh: '机鼻下挂', hint: '从正上方只见舱体前缘略微探出',
@@ -183,6 +184,10 @@ export const fields: FieldDef[] = [
     format: p => opt(spraySystemOptions, p.accessories.spray_system ?? ''), relevant: p => p.accessories.spray_system !== undefined,
   },
   { path: 'accessories.drone_primary_color', group: 'accessories', label: '主色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.drone_primary_color) },
+  // 4.6：按部件配色。真实产品不是整机一个颜色；主色管机身外壳，机臂、电机、桨叶各有一项。
+  { path: 'accessories.arm_color', group: 'accessories', label: '机臂颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.arm_color ?? '') },
+  { path: 'accessories.motor_color', group: 'accessories', label: '电机颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.motor_color ?? '') },
+  { path: 'accessories.prop_color', group: 'accessories', label: '桨叶颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.prop_color ?? '') },
   { path: 'accessories.surface_finish', group: 'accessories', label: '表面处理', kind: 'styling', visibility: 'text', format: p => opt(finishOptions, p.accessories.surface_finish) },
   {
     path: 'accessories.custom_prompt_additions', group: 'accessories', label: '补充文字', kind: 'custom', visibility: 'text',

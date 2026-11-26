@@ -12,7 +12,7 @@ const workers = new Map<string, Promise<void>>();
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 type ImageInput = {role: 'layout' | 'parent'; name: string; sha256: string; dataUrl: string};
-interface H3Request { attemptId: string; prompt: string; inputs: ImageInput[]; condition?: 'free' }
+interface H3Request { attemptId: string; prompt: string; inputs: ImageInput[]; condition?: 'free'; task?: 'quad' | 'hexa' }
 interface H3Job {
   provider: string; model: string; jobId: string; attemptId: string;
   status?: 'queued' | 'running' | 'unconfirmed' | 'succeeded' | 'failed';
@@ -57,7 +57,9 @@ async function originalRequest(row: FrozenAttempt) {
   // 自由提示不带布局条件图：发出去的只有设计者的原文，和他自己接上的那一张图（如果有）。
   const inputs = row.condition === 'free' ? [] : [await input('layout',row.guide)];
   if (row.parentImage) inputs.push(await input('parent',row.parentImage));
-  return new Blob([JSON.stringify({attemptId:row.id,prompt:row.confirmedText,inputs,...(row.condition === 'free' ? {condition:'free'} : {})})],{type:'application/json'});
+  // 4.6：任务一并发给本机服务，它据此选负向词（装相机的四旋多 4 个压相机伪影的词；植保六旋不带）。
+  const task = row.snapshot?.intent?.taskId === 'agricultural_spraying' ? 'hexa' : 'quad';
+  return new Blob([JSON.stringify({attemptId:row.id,prompt:row.confirmedText,inputs,...(row.condition === 'free' ? {condition:'free'} : {}),task})],{type:'application/json'});
 }
 
 function verifyIdentity(row: FrozenAttempt, job: H3Job) {

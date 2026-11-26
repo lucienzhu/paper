@@ -19,7 +19,7 @@ const bench = resolve(here, '../../prototypes/drone-configurator');
 const mod = name => import(pathToFileURL(join(bench, 'scripts', name)).href);
 const { createDesignService } = await mod('design-chat.mjs');
 const { createDesignServer } = await mod('design-chat-server.mjs');
-const { createImageJobs, comfyGraph, comfyDefaults, seedOf } = await mod('image-jobs.mjs');
+const { createImageJobs, comfyGraph, comfyDefaults, negativeFor, seedOf } = await mod('image-jobs.mjs');
 const { createDesignAI } = await mod('design-ai.mjs');
 const { tagPNGFront: tagPNG } = await mod('fixture-png.mjs');
 const { chromium } = createRequire(join(bench, 'package.json'))('playwright-core');
@@ -40,7 +40,8 @@ const layerFields = {
     'fuselage.fuselage_style', 'fuselage.top_cover', 'accessories.spray_tank'],
   details: ['frame.arm_root', 'accessories.has_camera_gimbal', 'accessories.camera_mount', 'landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm',
     'accessories.spray_system'],
-  cmf: ['accessories.drone_primary_color', 'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
+  cmf: ['accessories.drone_primary_color', 'accessories.arm_color', 'accessories.motor_color', 'accessories.prop_color',
+    'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
 };
 const layerOf = path => Object.keys(layerFields).find(layer => layerFields[layer].includes(path));
 const getPath = (object, path) => path.split('.').reduce((o, k) => o?.[k], object);
@@ -118,8 +119,10 @@ try {
     const text = graph['4'].inputs.prompt, guideName = graph['15'].inputs.image, guide = uploads.get(guideName);
     assert.equal(text, frozen.text, state.name + '：发给出图服务的文字就是工作台冻结的那一段');
     assert.equal(sha(guide), frozen.guide, state.name + '：发给出图服务的条件图就是工作台冻结的那一张');
-    assert.deepEqual(graph, comfyGraph(frozen.id, text, seedOf(frozen.id), [guideName], comfyDefaults), state.name + '：执行图就是工作台的 comfyGraph');
-    assert.equal(graph['4'].inputs.negative_prompt, comfyDefaults.negative_prompt);
+    // 负向词按任务分两份（工作台 4.6 起）：装相机的四旋多 4 个压相机伪影的词，植保六旋不带。
+    const negative = negativeFor(table.task === 'agricultural_spraying' ? 'hexa' : 'quad');
+    assert.deepEqual(graph, comfyGraph(frozen.id, text, seedOf(frozen.id), [guideName], { ...comfyDefaults, negative_prompt: negative }), state.name + '：执行图就是工作台的 comfyGraph');
+    assert.equal(graph['4'].inputs.negative_prompt, negative);
     assert.deepEqual(Object.keys(graph).filter(k => graph[k].class_type === 'LoadImage'), ['15'], state.name + '：只有一张输入图（布局条件图）');
     const guideFile = 'wbguide-' + sha(guide).slice(0, 12) + '.png';
     await writeFile(join(outDir, 'guides', guideFile), guide);
