@@ -1,0 +1,85 @@
+{
+  "batch": "旋翼开发第三小批（条件图上画桨，4 个种子）",
+  "base_state": "BASE",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "motor_centres_px": [
+    [
+      299.4,
+      299.3
+    ],
+    [
+      723.6,
+      299.3
+    ],
+    [
+      299.4,
+      723.7
+    ],
+    [
+      723.6,
+      723.7
+    ]
+  ],
+  "sentences": {
+    "propeller": "Each motor carries one rigid, one-piece two-blade propeller, 5-inch (127 mm) diameter, not a folding propeller: seen from above it is a single straight bar through the hub, its two blades exactly opposite each other and equal in length.",
+    "guide": "Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "ROT-R5-s1",
+      "variant": "R5",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "785fdc58c2f5b85081eb6252fb1f189de76344353bd3103d0da0006fab02ac7c",
+      "request_sha256": "b0eee312c76a11f4f85ee0b0de1b42f73f730adcdfdca2c6095ff72f9cab3d5b"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R5-s2",
+      "variant": "R5",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "785fdc58c2f5b85081eb6252fb1f189de76344353bd3103d0da0006fab02ac7c",
+      "request_sha256": "7b9e3c8cdbbfb46200f14e574c17f0479039a0fd7e431c08153e320799702d1f"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R5-s3",
+      "variant": "R5",
+      "seed": 2026112853,
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "785fdc58c2f5b85081eb6252fb1f189de76344353bd3103d0da0006fab02ac7c",
+      "request_sha256": "d4e8cc32a9aab9605d7ebb7dc6f9afdaacda91ab8af73fc43b4b8e5b45113015"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R5-s4",
+      "variant": "R5",
+      "seed": 2026112854,
+      "input_images": [
+        "wbguide-propbars-ef7365442206.png"
+      ],
+      "prompt_sha256": "785fdc58c2f5b85081eb6252fb1f189de76344353bd3103d0da0006fab02ac7c",
+      "request_sha256": "7f4469b1e33fdb2a33022fc98f8b4d332552da596168dcd03b639f456534b3e8"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-propbars-ef7365442206.png",
+      "sha256": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f"
+    }
+  ]
+}

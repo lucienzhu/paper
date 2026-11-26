@@ -1,0 +1,41 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "旋翼开发第三小批 4 张：条件图上画桨",
+  "registration": "experiments/20261127-rotor-dev/README.md",
+  "registered_manifest": "experiments/20261127-rotor-dev/round3/manifest.json",
+  "registered_manifest_sha256": "ef2a87397c5a71cc6362b9a4e2a39de88eea52f4c216bef0ee33b71add7ebfde",
+  "requests_dir": "experiments/20261127-rotor-dev/round3/requests",
+  "files_dirs": [
+    "experiments/20261127-rotor-dev/round3/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-ROT-R5-s1.json",
+      "id": "ROT-R5-s1",
+      "seed": 2026112851,
+      "sha256": "b0eee312c76a11f4f85ee0b0de1b42f73f730adcdfdca2c6095ff72f9cab3d5b"
+    },
+    {
+      "file": "02-ROT-R5-s2.json",
+      "id": "ROT-R5-s2",
+      "seed": 2026112852,
+      "sha256": "7b9e3c8cdbbfb46200f14e574c17f0479039a0fd7e431c08153e320799702d1f"
+    },
+    {
+      "file": "03-ROT-R5-s3.json",
+      "id": "ROT-R5-s3",
+      "seed": 2026112853,
+      "sha256": "d4e8cc32a9aab9605d7ebb7dc6f9afdaacda91ab8af73fc43b4b8e5b45113015"
+    },
+    {
+      "file": "04-ROT-R5-s4.json",
+      "id": "ROT-R5-s4",
+      "seed": 2026112854,
+      "sha256": "7f4469b1e33fdb2a33022fc98f8b4d332552da596168dcd03b639f456534b3e8"
+    }
+  ],
+  "files": {
+    "wbguide-propbars-ef7365442206.png": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f"
+  }
+}

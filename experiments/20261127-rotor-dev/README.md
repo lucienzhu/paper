@@ -37,3 +37,17 @@
 | R4 | 同 R3 | 现行 19 个，加 folding propeller, hinged propeller blades, three-blade propeller, four-blade propeller |
 
 判法和规则同上：四副桨逐副看，4 张里至少 3 张旋翼“对”才可取；R3 先于 R4。
+
+## 第一小批的情形（01:41，12 张里出了 11 张）和第三小批
+
+四个种子、三种做法，已出的 11 张桨全是两片成 V 形；叶数都是 2，没有多叶。**R0、R1、R2 都不可取**（最后一张出完再把表记全）。v1.6 的长句和叶数负向词都压不住 V 形。第二小批（直说一体、不能折的桨）接着跑。
+
+再备一手，接在第二小批后面：**把桨画进条件图。** 文字压不住的，交给条件图去管（布局就是这样管住的）。
+
+**第三小批，4 张**（种子同前 2026112851—54）：
+
+| 做法 | 条件图 | 文字 |
+| --- | --- | --- |
+| R5 | 工作台的条件图上，过每个电机的红点加一根浅灰的直杆（3 像素宽，长 305 像素，即 127 mm 的桨径；方向与机臂垂直），位置一个像素不动 | 桨那一句用第二小批的（一体、不能折）；条件图读法那一句改为：“Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place.” |
+
+判法和规则同上（4 张里至少 3 张旋翼“对”）。另看：桨有没有照直杆的方向和长度出来；有没有把直杆当成别的部件画出来（残留）。R5 要改条件图的画法，比改句子动得大：只有第二小批的 R3、R4 都不可取时才考虑写进工作台。

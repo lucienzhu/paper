@@ -157,6 +157,12 @@
       "role": "开发用：工作台布局条件图（真 X、250 mm）换成中性色，点白线灰，位置不动（条件图颜色残留开发小批）",
       "nose_at": "upper edge",
       "source": "experiments/20261126-guide-colour-dev/build.py 由 wbguide-deb3284ef6b5.png 换色"
+    },
+    "wbguide-propbars-ef7365442206.png": {
+      "sha256": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f",
+      "role": "开发用：工作台布局条件图（真 X、250 mm）上加四根表示桨的浅灰直杆（旋翼开发第三小批）",
+      "nose_at": "upper edge",
+      "source": "experiments/20261127-rotor-dev/build_round3.py 由 wbguide-deb3284ef6b5.png 加画"
     }
   }
 }
