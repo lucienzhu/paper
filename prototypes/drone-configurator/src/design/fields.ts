@@ -53,7 +53,8 @@ export const legacyFuselageStyles: Option<DroneParameters['fuselage']['fuselage_
 export const topCoverOptions: Option<DroneParameters['fuselage']['top_cover']>[] = [
   { value: 'single', zh: '单盖', en: 'A plain top cover with no seams crossing it.' },
   { value: 'two', zh: '两段', en: 'The top cover is divided by one curved transverse parting line into a nose cap and a main cover.' },
-  { value: 'multi', zh: '多块', en: 'Three or more distinct top cover panels separated by seams.' },
+  // 4.7.0：原句“Three or more distinct top cover panels separated by seams.”在真机开发小批里 3 张有 2 张只出两块；改为写明块数和缝的走向。
+  { value: 'multi', zh: '多块', en: 'The top cover is divided into three separate panels by two transverse seams: a nose cap, a centre cover and a rear cover.' },
 ];
 export const cameraMountOptions: Option<DroneParameters['accessories']['camera_mount']>[] = [
   {
@@ -63,7 +64,9 @@ export const cameraMountOptions: Option<DroneParameters['accessories']['camera_m
   },
   {
     value: 'underslung', zh: '机鼻下挂', hint: '从正上方只见舱体前缘略微探出',
-    en: 'The gimbal camera hangs underneath the front of the fuselage; from directly above only the top edge of a small camera housing peeks out just ahead of the nose, low and tight against it, with no neck, stalk or post.',
+    // 4.7.0：改回 v1.6 的原句，只去掉“dark grey”（模板不自带颜色，自检会拦）。此前缩短时丢了讲镜头朝向的半句，真机开发小批里 3 张镜头都正对观察者（experiments/20261127-shape-options-dev）。
+    en: 'The gimbal camera hangs underneath the front of the fuselage, as on modern foldable camera drones. Seen from directly above, only the top edge of a small camera housing peeks out just ahead of the nose; ' +
+      'the lens faces straight forward toward the top edge of the image, so no lens glass is visible from above. The camera sits low and tight against the nose, with no neck, stalk or post.',
   },
 ];
 export const finishOptions: Option<DroneParameters['accessories']['surface_finish']>[] = [

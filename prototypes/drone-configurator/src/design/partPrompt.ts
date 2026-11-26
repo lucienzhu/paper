@@ -77,7 +77,9 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     id: 'guide', group: 'task', source: 'fixed', zh: '随附点线图的读法', fields: [],
     // 4.5.3：这一句不写点和线的颜色。写了“red dots…blue lines”时，颜色会进到产品上（真机开发小批：现行写法 4 张里 3 张机臂发蓝，去掉颜色词后 0/4；
     // experiments/20261126-guide-colour-dev）。条件图本身的画法不变。
-    text: 'Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines mark frame links. Do not reproduce the dots or lines in the result.',
+    // 4.7.0：条件图上多了每个电机一根表示桨的直杆，这一句跟着写明它是什么。
+    text: 'Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, ' +
+      "and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place.",
   });
 
   const blades = parseInt(propulsion.prop_blade_count, 10);
@@ -85,8 +87,10 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     id: 'propulsion', group: 'propulsion',
     source: src('propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'),
     zh: '桨径、每轴桨叶数、电机倾角', fields: ['propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'],
-    text: `Each motor carries one stationary ${blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.` +
-      (blades === 2 ? ' The two blades point in exactly opposite directions from the hub.' : '') +
+    text: `Each motor carries one stationary ${blades === 2 ? 'two' : blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.` +
+      // 4.7.0：双叶改回 v1.6 的原句（4.6 以前被缩短，丢了“成一条直线、不是 V 形”）。
+      (blades === 2 ? ' The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, ' +
+        'forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.' : '') +
       (propulsion.motor_tilt_degree > 0 ? ` Motors are tilted ${propulsion.motor_tilt_degree}° forward.` : ''),
   });
   add({

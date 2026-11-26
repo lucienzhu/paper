@@ -287,7 +287,21 @@ export function sideRotorAxes(layout: Layout, armThickness: number) {
     })));
 }
 
-/** 点线条件图：黑底、蓝色机架连接线、红色轴心点；图内不放文字、刻度或箭头。 */
+/**
+ * 每个电机一根表示桨的直杆（像素坐标）：过轴心、与“机架中心到轴心”的方向垂直，长度等于桨径。
+ * 4.7.0 起画进条件图：只靠文字时，四成左右的图旋翼出错（V 形、多叶、缺一片）；把桨画进条件图后，出过错的状态和种子都出了直的双叶桨
+ * （真机开发小批 experiments/20261127-rotor-dev）。布局本来就是这样交给条件图管住的。
+ */
+export function propBarsPx(layout: Layout): [number, number, number, number][] {
+  const c = layout.guide.size / 2, half = layout.prop_diameter_mm * layout.guide.px_per_mm / 2;
+  return layout.hubs.map(h => {
+    const ax = h.x_px - c, ay = h.y_px - c, n = Math.hypot(ax, ay);
+    const [tx, ty] = n < 1e-6 ? [1, 0] : [-ay / n, ax / n];
+    return [h.x_px - tx * half, h.y_px - ty * half, h.x_px + tx * half, h.y_px + ty * half];
+  });
+}
+
+/** 点线条件图：黑底、蓝色机架连接线、浅灰的桨（直杆）、红色轴心点；图内不放文字、刻度或箭头。 */
 export function drawGuide(canvas: HTMLCanvasElement, layout: Layout) {
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('无法绘制条件图。');
@@ -298,6 +312,11 @@ export function drawGuide(canvas: HTMLCanvasElement, layout: Layout) {
   ctx.strokeStyle = '#205cff';
   ctx.lineWidth = 3;
   for (const [x, y, u, v] of layout.links_px) {
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(u, v); ctx.stroke();
+  }
+  ctx.strokeStyle = '#c8c8c8';
+  ctx.lineWidth = 3;
+  for (const [x, y, u, v] of propBarsPx(layout)) {
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(u, v); ctx.stroke();
   }
   ctx.fillStyle = '#ff0000';
@@ -326,6 +345,7 @@ export function layoutExport(layout: Layout) {
       bearing_deg: round(h.bearing_deg, 2),
     })),
     links_px: layout.links_px.map(l => l.map(v => round(v, 2))),
+    prop_bars_px: propBarsPx(layout).map(l => l.map(v => round(v, 2))),
     W_mm: round(layout.W_mm, 3), L_mm: round(layout.L_mm, 3), W_over_L: round(layout.W_over_L, 4),
     opposite_motor_distances_mm: layout.opposite_mm.map(v => round(v, 3)),
     D_mean_mm: layout.D_mean_mm === null ? null : round(layout.D_mean_mm, 3),
@@ -340,7 +360,7 @@ export function layoutExport(layout: Layout) {
     disk_gap_mm: round(layout.disk_gap_mm, 2),
     body_width_over_D_mean: layout.D_mean_mm === null ? null : round(layout.body_width_over_D, 4),
     body_length_over_width: round(layout.body_length_over_width, 4),
-    guide: { ...layout.guide, px_per_mm: round(layout.guide.px_per_mm, 6), type: '点线图（轴心与机架连接）' },
+    guide: { ...layout.guide, px_per_mm: round(layout.guide.px_per_mm, 6), type: '点线图（轴心、机架连接、桨的直杆）' },
     warnings: layout.warnings,
   };
 }

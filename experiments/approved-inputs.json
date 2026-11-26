@@ -163,6 +163,12 @@
       "role": "开发用：工作台布局条件图（真 X、250 mm）上加四根表示桨的浅灰直杆（旋翼开发第三小批）",
       "nose_at": "upper edge",
       "source": "experiments/20261127-rotor-dev/build_round3.py 由 wbguide-deb3284ef6b5.png 加画"
+    },
+    "wbguide-fc9b23f98221.png": {
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645",
+      "role": "开发用：工作台 4.7.0 的布局条件图（真 X、250 mm，带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.0 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
     }
   }
 }
