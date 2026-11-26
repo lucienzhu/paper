@@ -1,0 +1,271 @@
+{
+  "batch": "造型选项：开发小批（五个档位 × 3 个种子）",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "states": {
+    "S4": {
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "underslung",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "795642af9486c02be08133d9774ae4d277870fd1efc891d4d6b62f23ad117174"
+    },
+    "S5": {
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "multi",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "03f25b89116e8fec098f59f2d90ec699f818c088eabe8042eab4436f2d0a72dc"
+    },
+    "S2": {
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "socket",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "349d791acd9d17acacdd322af879967aa9971677b50a77787685fc81306ff2fc"
+    },
+    "S3": {
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "hinge",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "893953ba0c571b1e37ee55342b1629af88819bf86555fbc3057fb1296817d0d4"
+    },
+    "S1": {
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Boxy Enclosure",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "8bc36d5d635a60e3eda7ef9a93cef66dad44091b72ba7b9cd2ec901ea411d625"
+    }
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+  "requests": [
+    {
+      "order": 1,
+      "id": "SD-S4-s1",
+      "level": "S4",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "795642af9486c02be08133d9774ae4d277870fd1efc891d4d6b62f23ad117174",
+      "request_sha256": "c459bf7543e85920dae6a072bc17f424ffd358915007eb38da6c3749d0bf711d"
+    },
+    {
+      "order": 1,
+      "id": "SD-S4-s2",
+      "level": "S4",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "795642af9486c02be08133d9774ae4d277870fd1efc891d4d6b62f23ad117174",
+      "request_sha256": "c2efd5a9f278355a647d2647ce3fdc320118fcf25e6ea1c5125259ee20d10316"
+    },
+    {
+      "order": 1,
+      "id": "SD-S4-s3",
+      "level": "S4",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "795642af9486c02be08133d9774ae4d277870fd1efc891d4d6b62f23ad117174",
+      "request_sha256": "a16e6351b0d5b186e7aac7d7c97feb26e2726e19d76287945d14b72b7b40fc96"
+    },
+    {
+      "order": 2,
+      "id": "SD-S5-s1",
+      "level": "S5",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "03f25b89116e8fec098f59f2d90ec699f818c088eabe8042eab4436f2d0a72dc",
+      "request_sha256": "47a4720ec537a98d6529d803d7cd46c00b19a522954a9052fe9927319c4ced68"
+    },
+    {
+      "order": 2,
+      "id": "SD-S5-s2",
+      "level": "S5",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "03f25b89116e8fec098f59f2d90ec699f818c088eabe8042eab4436f2d0a72dc",
+      "request_sha256": "0b4874c4f7a285bb7c7c860929563f51b8c80a41c31548f3603e23378b4f34f7"
+    },
+    {
+      "order": 2,
+      "id": "SD-S5-s3",
+      "level": "S5",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "03f25b89116e8fec098f59f2d90ec699f818c088eabe8042eab4436f2d0a72dc",
+      "request_sha256": "31f14f57138c47479f7ed2a78b790f894924696922b4b4fcc418617af1b2d313"
+    },
+    {
+      "order": 3,
+      "id": "SD-S2-s1",
+      "level": "S2",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "349d791acd9d17acacdd322af879967aa9971677b50a77787685fc81306ff2fc",
+      "request_sha256": "eb008cbd729e918cb14aea7a9a1347eb46fe4ccd9de30303459b4a221add313a"
+    },
+    {
+      "order": 3,
+      "id": "SD-S2-s2",
+      "level": "S2",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "349d791acd9d17acacdd322af879967aa9971677b50a77787685fc81306ff2fc",
+      "request_sha256": "7dd4c2aad15be1dbc02116696841973533a87853fa70ad152e3d6b031d314601"
+    },
+    {
+      "order": 3,
+      "id": "SD-S2-s3",
+      "level": "S2",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "349d791acd9d17acacdd322af879967aa9971677b50a77787685fc81306ff2fc",
+      "request_sha256": "3becb2b911fcd3a833da6ace1cd4dc0ff46be86113ecdee37404a601c1159f87"
+    },
+    {
+      "order": 4,
+      "id": "SD-S3-s1",
+      "level": "S3",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "893953ba0c571b1e37ee55342b1629af88819bf86555fbc3057fb1296817d0d4",
+      "request_sha256": "4cfce53edb4d4717d61acf9db3968fdf6570544ec0617084c56fb7eaf98db41d"
+    },
+    {
+      "order": 4,
+      "id": "SD-S3-s2",
+      "level": "S3",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "893953ba0c571b1e37ee55342b1629af88819bf86555fbc3057fb1296817d0d4",
+      "request_sha256": "17937f60eec84111053bdbd19985b4393bc5d2972c07d00174663dc5bdd7b377"
+    },
+    {
+      "order": 4,
+      "id": "SD-S3-s3",
+      "level": "S3",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "893953ba0c571b1e37ee55342b1629af88819bf86555fbc3057fb1296817d0d4",
+      "request_sha256": "88dd6cc6a87d403d7cce7459c92a8a3da326296cd8e406817cefe2c443db95b2"
+    },
+    {
+      "order": 5,
+      "id": "SD-S1-s1",
+      "level": "S1",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "8bc36d5d635a60e3eda7ef9a93cef66dad44091b72ba7b9cd2ec901ea411d625",
+      "request_sha256": "356b2c92ae61603a0bd4d523224f9285c26696af88bb8ac2dad63ea6b1c6fe92"
+    },
+    {
+      "order": 5,
+      "id": "SD-S1-s2",
+      "level": "S1",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "8bc36d5d635a60e3eda7ef9a93cef66dad44091b72ba7b9cd2ec901ea411d625",
+      "request_sha256": "94dc86435338bb0d30660532598d8df2eb3f14950cc5fd19cdbf735f7d3e2a28"
+    },
+    {
+      "order": 5,
+      "id": "SD-S1-s3",
+      "level": "S1",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "8bc36d5d635a60e3eda7ef9a93cef66dad44091b72ba7b9cd2ec901ea411d625",
+      "request_sha256": "250e2ec2a06a29fd3f2eeb259be9f22de47693446bdb30c5016bdc8d9f3ccf20"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "造型选项：开发小批 15 张（工作台 4.6.0）",
+  "registration": "experiments/20261127-shape-options-dev/README.md",
+  "registered_manifest": "experiments/20261127-shape-options-dev/manifest.json",
+  "registered_manifest_sha256": "abba8c7a5e7b962f785a0460e2e0e34aa091e9aec07a2556c11a1b4fc73292c1",
+  "requests_dir": "experiments/20261127-shape-options-dev/requests",
+  "files_dirs": [
+    "experiments/20261127-shape-options-dev/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-SD-S4-s1.json",
+      "id": "SD-S4-s1",
+      "seed": 2026112841,
+      "sha256": "c459bf7543e85920dae6a072bc17f424ffd358915007eb38da6c3749d0bf711d"
+    },
+    {
+      "file": "01-SD-S4-s2.json",
+      "id": "SD-S4-s2",
+      "seed": 2026112842,
+      "sha256": "c2efd5a9f278355a647d2647ce3fdc320118fcf25e6ea1c5125259ee20d10316"
+    },
+    {
+      "file": "01-SD-S4-s3.json",
+      "id": "SD-S4-s3",
+      "seed": 2026112843,
+      "sha256": "a16e6351b0d5b186e7aac7d7c97feb26e2726e19d76287945d14b72b7b40fc96"
+    },
+    {
+      "file": "02-SD-S5-s1.json",
+      "id": "SD-S5-s1",
+      "seed": 2026112841,
+      "sha256": "47a4720ec537a98d6529d803d7cd46c00b19a522954a9052fe9927319c4ced68"
+    },
+    {
+      "file": "02-SD-S5-s2.json",
+      "id": "SD-S5-s2",
+      "seed": 2026112842,
+      "sha256": "0b4874c4f7a285bb7c7c860929563f51b8c80a41c31548f3603e23378b4f34f7"
+    },
+    {
+      "file": "02-SD-S5-s3.json",
+      "id": "SD-S5-s3",
+      "seed": 2026112843,
+      "sha256": "31f14f57138c47479f7ed2a78b790f894924696922b4b4fcc418617af1b2d313"
+    },
+    {
+      "file": "03-SD-S2-s1.json",
+      "id": "SD-S2-s1",
+      "seed": 2026112841,
+      "sha256": "eb008cbd729e918cb14aea7a9a1347eb46fe4ccd9de30303459b4a221add313a"
+    },
+    {
+      "file": "03-SD-S2-s2.json",
+      "id": "SD-S2-s2",
+      "seed": 2026112842,
+      "sha256": "7dd4c2aad15be1dbc02116696841973533a87853fa70ad152e3d6b031d314601"
+    },
+    {
+      "file": "03-SD-S2-s3.json",
+      "id": "SD-S2-s3",
+      "seed": 2026112843,
+      "sha256": "3becb2b911fcd3a833da6ace1cd4dc0ff46be86113ecdee37404a601c1159f87"
+    },
+    {
+      "file": "04-SD-S3-s1.json",
+      "id": "SD-S3-s1",
+      "seed": 2026112841,
+      "sha256": "4cfce53edb4d4717d61acf9db3968fdf6570544ec0617084c56fb7eaf98db41d"
+    },
+    {
+      "file": "04-SD-S3-s2.json",
+      "id": "SD-S3-s2",
+      "seed": 2026112842,
+      "sha256": "17937f60eec84111053bdbd19985b4393bc5d2972c07d00174663dc5bdd7b377"
+    },
+    {
+      "file": "04-SD-S3-s3.json",
+      "id": "SD-S3-s3",
+      "seed": 2026112843,
+      "sha256": "88dd6cc6a87d403d7cce7459c92a8a3da326296cd8e406817cefe2c443db95b2"
+    },
+    {
+      "file": "05-SD-S1-s1.json",
+      "id": "SD-S1-s1",
+      "seed": 2026112841,
+      "sha256": "356b2c92ae61603a0bd4d523224f9285c26696af88bb8ac2dad63ea6b1c6fe92"
+    },
+    {
+      "file": "05-SD-S1-s2.json",
+      "id": "SD-S1-s2",
+      "seed": 2026112842,
+      "sha256": "94dc86435338bb0d30660532598d8df2eb3f14950cc5fd19cdbf735f7d3e2a28"
+    },
+    {
+      "file": "05-SD-S1-s3.json",
+      "id": "SD-S1-s3",
+      "seed": 2026112843,
+      "sha256": "250e2ec2a06a29fd3f2eeb259be9f22de47693446bdb30c5016bdc8d9f3ccf20"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}
