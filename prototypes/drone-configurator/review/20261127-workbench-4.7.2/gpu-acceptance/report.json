@@ -1,0 +1,253 @@
+{
+  "mode": "real",
+  "comfyUrl": "http://127.0.0.1:18189",
+  "startedAt": "2026-11-26T20:12:38.137Z",
+  "weights": {
+    "unet": "qwen_image_2.1_bf16.safetensors",
+    "clip": "qwen3vl_8b_bf16.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors"
+  },
+  "rounds": [
+    {
+      "group": "structured",
+      "step": "first",
+      "label": "方案 A第1轮",
+      "attemptId": "eb3f4f35-6919-468b-9e6e-a06ebc6dcdea",
+      "promptId": "eb3f4f35-6919-468b-9e6e-a06ebc6dcdea",
+      "seed": 1810082045,
+      "inputs": 1,
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "64ec70ef3765d6c994378514e5cc8829e02d888b8b307a6a9bf2278217104da4"
+      },
+      "queueMs": -342,
+      "runMs": 90541,
+      "ok": true,
+      "problems": [],
+      "zipFile": "rounds/01-方案 A第1轮-eb3f4f35.json",
+      "png_in_zip": "rounds/01-方案 A第1轮-eb3f4f35-候选1.png",
+      "target": null,
+      "keep": null,
+      "asked": null,
+      "roundGoal": "方案 A · 日常随行航拍 · 真 X 型",
+      "roundKeep": ""
+    },
+    {
+      "group": "structured",
+      "step": "nose",
+      "label": "方案 A第2轮",
+      "attemptId": "6f2f3191-7ed3-409c-8c5d-badccbbc729c",
+      "promptId": "6f2f3191-7ed3-409c-8c5d-badccbbc729c",
+      "seed": 3518518952,
+      "inputs": 2,
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "c9b25a0c03dec1eee5f48bdf50b79f1dc99f79ce67130de32a7f170c0c4bed2e"
+      },
+      "queueMs": -334,
+      "runMs": 225805,
+      "ok": true,
+      "problems": [],
+      "zipFile": "rounds/02-方案 A第2轮-6f2f3191.json",
+      "png_in_zip": "rounds/02-方案 A第2轮-6f2f3191-候选1.png",
+      "target": "机鼻与前向相机",
+      "keep": "四处臂根、四个电机轴心的位置",
+      "asked": "只改机鼻：让前向相机与机鼻衔接更协调；四处机臂与机身的连接保持不变。",
+      "roundGoal": "只改机鼻：让前向相机与机鼻衔接更协调；四处机臂与机身的连接保持不变。",
+      "roundKeep": "保持：机架、动力、机身、细节、色材"
+    },
+    {
+      "group": "structured",
+      "step": "armroot",
+      "label": "方案 A第3轮",
+      "attemptId": "c2c0c06c-6469-46fa-a141-77133eae81bb",
+      "promptId": "c2c0c06c-6469-46fa-a141-77133eae81bb",
+      "seed": 3781403885,
+      "inputs": 2,
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "f38bc52acac78c07a66cc3c1066d0226b5c58425038f88b146a53f21ae62435a"
+      },
+      "queueMs": -329,
+      "runMs": 237691,
+      "ok": true,
+      "problems": [],
+      "zipFile": "rounds/03-方案 A第3轮-c2c0c06c.json",
+      "png_in_zip": "rounds/03-方案 A第3轮-c2c0c06c-候选1.png",
+      "target": "四处臂根",
+      "keep": "机鼻与前向相机、四个电机轴心的位置",
+      "asked": "只改臂根：让四处臂根与机身轮廓过渡更协调；机鼻、前向相机和四个电机轴心的位置保持不变。",
+      "roundGoal": "只改细节，其余保持。",
+      "roundKeep": "保持：机架、动力、机身、色材"
+    },
+    {
+      "group": "free",
+      "step": "first",
+      "label": "自由提示第1轮",
+      "attemptId": "a95a22c5-eff0-4350-a017-9cb78b39d549",
+      "promptId": "a95a22c5-eff0-4350-a017-9cb78b39d549",
+      "seed": 3529882595,
+      "inputs": 0,
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "ea110bde96fb114b3e256ddf12b2578fb521fdb8712d9508dd933ad9fdfd6a6e"
+      },
+      "queueMs": -329,
+      "runMs": 69349,
+      "ok": true,
+      "problems": [],
+      "zipFile": "rounds/01-自由提示第1轮-a95a22c5.json",
+      "png_in_zip": "rounds/01-自由提示第1轮-a95a22c5-候选1.png",
+      "target": null,
+      "keep": null,
+      "asked": "A compact everyday camera quadcopter for daily handheld aerial photography, strict top view, nose up, unfolded, neutral light background, product render.",
+      "roundGoal": "A compact everyday camera quadcopter for daily handheld ae…",
+      "roundKeep": ""
+    },
+    {
+      "group": "free",
+      "step": "nose",
+      "label": "自由提示第2轮",
+      "attemptId": "1b5dcee0-ba29-4bbf-9e5c-8bd71781948f",
+      "promptId": "1b5dcee0-ba29-4bbf-9e5c-8bd71781948f",
+      "seed": 219416461,
+      "inputs": 1,
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "5decf08c6f34940173933c9fdb2bcc35ef93435ead98ae9a8ad201cd7cc09bcb"
+      },
+      "queueMs": -331,
+      "runMs": 96270,
+      "ok": true,
+      "problems": [],
+      "zipFile": "rounds/02-自由提示第2轮-1b5dcee0.json",
+      "png_in_zip": "rounds/02-自由提示第2轮-1b5dcee0-候选1.png",
+      "target": "机鼻与前向相机",
+      "keep": "四处臂根、四个电机轴心的位置",
+      "asked": "Same drone as the image. Change only the nose: blend the forward camera into the nose more smoothly. Keep the four arm-to-body joints and the four motor positions unchanged. Strict top view.",
+      "roundGoal": "Same drone as the image. Change only the nose: blend the f…",
+      "roundKeep": ""
+    },
+    {
+      "group": "free",
+      "step": "armroot",
+      "label": "自由提示第3轮",
+      "attemptId": "f6458e34-512e-44c1-ba11-e9253b3e6fca",
+      "promptId": "f6458e34-512e-44c1-ba11-e9253b3e6fca",
+      "seed": 2895245090,
+      "inputs": 1,
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "1d436af8193a19f77494dc24cf7ec12d82d1de9becb8923ba18d50559122c94b"
+      },
+      "queueMs": -331,
+      "runMs": 82407,
+      "ok": true,
+      "problems": [],
+      "zipFile": "rounds/03-自由提示第3轮-f6458e34.json",
+      "png_in_zip": "rounds/03-自由提示第3轮-f6458e34-候选1.png",
+      "target": "四处臂根",
+      "keep": "机鼻与前向相机、四个电机轴心的位置",
+      "asked": "Same drone as the image. Change only the four arm roots: make the arm-to-body transitions smoother. Keep the nose, the forward camera and the four motor positions unchanged. Strict top view.",
+      "roundGoal": "Same drone as the image. Change only the four arm roots: m…",
+      "roundKeep": ""
+    }
+  ],
+  "sessions": [
+    {
+      "group": "structured",
+      "zip": "/Users/aus001/projects/paper/prototypes/drone-configurator/review/20261127-workbench-4.7.2/gpu-acceptance/zips/workbench4-session01-workbench-briefA-trial-20261127-072249.zip",
+      "title": "第 1 场 · 工作台 · 委托 A · 机鼻 · 试用",
+      "imageBackend": {
+        "provider": "qwen-comfy",
+        "model": "Qwen-Image-2.1",
+        "endpoint": "/prompt",
+        "label": "Qwen-Image 2.1（本机 ComfyUI）"
+      },
+      "textModel": {
+        "mode": "fixture",
+        "provider": "rules",
+        "model": null,
+        "endpoint": null,
+        "effort": null,
+        "maxTokens": null,
+        "label": "规则回退（未连模型）"
+      },
+      "checks": {
+        "everyRoundThisSession": true,
+        "everyRoundThisMethod": true,
+        "roundsAttributedByTime": 0,
+        "decisionsAfterSessionEnd": 0,
+        "registeredSessionComplete": true,
+        "registeredConditionHolds": true,
+        "environmentMatchesRecords": true,
+        "everyCallThisSession": true
+      },
+      "timing": {
+        "activeMs": 621,
+        "waitingMs": 610759,
+        "used": {
+          "opportunities": 3,
+          "images": 3,
+          "requests": 3,
+          "enqueueRequests": 3
+        }
+      }
+    },
+    {
+      "group": "free",
+      "zip": "/Users/aus001/projects/paper/prototypes/drone-configurator/review/20261127-workbench-4.7.2/gpu-acceptance/zips/workbench4-session02-free-prompt-briefA-trial-20261127-072745.zip",
+      "title": "第 2 场 · AI 对话 + 自由提示 · 委托 A · 机鼻 · 试用",
+      "imageBackend": {
+        "provider": "qwen-comfy",
+        "model": "Qwen-Image-2.1",
+        "endpoint": "/prompt",
+        "label": "Qwen-Image 2.1（本机 ComfyUI）"
+      },
+      "textModel": {
+        "mode": "fixture",
+        "provider": "rules",
+        "model": null,
+        "endpoint": null,
+        "effort": null,
+        "maxTokens": null,
+        "label": "规则回退（未连模型）"
+      },
+      "checks": {
+        "everyRoundThisSession": true,
+        "everyRoundThisMethod": true,
+        "roundsAttributedByTime": 0,
+        "decisionsAfterSessionEnd": 0,
+        "registeredSessionComplete": true,
+        "registeredConditionHolds": null,
+        "environmentMatchesRecords": true,
+        "everyCallThisSession": true
+      },
+      "timing": {
+        "activeMs": 615,
+        "waitingMs": 295139,
+        "used": {
+          "opportunities": 3,
+          "images": 3,
+          "requests": 3,
+          "enqueueRequests": 3
+        }
+      }
+    }
+  ],
+  "problems": [],
+  "localEdit": {
+    "dir": "/Users/aus001/projects/paper/prototypes/drone-configurator/review/20261127-workbench-4.7.2/gpu-acceptance/local-edit",
+    "images": 6,
+    "pairs": 4,
+    "note": "读者表照 planning/research-library/design/reader_sheet.csv；前后对照表是草案（第 14 条的口径），作者同意后再发给读者。轴心按读者标的点算比例，图里出现的尺寸文字单列。"
+  },
+  "finishedAt": "2026-11-26T20:27:46.082Z",
+  "ok": true
+}
