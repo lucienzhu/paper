@@ -235,6 +235,46 @@
       "role": "开发用：真 X、250 mm 的布局条件图，每处臂端一横一竖两根直杆（共轴 X8，构型开发检查第三小批）",
       "nose_at": "upper edge",
       "source": "experiments/20261127-config-dev/build_round3.py 由 wbguide-fc9b23f98221.png 改画"
+    },
+    "a4wb-parts-WL-1.15-eb52cd6ad8.png": {
+      "sha256": "eb52cd6ad8ecdca8562219ebd245e504910a0c3785b644512d9e1b93e1d4fa4c",
+      "role": "A4 部件图（工作台比例尺；WL 1.15；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-WL-1.35-b5b25f7568.png": {
+      "sha256": "b5b25f75680b8cc91597c8530841367bfb356a66325f90244b3128fb6b8780f0",
+      "role": "A4 部件图（工作台比例尺；WL 1.35；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-WL-1.55-3658d2253a.png": {
+      "sha256": "3658d2253a98e015101b9f1fbf989dbaeb2067f50b9e7e807ef9cc4e7fc98114",
+      "role": "A4 部件图（工作台比例尺；WL 1.55；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-WL-0.70-66ea96ee9b.png": {
+      "sha256": "66ea96ee9be0e7d2de1464c35e0b60251fcef810c3a8242b8fa1ca6fed6caf56",
+      "role": "A4 部件图（工作台比例尺；WL 0.70；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-BW-0.16-5fa8185557.png": {
+      "sha256": "5fa818555789c5bbcb9a0440e2171663fe66c8294050f56affa98246cc636745",
+      "role": "A4 部件图（工作台比例尺；BW 0.16；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-BW-0.23-864d83c762.png": {
+      "sha256": "864d83c76263d35978892bf91100cd63aea99e88021220ed50dfd58cd7d3d339",
+      "role": "A4 部件图（工作台比例尺；BW 0.23；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-BW-0.30-73d947da30.png": {
+      "sha256": "73d947da305a9346615746f4f3dd7473fd7501a4ac35fae6100f84b4ad7dc3bc",
+      "role": "A4 部件图（工作台比例尺；BW 0.30；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-DD-0.46-c4ec345738.png": {
+      "sha256": "c4ec3457389f1183400a17c7cc12b66470f86ab2e28f7018e0de4ab2c1dbe66b",
+      "role": "A4 部件图（工作台比例尺；DD 0.46；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-DD-0.56-3bd31bb635.png": {
+      "sha256": "3bd31bb6355e2c6307151270aab2ad00bb04ad74009320c36c7f0de8f095a3c9",
+      "role": "A4 部件图（工作台比例尺；DD 0.56；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "a4wb-parts-DD-0.66-74073d6bc5.png": {
+      "sha256": "74073d6bc502869868fe5a66b8dd039a362d03e7cf5e6df101179ce96308572b",
+      "role": "A4 部件图（工作台比例尺；DD 0.66；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
     }
   }
 }

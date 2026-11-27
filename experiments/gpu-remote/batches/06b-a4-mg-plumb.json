@@ -1,0 +1,24 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "A4 单次合并：通路核对 1 张（控制分支在这台主机上第一次跑）",
+  "registration": "experiments/20261127-a4-bridge/README.md",
+  "registered_manifest": "experiments/20261127-a4-bridge/mg/manifest.json",
+  "registered_manifest_sha256": "93fc663e4d4a27fcc4537b389b713f0ef3d5a257b1c1c36e8e163bb759179342",
+  "requests_dir": "experiments/20261127-a4-bridge/mg/requests",
+  "files_dirs": [
+    "experiments/20261127-a4-bridge/mg/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "00-A4-MG-plumb.json",
+      "id": "A4-MG-plumb",
+      "seed": 2026112799,
+      "sha256": "17b99591628912ad23eed1bf313ac12cea040c0a5b7780e5d525fbf7e66f172f"
+    }
+  ],
+  "files": {
+    "a4wb-parts-WL-1.35-b5b25f7568.png": "b5b25f75680b8cc91597c8530841367bfb356a66325f90244b3128fb6b8780f0",
+    "wbguide-a1844dfa5fef.png": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3"
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "A4 单次合并 MG 30 张（工作台 4.7.1 的请求 + 登记的控制分支）",
+  "registration": "experiments/20261127-a4-bridge/README.md",
+  "registered_manifest": "experiments/20261127-a4-bridge/mg/manifest.json",
+  "registered_manifest_sha256": "93fc663e4d4a27fcc4537b389b713f0ef3d5a257b1c1c36e8e163bb759179342",
+  "requests_dir": "experiments/20261127-a4-bridge/mg/requests",
+  "files_dirs": [
+    "experiments/20261127-a4-bridge/mg/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-A4-BW-MG-0.16-s1.json",
+      "id": "A4-BW-MG-0.16-s1",
+      "seed": 2026112701,
+      "sha256": "0607a460f549abaa21017d168370862c89b4c3751a2e721a9e0251345fd3e251"
+    },
+    {
+      "file": "01-A4-BW-MG-0.23-s1.json",
+      "id": "A4-BW-MG-0.23-s1",
+      "seed": 2026112701,
+      "sha256": "a068dc9e51ac2d72640e559b5410edbba0479a1a4404e4c35bc47d294848fb05"
+    },
+    {
+      "file": "01-A4-BW-MG-0.30-s1.json",
+      "id": "A4-BW-MG-0.30-s1",
+      "seed": 2026112701,
+      "sha256": "bb1770715e2d430689c32d74723e205dfbdab78df99dbd448ef38f1dd5b438ff"
+    },
+    {
+      "file": "01-A4-DD-MG-0.46-s1.json",
+      "id": "A4-DD-MG-0.46-s1",
+      "seed": 2026112701,
+      "sha256": "20bb13c6c81ed0d3acd75a949bcde791c4166e98d22ed2c271a42b447bbc7759"
+    },
+    {
+      "file": "01-A4-DD-MG-0.56-s1.json",
+      "id": "A4-DD-MG-0.56-s1",
+      "seed": 2026112701,
+      "sha256": "d76654b9af504fe612d5a702cf8db51463a836e6dfbea6636ad54ce5ca6d075a"
+    },
+    {
+      "file": "01-A4-DD-MG-0.66-s1.json",
+      "id": "A4-DD-MG-0.66-s1",
+      "seed": 2026112701,
+      "sha256": "c34fcc29a057d6b91efbcf70a871260b3d5892e37cfe626ada386a5c194dde14"
+    },
+    {
+      "file": "01-A4-WL-MG-0.70-s1.json",
+      "id": "A4-WL-MG-0.70-s1",
+      "seed": 2026112701,
+      "sha256": "bbc7019baa046fdeb62f12d6f7a9f8d90a903a1bff0c5ec9e5e1e11ae94e47c4"
+    },
+    {
+      "file": "01-A4-WL-MG-1.15-s1.json",
+      "id": "A4-WL-MG-1.15-s1",
+      "seed": 2026112701,
+      "sha256": "5f91e13c92f2d6991a275cdac2a5e8d02d6c07588f6a2a08ee3e27cf25d71f26"
+    },
+    {
+      "file": "01-A4-WL-MG-1.35-s1.json",
+      "id": "A4-WL-MG-1.35-s1",
+      "seed": 2026112701,
+      "sha256": "483a504e87d325fa28f7cec2ff09fa63ff9348402e54c76a67f1f500a0d657e9"
+    },
+    {
+      "file": "01-A4-WL-MG-1.55-s1.json",
+      "id": "A4-WL-MG-1.55-s1",
+      "seed": 2026112701,
+      "sha256": "1365c7ec930e3b5597b7710ba4e28f660584df1a1afbce601436b8427bc82b00"
+    },
+    {
+      "file": "02-A4-BW-MG-0.16-s2.json",
+      "id": "A4-BW-MG-0.16-s2",
+      "seed": 2026112702,
+      "sha256": "fd3842d3cc8e8158aa575b6ca1219437f5bbd6f8900241dd2ff9571d717500ed"
+    },
+    {
+      "file": "02-A4-BW-MG-0.23-s2.json",
+      "id": "A4-BW-MG-0.23-s2",
+      "seed": 2026112702,
+      "sha256": "e6b91bd74525f1435209eacf3fe8e028981eb98d456db40294a7a57aa54e33af"
+    },
+    {
+      "file": "02-A4-BW-MG-0.30-s2.json",
+      "id": "A4-BW-MG-0.30-s2",
+      "seed": 2026112702,
+      "sha256": "7309e04714a0e8e7656314dba0fa719b3b8c7b0012f305ebe10021348bdc4fcc"
+    },
+    {
+      "file": "02-A4-DD-MG-0.46-s2.json",
+      "id": "A4-DD-MG-0.46-s2",
+      "seed": 2026112702,
+      "sha256": "1644c353019395cbbd02c987f8620955fd964c60e1799959810010cc68bf8c84"
+    },
+    {
+      "file": "02-A4-DD-MG-0.56-s2.json",
+      "id": "A4-DD-MG-0.56-s2",
+      "seed": 2026112702,
+      "sha256": "aeec4b363431399c68e393e52930a09db91e6f1f779c16b5e2114c959660571c"
+    },
+    {
+      "file": "02-A4-DD-MG-0.66-s2.json",
+      "id": "A4-DD-MG-0.66-s2",
+      "seed": 2026112702,
+      "sha256": "db2d876f1daa17c465c8de7bd484aef2a4b0ea5a99b6459574b8f95240ba6efe"
+    },
+    {
+      "file": "02-A4-WL-MG-0.70-s2.json",
+      "id": "A4-WL-MG-0.70-s2",
+      "seed": 2026112702,
+      "sha256": "453ea1c96a0caa385fd32f29256caa76fb64922c8eb64cc036c95d5c7eef75ce"
+    },
+    {
+      "file": "02-A4-WL-MG-1.15-s2.json",
+      "id": "A4-WL-MG-1.15-s2",
+      "seed": 2026112702,
+      "sha256": "23e6ca4568280a829dafaf10b2113ceadaed4c4b6481cc38bbb011b528e27d54"
+    },
+    {
+      "file": "02-A4-WL-MG-1.35-s2.json",
+      "id": "A4-WL-MG-1.35-s2",
+      "seed": 2026112702,
+      "sha256": "cfd7a5b53efa022734417554a981f192923d65d3a1aa213e567a461eb0588c18"
+    },
+    {
+      "file": "02-A4-WL-MG-1.55-s2.json",
+      "id": "A4-WL-MG-1.55-s2",
+      "seed": 2026112702,
+      "sha256": "46209d87563f7a85009f102e40d53512fce2769d6909e9f12521a7e80679a43b"
+    },
+    {
+      "file": "03-A4-BW-MG-0.16-s3.json",
+      "id": "A4-BW-MG-0.16-s3",
+      "seed": 2026112703,
+      "sha256": "52de6433d71131a5f9ce0b7673b97a7866370cf77ab497947945d0d198191d73"
+    },
+    {
+      "file": "03-A4-BW-MG-0.23-s3.json",
+      "id": "A4-BW-MG-0.23-s3",
+      "seed": 2026112703,
+      "sha256": "975c48147d641081be8f990c2754c4c7eb914b5e10d701536d052b38c1580f1a"
+    },
+    {
+      "file": "03-A4-BW-MG-0.30-s3.json",
+      "id": "A4-BW-MG-0.30-s3",
+      "seed": 2026112703,
+      "sha256": "4a9686a04ec402380191a4512422bda65ccbf6f826e276a0022b4ccaee803194"
+    },
+    {
+      "file": "03-A4-DD-MG-0.46-s3.json",
+      "id": "A4-DD-MG-0.46-s3",
+      "seed": 2026112703,
+      "sha256": "e5244c17b9135ad5658e7c4de95a5d27f8c626d2d6040405fcfc9f46f6898eec"
+    },
+    {
+      "file": "03-A4-DD-MG-0.56-s3.json",
+      "id": "A4-DD-MG-0.56-s3",
+      "seed": 2026112703,
+      "sha256": "ac1ce74e9eb6ad90110912f31cf4dfa43fc3b98d114a63d4396806f8bd43863b"
+    },
+    {
+      "file": "03-A4-DD-MG-0.66-s3.json",
+      "id": "A4-DD-MG-0.66-s3",
+      "seed": 2026112703,
+      "sha256": "e7685136608b91df66e1d55020bd4e597b2d0b0428280b889503200c1e4e6e12"
+    },
+    {
+      "file": "03-A4-WL-MG-0.70-s3.json",
+      "id": "A4-WL-MG-0.70-s3",
+      "seed": 2026112703,
+      "sha256": "ce765a68cfa242cddad132f827251202df0797b88a4ff92357d18596ececc2ca"
+    },
+    {
+      "file": "03-A4-WL-MG-1.15-s3.json",
+      "id": "A4-WL-MG-1.15-s3",
+      "seed": 2026112703,
+      "sha256": "ee4014847525cb4c0231f45b62d9b63543e410fb50fe47d55c9c1e7abaa87e26"
+    },
+    {
+      "file": "03-A4-WL-MG-1.35-s3.json",
+      "id": "A4-WL-MG-1.35-s3",
+      "seed": 2026112703,
+      "sha256": "63b6a1c8e37b987375e13f134ca8cbbfae19b37907ffee0c0cb2e40228ec82af"
+    },
+    {
+      "file": "03-A4-WL-MG-1.55-s3.json",
+      "id": "A4-WL-MG-1.55-s3",
+      "seed": 2026112703,
+      "sha256": "c91f937af8566edb04cda36efd309b14ed73528d56b05b41f59bb7aef799f0c4"
+    }
+  ],
+  "files": {
+    "a4wb-parts-BW-0.16-5fa8185557.png": "5fa818555789c5bbcb9a0440e2171663fe66c8294050f56affa98246cc636745",
+    "a4wb-parts-BW-0.23-864d83c762.png": "864d83c76263d35978892bf91100cd63aea99e88021220ed50dfd58cd7d3d339",
+    "a4wb-parts-BW-0.30-73d947da30.png": "73d947da305a9346615746f4f3dd7473fd7501a4ac35fae6100f84b4ad7dc3bc",
+    "a4wb-parts-DD-0.46-c4ec345738.png": "c4ec3457389f1183400a17c7cc12b66470f86ab2e28f7018e0de4ab2c1dbe66b",
+    "a4wb-parts-DD-0.56-3bd31bb635.png": "3bd31bb6355e2c6307151270aab2ad00bb04ad74009320c36c7f0de8f095a3c9",
+    "a4wb-parts-DD-0.66-74073d6bc5.png": "74073d6bc502869868fe5a66b8dd039a362d03e7cf5e6df101179ce96308572b",
+    "a4wb-parts-WL-0.70-66ea96ee9b.png": "66ea96ee9be0e7d2de1464c35e0b60251fcef810c3a8242b8fa1ca6fed6caf56",
+    "a4wb-parts-WL-1.15-eb52cd6ad8.png": "eb52cd6ad8ecdca8562219ebd245e504910a0c3785b644512d9e1b93e1d4fa4c",
+    "a4wb-parts-WL-1.35-b5b25f7568.png": "b5b25f75680b8cc91597c8530841367bfb356a66325f90244b3128fb6b8780f0",
+    "a4wb-parts-WL-1.55-3658d2253a.png": "3658d2253a98e015101b9f1fbf989dbaeb2067f50b9e7e807ef9cc4e7fc98114",
+    "wbguide-0ec5251048a5.png": "0ec5251048a507efba31ba8a543dc347df23a008d2e97d389ffb3398d13ea19e",
+    "wbguide-1633259782cc.png": "1633259782cc1115798cea63e32d32cdedebc87bc68b75ff5af364e51df653e1",
+    "wbguide-7f467548f9ab.png": "7f467548f9abf67f1bb9bd18f54e1bee419fd160ccb258bba8523f54f0750622",
+    "wbguide-8e0f9a4b17d9.png": "8e0f9a4b17d956f84ec013c41c45807ba06e3d16cb0852edd0266772fb3a5301",
+    "wbguide-a1844dfa5fef.png": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3",
+    "wbguide-a8e56389e509.png": "a8e56389e509ae8c9f4a1da0c5809853ce47649d892de1217b99446fe823eb70",
+    "wbguide-b4b585ee7a10.png": "b4b585ee7a10c4f5781ec4de161e96f6cd9b102c5366a4da7a6926f4f4eebe20"
+  }
+}
