@@ -2,7 +2,7 @@
 
 用法：python3 -B experiments/reading/audit_reader.py <读者目录> <这位读者的完整记录（子代理留下的逐行 JSON）> [更多 目录 记录 …]
 只输出汇总：各类调用的次数、放大了多少次、所有不在允许范围内的调用。只用标准库。
-允许的：Read 自己目录里的 rules.txt、reading-blank.csv、reading.csv、<图号>.png、views/ 下的图；Write/Edit 自己目录里的 reading.csv；
+允许的：Read 自己目录里的 rules.txt、reading-blank.csv、reading.csv、<图号>.png、views/ 下工具写出的图（放大、整图加刻度、横条、复看等）；Write/Edit 自己目录里的 reading.csv；
 Bash 里只出现自己目录这一个绝对路径、只运行 python3 tool.py（可以先 cd 进自己的目录）。
 """
 import json
@@ -39,7 +39,7 @@ def audit(reader, transcript):
             if name == "Read":
                 p = str(arg.get("file_path", ""))
                 rel = p[len(home) + 1:] if p.startswith(home + "/") else None
-                ok = rel is not None and (rel in ("rules.txt", "reading-blank.csv", "reading.csv") or re.fullmatch(r"[0-9a-f]{12}\.png", rel) or re.fullmatch(r"views/[0-9a-f]{12}-[0-9-]+\.png", rel))
+                ok = rel is not None and (rel in ("rules.txt", "reading-blank.csv", "reading.csv") or re.fullmatch(r"[0-9a-f]{12}\.png", rel) or re.fullmatch(r"views/[0-9a-f]{12}-[A-Za-z0-9_-]+\.png", rel))
                 if ok and re.fullmatch(r"[0-9a-f]{12}\.png", rel):
                     images.add(rel)
                 if not ok:

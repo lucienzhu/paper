@@ -3,7 +3,7 @@
 用法（仓库根目录）：
   python3 -B experiments/20261127-a4-bridge/score_points.py --key <研究者目录>/PRIVATE-key.csv \
       --response 1=<读者1某一份的response.csv> --response 1=<读者1另一份> --response 2=… [--out 结果.json]
-同一位读者的几份 response.csv 各给一次 --response。请求号形如 A4-<因素>-<做法>-<档>-s<种子序号>（做法 CB、MG、TS2）。
+同一位读者的几份 response.csv 各给一次 --response。请求号形如 A4-<因素>-<做法>-<档>-s<种子序号>（做法 CB、CB2、MG、TS2；CB2 是闭环臂第二轮，档写的是目标值）。
 
 每张图、每位读者：
   W/L ＝ 四个电机中心横向极差 ÷ 纵向极差；D ＝ 两条对角线的均值；机壳宽 ÷ D ＝（right − left）÷ D；
@@ -70,7 +70,7 @@ def main():
     readers = sorted({rd for v in by.values() for rd in v})
     images, cells = [], defaultdict(list)
     for request in sorted(by):
-        m = re.match(r"A4-(WL|BW|DD)-(CB|MG|TS2)-([0-9.]+)-s(\d)$", request)
+        m = re.match(r"A4-(WL|BW|DD)-(CB2|CB|MG|TS2)-([0-9.]+)-s(\d)$", request)
         factor, method, tier, seed = m.group(1), m.group(2), float(m.group(3)), int(m.group(4))
         got = by[request]
         vals = {q: [got[rd][q] for rd in readers if rd in got and got[rd][q] is not None] for q in ("WL", "BW", "DD")}

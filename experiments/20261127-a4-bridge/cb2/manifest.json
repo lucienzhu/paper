@@ -1,0 +1,358 @@
+{
+  "batch": "A4 闭环臂第二轮（按第一轮读数反推的名义值）",
+  "workbench": {
+    "version": "4.7.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-DXfipyUQ.js",
+    "bundle_sha256": "99c598542dd21b94bf7aa15f7c9ac9277c38e89643e41867cae4ea74c3cc10fd",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "plan": {
+    "WL": {
+      "a": 0.1725,
+      "b": 0.8725,
+      "calibratable": true,
+      "tiers": [
+        {
+          "target": 1.15,
+          "nominal": 1.12
+        },
+        {
+          "target": 1.35,
+          "nominal": 1.35
+        },
+        {
+          "target": 1.55,
+          "nominal": 1.579
+        }
+      ]
+    },
+    "DD": {
+      "a": 0.0693,
+      "b": 0.89,
+      "calibratable": true,
+      "tiers": [
+        {
+          "target": 0.46,
+          "nominal": 0.439
+        },
+        {
+          "target": 0.56,
+          "nominal": 0.551
+        },
+        {
+          "target": 0.66,
+          "nominal": 0.664
+        }
+      ]
+    },
+    "BW": {
+      "a": 0.262,
+      "b": 0.0,
+      "calibratable": false
+    }
+  },
+  "seeds": [
+    2026112701,
+    2026112702,
+    2026112703
+  ],
+  "requests": [
+    {
+      "order": 1,
+      "id": "A4-DD-CB2-0.46-s1",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.46,
+      "seed": 2026112701,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "e22aae26d23e78120ab2e79dfba9e4a466fa39478c9d1c57ed1a781a66cafb25"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB2-0.56-s1",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.56,
+      "seed": 2026112701,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "9737aa2dc5b24ce4922091e663261e83abf38ce8f9f3593c251f460d9205c9a6"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB2-0.66-s1",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.66,
+      "seed": 2026112701,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "7ea0c1ab4cc5b8abe9af6b4e049b385c9f13ff9fc49618a8d0707fd375edcdd0"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB2-1.15-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.15,
+      "seed": 2026112701,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "ff3d9840eb35f889f18b5ce842b7386d85a687123bfbcab0ed85306a71a13d39"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB2-1.35-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.35,
+      "seed": 2026112701,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "7922fbd4fe3339cb0d488f4bfadf2106f18567ed652319aa547afa5dd0840ec7"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB2-1.55-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.55,
+      "seed": 2026112701,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "bf48a43b22105347677abd7811bfb38cf6aa8870c2c4e3d03f2bc44b65ba2fc5"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-CB2-0.46-s2",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.46,
+      "seed": 2026112702,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "3c4de8a3a720b82acb50c7ead4a363a24848e2a6e4334bc7c34d0a3495a7daa4"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-CB2-0.56-s2",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.56,
+      "seed": 2026112702,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "83e8d01606192f636123d5627fc54cbf9348b5a515789b8a035e9e463236df98"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-CB2-0.66-s2",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.66,
+      "seed": 2026112702,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "060fa61ba1692608f997e76a8f093ed584663eed491a2007f624c61f5c3e9136"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB2-1.15-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.15,
+      "seed": 2026112702,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "e67c8beae5f5e1252f7e6bd4035252f227747ac48680bfeb17743059415d0b6e"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB2-1.35-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.35,
+      "seed": 2026112702,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "f0dbed6b907521e4720a7c1a53d6b5993307ab23b1455662844cf71fa401de34"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB2-1.55-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.55,
+      "seed": 2026112702,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "af6f892067e6f5239b931309769e8953a244c0e4586aaa5661f28dbb4aa8e4cc"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-CB2-0.46-s3",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.46,
+      "seed": 2026112703,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "79e8b8455aceb60b413790619a9ccd178455cb331dbaf266d07dc01cad53fb16"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-CB2-0.56-s3",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.56,
+      "seed": 2026112703,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "205ea5b6d2c95670c6891d83466809864bccde3eb78f2a9c0c179c00d2de702d"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-CB2-0.66-s3",
+      "factor": "DD",
+      "method": "CB",
+      "round": 2,
+      "tier": 0.66,
+      "seed": 2026112703,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "3e4c25804cea2a8bc83f7da3ea5a3083868020c285a6e3b055b5310143331b76"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB2-1.15-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.15,
+      "seed": 2026112703,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "f7b45d889ba58ae661d93ab98012f0ebef7d6ee9361b656b04404423095b4d01"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB2-1.35-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.35,
+      "seed": 2026112703,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "30dfcb76bac5fa51c541bb2301e2d141b571b5207c31e2adc97223af6ab95aed"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB2-1.55-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 2,
+      "tier": 1.55,
+      "seed": 2026112703,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "413b367a405b23e9ce17ac288595d4c1f30d946e788913ed5e3e580dd959afbf"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-00054ee47ede.png",
+      "sha256": "00054ee47ede83dc9e14235f0964b88e5d573cdbc3db808baae5e99d720488de"
+    },
+    {
+      "input": "wbguide-8936b49055c4.png",
+      "sha256": "8936b49055c4809da46ac120ae362820a0c3ddd859e46068b946cc4805dc51c5"
+    },
+    {
+      "input": "wbguide-a1844dfa5fef.png",
+      "sha256": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3"
+    },
+    {
+      "input": "wbguide-b0ffa33e391f.png",
+      "sha256": "b0ffa33e391f18a4b654729077b7350e2f3cee5b25237891224dcf192d454ded"
+    },
+    {
+      "input": "wbguide-d6a6b193621f.png",
+      "sha256": "d6a6b193621f5722338ef8634eec59190f7444f60dd540649bc2b38c090b29a6"
+    },
+    {
+      "input": "wbguide-d73c4e3572be.png",
+      "sha256": "d73c4e3572be4967a85a65c92b865527eb12fb0e4583eba47f5eb01c1736cef6"
+    }
+  ]
+}

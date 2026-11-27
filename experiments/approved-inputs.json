@@ -1,6 +1,157 @@
 {
   "note": "出图可用的输入图白名单。父图必须写明作者的选择与出处；点线图写明画法来源。新增或更换前先改这里并在 #1 说明。E1 原图不再作父图（2026-11-15 作者要求修正 E2）。 2026-11-26（作者最新决定第 12 条）：旧路径的父图（E3R3-B2.png、E3R3-C1.png、B2-L-lowkey.png、B2-no-window.png）随旧数据移出白名单；新的父图按重新登记的 F1/F2 写入。",
-  "parents": {},
+  "parents": {
+    "a4wb-ts1-WL-1.15-s1-e410fe5cd9.png": {
+      "sha256": "7334d903e22ad77f5ab507a1aa83c640492666bb091b33d4a46dcc8593bcf12e",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.15-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "e410fe5cd9b6a440121e54c1b01efd2faadc9b3a74cc7c638e48d229618b94eb"
+    },
+    "a4wb-ts1-WL-1.35-s1-fd41cec1a2.png": {
+      "sha256": "09a55956512e1ec0f0ae2beaf0990140568a463017ddff47a76c94ceef2d9deb",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.35-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "fd41cec1a2404a987be23437202a4bbcd8bb2074557c1c9a94083c4e516b3236"
+    },
+    "a4wb-ts1-WL-1.55-s1-4abbe29702.png": {
+      "sha256": "0bef232b37aa50d9eab7758e75a98c687d4510995528a306c2ea83eb08d8efb9",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.55-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "4abbe29702d932aa6a8d3ac553f9d524ffdb1ade4b4aa45c5da4a002a93b6cc0"
+    },
+    "a4wb-ts1-WL-0.70-s1-792e9d7cd2.png": {
+      "sha256": "f5559bdd22dabd1c1690ba19a3230a5973f7994df5e6eae2d2dede95df2ff6e0",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-0.70-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "792e9d7cd20f52f06f7f63a900550b0b90e4e1b929bb3fb5436c90ebe90503ee"
+    },
+    "a4wb-ts1-BW-0.16-s1-532ac0fa42.png": {
+      "sha256": "61fc2cef4264c2a562a92a1b8fb31a95ed004a1439bd1a45960700290dace945",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.16-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "532ac0fa427025528a33e563d5e4fea1b7901989c88a404fb7f74db343c2a2d8"
+    },
+    "a4wb-ts1-BW-0.23-s1-5dbe267a13.png": {
+      "sha256": "ee8c24b125072b748148d8c3436c318a97b8c0960aeb8106c4cb2d823cc47b44",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.23-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "5dbe267a134c0b46cbdb49052aabf0afeef67ee1108e85cd1d096f610d33ca15"
+    },
+    "a4wb-ts1-BW-0.30-s1-034fce5a57.png": {
+      "sha256": "0208cac5a62cb96e09cde99af6d2ba058c4ee94dbdd5d7ce90868e14ed426379",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.30-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "034fce5a57b096a4c19a0386b5fb51784795cb714a75f610b217f75dd24b00c7"
+    },
+    "a4wb-ts1-DD-0.46-s1-4320d58332.png": {
+      "sha256": "ba27524f79488a17a895538be851af6a3cc8e44c699126ee8d09ae01c46996c8",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.46-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "4320d583328792f02e6c978da818dfe92860dc0bf8551f29780bfb868d4ad6a7"
+    },
+    "a4wb-ts1-DD-0.56-s1-7c3f2bbcfb.png": {
+      "sha256": "55fc687580a2a159461f734a827812975da0a8d0c789bed6d88c6b5af2fcd8cf",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.56-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "7c3f2bbcfb9c41f4356026d260955ca27c7b427a094ea6aa64a48a3c0f84df4b"
+    },
+    "a4wb-ts1-DD-0.66-s1-19edcef1a8.png": {
+      "sha256": "cd7e09e393429a5690b149755536ae96c3c28195551f1ef5aafc463e32dd2450",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.66-s1，去掉元数据；作第二步的输入）",
+      "source_sha256": "19edcef1a8fa320fc69c8aabf8725ca7733f9223b4d26bd9920752f341c7a2f6"
+    },
+    "a4wb-ts1-WL-1.15-s2-4736d04fb2.png": {
+      "sha256": "00a2fe497eac0417c38671ea1722fbc1088e6102575871b10330284ec0dd377c",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.15-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "4736d04fb27ff68d99a5454ede6b71af840f2d88763d4fc900fa1eb5e42070ef"
+    },
+    "a4wb-ts1-WL-1.35-s2-2e8bd9f1d3.png": {
+      "sha256": "b149e340d827763799d144122d8c451bd3603aecd44aa157be1732ebe6008229",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.35-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "2e8bd9f1d37286b7dcdac2b468ae0225d56bfc15b56ca5d931e8b2ba5e239836"
+    },
+    "a4wb-ts1-WL-1.55-s2-cafcd381f2.png": {
+      "sha256": "0bda7bfec264e33c4d644ba56505aa889457ec87ae1e5533524a80d87549cb29",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.55-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "cafcd381f2e52083fee9b0673b62762eaa77349a845febed2c51a5f4d1710f16"
+    },
+    "a4wb-ts1-WL-0.70-s2-34b04f60a8.png": {
+      "sha256": "2bde3dfd9ed1ab50044bbd0dff0936dfadd76b611fcb5339691da599bbed8812",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-0.70-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "34b04f60a815447e20fc3a0173f2ac02cf1d83c7bceef11173ad583d66f5ffad"
+    },
+    "a4wb-ts1-BW-0.16-s2-d343fadacb.png": {
+      "sha256": "6a2c544f388780665bbe0dad439bd3167419cc72800569e4a33f1adff376703a",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.16-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "d343fadacbf5373a9d63a222d0a0bd7d138af2a3c05ca7fd95a6c2495ca419a6"
+    },
+    "a4wb-ts1-BW-0.23-s2-be35afbfb0.png": {
+      "sha256": "d10b4bb31d4cd4fd2b7b3192a17d0dc405f46d6e16b370315afe1c0f9f38a446",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.23-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "be35afbfb0a63a528988c385c337fd126f36d08585a45b20402a272b17423e79"
+    },
+    "a4wb-ts1-BW-0.30-s2-e877f6f7f1.png": {
+      "sha256": "665b44aebda16df6f1106f935f6d0dc1d234f76a858dd28f636529e069011f4d",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.30-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "e877f6f7f1dfdd7e3ef42555c288c1a618868b13917c4b36f7889ce0f4a0b1cc"
+    },
+    "a4wb-ts1-DD-0.46-s2-dd13c488d0.png": {
+      "sha256": "01a87eae5dbfd9e6bea0b6dd4f35aad90d9c09c70f1e6295c9fccccda0c8da37",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.46-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "dd13c488d082eeaa339c0dbc88f9b67dfa3b7488d81da8ba0b66a89baa7b06b7"
+    },
+    "a4wb-ts1-DD-0.56-s2-1d7ef61587.png": {
+      "sha256": "6f6dd7c14655b2657c407233dea8e3ddf118c368141a8b109075881fb819f6ea",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.56-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "1d7ef61587c3abb21b381481ba6b489e40aa4260a576a2bfc7b5840dd980068a"
+    },
+    "a4wb-ts1-DD-0.66-s2-a96a1e51e0.png": {
+      "sha256": "9c0c6366e45870c6cbe6712d8ddb5378f8d8ef1e4b3c4c76f04e6d709048d01b",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.66-s2，去掉元数据；作第二步的输入）",
+      "source_sha256": "a96a1e51e01a100e38f308a47d5ce994c760f9f0e3219afdef8751f387be0b70"
+    },
+    "a4wb-ts1-WL-1.15-s3-f9d229f82d.png": {
+      "sha256": "e95e4dca84fe9c372ed61ea23a3d494974ba643cecd21754a8c6e7774e7bb30e",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.15-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "f9d229f82dcc54a33924132bdfabb9029ba6197516d915591ca1bb356f7b07de"
+    },
+    "a4wb-ts1-WL-1.35-s3-467f0b6e33.png": {
+      "sha256": "aa1a8d8535aee7a319d415deb443646a25d27e2008f2fa4b982fe43e41acc731",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.35-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "467f0b6e33808fae8b26f991a360eb831bf26c0cfaeae12bf0c0dd6eaacc4fce"
+    },
+    "a4wb-ts1-WL-1.55-s3-221b7f5e5a.png": {
+      "sha256": "b2aba0530ea27639df5cb1d57ea948c08e443ed266b08399c7039bdec73f96b1",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-1.55-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "221b7f5e5ac12f5d1e10c03ca60317e6c5c7a706dfbd17b1be5045bdcf546cf1"
+    },
+    "a4wb-ts1-WL-0.70-s3-a902389e2d.png": {
+      "sha256": "3f13ab9763fa30eaa336bb25cba3691beecd6815e2ed44200b6bcd00f64e5f0b",
+      "role": "A4 两段式第一步的中间图（A4-WL-TS1-0.70-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "a902389e2df47ad2a189909ebd3201ea2235ea0c0b322a4564103ac508e06c3e"
+    },
+    "a4wb-ts1-BW-0.16-s3-69dfde630e.png": {
+      "sha256": "c56711e2d93042714fad763c186187d235dc08ed2feef3b74abfc563376ed4e3",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.16-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "69dfde630ec955df8de2bd057c5ab46d45ba419d0f000f20f36ae78e50ee11b3"
+    },
+    "a4wb-ts1-BW-0.23-s3-62d079509c.png": {
+      "sha256": "295d1948857d714bd056924063a5fbddc05db67c9bbbbb8472ac7161c32544c7",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.23-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "62d079509c8d82dc33cce454b90849c509ab5022d45e7dc1f2228b097142ef07"
+    },
+    "a4wb-ts1-BW-0.30-s3-93dd85e1fb.png": {
+      "sha256": "82cc2f640051b1e43cf30c74df27c483a1970951c4c7cab9154db2dca48941a1",
+      "role": "A4 两段式第一步的中间图（A4-BW-TS1-0.30-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "93dd85e1fb0d30e77aa401abfcac52c74129c197c4d893b4509288df05f814d9"
+    },
+    "a4wb-ts1-DD-0.46-s3-4fd9e29ba2.png": {
+      "sha256": "ff0a353877c7b05ebd1f2a346a5bfd36a712360413e109cfa52050741ba27904",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.46-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "4fd9e29ba24709d93e2a809ff289ff08f9364e12459d6fc42ecc9494e6a3a64c"
+    },
+    "a4wb-ts1-DD-0.56-s3-10a09fa491.png": {
+      "sha256": "1ce3d065bbb02f4c5ad4a371d117dcc1ee49c83b4298a4036c20a7c5598ff7f7",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.56-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "10a09fa491f82db85c0b861a5892575ad25fca7703c53cf4c9480130a5fde775"
+    },
+    "a4wb-ts1-DD-0.66-s3-3a4e8f3653.png": {
+      "sha256": "af4a6a3e161600268f807f7d13773fe8e7d5f8a2e6f92e4c2be1e7620f252c47",
+      "role": "A4 两段式第一步的中间图（A4-DD-TS1-0.66-s3，去掉元数据；作第二步的输入）",
+      "source_sha256": "3a4e8f3653588120db324aadf36b5b26b7e17536fc77c0ddf142867515dc548a"
+    }
+  },
   "guides": {
     "qwen-shape-dots-250-15c5ad1c924b.png": {
       "sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338",
@@ -275,6 +426,36 @@
     "a4wb-parts-DD-0.66-74073d6bc5.png": {
       "sha256": "74073d6bc502869868fe5a66b8dd039a362d03e7cf5e6df101179ce96308572b",
       "role": "A4 部件图（工作台比例尺；DD 0.66；experiments/20261127-a4-bridge/build_ts_mg.py 画）"
+    },
+    "wbguide-b0ffa33e391f.png": {
+      "sha256": "b0ffa33e391f18a4b654729077b7350e2f3cee5b25237891224dcf192d454ded",
+      "role": "工作台的布局条件图：A4 闭环臂第二轮反推出的名义值（带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.3 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-8936b49055c4.png": {
+      "sha256": "8936b49055c4809da46ac120ae362820a0c3ddd859e46068b946cc4805dc51c5",
+      "role": "工作台的布局条件图：A4 闭环臂第二轮反推出的名义值（带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.3 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-d6a6b193621f.png": {
+      "sha256": "d6a6b193621f5722338ef8634eec59190f7444f60dd540649bc2b38c090b29a6",
+      "role": "工作台的布局条件图：A4 闭环臂第二轮反推出的名义值（带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.3 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-d73c4e3572be.png": {
+      "sha256": "d73c4e3572be4967a85a65c92b865527eb12fb0e4583eba47f5eb01c1736cef6",
+      "role": "工作台的布局条件图：A4 闭环臂第二轮反推出的名义值（带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.3 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
+    },
+    "wbguide-00054ee47ede.png": {
+      "sha256": "00054ee47ede83dc9e14235f0964b88e5d573cdbc3db808baae5e99d720488de",
+      "role": "工作台的布局条件图：A4 闭环臂第二轮反推出的名义值（带表示桨的直杆）",
+      "nose_at": "upper edge",
+      "source": "工作台 4.7.3 画的布局条件图（experiments/workbench-graph/capture.mjs 取出）"
     }
   }
 }
