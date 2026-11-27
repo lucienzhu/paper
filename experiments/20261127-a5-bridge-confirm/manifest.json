@@ -1,0 +1,667 @@
+{
+  "batch": "A5 桥接确认（闭环做法；新种子）",
+  "workbench": {
+    "version": "4.7.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-DXfipyUQ.js",
+    "bundle_sha256": "99c598542dd21b94bf7aa15f7c9ac9277c38e89643e41867cae4ea74c3cc10fd",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "plan": {
+    "registered": "2026-11-27，出图前写定",
+    "development_seeds": [
+      2026112701,
+      2026112702,
+      2026112703,
+      2026112799
+    ],
+    "correction": {
+      "source": "A4 闭环臂第一轮的登记读数（experiments/20261127-a4-bridge/ai-reading/cb1-score.json）",
+      "rule": "读数 = a + b × 名义值；名义值 =（目标 − a）÷ b，取三位小数（experiments/20261127-a4-bridge/build_cb2.py）",
+      "WL": {
+        "a": 0.1725,
+        "b": 0.8725
+      },
+      "DD": {
+        "a": 0.0693,
+        "b": 0.89
+      }
+    },
+    "factors": {
+      "WL": {
+        "method": "CB",
+        "tolerance": 0.1,
+        "min_hits_per_tier": 6,
+        "seeds": [
+          2026113001,
+          2026113002,
+          2026113003,
+          2026113004,
+          2026113005,
+          2026113006,
+          2026113007,
+          2026113008
+        ],
+        "tiers": [
+          {
+            "target": 1.15,
+            "nominal": 1.12,
+            "state": "A4-WL2-1.15",
+            "captures": "experiments/20261127-a4-bridge/captures-cb2"
+          },
+          {
+            "target": 1.35,
+            "nominal": 1.35,
+            "state": "A4-WL2-1.35",
+            "captures": "experiments/20261127-a4-bridge/captures-cb2"
+          },
+          {
+            "target": 1.55,
+            "nominal": 1.579,
+            "state": "A4-WL2-1.55",
+            "captures": "experiments/20261127-a4-bridge/captures-cb2"
+          }
+        ]
+      },
+      "DD": {
+        "method": "CB",
+        "tolerance": 0.05,
+        "min_hits_per_tier": 3,
+        "seeds": [
+          2026113011,
+          2026113012,
+          2026113013,
+          2026113014
+        ],
+        "tiers": [
+          {
+            "target": 0.46,
+            "nominal": 0.439,
+            "state": "A4-DD2-0.46",
+            "captures": "experiments/20261127-a4-bridge/captures-cb2"
+          },
+          {
+            "target": 0.56,
+            "nominal": 0.551,
+            "state": "A4-DD2-0.56",
+            "captures": "experiments/20261127-a4-bridge/captures-cb2"
+          },
+          {
+            "target": 0.66,
+            "nominal": 0.664,
+            "state": "A4-DD2-0.66",
+            "captures": "experiments/20261127-a4-bridge/captures-cb2"
+          }
+        ]
+      }
+    }
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "A5-DD-0.46-r01",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "nominal": 0.439,
+      "seed": 2026113011,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "c0bb35bd65b27f415b1cd5d07291b5d230bb580fd932fe5ee6db1fc4cc39e791"
+    },
+    {
+      "order": 1,
+      "id": "A5-DD-0.56-r01",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "nominal": 0.551,
+      "seed": 2026113011,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "7b7fa3363fb7d17767ff323f67ae8d5f5d7466a2f9d738904d68f421450d6687"
+    },
+    {
+      "order": 1,
+      "id": "A5-DD-0.66-r01",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "nominal": 0.664,
+      "seed": 2026113011,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "e433c7d3f1f7712e834589eabdf568ed51ed3f0f873444376bd61af342893e44"
+    },
+    {
+      "order": 1,
+      "id": "A5-WL-1.15-r01",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113001,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "dbf72477235f45f692554a13e205e2cfca70e39f5e6324515301df3cb575867c"
+    },
+    {
+      "order": 1,
+      "id": "A5-WL-1.35-r01",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113001,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "3703e4bb4039803275fb65282803e86ccbf2da76ea35dcd9b2b6c14ea385a1e3"
+    },
+    {
+      "order": 1,
+      "id": "A5-WL-1.55-r01",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113001,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "ee4168476d343e06545f677033c060fccd7d46d4be4fe140b35302835b27ddb0"
+    },
+    {
+      "order": 2,
+      "id": "A5-DD-0.46-r02",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "nominal": 0.439,
+      "seed": 2026113012,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "918a4f9ce67993b90d4afb49f2de0463a4d877f1658944d4ba1e92f268c9a1ca"
+    },
+    {
+      "order": 2,
+      "id": "A5-DD-0.56-r02",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "nominal": 0.551,
+      "seed": 2026113012,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "f218ebfbce3a203f72ea4709abbe8200da8462655b328baf29e664e83dbe0e96"
+    },
+    {
+      "order": 2,
+      "id": "A5-DD-0.66-r02",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "nominal": 0.664,
+      "seed": 2026113012,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "a01bdf24fdac1a8f6442526b036e17883dd8af3c18fe5555cde1e7a2c4eff4b6"
+    },
+    {
+      "order": 2,
+      "id": "A5-WL-1.15-r02",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113002,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "d14bcba0c1a23d30a6f7d17e8cdf418bbfe18790c1332756082473fb4840a73a"
+    },
+    {
+      "order": 2,
+      "id": "A5-WL-1.35-r02",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113002,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "0065599d19f40a4be4073873a96ae30f3c076650050aca4ae331c0dcfccf0538"
+    },
+    {
+      "order": 2,
+      "id": "A5-WL-1.55-r02",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113002,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "befbe6c8b1e74a2203a5ffde6c1833ac6eff74aa52acddb621ce4a4cd7e26831"
+    },
+    {
+      "order": 3,
+      "id": "A5-DD-0.46-r03",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "nominal": 0.439,
+      "seed": 2026113013,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "80308609509fe2f473287adeeee89653fb0f0460473a35344e5a658944467585"
+    },
+    {
+      "order": 3,
+      "id": "A5-DD-0.56-r03",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "nominal": 0.551,
+      "seed": 2026113013,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "60310cc4bf4dd0bb9818e88b8c790efce0ba5d10c83726500c554fa8b3b2905a"
+    },
+    {
+      "order": 3,
+      "id": "A5-DD-0.66-r03",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "nominal": 0.664,
+      "seed": 2026113013,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "fe94d6ca81c1d1a60b86296b1155b8458706f2a54a747545532f184f1d8b39ee"
+    },
+    {
+      "order": 3,
+      "id": "A5-WL-1.15-r03",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113003,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "03df3150f0b91c36b63e348bcb3b70d51cfc5aa24f3f63100ac9df832a05f795"
+    },
+    {
+      "order": 3,
+      "id": "A5-WL-1.35-r03",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113003,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "fa842f75d37e59db24412e135e995f70fc5c6f29176035a87ff3b8794c0c6605"
+    },
+    {
+      "order": 3,
+      "id": "A5-WL-1.55-r03",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113003,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "3f0c156cbf7a0ca3c441008773735501a8a7d5b5cbae04990b7a7e07ff2ff9a4"
+    },
+    {
+      "order": 4,
+      "id": "A5-DD-0.46-r04",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.46,
+      "nominal": 0.439,
+      "seed": 2026113014,
+      "state": "A4-DD2-0.46",
+      "input_images": [
+        "wbguide-d6a6b193621f.png"
+      ],
+      "prompt_sha256": "6900365cc576e84ea2e00ebce34227d43ac1da09058e15baa939faa0bc08cbb5",
+      "request_sha256": "f15b33cc547a474db9e406850292986f0f60b4e3f5cd4355cc5128ccd0a1beef"
+    },
+    {
+      "order": 4,
+      "id": "A5-DD-0.56-r04",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.56,
+      "nominal": 0.551,
+      "seed": 2026113014,
+      "state": "A4-DD2-0.56",
+      "input_images": [
+        "wbguide-d73c4e3572be.png"
+      ],
+      "prompt_sha256": "dc5be646c0cfb8071cb31f76e5859c22469b1cea2506b1d502c1925efa87d81b",
+      "request_sha256": "d5470c68cc8817109467eee6a3e554b122f0ed52fbfbb9aad5c4f7befa227e8d"
+    },
+    {
+      "order": 4,
+      "id": "A5-DD-0.66-r04",
+      "factor": "DD",
+      "method": "CB",
+      "tier": 0.66,
+      "nominal": 0.664,
+      "seed": 2026113014,
+      "state": "A4-DD2-0.66",
+      "input_images": [
+        "wbguide-00054ee47ede.png"
+      ],
+      "prompt_sha256": "92c0a40f323545a553e84e32d37de2fbb5b3146a9827f0ce95be30784cd0b728",
+      "request_sha256": "08f09905b4c89aa924d49f635e28113eab560a121080380008d6fe6b7e0dccf5"
+    },
+    {
+      "order": 4,
+      "id": "A5-WL-1.15-r04",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113004,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "7cdcf4d05d1ebf13ea36961d0f66a24941bfe7e841ed6d9b5046da0e444bb4aa"
+    },
+    {
+      "order": 4,
+      "id": "A5-WL-1.35-r04",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113004,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "cf26cb8a0067f77d72b5afa147070b929456d53eec0952710c3ca9b7e3bf144c"
+    },
+    {
+      "order": 4,
+      "id": "A5-WL-1.55-r04",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113004,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "52be1f01e4694077d80ba0bff7d62f141a876ef2195de8572b2008e1cc1394c1"
+    },
+    {
+      "order": 5,
+      "id": "A5-WL-1.15-r05",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113005,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "b8d2a846c32c8a95f11fc677011a01dbb44f1890d871dfc6b1bdccfff8e362d1"
+    },
+    {
+      "order": 5,
+      "id": "A5-WL-1.35-r05",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113005,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "b39636f083a1aca7de4cc35941e75abc0529798645c768b3c54c3ce9261294c5"
+    },
+    {
+      "order": 5,
+      "id": "A5-WL-1.55-r05",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113005,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "e35aca03d26ef4cc81300ea13cd26582b497f25116330457afe9e292bafa07e1"
+    },
+    {
+      "order": 6,
+      "id": "A5-WL-1.15-r06",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113006,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "3c972f163f78f6e441a88b010a3bdbbb33fd50529a4fac082e6650a741edf2c0"
+    },
+    {
+      "order": 6,
+      "id": "A5-WL-1.35-r06",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113006,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "1ad5cbbb70d064360899ef71ecdbac7cfcbd69a20e75b71d79b8b386824cc4a9"
+    },
+    {
+      "order": 6,
+      "id": "A5-WL-1.55-r06",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113006,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "9f1742093f713ad5b6e055a5a50af444b11e24012ced7640e0fc0b34c26c6d37"
+    },
+    {
+      "order": 7,
+      "id": "A5-WL-1.15-r07",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113007,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "40d04d54ab7d9a511bbe66c3682bf0be29f01869fdfcb2ef23ee35a5ffd5d4dc"
+    },
+    {
+      "order": 7,
+      "id": "A5-WL-1.35-r07",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113007,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "d1c41904513682a9aa0d43d3ddd4b63a077ac2c83168e81e9ad020872d9d57c9"
+    },
+    {
+      "order": 7,
+      "id": "A5-WL-1.55-r07",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113007,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "6c4ca23fa05360cead651a1a7328cb94b70382898ae90be8817083126ecc58ba"
+    },
+    {
+      "order": 8,
+      "id": "A5-WL-1.15-r08",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.15,
+      "nominal": 1.12,
+      "seed": 2026113008,
+      "state": "A4-WL2-1.15",
+      "input_images": [
+        "wbguide-b0ffa33e391f.png"
+      ],
+      "prompt_sha256": "f023306e4f29cde6516f1cf549b08255b313ffb1cdedbbb0e4cdc993df20ee47",
+      "request_sha256": "561c802d09e9df0d03c556f60e58ad1213a5b5de4330e8635f70f3f022f11164"
+    },
+    {
+      "order": 8,
+      "id": "A5-WL-1.35-r08",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.35,
+      "nominal": 1.35,
+      "seed": 2026113008,
+      "state": "A4-WL2-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "60bacad22f8ef065640c4b04a63a55b60a0130e69f2b4caa50e164440166abd0"
+    },
+    {
+      "order": 8,
+      "id": "A5-WL-1.55-r08",
+      "factor": "WL",
+      "method": "CB",
+      "tier": 1.55,
+      "nominal": 1.579,
+      "seed": 2026113008,
+      "state": "A4-WL2-1.55",
+      "input_images": [
+        "wbguide-8936b49055c4.png"
+      ],
+      "prompt_sha256": "d704f472c498841fe12378074ec7ee2694465bbac5c93228f8e0566ae6d4c188",
+      "request_sha256": "dd013ac5220f4a7b81de76eda3f5db7fc54c0c86b7539790806dee8ecd46549d"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-00054ee47ede.png",
+      "sha256": "00054ee47ede83dc9e14235f0964b88e5d573cdbc3db808baae5e99d720488de"
+    },
+    {
+      "input": "wbguide-8936b49055c4.png",
+      "sha256": "8936b49055c4809da46ac120ae362820a0c3ddd859e46068b946cc4805dc51c5"
+    },
+    {
+      "input": "wbguide-a1844dfa5fef.png",
+      "sha256": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3"
+    },
+    {
+      "input": "wbguide-b0ffa33e391f.png",
+      "sha256": "b0ffa33e391f18a4b654729077b7350e2f3cee5b25237891224dcf192d454ded"
+    },
+    {
+      "input": "wbguide-d6a6b193621f.png",
+      "sha256": "d6a6b193621f5722338ef8634eec59190f7444f60dd540649bc2b38c090b29a6"
+    },
+    {
+      "input": "wbguide-d73c4e3572be.png",
+      "sha256": "d73c4e3572be4967a85a65c92b865527eb12fb0e4583eba47f5eb01c1736cef6"
+    }
+  ]
+}

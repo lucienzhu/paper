@@ -1,0 +1,148 @@
+[
+ {
+  "reader": "batch1",
+  "tool_calls": {
+   "Read": 102,
+   "Bash": 122
+  },
+  "shell_words": {
+   "cd": 122,
+   "tool.py ": 1,
+   "tool.py list": 2,
+   "tool.py look": 9,
+   "tool.py hubs": 16,
+   "for": 99,
+   "do": 99,
+   "y=${p#*,}": 16,
+   "tool.py zoom": 35,
+   "done": 99,
+   "tool.py vals": 87,
+   "I=b12c3063c0b7": 5,
+   "echo": 85,
+   "tool.py set": 29,
+   "tool.py band": 9,
+   "tool.py answer": 9,
+   "tool.py show": 9,
+   "I=48003fa041ad": 11,
+   "I=5d8f7b6395ae": 15,
+   "I=51263789d9c0": 14,
+   "I=a7072c840b66": 11,
+   "I=c7fe69ddb4d1": 13,
+   "I=b7a9403b3759": 9,
+   "I=1a6dc580e1c6": 11,
+   "I=1d246ed004de": 9,
+   "tool.py finish": 1,
+   "hub": 1,
+   "51263789d9c0": 1
+  },
+  "images_opened": 0,
+  "crops": 0,
+  "outside_allowed": []
+ },
+ {
+  "reader": "batch2",
+  "tool_calls": {
+   "Read": 206,
+   "Bash": 98
+  },
+  "shell_words": {
+   "cd": 98,
+   "tool.py ": 1,
+   "tool.py list": 2,
+   "tool.py look": 9,
+   "tool.py hubs": 5,
+   "tool.py zoom": 174,
+   "tool.py set": 27,
+   "tool.py vals": 20,
+   "tool.py band": 9,
+   "tool.py answer": 9,
+   "tool.py show": 9,
+   "for": 1,
+   "do": 1,
+   "done": 1,
+   "tool.py finish": 1,
+   "where": 1,
+   "tip": 1
+  },
+  "images_opened": 0,
+  "crops": 0,
+  "outside_allowed": []
+ },
+ {
+  "reader": "batch1",
+  "tool_calls": {
+   "Read": 109,
+   "Bash": 162
+  },
+  "shell_words": {
+   "cd": 162,
+   "tool.py ": 1,
+   "tool.py list": 1,
+   "tool.py look": 9,
+   "tool.py hubs": 3,
+   "tool.py zoom": 79,
+   "tool.py set": 18,
+   "tool.py vals": 145,
+   "tool.py band": 8,
+   "for": 127,
+   "do": 127,
+   "done": 127,
+   "tool.py answer": 9,
+   "tool.py show": 9,
+   "tool.py finish": 1,
+   "it": 1,
+   "tip": 1,
+   "69cfd90d7aac": 1,
+   "f1c5a0c8cd99": 1,
+   "hub": 1
+  },
+  "images_opened": 0,
+  "crops": 0,
+  "outside_allowed": [
+   {
+    "tool": "Bash",
+    "target": "cd /Users/aus001/projects/paper-private/20261127-pack-e/readers/reader2/batch1 && python3 tool.py finish --model \"Claude Opus 5.5 (claude-opus-5-5)\" --exposure \"none for these images, their conditions or any readings. Note: the harness auto-loaded the project's CLAUDE.md and a memory index into my c"
+   }
+  ]
+ },
+ {
+  "reader": "batch2",
+  "tool_calls": {
+   "Read": 145,
+   "Bash": 108
+  },
+  "shell_words": {
+   "cd": 108,
+   "tool.py ": 1,
+   "tool.py list": 2,
+   "tool.py look": 9,
+   "tool.py hubs": 16,
+   "tool.py zoom": 46,
+   "tool.py vals": 100,
+   "for": 46,
+   "do": 46,
+   "echo": 21,
+   "done": 46,
+   "T=696a50d1844f": 8,
+   "tool.py set": 31,
+   "tool.py answer": 9,
+   "tool.py show": 9,
+   "T=8a0d9ee3d2b1": 7,
+   "tool.py band": 2,
+   "T=085c9b2c20e1": 7,
+   "T=807704910d4d": 11,
+   "T=947e9e256643": 9,
+   "T=d1929a910a5d": 9,
+   "T=bf14bb42f208": 9,
+   "T=c5cdab60222b": 12,
+   "T=6cf55ea71164": 10,
+   "tool.py finish": 1,
+   "I": 2,
+   "on": 1,
+   "ambiguity": 1
+  },
+  "images_opened": 0,
+  "crops": 0,
+  "outside_allowed": []
+ }
+]

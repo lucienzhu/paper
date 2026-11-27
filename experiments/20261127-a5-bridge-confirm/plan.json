@@ -1,0 +1,34 @@
+{
+  "registered": "2026-11-27，出图前写定",
+  "development_seeds": [2026112701, 2026112702, 2026112703, 2026112799],
+  "correction": {
+    "source": "A4 闭环臂第一轮的登记读数（experiments/20261127-a4-bridge/ai-reading/cb1-score.json）",
+    "rule": "读数 = a + b × 名义值；名义值 =（目标 − a）÷ b，取三位小数（experiments/20261127-a4-bridge/build_cb2.py）",
+    "WL": {"a": 0.1725, "b": 0.8725},
+    "DD": {"a": 0.0693, "b": 0.89}
+  },
+  "factors": {
+    "WL": {
+      "method": "CB",
+      "tolerance": 0.10,
+      "min_hits_per_tier": 6,
+      "seeds": [2026113001, 2026113002, 2026113003, 2026113004, 2026113005, 2026113006, 2026113007, 2026113008],
+      "tiers": [
+        {"target": 1.15, "nominal": 1.12, "state": "A4-WL2-1.15", "captures": "experiments/20261127-a4-bridge/captures-cb2"},
+        {"target": 1.35, "nominal": 1.35, "state": "A4-WL2-1.35", "captures": "experiments/20261127-a4-bridge/captures-cb2"},
+        {"target": 1.55, "nominal": 1.579, "state": "A4-WL2-1.55", "captures": "experiments/20261127-a4-bridge/captures-cb2"}
+      ]
+    },
+    "DD": {
+      "method": "CB",
+      "tolerance": 0.05,
+      "min_hits_per_tier": 3,
+      "seeds": [2026113011, 2026113012, 2026113013, 2026113014],
+      "tiers": [
+        {"target": 0.46, "nominal": 0.439, "state": "A4-DD2-0.46", "captures": "experiments/20261127-a4-bridge/captures-cb2"},
+        {"target": 0.56, "nominal": 0.551, "state": "A4-DD2-0.56", "captures": "experiments/20261127-a4-bridge/captures-cb2"},
+        {"target": 0.66, "nominal": 0.664, "state": "A4-DD2-0.66", "captures": "experiments/20261127-a4-bridge/captures-cb2"}
+      ]
+    }
+  }
+}

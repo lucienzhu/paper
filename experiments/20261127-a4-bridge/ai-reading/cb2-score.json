@@ -1,0 +1,888 @@
+{
+  "readers": [
+    "1",
+    "2"
+  ],
+  "tolerance": {
+    "WL": 0.1,
+    "BW": 0.035,
+    "DD": 0.05
+  },
+  "summary": {
+    "CB2-WL": {
+      "tiers": {
+        "1.15": {
+          "hits": 3,
+          "of": 3,
+          "readings": [
+            1.118,
+            1.112,
+            1.148
+          ],
+          "median": 1.118,
+          "in_range": true,
+          "connected_both": 3,
+          "product_both": 3
+        },
+        "1.35": {
+          "hits": 3,
+          "of": 3,
+          "readings": [
+            1.358,
+            1.399,
+            1.376
+          ],
+          "median": 1.376,
+          "in_range": true,
+          "connected_both": 3,
+          "product_both": 3
+        },
+        "1.55": {
+          "hits": 3,
+          "of": 3,
+          "readings": [
+            1.544,
+            1.542,
+            1.57
+          ],
+          "median": 1.544,
+          "in_range": true,
+          "connected_both": 3,
+          "product_both": 3
+        }
+      },
+      "gate_passed": true,
+      "fit": {
+        "a": -0.0917,
+        "b": 1.065,
+        "calibratable": true
+      },
+      "hold_ranges": {
+        "BW": [
+          0.253,
+          0.316
+        ],
+        "DD": [
+          0.501,
+          0.554
+        ]
+      }
+    },
+    "CB2-DD": {
+      "tiers": {
+        "0.46": {
+          "hits": 3,
+          "of": 3,
+          "readings": [
+            0.455,
+            0.505,
+            0.462
+          ],
+          "median": 0.462,
+          "in_range": true,
+          "connected_both": 3,
+          "product_both": 3
+        },
+        "0.56": {
+          "hits": 3,
+          "of": 3,
+          "readings": [
+            0.547,
+            0.549,
+            0.555
+          ],
+          "median": 0.549,
+          "in_range": true,
+          "connected_both": 3,
+          "product_both": 3
+        },
+        "0.66": {
+          "hits": 3,
+          "of": 3,
+          "readings": [
+            0.661,
+            0.67,
+            0.622
+          ],
+          "median": 0.661,
+          "in_range": true,
+          "connected_both": 3,
+          "product_both": 3
+        }
+      },
+      "gate_passed": true,
+      "fit": {
+        "a": 0.0001,
+        "b": 0.995,
+        "calibratable": true
+      },
+      "hold_ranges": {
+        "WL": [
+          1.346,
+          1.408
+        ],
+        "BW": [
+          0.255,
+          0.306
+        ]
+      }
+    }
+  },
+  "reader_agreement": {
+    "WL": {
+      "n": 18,
+      "median_gap": 0.0028,
+      "max_gap": 0.0103
+    },
+    "BW": {
+      "n": 18,
+      "median_gap": 0.0002,
+      "max_gap": 0.0013
+    },
+    "DD": {
+      "n": 18,
+      "median_gap": 0.0014,
+      "max_gap": 0.0042
+    }
+  },
+  "images": [
+    {
+      "request": "A4-DD-CB2-0.46-s1",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.46,
+      "seed": 1,
+      "mean": {
+        "WL": 1.3458863074026235,
+        "BW": 0.29663881643081513,
+        "DD": 0.4550294425630469
+      },
+      "deviation": -0.004970557436953127,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3463687150837989,
+          "BW": 0.2970099752725203,
+          "DD": 0.4559988351744465,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3454038997214484,
+          "BW": 0.29626765758910995,
+          "DD": 0.45406004995164734,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0009648153623504907,
+        "BW": 0.0007423176834103762,
+        "DD": 0.0019387852227991664
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.46-s2",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.46,
+      "seed": 2,
+      "mean": {
+        "WL": 1.4076704545454546,
+        "BW": 0.2552241523854939,
+        "DD": 0.5052870864938679
+      },
+      "deviation": 0.04528708649386787,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.40625,
+          "BW": 0.2554811288345767,
+          "DD": 0.5058465545176715,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.4090909090909092,
+          "BW": 0.2549671759364111,
+          "DD": 0.5047276184700642,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0028409090909091717,
+        "BW": 0.0005139528981655817,
+        "DD": 0.0011189360476072663
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.46-s3",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.46,
+      "seed": 3,
+      "mean": {
+        "WL": 1.3895184135977336,
+        "BW": 0.2583783633553235,
+        "DD": 0.46244340270570794
+      },
+      "deviation": 0.00244340270570792,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3909348441926346,
+          "BW": 0.25844069637998435,
+          "DD": 0.46135485023971995,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.388101983002833,
+          "BW": 0.2583160303306626,
+          "DD": 0.463531955171696,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0028328611898016387,
+        "BW": 0.0001246660493217644,
+        "DD": 0.002177104931976037
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.56-s1",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.56,
+      "seed": 1,
+      "mean": {
+        "WL": 1.3541809736186234,
+        "BW": 0.30069459111708585,
+        "DD": 0.5466871237669613
+      },
+      "deviation": -0.013312876233038784,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3593314763231197,
+          "BW": 0.3008161733817014,
+          "DD": 0.5476440619045967,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3490304709141274,
+          "BW": 0.30057300885247024,
+          "DD": 0.545730185629326,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.010301005408992259,
+        "BW": 0.00024316452923117682,
+        "DD": 0.0019138762752707317
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.56-s2",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.56,
+      "seed": 2,
+      "mean": {
+        "WL": 1.3597222222222223,
+        "BW": 0.2586393637410475,
+        "DD": 0.5486997951813234
+      },
+      "deviation": -0.011300204818676662,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3611111111111112,
+          "BW": 0.2585535522744066,
+          "DD": 0.5465885990442177,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3583333333333334,
+          "BW": 0.25872517520768845,
+          "DD": 0.550810991318429,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.002777777777777768,
+        "BW": 0.0001716229332818786,
+        "DD": 0.004222392274211284
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.56-s3",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.56,
+      "seed": 3,
+      "mean": {
+        "WL": 1.3551532033426184,
+        "BW": 0.2586756966226559,
+        "DD": 0.5551419257785468
+      },
+      "deviation": -0.004858074221453235,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3537604456824512,
+          "BW": 0.25878476779071935,
+          "DD": 0.5539622642405736,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3565459610027855,
+          "BW": 0.25856662545459236,
+          "DD": 0.5563215873165201,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0027855153203342198,
+        "BW": 0.00021814233612699185,
+        "DD": 0.002359323075946551
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.66-s1",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.66,
+      "seed": 1,
+      "mean": {
+        "WL": 1.3516483516483517,
+        "BW": 0.3059507635884814,
+        "DD": 0.6613047115711154
+      },
+      "deviation": 0.0013047115711153356,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3516483516483517,
+          "BW": 0.3059507635884814,
+          "DD": 0.6613047115711154,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3516483516483517,
+          "BW": 0.3059507635884814,
+          "DD": 0.6613047115711154,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 0.0,
+        "DD": 0.0
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.66-s2",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.66,
+      "seed": 2,
+      "mean": {
+        "WL": 1.3669575042370221,
+        "BW": 0.27018698827775756,
+        "DD": 0.6695646024340303
+      },
+      "deviation": 0.009564602434030234,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3707865168539326,
+          "BW": 0.270205002522832,
+          "DD": 0.6710506285742871,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3631284916201116,
+          "BW": 0.27016897403268303,
+          "DD": 0.6680785762937735,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.007658025233820975,
+        "BW": 3.602849014899823e-05,
+        "DD": 0.0029720522805135596
+      }
+    },
+    {
+      "request": "A4-DD-CB2-0.66-s3",
+      "factor": "DD",
+      "method": "CB2",
+      "tier": 0.66,
+      "seed": 3,
+      "mean": {
+        "WL": 1.3480662983425415,
+        "BW": 0.25970518177050916,
+        "DD": 0.6222365751853566
+      },
+      "deviation": -0.037763424814643454,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3480662983425415,
+          "BW": 0.2603799433704078,
+          "DD": 0.6213227107908703,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3480662983425415,
+          "BW": 0.25903042017061045,
+          "DD": 0.6231504395798428,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 0.0013495231997973645,
+        "DD": 0.0018277287889725269
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.15-s1",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.15,
+      "seed": 1,
+      "mean": {
+        "WL": 1.1182266009852218,
+        "BW": 0.30402657065460625,
+        "DD": 0.5025752162645629
+      },
+      "deviation": -0.03177339901477816,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.1182266009852218,
+          "BW": 0.3039335079935109,
+          "DD": 0.5026757814894806,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.1182266009852218,
+          "BW": 0.3041196333157017,
+          "DD": 0.5024746510396452,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 0.00018612532219081102,
+        "DD": 0.00020113044983538497
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.15-s2",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.15,
+      "seed": 2,
+      "mean": {
+        "WL": 1.1115274058423212,
+        "BW": 0.25383405186563157,
+        "DD": 0.5257659187795799
+      },
+      "deviation": -0.038472594157678675,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.1141439205955335,
+          "BW": 0.25374796625351936,
+          "DD": 0.5256007556230651,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.108910891089109,
+          "BW": 0.2539201374777437,
+          "DD": 0.5259310819360947,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.005233029506424458,
+        "BW": 0.00017217122422436004,
+        "DD": 0.00033032631302964965
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.15-s3",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.15,
+      "seed": 3,
+      "mean": {
+        "WL": 1.1482412060301508,
+        "BW": 0.25278381288606006,
+        "DD": 0.5191917272543615
+      },
+      "deviation": -0.0017587939698491262,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.1482412060301508,
+          "BW": 0.25278381288606006,
+          "DD": 0.5191917272543615,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.1482412060301508,
+          "BW": 0.25278381288606006,
+          "DD": 0.5191917272543615,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 0.0,
+        "DD": 0.0
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.35-s1",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.35,
+      "seed": 1,
+      "mean": {
+        "WL": 1.3575418994413408,
+        "BW": 0.306789824705243,
+        "DD": 0.5199786420049282
+      },
+      "deviation": 0.00754189944134076,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3575418994413408,
+          "BW": 0.3066874568381586,
+          "DD": 0.5199583828450751,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3575418994413408,
+          "BW": 0.3068921925723274,
+          "DD": 0.5199989011647812,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 0.00020473573416879276,
+        "DD": 4.051831970608433e-05
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.35-s2",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.35,
+      "seed": 2,
+      "mean": {
+        "WL": 1.3991604997214928,
+        "BW": 0.2543848324283683,
+        "DD": 0.5344431078716423
+      },
+      "deviation": 0.04916049972149272,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.4039548022598871,
+          "BW": 0.25431203348975484,
+          "DD": 0.5365413954389224,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3943661971830985,
+          "BW": 0.25445763136698174,
+          "DD": 0.532344820304362,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.009588605076788603,
+        "BW": 0.00014559787722689954,
+        "DD": 0.0041965751345603985
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.35-s3",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.35,
+      "seed": 3,
+      "mean": {
+        "WL": 1.376056338028169,
+        "BW": 0.26033900287412,
+        "DD": 0.5070020271971457
+      },
+      "deviation": 0.02605633802816887,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.3746478873239436,
+          "BW": 0.2605135516308597,
+          "DD": 0.507167757255541,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.3774647887323943,
+          "BW": 0.26016445411738026,
+          "DD": 0.5068362971387504,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0028169014084507005,
+        "BW": 0.00034909751347944606,
+        "DD": 0.00033146011679052734
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.55-s1",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.55,
+      "seed": 1,
+      "mean": {
+        "WL": 1.5440729483282676,
+        "BW": 0.3156526127711333,
+        "DD": 0.5014653628087914
+      },
+      "deviation": -0.005927051671732464,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.5440729483282676,
+          "BW": 0.31572342923132213,
+          "DD": 0.5006760801294308,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.5440729483282676,
+          "BW": 0.31558179631094446,
+          "DD": 0.502254645488152,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 0.00014163292037766562,
+        "DD": 0.0015785653587212511
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.55-s2",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.55,
+      "seed": 2,
+      "mean": {
+        "WL": 1.5417334438611034,
+        "BW": 0.2660463898939802,
+        "DD": 0.5536236923720796
+      },
+      "deviation": -0.008266556138896597,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.5440729483282676,
+          "BW": 0.2660139749008485,
+          "DD": 0.5541956881512812,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.5393939393939393,
+          "BW": 0.2660788048871119,
+          "DD": 0.5530516965928782,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.004679008934328266,
+        "BW": 6.482998626339276e-05,
+        "DD": 0.0011439915584029459
+      }
+    },
+    {
+      "request": "A4-WL-CB2-1.55-s3",
+      "factor": "WL",
+      "method": "CB2",
+      "tier": 1.55,
+      "seed": 3,
+      "mean": {
+        "WL": 1.5696594427244581,
+        "BW": 0.26146746439478363,
+        "DD": 0.5281332690707177
+      },
+      "deviation": 0.019659442724458076,
+      "connected_both": true,
+      "product_both": true,
+      "hit": true,
+      "by_reader": {
+        "1": {
+          "WL": 1.5696594427244581,
+          "BW": 0.26146738225772526,
+          "DD": 0.5281331031636007,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        },
+        "2": {
+          "WL": 1.5696594427244581,
+          "BW": 0.261467546531842,
+          "DD": 0.5281334349778345,
+          "connected": "yes",
+          "product": "yes",
+          "reason": "",
+          "tips_read": 4
+        }
+      },
+      "reader_gap": {
+        "WL": 0.0,
+        "BW": 1.6427411675401515e-07,
+        "DD": 3.318142337560559e-07
+      }
+    }
+  ]
+}
