@@ -77,7 +77,7 @@ export function PanelRender({ laneId, attempts, urls }: Props & { laneId: string
     <section className="r4-sec">
       <button type="button" className="b4 pri" data-testid="run-lane" disabled={busy} onClick={() => void run()}>{busy ? <LoaderCircle size={14} className="animate-spin" /> : <Sparkles size={14} />}{busy ? '正在提交' : '生成这一轮'}</button>
       {error && <p className="r4-note" role="alert">{error}</p>}
-      {!registered && <p className="r4-muted">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据' : ''}</p>}
+      {!registered && <p className="r4-muted">{backend.label}</p>}
     </section>
     <section className="r4-sec"><h3>这一轮按什么出图</h3>
       <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12, alignItems: 'start' }}>

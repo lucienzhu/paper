@@ -15,4 +15,4 @@ A 收窄、收圆机鼻前缘，相机窗随前缘变化。B 加宽四处臂根�
 
 四个父图位置使用已归档的 Qwen 图像编辑工作流，两个无父图位置继承各自对应的 E1 ControlNet 请求。两个对照的基础提示词分别描述间距比与桨径比，种子各异；比较时须保留这些差异。正式编辑分母为四，对照分母为二。
 
-在仓库根目录运行 `python -B experiments/e2-registered/compile.py --check` 可从原件重建并比对全部六份请求。[weights.json](weights.json) 是以往的机上摘要，实际运行应另存当次核验与逐图回执。MiniMax H3 的同题开发预实验单列，不占这六个位置。
+在仓库根目录运行 `python -B experiments/e2-registered/compile.py --check` 可从原件重建并比对全部六份请求。[weights.json](weights.json) 是以往的机上摘要，实际运行应另存当次核验与逐图回执。

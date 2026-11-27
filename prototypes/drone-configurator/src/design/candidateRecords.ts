@@ -23,7 +23,8 @@ export interface FrozenAttempt {
   runId?: string; candidates: Candidate[]; decisions: Decision[];
 }
 export interface H3Archive {
-  model: 'MiniMax-H3-Image' | 'Qwen-Image-2.1';
+  /** 冻结时登记的出图模型。4.5 起新轮次都是 'Qwen-Image-2.1'；更早留在本机的旧记录照原样保留。 */
+  model: string;
   status: 'ready' | 'submitting' | 'running' | 'succeeded' | 'failed';
   request?: Blob;
   acknowledgement?: Blob;
@@ -106,7 +107,7 @@ export async function findAttempt(id: string): Promise<FrozenAttempt | undefined
 export async function updateH3Record(id: string, update: Partial<H3Archive>, candidates?: Candidate[]) {
   await edit(id, a => {
     requireAttempt(a);
-    if (!a.h3) throw new Error('所选轮次没有 H3 生成记录。');
+    if (!a.h3) throw new Error('所选轮次没有出图记录。');
     if (a.h3.status === 'succeeded' || a.h3.status === 'failed') return a;
     if (update.status === 'submitting' && a.h3.status !== 'ready') return a;
     return {...a, h3:{...a.h3, ...update}, ...(candidates ? {candidates} : {}),
@@ -160,7 +161,7 @@ async function pngGraph(bytes:Uint8Array):Promise<Graph> {
 }
 export async function attachReceipt(id:string,request:Blob,ack:Blob,history:Blob,files:File[]) {
   const attempt=(await listAttempts()).find(a=>a.id===id);requireAttempt(attempt);
-  if (attempt.h3) throw new Error('H3 轮次只接收本轮的 H3 服务回执。');
+  if (attempt.h3) throw new Error('出图轮次只接收本轮的出图服务回执。');
   const dispatchHash=await hashBlob(request);
   const payload=JSON.parse(await request.text()), graph=payload.prompt as Graph;
   const nodes=Object.entries(graph);

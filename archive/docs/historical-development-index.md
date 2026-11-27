@@ -8,4 +8,4 @@
 | P2 旧规格卡 | [#66 候选图与请求](https://github.com/Freeloop993/paper/tree/519821e830f3223e73bc9cbea598f314b4a58081/evidence/p2-spec-cards) | 追溯当时采用的造型语句及开发表现 |
 | MiniMax 局部改动 | [#67 实发输入与原图](https://github.com/Freeloop993/paper/tree/d147f61ab8ccbbf96e1987f8831f7b230f8c93c7/evidence/minimax-junction-pilot) | 追溯相机、肩部改动及图文分歧 |
 
-三处历史材料均不补 E0 缺失的闭源六张、Qwen E2 或 E3 正式分母。当前作者对新旧 C 的反馈以及 A/B 的知条件复核见[修订方向卡](../../evidence/section421-h3-span/specs-after-review.md)。
+三处历史材料均不补 E0 缺失的闭源六张、Qwen E2 或 E3 正式分母。当前作者对新旧 C 的反馈以及 A/B 的知条件复核见[修订方向卡](../evidence/section421-h3-span/specs-after-review.md)。

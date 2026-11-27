@@ -1,6 +1,8 @@
 # PR #68 第 2 节的实测填写依据
 
-PR #70 已合并，方法冻结单第 2 节已按下表的开发证据填写。第三轮最初按 v2.1 回答两个登记问题；v2.2 要求每批核读全部通用项。[八图补读](../../evidence/form342-h3-dev/round-3-common-v22/)独立归档。第 3 节待作者签署。
+> 2026-11-26：本页的“开发证据”是 MiniMax H3 托管接口出的图和读数，作者定为冒烟数据、全部移进 archive，不再作依据，见[冻结单 v1](method-freeze-v1.md)开头的说明。以下原文保留不改。
+
+PR #70 已合并，方法冻结单第 2 节已按下表的开发证据填写。第三轮最初按 v2.1 回答两个登记问题；v2.2 要求每批核读全部通用项。[八图补读](../../archive/evidence/form342-h3-dev/round-3-common-v22/)独立归档。第 3 节待作者签署。
 
 | 冻结项目 | 证据与建议写法 |
 | --- | --- |
@@ -11,4 +13,4 @@ PR #70 已合并，方法冻结单第 2 节已按下表的开发证据填写。�
 | 初稿色材 | 第 3 节的通用同色约定加上作者例外。E3 设计的臂材质可用 v1.3 的同色哑光／外露碳纹；5.2.1 保持同色。外露碳纹在 C 上是可选设计材料。 |
 | 下一步 | 作者待签署规格字段、词对与参数的对应、修订定义。签署后同一窗口核验实际环境，跑 E2 六份及 Qwen 造型小测十二份；后端选择、E3 与真实评议各按后续门槛执行。 |
 
-[第二轮原判](../../evidence/form342-h3-dev/round-2/README.md) · [第三轮预定与盲读](../../evidence/form342-h3-dev/round-3/README.md) · [作者关于材质的决定](https://github.com/Freeloop993/paper/issues/3#issuecomment-6858641894) · [Qwen 离线小测](../../experiments/qwen-shape-pilot/README.md) · [植保六旋离线输入](../../experiments/hexa-plant-protection/topview-prep/README.md) · [四个已有实拍来源](../../evidence/real-product-topview/README.md) · [历史开发 PR 与原件索引](../../archive/docs/historical-development-index.md)
+[第二轮原判](../../archive/evidence/form342-h3-dev/round-2/README.md) · [第三轮预定与盲读](../../archive/evidence/form342-h3-dev/round-3/README.md) · [作者关于材质的决定](https://github.com/Freeloop993/paper/issues/3#issuecomment-6858641894) · [Qwen 离线小测](../../experiments/qwen-shape-pilot/README.md) · [植保六旋离线输入](../../experiments/hexa-plant-protection/topview-prep/README.md) · [四个已有实拍来源](../../evidence/real-product-topview/README.md) · [历史开发 PR 与原件索引](../../archive/docs/historical-development-index.md)

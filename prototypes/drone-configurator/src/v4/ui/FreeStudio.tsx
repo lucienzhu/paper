@@ -133,7 +133,7 @@ export default function FreeStudio({ attempts, urls }: { attempts: FrozenAttempt
           <textarea className="ta4" data-testid="free-prompt" value={prompt} placeholder="写下或改好要发出的文字" onChange={e => setPrompt(e.target.value)} />
           {parent && <p className="r4-muted">父图：已选一张候选 <button type="button" className="b4 sm quiet" onClick={() => setParent('')}>不用父图</button></p>}
           <button type="button" className="b4 pri" data-testid="free-run" disabled={busy === 'run' || !prompt.trim()} onClick={() => void run()}>{busy === 'run' ? <LoaderCircle size={14} className="animate-spin" /> : <Sparkles size={14} />}生成</button>
-          {!registered && <p className="r4-muted">{backend.label}{backend.provider === 'minimax' ? ' · 开发用，不计入论文数据（且不接受不带图的提示）' : ''}</p>}
+          {!registered && <p className="r4-muted">{backend.label}</p>}
           {error && <p className="r4-note" role="alert">{error}</p>}
         </section>
       </>}

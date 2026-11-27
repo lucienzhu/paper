@@ -4,7 +4,7 @@
 
 | Claude 要回答的问题 | 仓库里的依据 |
 | --- | --- |
-| 导师给定的章节、方法边界和实际完成情况是什么？ | [研究上下文、试验次序、流程图与运行证据](context/README.md) · [前一版代码审查与实测](v3.2-review.md) · [研究问题与验证协议](../advisor-20261118/README.md) |
+| 导师给定的章节、方法边界和实际完成情况是什么？ | [研究上下文、试验次序与流程图](context/README.md) · [前一版代码审查与实测](v3.2-review.md) · [研究问题与验证协议](../advisor-20261118/README.md) |
 | 为什么每一步都放在画布上、右侧面板随所选步骤变化？ | [画布式工作流拆解](literature/画布式工作流拆解.md) · [第四轮界面设计说明](../../prototypes/drone-configurator/interface-design.md) |
 | 部件对话、画布分支、改动预览和候选比较为什么这样做？ | [工作台设计依据与文献](literature/README.md) · [逐篇核读页码与适用边界](literature/论文与原页证据.csv) |
 | 哪些论文可直接用于正文，另一台如何读到同一版本？ | [全文、原始来源及文件校验](literature/README.md) · [全库导航](literature/全库文献导航.csv) · [补充 BibTeX](literature/补充参考文献.bib) · [GenAlign 按底稿补录](literature/GenAlign-按底稿补录.bib) |

@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import { mkdir, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { createImageJobs } from './image-jobs.mjs';
+import { makeComfyFixture } from './comfy-fixture.mjs';
 import { join } from 'node:path';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_CORE || 'playwright-core');
@@ -12,17 +13,14 @@ if (!origin || !['localhost','127.0.0.1'].includes(new URL(origin).hostname)) th
 const capture = process.argv[3];
 if (capture) await mkdir(capture,{recursive:true});
 const browser = await chromium.launch({channel:'chrome',args:['--disable-gpu']});
-const jobDirectory=await mkdtemp(join(tmpdir(),'h3-handoff-'));
+const jobDirectory=await mkdtemp(join(tmpdir(),'image-handoff-'));
 try {
   const ctx = await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true,reducedMotion:'reduce'});
   const page = await ctx.newPage();
   const errors = [];
-  let simulatedReplies = 0, h3Id;
-  const jobs = createImageJobs({apiKey:'fixture', directory:jobDirectory, fetchImpl:async (_url, init)=>{
-    const body = JSON.parse(init.body);
-    const guide = body.images[0].image_url;
-    return Response.json({data:[{b64_json:guide.split(',')[1]}]}, {headers:{'trace-id':'software-control'}});
-  }});
+  let simulatedReplies = 0, roundId;
+  const jobs = createImageJobs({fixture:true, directory:jobDirectory, backend:{provider:'qwen-comfy',url:'http://comfy.fixture',pollMs:30},
+    fetchImpl:await makeComfyFixture()});
   page.on('pageerror', error => errors.push(error.message));
   await ctx.route('**/*', async route => {
     const url = new URL(route.request().url());
@@ -31,7 +29,7 @@ try {
     }
     if (url.pathname === '/api/h3/jobs') {
       const body=route.request().postDataJSON();
-      h3Id=body.attemptId;
+      roundId=body.attemptId;
       return route.fulfill({status:202,json:await jobs.submit(body)});
     }
     if (url.pathname.startsWith('/api/h3/jobs/')) return route.fulfill({json:await jobs.get(url.pathname.split('/').at(-1))});
@@ -101,14 +99,14 @@ try {
   // 在画布上加一个生成步骤并提交；回图作为候选卡片接在后面。
   await page.locator('[data-step=canvas]').click();
   await page.locator('[data-dock=generate]').click();
-  await page.getByTestId('generation-goal').fill('软件对照 · 核对设计决定与 H3 回图');
+  await page.getByTestId('generation-goal').fill('软件对照 · 核对设计决定与回图');
   await page.getByTestId('generate-current').click();
   await page.locator('[data-workflow-node^="candidate-"]').waitFor();
   await go('handoff');
-  await page.locator('[data-attempt]').selectOption(h3Id);
+  await page.locator('[data-attempt]').selectOption(roundId);
   const rendered=await readExport('[data-export-attempt]');
   assert.deepEqual(rendered.config.design_chat_audit,events);
-  assert.equal(rendered.h3.traceId,'software-control');
+  assert.equal(rendered.h3.model,'Qwen-Image-2.1');
   assert.equal(rendered.candidates.length,1);
   assert.equal(rendered.receipt,null);
   assert.equal(rendered.variantScope,'quad/A');
@@ -123,5 +121,5 @@ try {
   await shot('工作台-手机-本地依据.png');
   assert.deepEqual(errors,[]);
   console.log(JSON.stringify({localEvidence:['E009','E008'],softwareReplies:simulatedReplies,realModelCalls:0,
-    softwareH3RoundWithAudit:true,savedAndRestoredVersion:true,frozenEvents:events.map(e=>e.action),reopened:true,mobileWidth:390,errors}));
+    softwareRoundWithAudit:true,savedAndRestoredVersion:true,frozenEvents:events.map(e=>e.action),reopened:true,mobileWidth:390,errors}));
 } finally { await browser.close(); await rm(jobDirectory,{recursive:true,force:true}); }

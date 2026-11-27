@@ -9,7 +9,6 @@ import type {
 } from '../types/DroneParameters';
 import type { BriefDecision } from '../design/semantics/brief';
 import { canUndoChatWidth, chatContext, chatScopeKey, isWidthTarget, readDesignChatAudit, redactChatText, type DesignChatEvent, type DesignChatContext } from '../design/designChatAudit';
-import type { PromptOptimizationResult } from '../services/geminiPromptOptimizer';
 
 // 起始设计值。布局比例和机身尺寸取自真实产品量测（见 design/defaults.ts），不是实验条件；做登记的实验时在「研究场次」里载入登记条件。
 // 造型项（材料、臂根、机身轮廓、顶盖、相机安装、主色、表面处理）默认留白，由设计者决定。
@@ -88,12 +87,6 @@ interface DroneStore extends AppState {
   importSnapshot: (snapshot: Snapshot) => void;
   restoreConfiguration: (parameters: DroneParameters, profile: UserProfile | null) => void;
 
-  // 早期模型服务相关状态。本轮模型服务停用，保留字段只为旧组件仍可编译。
-  useGeminiOptimization: boolean;
-  isOptimizingPrompt: boolean;
-  lastOptimizationResult: PromptOptimizationResult | null;
-  useRAGOptimization: boolean;
-
   updateFrameParams: (params: Partial<FrameParameters>) => void;
   updatePropulsionParams: (params: Partial<PropulsionParameters>) => void;
   updateFuselageParams: (params: Partial<FuselageParameters>) => void;
@@ -105,10 +98,6 @@ interface DroneStore extends AppState {
   setError: (error: string | null) => void;
   setProgress: (progress: number) => void;
   setSelectedUserProfile: (profile: UserProfile | null) => void;
-  setUseGeminiOptimization: (use: boolean) => void;
-  setOptimizingPrompt: (isOptimizing: boolean) => void;
-  setLastOptimizationResult: (result: PromptOptimizationResult | null) => void;
-  setUseRAGOptimization: (use: boolean) => void;
 
   resetParameters: () => void;
   resetToDefaults: () => void;
@@ -215,10 +204,6 @@ export function createTaskStore(task: Task) {
       error: null,
       progress: 0,
       selectedUserProfile: null,
-      useGeminiOptimization: false,
-      isOptimizingPrompt: false,
-      lastOptimizationResult: null,
-      useRAGOptimization: false,
 
       setField,
       setMany,
@@ -401,7 +386,7 @@ export function createTaskStore(task: Task) {
         set({ ...snap(snapshot), history: [...s.history, {...snap(s), restoreChatBranch:true}].slice(-40), lastChange: null });
       },
       restoreConfiguration: (parameters, selectedUserProfile) =>
-        set({ parameters, selectedUserProfile, workflowOrigin: undefined, currentImage: null, error: null, lastOptimizationResult: null, lastChange: null }),
+        set({ parameters, selectedUserProfile, workflowOrigin: undefined, currentImage: null, error: null, lastChange: null }),
 
       updateFrameParams: params => updateGroup('frame', params),
       updatePropulsionParams: params => updateGroup('propulsion', params),
@@ -414,10 +399,6 @@ export function createTaskStore(task: Task) {
       setError: error => set({ error }),
       setProgress: progress => set({ progress }),
       setSelectedUserProfile: profile => set({ selectedUserProfile: profile }),
-      setUseGeminiOptimization: use => set({ useGeminiOptimization: use }),
-      setOptimizingPrompt: isOptimizing => set({ isOptimizingPrompt: isOptimizing }),
-      setLastOptimizationResult: result => set({ lastOptimizationResult: result }),
-      setUseRAGOptimization: use => set({ useRAGOptimization: use }),
 
       resetParameters: () => {
         const s = get();
@@ -429,7 +410,6 @@ export function createTaskStore(task: Task) {
           parameters: structuredClone(initial), touched: {}, intent: {...emptyIntent(),taskId:s.intent.taskId}, pinned: null, workflowOrigin: undefined,
           history: [...s.history, snap(s)].slice(-40), lastChange: null,
           isGenerating: false, currentImage: null, error: null, progress: 0, selectedUserProfile: null,
-          useGeminiOptimization: false, isOptimizingPrompt: false, lastOptimizationResult: null, useRAGOptimization: false,
         });
       },
     };

@@ -157,7 +157,7 @@ export default function SessionSetup({ open = false, onDone }: { open?: boolean;
           : <button type="button" className="b4 sm" data-testid="load-condition" onClick={() => { st.loadCondition(c.id); done(); }}><Lock size={12} />载入并锁定机架</button>}
       </div>)}
       <div className="chk4">
-        <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>出图</span><span>{backend.label}{backend.provider === 'minimax' ? '（开发用，不计入论文数据）' : ''}</span></div>
+        <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>出图</span><span>{backend.label}</span></div>
         <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>文字模型</span><span data-testid="ai-label">{aiInfo?.label ?? '读取中'}</span></div>
         <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>证据登记</span><span>{registryVersion}</span></div>
         <div><span style={{ minWidth: 64, color: 'var(--ink-3)' }}>依据摘要</span><span>{evidenceSummary.version}{evidenceSummary.status === 'draft' ? '（草稿，作者未确认）' : '（作者已确认）'}</span></div>

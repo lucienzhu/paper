@@ -109,6 +109,20 @@ test('a reply from a different model version is refused, so both conditions stay
   } finally { await rm(logDir, { recursive: true, force: true }); }
 });
 
+test('the text model only runs MiniMax M3.1: another model name or another service is refused before any call (4.5)', async () => {
+  const logDir = await mkdtemp(join(tmpdir(), 'ai-lock-'));
+  try {
+    let calls = 0;
+    const fetchImpl = async () => { calls++; return reply({ reply: '好', prompt: null }); };
+    for (const model of ['gpt-4o', 'deepseek-chat', 'MiniMax-M2', 'MiniMax-M3.1'])
+      await assert.rejects(createDesignAI({ apiKey: 'k', region: 'global', model, fetchImpl, logDir }), /只能是 MiniMax M3\.1/, model);
+    await assert.rejects(createDesignAI({ apiKey: 'k', region: 'global', baseUrl: 'https://api.example.invalid/v1', fetchImpl, logDir }), /只接 MiniMax 的官方接口/);
+    const preview = await createDesignAI({ apiKey: 'k', region: 'global', model: 'MiniMax-M3.1-Flash-Preview', fetchImpl, logDir });
+    assert.deepEqual([preview.describe().provider, preview.describe().endpoint], ['minimax', 'api.minimax.io']);
+    assert.equal(calls, 0, '拒绝发生在任何调用之前');
+  } finally { await rm(logDir, { recursive: true, force: true }); }
+});
+
 test('a reply that does not name its model is refused, and the log keeps the requested and served versions apart', async () => {
   const logDir = await mkdtemp(join(tmpdir(), 'ai-unnamed-'));
   try {

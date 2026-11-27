@@ -10,7 +10,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 GUIDES = ROOT / "prototypes/drone-configurator/public/research-guides"
 R0_DIGEST = "78dcb88c9c4bad7c5a69d2c5fac1e9e759f22f3e3708bbd5776652d82cdd893c"
-CLOSED_SUFFIX = "Use the attached layout only for rotor positions and blade size; do not reproduce its black marks."
+# E0 原登记另有一个闭源对照臂（OpenAI gpt-image，6 份请求，从未运行）。作者 2026-11-26 定出图只用 Qwen，此臂作废，
+# 6 份请求移进 archive/experiments/r0-e0-e1/requests/，这里不再编。
 
 
 def read(path):
@@ -58,27 +59,22 @@ def main(commit):
                 sentence = (f"The left-right motor spacing is {level:.2f} times the front-back motor spacing."
                             if factor == "wl" else f"Each rotor diameter is {level:.2f} of the diagonal motor distance.")
                 positive = template["4"]["inputs"]["prompt"] + " " + sentence
-                for arm in (("control","closed") if stage == "E0" else ("control","text")):
+                for arm in (("control",) if stage == "E0" else ("control","text")):
                     for repeat, seed in enumerate(seeds if arm == "control" else seeds[:2], 1):
                         case = f"{stage}-{arm}-{factor}{level:.2f}-r{repeat}"
-                        if arm == "closed":
-                            body = {"model": "gpt-image-2.6-flare", "prompt": positive + " " + CLOSED_SUFFIX,
-                                    "size": "1024x1024", "n": 1, "output_format": "png",
-                                    "images": [{"image_url": f"https://raw.githubusercontent.com/Freeloop993/paper/{commit}/{guide_path}"}]}
+                        graph = copy.deepcopy(template)
+                        graph["4"]["inputs"]["prompt"] = positive
+                        graph["10"]["inputs"]["seed"] = seed
+                        graph["12"]["inputs"]["filename_prefix"] = case
+                        if arm == "text":
+                            for key in range(5,10):
+                                del graph[str(key)]
+                            graph["10"]["inputs"]["model"] = ["1",0]
                         else:
-                            graph = copy.deepcopy(template)
-                            graph["4"]["inputs"]["prompt"] = positive
-                            graph["10"]["inputs"]["seed"] = seed
-                            graph["12"]["inputs"]["filename_prefix"] = case
-                            if arm == "text":
-                                for key in range(5,10):
-                                    del graph[str(key)]
-                                graph["10"]["inputs"]["model"] = ["1",0]
-                            else:
-                                graph["5"]["inputs"]["image"] = guide["file"]
-                            body = {"prompt": graph}
+                            graph["5"]["inputs"]["image"] = guide["file"]
+                        body = {"prompt": graph}
                         record(case, dump(body), stage=stage, arm=arm, factor=factor, level=level,
-                               repeat=repeat, seed=None if arm=="closed" else seed,
+                               repeat=repeat, seed=seed,
                                guide=None if arm=="text" else guide_path,
                                guide_sha256=None if arm=="text" else guide["sha256"])
     (HERE/"manifest.json").write_bytes(dump({"guide_commit":commit,"cases":manifest}))

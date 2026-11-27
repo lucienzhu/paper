@@ -9,7 +9,6 @@ from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-ROUND2 = Path("evidence/form342-h3-dev/round-2")
 L1 = Path("experiments/l1-layout")
 ACTUAL = Path("evidence/l1-layout-actual/L1-actual")
 MATERIAL = Path("evidence/r0-20261112/environment/verified-material.json")
@@ -80,15 +79,16 @@ def template(rep, registration):
 
 
 def pack_files():
-    dictionary = read(ROUND2 / "dictionary.json", "22ca89232e010ae603f34096dd3f5ccfcf62b7faa91161b157fb6007514f06a9")
+    # 2026-11-26：字典与点线图改读本目录里逐字节相同的两份；原先另读一个托管接口开发批里的同名文件和提交记录，
+    # 那一批已按作者决定移进 archive（archive/MOVES-20261126.tsv）；提示词本来就由字典逐行拼出，不依赖它。
+    dictionary = read(HERE.relative_to(ROOT) / "dictionary.json", "22ca89232e010ae603f34096dd3f5ccfcf62b7faa91161b157fb6007514f06a9")
     d = json.loads(dictionary)
-    guide = read(ROUND2 / "guides/dots.png", GUIDE_SHA)
-    fields = read_json(ROUND2 / "manifest.json")["rows"]
-    h3 = {r["id"]: r for r in fields}
+    guide = read(HERE.relative_to(ROOT) / "input" / INPUT, GUIDE_SHA)
     registration = read_json(L1 / "manifest.json")
     templates, sources = zip(*(template(rep, registration) for rep in (1, 2)))
     graph = templates[0]["prompt"]
-    material = json.loads(read(MATERIAL, "078ef310fe086292a0349b568a372a0d2cbcc0ca9826900080318508d316d0e3"))
+    # 仓库里这份 R0 记录是 LF 换行（11-25 从分支恢复时规范化）；原机 CRLF 字节的摘要是 078ef310…，内容相同（2026-11-26 核过）。
+    material = json.loads(read(MATERIAL, "53300ece548b4dbe542a98468e577f26e63900f9cd31a1d2ceff15ba873bcf07"))
     historical = {w["path"]: w for w in material["weights"]}
     loaders = [("1", "diffusion_models", "unet_name"), ("2", "text_encoders", "clip_name"), ("3", "vae", "vae_name")]
     used = [historical[category + "/" + graph[node]["inputs"][field]] for node, category, field in loaders]
@@ -101,12 +101,6 @@ def pack_files():
         lines = [d["fixed_lines"][k] if k in d["fixed_lines"] else d["params"][k][target[k]] for k in d["line_order"]]
         text = "\n".join(lines)
         for rep, original in enumerate(templates, 1):
-            h3_id = f"{condition}-{rep}"
-            saved = read_json(ROUND2 / "actual" / h3_id / "submission.json")
-            require(saved["fields"] == h3[h3_id]["fields"] and saved["fields"]["prompt"] == text
-                    and saved["target"] == h3[h3_id]["target"] == target and saved["condition"] == condition
-                    and saved["rep"] == rep and saved["input_source"] == "guides/dots.png"
-                    and saved["input_sha256"] == h3[h3_id]["input_sha256"] == GUIDE_SHA, f"H3 source differs: {h3_id}")
             name = f"QSP-{condition}-r{rep}"
             req = deepcopy(original)
             nodes = req["prompt"]
@@ -119,14 +113,14 @@ def pack_files():
             rows.append(dict(id=name, condition=condition, rep=rep, target=target, seed=seed, request=path,
                              request_sha256=digest(raw), prompt_sha256=digest(text.encode()),
                              input_name=INPUT, input_file="input/" + INPUT, input_sha256=GUIDE_SHA,
-                             historical_template=sources[rep-1]["path"], h3_submission=h3_id))
+                             historical_template=sources[rep-1]["path"]))
     manifest = {
         "batch": "qwen-shape-pilot", "status": "offline_compiled_unsigned", "planned": 12,
         "source_issue": "https://github.com/Freeloop993/paper/issues/1#issuecomment-6858488547",
         "edit_route_order": "https://github.com/Freeloop993/paper/issues/1#issuecomment-6854091119",
         "method_freeze_pr": 70, "method_freeze_head": "d3290ebbaccb1319ec1ee48365630a6e4cd1427f",
         "method_section_3_signed": False, "dictionary": d["version"], "dictionary_sha256": digest(dictionary),
-        "reading_protocol": "v2.2", "guide_source": (ROUND2 / "guides/dots.png").as_posix(),
+        "reading_protocol": "v2.2", "guide_source": "input/" + INPUT,
         "guide": {"span_mm": 250, "layout_wl": 1.0, "hub_span_fraction_approx": 0.41, "palette": "regular"},
         "per_image_reading": {
             "all_positions": True, "order": ["front_left", "front_right", "rear_right", "rear_left"],
