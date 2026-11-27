@@ -2,7 +2,6 @@ import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { DroneStoreContext, type Snapshot } from '../store/droneStore';
 import { listAttempts, type FrozenAttempt } from './candidateRecords';
 import { attemptImages } from './workflow/attempts';
-import { historyGraph } from './workflow/history';
 import { buildProject, designerView, nodeSnapshot, type ProjectDraft } from './workflow/project';
 import { referenceProblem, type WorkflowBoard, type WorkflowNode } from './workflow/types';
 import { emptyRecords, newWorkflowId, readRecords, updateRecords, workflowChannel } from './workflow/workspaceRecords';
@@ -57,9 +56,8 @@ export function useWorkflowGraph(board: WorkflowBoard, research = false) {
   const [loading, setLoading] = useState(board === 'project');
   const [error, setError] = useState<string | null>(null);
   const images = useImages(attempts, records);
-  const full = useMemo(() => board === 'history' ? historyGraph : buildProject(draft, attempts, records, images),
-    [board, draft, attempts, records, images]);
-  const graph = useMemo(() => board === 'history' || research ? full : designerView(full, task), [board, research, full, task]);
+  const full = useMemo(() => buildProject(draft, attempts, records, images), [draft, attempts, records, images]);
+  const graph = useMemo(() => research ? full : designerView(full, task), [research, full, task]);
 
   useEffect(() => {
     setError(null);
@@ -159,19 +157,6 @@ export function useWorkflowGraph(board: WorkflowBoard, research = false) {
     return id;
   }
 
-  async function copyHistoryImage(nodeId: string) {
-    const origin = historyGraph.nodes.find(n => n.id === nodeId);
-    if (!origin?.image) throw new Error('此历史节点没有归档图像。');
-    let id = newWorkflowId('reference');
-    const next = await updateRecords(task, latest => {
-      const prior = latest.images.find(img => img.historyNodeId === nodeId);
-      if (prior) { id = prior.id; return; }
-      latest.images.push({ id, title: origin.title, historyNodeId: nodeId, createdAt: new Date().toISOString() });
-    });
-    setRecords(next);
-    return id;
-  }
-
   async function addReference(sourceId: string, targetId: string, label?: string) {
     projectOnly();
     const id = newWorkflowId('link');
@@ -257,6 +242,6 @@ export function useWorkflowGraph(board: WorkflowBoard, research = false) {
     setRecords(await updateRecords(task, latest => { latest.steps = latest.steps.filter(item => item.id !== id); }));
   }
 
-  return { ...graph, full, attempts, records, loading, error, saveBranch, restoreSnapshot, addImage, copyHistoryImage, addReference, removeReference,
+  return { ...graph, full, attempts, records, loading, error, saveBranch, restoreSnapshot, addImage, addReference, removeReference,
     pinEvidence, removeImage, addNote, updateNote, removeNote, addStep, updateStep, removeStep };
 }

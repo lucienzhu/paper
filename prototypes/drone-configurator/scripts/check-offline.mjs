@@ -24,21 +24,7 @@ try {
     ['goal','image','note','direction','free','generate']);
   assert.equal(await page.evaluate("document.querySelector('[data-testid=workflow-workspace]').dataset.boardId"),'project');
   assert.deepEqual(await page.evaluate("[...document.querySelectorAll('[data-workflow-node]')].map(x=>x.dataset.stepKind).sort()"),['design','goal']);
-  await page.click('[data-board=history]');
-  const canvas = await page.evaluate(`(async () => {
-    const cards = [...document.querySelectorAll('[data-workflow-node]')];
-    const images = cards.flatMap(card => [...card.querySelectorAll('img')]);
-    await Promise.all(images.map(image => image.decode()));
-    return {
-      cards: cards.map(card => card.dataset.workflowNode),
-      edges: [...document.querySelectorAll('path.gb-wire')].filter(path => path.getTotalLength() > 0).map(path => path.id),
-      images: images.filter(image => image.naturalWidth > 0).length,
-    };
-  })()`);
-  for(const id of ['b2-original','b2-clean','b2-upper','b2-lower','b2-choice']) assert.ok(canvas.cards.includes(id), id);
-  for(const [from,to] of [['b2-original','b2-clean'],['b2-clean','b2-upper'],['b2-clean','b2-lower'],['b2-lower','b2-choice']])
-    assert.ok(canvas.edges.includes(JSON.stringify([from,to])), from + ' → ' + to);
-  assert.ok(canvas.images >= 4);
+  // 4.5.1 起没有 B2 案例画板（旧数据已移出），只核对设计者自己的项目画布。
   if(captures) await page.screenshot(join(captures,'canvas.png'));
   // 旧入口 #step=insight 选中画布上的目标卡片，右侧出现目标面板。
   const go = async hash => { await page.evaluate(`location.hash=${JSON.stringify(hash)}`); await page.sleep(700); };
@@ -86,10 +72,6 @@ try {
   assert.doesNotMatch(prompt,/quadcopter|everyday carry-along aerial photography/i);
   if(captures) for(const name of names) copyFileSync(join(downloads,name),join(captures,name));
   await page.click('[data-handoff-tab=candidates]');
-  for(const id of ['quad','hex']){
-    await page.click('[data-history-case='+id+']');
-    assert.ok(await page.evaluate("document.querySelector('[data-testid=history-replay] img').naturalWidth > 0"));
-  }
   // 4.0 也能离线打开：决定链照常画出；AI 明说要从本机工作台服务打开页面，设计者写的话照样留下。
   await page.evaluate("location.hash=''");
   await page.sleep(900);
@@ -104,9 +86,9 @@ try {
   if(captures) await page.screenshot(join(captures,'studio4-offline.png'));
   assert.equal(page.errors().length,0);
   assert.equal(page.requests().filter(x=>/^https?:/.test(x)).length,0);
-  console.log(JSON.stringify({offline:true,canvas:{nodes:canvas.cards.length,edges:canvas.edges.length,images:canvas.images},
+  console.log(JSON.stringify({offline:true,canvas:{board:'project'},
     geometry:config.topology,task:config.task_id,files:names,
-    semanticQueries:2,historyCases:2,modelCalls:0,humanSessions:0,captures},null,2));
+    semanticQueries:2,modelCalls:0,humanSessions:0,captures},null,2));
 } finally {
   if(browser) await browser.quit();
   rmSync(work,{recursive:true,force:true,maxRetries:4,retryDelay:250});

@@ -12,7 +12,7 @@ GitHub 上的讨论都在这里留了原文照录的副本，不用再去翻网�
 | [open-issues-20261124.md](open-issues-20261124.md) | 存档时还开着的 7 个工单 | 2026-11-24 |
 | [pull-requests-20261124.md](pull-requests-20261124.md) | 全部 51 个 PR 的正文、评论与审阅 | 2026-11-24 |
 
-前 4 行的文件是 11 月 18 日写在分支 `claude/direction-todo-20261117` 上的，11 月 24 日才带回主分支。其中 issue-1-C01.md 改了 31 处链接、issue-2-X01.md 和 issue-19-E0.md 各改了 1 处，其余 4 个与分支上的原件逐字节相同（git blob 相同，见[来源清单](../../evidence/20261120-branch-recovery/source-manifest-20261124.tsv)）。
+前 4 行的文件是 11 月 18 日写在分支 `claude/direction-todo-20261117` 上的，11 月 24 日才带回主分支。其中 issue-1-C01.md 改了 31 处链接、issue-2-X01.md 和 issue-19-E0.md 各改了 1 处，其余 4 个与分支上的原件逐字节相同（git blob 相同，见[来源清单](../evidence/20261120-branch-recovery/source-manifest-20261124.tsv)）。
 
 ## 工单一览
 

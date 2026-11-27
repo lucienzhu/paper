@@ -1,5 +1,7 @@
 # 电机下方喷头的确认 4 张（任务表 H3；出图前登记，Claude，2026-11-26）
 
+> 2026-11-26 晚（作者最新决定第 12 条）：开发批的旧原图和 6 张旧 HEXA3 对照图都随旧数据移出。对照图改用同一次运行里新出的横穿喷杆图（重新登记的 A6 植保组 W/L 1.00 档）；负面词统一之前不提交：工作台 4.5 发 10 个负面词，这里的请求照旧 GPU 日的请求编，六旋多 5 个桨叶词，统一后重编（写法不变，只改负面词）。下文是原稿。
+
 > 这里的 H3 是登记任务表的编号。这批在 ComfyUI 上用 Qwen-Image 2.1 跑，依据的开发图 E6B-N 和对照图 HEXA3 也都是 11 月 15 日在 ComfyUI 上用 Qwen 出的。目录 2026-11-26 改名，去掉了 h3。
 
 **对蓝图。**
@@ -7,7 +9,7 @@
 - 登记任务：任务表 H3 一行，“电机下方喷头方案是否做 4 个种子的确认”，原为“作者定，4 张”。作者 2026-11-25 把 GPU 批次交给 Claude 定（作者最新决定第 8 条），这次租机跑。
 - 结果写进 5.5.2，不新增章节，不加别的测量。
 
-**为什么做。** 11 月 15 日的[开发批](../gpu-day-20261115/afternoon-dev/README.md) E6B-N 用了一句新写法：“取消喷杆，改为电机下方喷头”。3 张都过了开发门，但读者是知条件的 AI 初读（[N3](../../evidence/20261117-offline-review/README.md)，逐张读数在 [afternoon-nine.json](../../evidence/20261117-offline-review/afternoon-nine.json)）。工作台给植保六旋的“电机下方喷头”选项，用的就是这句原句（`prototypes/drone-configurator/src/design/fields.ts`）。开发图只有 3 张，读者又知道条件，所以要换新种子、由不知条件的读者再读一次。
+**为什么做。** 11 月 15 日的[开发批](../../archive/experiments/gpu-day-20261115/afternoon-dev/README.md) E6B-N 用了一句新写法：“取消喷杆，改为电机下方喷头”。3 张都过了开发门，但读者是知条件的 AI 初读（[N3](../../archive/evidence/20261117-offline-review/README.md)，逐张读数在 [afternoon-nine.json](../../archive/evidence/20261117-offline-review/afternoon-nine.json)）。工作台给植保六旋的“电机下方喷头”选项，用的就是这句原句（`prototypes/drone-configurator/src/design/fields.ts`）。开发图只有 3 张，读者又知道条件，所以要换新种子、由不知条件的读者再读一次。
 
 ## 请求
 

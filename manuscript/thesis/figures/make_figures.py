@@ -111,7 +111,8 @@ def fig_framework():
 
 def fig_guides():
     """图3.3 两种条件图：(a) 点线图（造型与设计任务）；(b) 双叶部件图（几何响应批）。"""
-    a = Image.open(ROOT / "evidence/qwen-shape-s4-20261114/layout.png").convert("RGB")
+    # 250 mm 点线条件图（程序画的，sha256 15c5ad1c…）。原先读 evidence/qwen-shape-s4-20261114/layout.png，2026-11-26 那一批随旧数据归档，同一张图复制到 inputs/。
+    a = Image.open(HERE / "inputs/dot-guide-250.png").convert("RGB")
     b = Image.open(ROOT / "prototypes/drone-configurator/public/research-guides/wl-1.00-dd-0.50.png").convert("RGB")
     s = 700; a = a.resize((s, s)); b = b.resize((s, s))
     W, H = 2 * s + 60, s + 90

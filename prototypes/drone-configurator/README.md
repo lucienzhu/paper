@@ -49,7 +49,7 @@
 - 同一参与者重复登记（次序、委托或方式用过）时不能开场，当前这一场照常继续。
 - 两种方式开场先看同一张任务卡：同一段委托原文、同一版用户依据、同样的固定条件和限额。点「开始」另记一笔，计时仍从开场算。界面提示只说当前这一步怎么做。
 - 原始事件在后台自动记，主持人按场次导出；设计者只看到有用的反馈，例如“已另存为方案 B”。只有值真的变了才记修改，点已经选中的 15 mm 不记。
-- 设计者这边留生成、修改、比较、选候选和必要的反馈；场次设置、研究记录与导出、旧版（3.6 版和 B2 案例）入口归主持人。
+- 设计者这边留生成、修改、比较、选候选和必要的反馈；场次设置、研究记录与导出、旧版（3.6 版）入口归主持人。
 - 生成面板不再写“这一轮想看什么”和全文：按确认的设置直接出图；局部修改走候选上的「在这张图上改」；完整请求自动存档。
 - 机架面板：八旋、共轴和 GPU 迁移的说明移出面板，留在[迁移协议](../../planning/advisor-20261118/cross-layout-protocol.md)；试用时机臂宽可以自定义（4–80 mm），厚度移到侧视细节里，登记场次按登记固定；电机倾角收起，默认 0°。脚架多一种“臂端一体脚架”，侧视图画出它在电机正下方的位置。机臂表面外观用看得出来的名字：外露碳纹、拉丝金属、细纹注塑、打印层纹。
 - 试用入口只列“日常航拍四旋”“农业植保六旋”；登记场次显示分到的任务、委托原文和共同依据。
@@ -87,7 +87,7 @@ try { node scripts/design-chat-server.mjs --port 4178 --image-backend qwen-comfy
 
 “AI 对话 + 自由提示”那一场的界面只有对话、提示词和候选。设计者可以和同一个文字模型聊想法、让它起草提示词。发给出图模型的是设计者确认的那段文字。每一轮记下这段文字的来历：设计者自己写的、AI 起草后原样用的，或起草后改过的。
 
-**3.6 版仍在。** 地址栏加 `#v=3`，或者用旧的复核地址（带 `step=`、`cfg=`、`board=` 等），打开的是 3.6 版和 B2 案例；它的顶栏有回到 4.0 的入口。4.0 顶栏的「旧版」入口在登记场次里不显示，由主持人从「主持人」面板进（4.4）。下面几节写的是 3.6 版。
+**3.6 版仍在。** 地址栏加 `#v=3`，或者用旧的复核地址（带 `step=`、`cfg=`、`board=` 等），打开的是 3.6 版；它的顶栏有回到 4.0 的入口。4.5.1 起没有 B2 案例（旧 E3 的 B2 版本链随旧数据移进 archive，作者 2026-11-26 最新决定第 12 条），旧地址里的 `board=history` 也打开自己的项目。4.0 顶栏的「旧版」入口在登记场次里不显示，由主持人从「主持人」面板进（4.4）。下面几节写的是 3.6 版。
 
 ## 3.6 版：一块画布，每一步都在上面做（地址栏 `#v=3`）
 
@@ -106,7 +106,7 @@ try { node scripts/design-chat-server.mjs --port 4178 --image-backend qwen-comfy
 | 问设计助手 | 右侧面板的「设计对话」页签。只查依据不需要模型账号 |
 | 查研究记录 | 顶栏「显示留档」在画布上展开每轮冻结的规格和条件图；「研究详情与导出」里是提示词逐句来源、规格卡、导出、全部回执与取舍 |
 
-[打开我的项目](http://127.0.0.1:4178/#step=canvas&board=project) · [打开 B2 四旋翼案例](http://127.0.0.1:4178/#step=canvas&board=history)。B2 案例沿图像连线回放去窗底图、相机上端和下端两种安装方案，以及作者的取舍；案例里的图片可以引用到自己的项目。
+[打开我的项目](http://127.0.0.1:4178/#step=canvas&board=project)。
 
 旧地址仍然可用，落在同一块画布上：`#step=insight` 选中目标卡片，`#step=studio&tab=fuselage` 选中造型卡片并切到机身页签，`#step=handoff` 打开研究详情与导出。
 
@@ -220,7 +220,7 @@ try { node scripts/design-chat-server.mjs --port 4178 } finally { Remove-Item En
 | 设计对话 | [DesignChat.tsx](src/components/Studio/DesignChat.tsx) |
 | 布局空间图、设计提示、参考机型 | [SpaceMap.tsx](src/components/Studio/SpaceMap.tsx)、[Hints.tsx](src/components/Studio/Hints.tsx)、[References.tsx](src/components/Studio/References.tsx) |
 | 研究详情与导出：提示词面板、规格卡与导出 | [HandoffPage.tsx](src/components/Handoff/HandoffPage.tsx)、[PromptGenerator.tsx](src/components/DevPreview/PromptGenerator.tsx)、[ParameterOverview.tsx](src/components/Overview/ParameterOverview.tsx) |
-| 历史提交、候选原件、人工取舍与历史回放 | [ModelDispatch.tsx](src/components/Handoff/ModelDispatch.tsx)、[candidateRecords.ts](src/design/candidateRecords.ts)、[HistoryReplay.tsx](src/components/Handoff/HistoryReplay.tsx) |
+| 历史提交、候选原件与人工取舍 | [ModelDispatch.tsx](src/components/Handoff/ModelDispatch.tsx)、[candidateRecords.ts](src/design/candidateRecords.ts)。原先的历史回放（[HistoryReplay.tsx](../../archive/prototypes/drone-configurator/src/components/Handoff/HistoryReplay.tsx)）随旧数据移进 archive |
 | 出图（Qwen）、参考图转换、同一轮次恢复与本机代理 | [generation.ts](src/design/generation.ts)、[image-jobs.mjs](scripts/image-jobs.mjs) |
 | 轴心几何、构型画法与依据、条件图 | [design.ts](src/design/design.ts) |
 | 设计提示的算法（桨盘重叠、相机视野、桨与机身） | [checks.ts](src/design/checks.ts) |
@@ -256,7 +256,7 @@ npm run evidence -- --extra 路径/新增短引文.csv
 | `npm run walkthrough:issues` | 先 `npm run build`。Codex 11 月 23 日盲测的 12 条（第 7、14 条要真机）逐条复现与验收：换场不串、晚到的回答、Qwen 断线取回、推理强度与截断、失败调用进 ZIP、旧场次的环境、用户依据摘要、计时与事件表、终稿、服务端原件与拒收原因、登记场次、自由提示的比较。文字模型和 ComfyUI 都由可控夹具应答。加 `--probe` 只报告，`--shots=<目录>` 截图 |
 | `npm run gpu:acceptance` | 真机验收（第 7、14 条）：`-- --comfy-url <地址> --out <目录>`。两种方式各出首图和两次修订（只改机鼻、只改臂根），逐轮核对原图、输入图数、工作流、权重、采样设置、种子、prompt_id、运行历史、入队次数和事件表，与本场 ZIP 对上；另存匿名盲读材料。不给地址时用夹具演练 |
 | `npm run ai:smoke` | 接上真实文字模型后的冒烟检查：读意图、提方向、对机身说话、在候选上改、自由提示的助手各调用一次，列出是否通过服务的核对、耗时、服务报的模型名、推理强度、收尾原因和拿掉的条目。会产生 5 次真实调用；密钥只从环境变量读。加 `-- --fixture` 只检查脚本本身 |
-| `npm run walkthrough:canvas` | 先 `npm run build`。3.6 版（`#v=3`）。在隔离的浏览器里把画布上的每一步做一遍：目标、依据、造型拖动、生成、保留、以候选继续、参考图作输入、便签、新方向、留档、B2 案例和手机宽度。图像作业由软件夹具应答，不调用模型。可加一个目录参数保存截图 |
+| `npm run walkthrough:canvas` | 先 `npm run build`。3.6 版（`#v=3`）。在隔离的浏览器里把画布上的每一步做一遍：目标、依据、造型拖动、生成、保留、以候选继续、参考图作输入、便签、新方向、留档和手机宽度（4.5.1 起没有 B2 案例）。图像作业由软件夹具应答，不调用模型。可加一个目录参数保存截图 |
 | `npm run walkthrough:methods` | 先 `npm run build`。3.6 版（`#v=3`）。同一块画布、同一个 Qwen 后端（软件夹具），先做一场自由提示，再做一场结构化：核对起始值、载入 C2 登记条件、自由提示只发原文、两种方式的生成设置逐项相同、原始文件都存了盘、一场只显示一种方式。加两个目录参数可保存截图和留下作业文件，供 [登记工具试收](../../archive/prototypes/drone-configurator/review/20261121-defaults-free-prompt/bridge-dry-run.sh) |
 | `npm run walkthrough` | 从离线包走一遍目标、造型和导出，保存农业六旋实际导出与桌面截图，命令会输出所在目录 |
 | `npm run check-offline` | 解压离线包，以 `file://` 打开，检查画布、目标面板、造型、导出、报错、是否有非本地请求和实际下载 |

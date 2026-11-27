@@ -1,5 +1,7 @@
 # 远程出图工具与租机当天的步骤（Claude，2026-11-26）
 
+> 2026-11-26 晚（作者最新决定第 12 条，旧路径的数据整体移出）：批次单 `01-f1-dev.json` 随 F1 旧登记移进 archive；`00-env-check`（拿旧原图比）、`05-a6-hexa`、`06-a4-stage1` 要重新登记，`02-nozzle-confirm`、`03-h5-stage1` 要在负面词统一后重编。自测 `test_remote.py` 的夹具改用 `02-nozzle-confirm.json`，20 项全过。负面词统一、各批重编之前不租机。
+
 租机当天由 Claude 在本机经 ComfyUI 的网页接口提交各批。Claude 不登录主机，不经手任何密码。
 
 **为什么不直接用 11 月 15 日的 `queue_runner.py`。** 它要在主机上运行，从主机目录里读请求。这次主机由作者租、作者登录，Claude 只拿到一个地址。提交和核对仍用它的 `run_one`，按摘要锁定，一个字不改：每份只交一次；执行图要与请求一致；采样节点不能命中缓存；只许一张输出图；存请求、回执、运行历史和原图。本工具只在它前后加远程要的几步：主机只读检查、上传输入图并读回核对、提交前确认主机队列为空、出错即停、事后按主机记录对账。对账从不重新提交。
@@ -55,7 +57,7 @@
 
    接着用同样的 `--batch` 和 `--out` 依次跑 `upload`、`run`、`compare`（`compare` 不要 `--comfy`）。比对规则在 [env-check/manifest.json](env-check/manifest.json) 的 `rule`，开机前写定：两张里有一张“明显不同”就停，先查版本和权重。
 2. **工作台真机验收**：先 `npm run build`，再 `npm run gpu:acceptance -- --comfy-url $U --out <输出目录>`（在 `prototypes/drone-configurator` 里）。然后手动断网取回一次。它和各批不能同时跑。
-3. **F1 局部编辑开发 17 张**：批次单 [01-f1-dev.json](batches/01-f1-dev.json)，输出到 `experiments/20261117-local-edit-v2/actual/f1-dev`。按 F1 的登记，遮罩工作流报错就停、报告，不改写法顶替。
+3. **F1 局部编辑开发 17 张**：批次单 [01-f1-dev.json](../../archive/experiments/gpu-remote/batches/01-f1-dev.json)，输出到 `experiments/20261117-local-edit-v2/actual/f1-dev`。按 F1 的登记，遮罩工作流报错就停、报告，不改写法顶替。
 4. 其余各批照同样的 `check`、`upload`、`run`，输出放进各自登记目录的 `actual/`：
 
    | 批次单 | 批 | 份数 | 登记 |

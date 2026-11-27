@@ -140,9 +140,12 @@ import { compilePrompt } from '../src/design/partPrompt.ts';
 import { bodyClearance, envelopeClearance } from '../src/design/checks.ts';
 import { study, studyBriefs } from '../src/design/defaults.ts';
 import { registrationClash, roundsOfSession, sessionStem, sessionTitle } from '../src/v4/sessions.ts';
-import { readFileSync } from 'node:fs';
 
-const archivedHex = JSON.parse(readFileSync(new URL('../src/data/history/cases.json', import.meta.url), 'utf8')).hex.prompt;
+// 植保六旋的药箱句和喷杆句是作者定下的设计起点，措辞取自旧六旋请求；旧请求 2026-11-26 已随旧数据归档，原句固定在这里。
+const frozenHexSentences = [
+  'A square spray tank sits half-embedded in the central frame: the frame wraps the lower half of the tank, while the tank top and its round filler cap stay exposed.',
+  'A transverse spray boom runs across under the body and extends beyond both sides of the frame.',
+];
 
 test('the workbench offers only the two study tasks; aerial is quad-only and plant protection is the flat hex', () => {
   assert.deepEqual(studioTasks.map(t => t.id), ['consumer_camera', 'agricultural_spraying']);
@@ -150,17 +153,15 @@ test('the workbench offers only the two study tasks; aerial is quad-only and pla
   assert.deepEqual(studioTasks[1].frames, ['Radial Hex']);
 });
 
-test('the plant-protection start matches the archived hex request: two blades, folding hinge, half-embedded tank, transverse boom', () => {
+test('the plant-protection start keeps the frozen design start: two blades, folding hinge, half-embedded tank, transverse boom', () => {
   const p = baseParameters('agricultural_spraying');
   assert.equal(p.propulsion.prop_blade_count, '2叶');
   assert.equal(p.frame.arm_root, 'hinge');
   assert.equal(p.accessories.spray_tank, 'half-embedded');
   assert.equal(p.accessories.spray_system, 'boom');
   const text = compilePrompt(p, {}, { taskId: 'agricultural_spraying', targets: {}, note: '', cards: [], log: [] }, computeLayout(p)).text;
-  // 药箱句和喷杆句与 39 张用的请求一字不差。
-  const structural = archivedHex.split('\n').filter(s => s.startsWith('A square spray tank') || s.startsWith('A transverse spray boom'));
-  assert.equal(structural.length, 2);
-  for (const sentence of structural) assert.ok(text.includes(sentence), '缺少原句：' + sentence);
+  // 药箱句和喷杆句与固定的原句一字不差。
+  for (const sentence of frozenHexSentences) assert.ok(text.includes(sentence), '缺少原句：' + sentence);
   assert.equal(layerOf('accessories.spray_tank'), 'body');
   assert.equal(layerOf('accessories.spray_system'), 'details');
 });

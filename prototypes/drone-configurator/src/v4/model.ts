@@ -49,7 +49,7 @@ export const pairLayers: Record<WordPairId, Layer[]> = {
 
 /**
  * 起始值。日常航拍四旋取真实产品中位数（见 design/defaults.ts）。
- * 农业植保六旋的起始值对齐既有六旋 39 张的请求（cases.json 里的 HEXA3-wl1.00-r01）：双叶桨、不加护圈、
+ * 农业植保六旋的起始值是作者定下的设计起点，措辞取自旧六旋请求（旧请求 2026-11-26 已随旧数据归档）：双叶桨、不加护圈、
  * 折叠铰接的臂根、半嵌入机身的方形药箱、机身下方的横向喷杆。设计者可以改；改过的才记为“你的选择”。
  */
 export function baseParameters(taskId: TaskId): DroneParameters {

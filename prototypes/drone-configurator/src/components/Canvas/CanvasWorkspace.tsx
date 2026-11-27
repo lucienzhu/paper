@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { XYPosition } from '@xyflow/react';
 import {
-  ArrowLeftRight, BookOpen, Check, GitBranch, ImagePlus, Link2, Maximize2, PanelRightOpen, PenLine, SlidersHorizontal, Sparkles, StickyNote, Trash2, X,
+  ArrowLeftRight, BookOpen, Check, GitBranch, ImagePlus, Maximize2, PanelRightOpen, PenLine, SlidersHorizontal, Sparkles, StickyNote, Trash2, X,
 } from 'lucide-react';
 import { useDroneStore } from '../../store/droneStore';
 import { useWorkflowGraph, type WorkflowNode } from '../../design/workflowGraph';
@@ -15,13 +15,12 @@ import DesignBoard, { type BoardHandle } from './DesignBoard';
 import StepPanel, { type PanelOps, type PanelTab } from './StepPanel';
 import type { BoardKit, StepAction } from './StepCards';
 
-export type BoardId = 'history' | 'project';
+export type BoardId = 'project';
 interface Props {
   board: BoardId;
   research: boolean;
   initialSelected?: string | null;
   initialFocus?: 'goal' | 'design';
-  onBoard: (board: BoardId, id?: string) => void;
   onResearch: (entry?: { attemptId?: string }) => void;
 }
 
@@ -43,15 +42,14 @@ function CompareImages({ pictures, initial, onClose }: { pictures: WorkflowNode[
   </dialog>;
 }
 
-export default function CanvasWorkspace({ board, research, initialSelected, initialFocus, onBoard, onResearch }: Props) {
+export default function CanvasWorkspace({ board, research, initialSelected, initialFocus, onResearch }: Props) {
   const graph = useWorkflowGraph(board, research);
   const store = useDroneStore();
   const { task, activeVariant, variants, switchVariant, addVariant } = store;
   const ui = useCanvasUi();
-  const historical = board === 'history';
   // 研究场次只用一种方式时，另一种方式的卡片不出现在画布上；记录都还在，换回「不限」即可看到。
   const session = useSessionMethod();
-  const method = historical ? 'open' : session;
+  const method = session;
   const nodes = useMemo(() => method === 'open' ? graph.nodes : graph.nodes.filter(n => shownIn(method, n)), [graph.nodes, method]);
   const edges = useMemo(() => {
     if (method === 'open') return graph.edges;
@@ -90,10 +88,10 @@ export default function CanvasWorkspace({ board, research, initialSelected, init
   }, [versionOf]);
   // 从旧入口（#step=insight、#step=studio）进来时，直接选中对应的卡片。
   useEffect(() => {
-    if (!focusOnce || historical) return;
+    if (!focusOnce) return;
     const target = focusOnce === 'goal' ? brief : draft;
     if (target) { setSelected(target.id); setPanelOpen(true); setFocusOnce(undefined); }
-  }, [focusOnce, historical, brief, draft]);
+  }, [focusOnce, brief, draft]);
   // 新放到画布上的卡片（例如证据卡）排好位置后，平移到能看见它。
   useEffect(() => {
     if (!reveal || !nodes.some(n => n.id === reveal)) return;
@@ -128,8 +126,8 @@ export default function CanvasWorkspace({ board, research, initialSelected, init
     setPanelOpen(true); setTab('step');
     const node = nodes.find(n => n.id === id);
     // 点另一个方向的目标、造型或待生成步骤，就切换到那个方向编辑。
-    if (!historical && node && (node.isDraft || node.kind === 'brief' || node.pending) && node.variantId && node.variantId !== activeVariant) switchVariant(node.variantId);
-  }, [nodes, historical, activeVariant, switchVariant, selectedId]);
+    if (node && (node.isDraft || node.kind === 'brief' || node.pending) && node.variantId && node.variantId !== activeVariant) switchVariant(node.variantId);
+  }, [nodes, activeVariant, switchVariant, selectedId]);
 
   /** 设计者指定了位置（双击空白处、拖入图片）就放在那里；从底部工具条添加时放在视野中央。有来源的卡片由画布自动放在来源旁边。 */
   function settle(id: string, size: { width: number; height: number }, at?: XYPosition) {
@@ -265,23 +263,13 @@ export default function CanvasWorkspace({ board, research, initialSelected, init
   }
   function startCompare(node?: WorkflowNode) {
     if (pictures.length < 2) { setError('画布上至少要有两张图才能对照。'); return; }
-    const upper = historical && pictures.find(n => n.id === 'b2-upper');
-    const lower = historical && pictures.find(n => n.id === 'b2-lower');
-    const left = upper || (node?.image ? node : undefined) || pictures.find(n => n.id === selectedId) || pictures[0];
-    const right = lower && lower.id !== left.id ? lower : pictures.find(n => n.id !== left.id)!;
+    const left = (node?.image ? node : undefined) || pictures.find(n => n.id === selectedId) || pictures[0];
+    const right = pictures.find(n => n.id !== left.id)!;
     setCompare([left.id, right.id]);
-  }
-  async function copyReference(node: WorkflowNode) {
-    if (busy) return;
-    setBusy(true);
-    try { const id = await graph.copyHistoryImage(node.id); onBoard('project', id); }
-    catch (e) { fail(e, '无法复制这张参考图。'); }
-    finally { setBusy(false); }
   }
 
   /** 选中卡片后出现在它上方的下一步。点一下，新卡片自动接在后面。 */
   function actionsFor(node: WorkflowNode): StepAction[] {
-    if (historical) return node.image ? [{ id: 'cite', label: '引用到我的项目', icon: Link2, primary: true, run: () => void copyReference(node) }] : [];
     const mine = node.variantId === activeVariant;
     const zoom: StepAction = { id: 'focus', label: '放大', icon: Maximize2, title: '把这张卡片放大到便于操作', run: () => boardRef.current?.focus(node.id, true) };
     if (node.kind === 'brief' && mine) return [
@@ -325,7 +313,7 @@ export default function CanvasWorkspace({ board, research, initialSelected, init
   }
 
   const kit: BoardKit = {
-    editable: !historical, activeVariant, variantCount: variants.length, starting,
+    editable: true, activeVariant, variantCount: variants.length, starting,
     onSelect: select,
     onRun: node => void run(node),
     onNoteChange: (id, text) => void graph.updateNote(id, text).catch(e => fail(e, '便签没有保存。')),
@@ -341,7 +329,6 @@ export default function CanvasWorkspace({ board, research, initialSelected, init
     keep: node => void keep(node), compare: startCompare, saveVersion: openVersion, restore: id => void restore(id), newDirection,
     removeNode: node => void removeNode(node),
     removeReference: id => void graph.removeReference(id).then(() => setMessage('已移除参考关系')).catch(e => fail(e, '无法移除关联。')),
-    copyReference: node => void copyReference(node),
     openResearch: node => onResearch(node?.attemptId ? { attemptId: node.attemptId } : undefined),
     report: setMessage, pins: { pinned, onPin: id => void pin(id) },
   };
@@ -361,22 +348,18 @@ export default function CanvasWorkspace({ board, research, initialSelected, init
     }}/>
     <div className={"cv-layout" + (panelOpen ? " has-panel" : "")}>
       <div className="cv-stage-area">
-        <DesignBoard ref={boardRef} nodes={nodes} edges={edges} boardId={board} selectedId={selectedId} kit={kit} showLabels={historical || research} loading={graph.loading}
+        <DesignBoard ref={boardRef} nodes={nodes} edges={edges} boardId={board} selectedId={selectedId} kit={kit} showLabels={research} loading={graph.loading}
           onSelect={select} onOpen={id => boardRef.current?.focus(id, true)}
-          onRemove={historical ? undefined : id => { const node = nodes.find(n => n.id === id); if (node) void removeNode(node); }} onConnect={historical ? undefined : (from, to) => void connect(from, to)}
-          onAddAt={historical ? undefined : (position, screen) => setAdding({ position, ...screen })}
-          onDropFiles={historical ? undefined : (files, position) => void addImages(files, position)}/>
-        {!historical && <nav className="cv-dock" aria-label="添加到画布" data-testid="canvas-dock">
+          onRemove={id => { const node = nodes.find(n => n.id === id); if (node) void removeNode(node); }} onConnect={(from, to) => void connect(from, to)}
+          onAddAt={(position, screen) => setAdding({ position, ...screen })}
+          onDropFiles={(files, position) => void addImages(files, position)}/>
+        <nav className="cv-dock" aria-label="添加到画布" data-testid="canvas-dock">
           {dock.map(item => <button key={item.id} type="button" title={item.title} data-dock={item.id} onClick={item.run}><item.icon size={16}/><span>{item.label}</span></button>)}
           <i/>
           {freeOnly
             ? <button type="button" className="is-primary" data-dock="free" data-testid="canvas-free" title="写一段文字发给模型" onClick={() => void addFree()}><PenLine size={16}/><span>自由提示</span></button>
             : <button type="button" className="is-primary" data-dock="generate" data-testid="canvas-generate" disabled={!draft} title="在当前造型后面加一个生成步骤" onClick={() => void addGenerate()}><Sparkles size={16}/><span>生成效果图</span></button>}
-        </nav>}
-        {historical && <nav className="cv-dock" aria-label="案例操作">
-          {pictures.length >= 2 && <button type="button" data-testid="compare-images" onClick={() => startCompare()}><ArrowLeftRight size={16}/><span>图片对照</span></button>}
-          <i/><button type="button" className="is-primary" onClick={() => onBoard('project')}><span>进入我的项目</span></button>
-        </nav>}
+        </nav>
         {adding && <div className="cv-add-menu" role="menu" aria-label="添加到这里" style={{ left: adding.x, top: adding.y }}>
           <button type="button" role="menuitem" onClick={() => { const at = adding.position; setAdding(null); void addNote(at); }}><StickyNote size={15}/>便签</button>
           <button type="button" role="menuitem" onClick={() => { dropAt.current = adding.position; setAdding(null); upload.current?.click(); }}><ImagePlus size={15}/>参考图</button>

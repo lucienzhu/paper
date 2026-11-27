@@ -132,7 +132,15 @@ try {
   await shot('05-候选与继续.png');
 
   // 6. 参考图放到画布上，作为下一轮的输入（WebP 在浏览器里转成 PNG 再提交）。
-  await page.getByLabel('导入参考图片').setInputFiles(fileURLToPath(new URL('../src/data/history/B2-no-window.webp', import.meta.url)));
+  // 4.5.1 起不再用旧 B2 图：把软件画的条件图在浏览器里转成 WebP 当参考图。
+  const guidePng = await readFile(new URL('../src/data/history/quad-guide.png', import.meta.url));
+  const webp = Buffer.from(await page.evaluate(async b64 => {
+    const img = new Image(); img.src = 'data:image/png;base64,' + b64; await img.decode();
+    const c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight; c.getContext('2d').drawImage(img, 0, 0);
+    const blob = await new Promise(resolve => c.toBlob(resolve, 'image/webp', 0.9));
+    return [...new Uint8Array(await blob.arrayBuffer())];
+  }, guidePng.toString('base64')));
+  await page.getByLabel('导入参考图片').setInputFiles({ name: 'reference-guide.webp', mimeType: 'image/webp', buffer: webp });
   const reference = page.locator('[data-workflow-node^="reference-"]');
   await reference.waitFor();
   const referenceId = await reference.getAttribute('data-workflow-node');
@@ -149,12 +157,12 @@ try {
   // 7. 便签随手写在画布上，刷新后仍在。
   await page.locator('[data-dock=note]').click();
   const sticky = page.getByLabel('便签内容');
-  await sticky.fill('机鼻再收一点，和 B2 的下端相机对照');
+  await sticky.fill('机鼻再收一点，和上一轮对照');
   await sticky.blur();
   await page.waitForTimeout(300);
   await page.reload();
   await page.getByLabel('便签内容').waitFor();
-  assert.equal(await page.getByLabel('便签内容').inputValue(), '机鼻再收一点，和 B2 的下端相机对照');
+  assert.equal(await page.getByLabel('便签内容').inputValue(), '机鼻再收一点，和上一轮对照');
   assert.equal(await page.locator('[data-workflow-node^="candidate-"]').count(), 3);
   // 选中便签按 Delete 移除；在便签里打字时的退格不会删掉卡片。
   await page.getByLabel('便签内容').press('Backspace');
@@ -200,14 +208,7 @@ try {
   assert.equal(record.candidates.length, 1);
   await page.locator('[data-step=canvas]').click();
 
-  // 10. 历史案例用同一块画布呈现；图片可以引用到自己的项目。
-  await page.locator('[data-board=history]').click();
-  await page.locator('.react-flow__edge-path').first().waitFor({ state: 'attached' });
-  assert.equal(await page.locator('[data-workflow-node]').count(), 6);
-  await card('b2-original').click();
-  await action('cite').click();
-  await page.locator('[data-board-id=project]').waitFor();
-  await page.getByTestId('graph-inspector').getByRole('heading', { name: 'B2 原始候选', exact: true }).waitFor();
+  // 10. 4.5.1 起没有 B2 案例画板（旧数据已移出），这一步不再走。
 
   // 11. 手机宽度：面板在画布下方，页面不横向溢出。
   await page.setViewportSize({ width: 390, height: 844 });
@@ -219,7 +220,7 @@ try {
 
   assert.deepEqual(errors, []);
   console.log(JSON.stringify({ canvasOnly: true, goalOnCard: true, evidencePinned: 'E009', hubDrag: [before, dragged], softwareRounds: sent.length,
-    parentCandidate: true, referenceAsInput: true, stickyPersisted: true, deleteKey: true, evidenceUnpinned: true, goalKeptOnFrameChange: true, directions: 2, researchNodes: 6, historyNodes: 6, mobileWidth: 390,
+    parentCandidate: true, referenceAsInput: true, stickyPersisted: true, deleteKey: true, evidenceUnpinned: true, goalKeptOnFrameChange: true, directions: 2, researchNodes: 6, mobileWidth: 390,
     realModelCalls: 0, errors }));
 } finally {
   await browser.close();

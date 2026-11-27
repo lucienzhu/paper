@@ -46,25 +46,13 @@ try {
     await page.mouse.up();
   }
   await page.goto(origin + '/#v=3');
-  await page.locator('[data-board="history"]').click();
-  await page.locator('.react-flow__edge-path').first().waitFor({state: 'attached'});
-  assert.equal(await page.locator('.react-flow__node').count(), 6);
-  assert.equal(await page.locator('.react-flow__edge-path').count(), 6);
-  await button('图片对照').click();
-  assert.equal(await page.getByLabel('选择左图').inputValue(), 'b2-upper');
-  assert.equal(await page.getByLabel('选择右图').inputValue(), 'b2-lower');
-  await page.getByRole('dialog').locator('img').first().evaluate(image => image.decode());
-  await button('关闭图片对照').click();
-  await card('B2 原始候选').click();
-  await inspector.getByRole('button', {name: '引用到我的项目', exact: true}).click();
-  await page.locator('[data-board-id="project"]').waitFor();
-  await inspector.getByRole('heading', {name: 'B2 原始候选', exact: true}).waitFor();
+  // 4.5.1 起没有 B2 案例画板（旧数据已移出）。
   assert.equal(await page.getByTestId('workflow-workspace').getAttribute('data-board-id'), 'project');
 
-  const imagePath = fileURLToPath(new URL('../src/data/history/B2-no-window.webp', import.meta.url));
+  const imagePath = fileURLToPath(new URL('../src/data/history/quad-guide.png', import.meta.url));
   await page.getByLabel('导入参考图片').setInputFiles(imagePath);
-  await inspector.getByRole('heading', {name: 'B2-no-window.webp', exact: true}).waitFor();
-  await connect(card('B2-no-window.webp'), design);
+  await inspector.getByRole('heading', {name: 'quad-guide.png', exact: true}).waitFor();
+  await connect(card('quad-guide.png'), design);
   await page.getByRole('status').filter({hasText: '已添加参考关系'}).waitFor();
   await page.locator('.gb-wire-label', {hasText: '手动引用'}).waitFor({state: 'attached'});
   assert.equal(await page.locator('.gb-wire-label', {hasText: '手动引用'}).count(), 1);
@@ -101,7 +89,7 @@ try {
   assert.equal(await page.locator('.gb-wire-label', {hasText: '沿用分支编辑'}).count(), 1);
   assert.equal(await page.locator('.gb-wire-label', {hasText: '手动引用'}).count(), 1);
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({historyNodes: 6, historicalComparison: true, projectImageImport: true,
+  console.log(JSON.stringify({projectImageImport: true,
     referencePersisted: true, restoredWidth: initialWidth, preservedWidthVersion: changedWidth, frozeFromRestoredVersion: true, modelCalls: 0}));
 } finally {
   await browser.close();

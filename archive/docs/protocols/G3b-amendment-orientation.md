@@ -4,13 +4,13 @@
 
 ## 1. 发现
 
-对照 G3 的两张原件（[父图 S1-B1-T](../../../evidence/s1-axis-repeat/originals/S1-B1-T.png)、[带父图改稿](../../../evidence/g3-actual/originals/G3-with-reference.png)）：
+对照 G3 的两张原件（[父图 S1-B1-T](../../evidence/s1-axis-repeat/originals/S1-B1-T.png)、[带父图改稿](../../evidence/g3-actual/originals/G3-with-reference.png)）：
 
-- 父图画面**上端**已有一组深色部件（中央深色窗与两侧圆形件）。S1 复测把这张图的机头读为朝上，初测记为未知（[s1-axis-repeat](../../../evidence/s1-axis-repeat/README.md)）。
+- 父图画面**上端**已有一组深色部件（中央深色窗与两侧圆形件）。S1 复测把这张图的机头读为朝上，初测记为未知（[s1-axis-repeat](../../evidence/s1-axis-repeat/README.md)）。
 - 带父图改稿与父图几乎逐处相同，唯一明显的变化是画面**下端**新增了一个镜头部件；上端那组深色部件原样保留。
 - 修改文字写的是 “the front camera … the nose”，没有说明图中哪一端是机头。
 
-以上是我本人看图的描述，属于**未封存、已知条件的非盲观察**，不计入任何读者分母。它与已入库的记录相符：真人评者“认出了画面下方新增的摄像头，并对机身另一端黑色部件的功能感到困惑”（[g3-actual](../../../evidence/g3-actual/README.md)）。
+以上是我本人看图的描述，属于**未封存、已知条件的非盲观察**，不计入任何读者分母。它与已入库的记录相符：真人评者“认出了画面下方新增的摄像头，并对机身另一端黑色部件的功能感到困惑”（[g3-actual](../../evidence/g3-actual/README.md)）。
 
 ## 2. 这改变了什么判断
 

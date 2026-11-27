@@ -32,11 +32,6 @@ try{
  await go('studio');
  await page.getByTestId('variant-add').click();
  await go('handoff');
- for(const key of ['quad','hex']){
-   await page.locator('[data-history-case="'+key+'"]').click();const region=page.locator('[data-testid="history-replay"]');
-   assert.ok(await region.locator('img').first().evaluate(async im=>{await im.decode();return im.naturalWidth>0;}));
-   assert.ok((await region.textContent()).includes(key==='quad'?'倾向下端安装':'未登记'));
- }
  await page.locator('[data-attempt-goal]').fill('软件机制检查 · 无真实参与者');
  await page.locator('[data-freeze-attempt]').click();const frozen=await exportSelected();
  assert.equal(frozen.candidates.length,0);assert.equal(frozen.dispatch,null);

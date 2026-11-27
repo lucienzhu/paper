@@ -45,7 +45,7 @@ function readHash() {
   const step = params.get('step');
   return {
     config: decode(params.get('cfg')), pinned: decode(params.get('pin')), tab: params.get('tab') as ParameterGroup | null,
-    board: params.get('board') === 'project' ? 'project' as const : params.get('board') === 'history' ? 'history' as const : undefined,
+    board: params.get('board') === 'project' ? 'project' as const : undefined,
     node:params.get('node') || undefined, research: params.get('layer') === 'research',
     step: step && Object.prototype.hasOwnProperty.call(toolNames,step) ? (step as Step) : null, query: params.get('q') ?? '', sets,
   };
@@ -56,10 +56,8 @@ const App: React.FC = () => {
   // 页面已打开时再点一个带 #step= 的链接：按新地址重新进入画布，草稿和记录都在本机存储里。
   const [visit, setVisit] = useState(0);
   const [board, setBoard] = useState<BoardId>(() => {
-    if (hash.board) return hash.board;
-    if (hash.step && hash.step!=='canvas') return 'project';
-    try { return localStorage.getItem('workflow/last-board')==='history' ? 'history' : 'project'; }
-    catch { return 'project'; }
+    // 4.5.1 起只有设计者自己的项目；旧地址里的 board=history 也打开项目。
+    return hash.board ?? 'project';
   });
   const [research, setResearch] = useState(hash.research);
   const [drawer, setDrawer] = useState<HandoffEntry | null>(hash.step === 'handoff' ? {} : null);
@@ -112,12 +110,12 @@ const App: React.FC = () => {
   return (
     <div className="canvas-app-shell" id="drone-configurator-app" data-layout={wide ? 'wide' : 'narrow'} data-step-active={step}>
       <CanvasUiProvider key={visit} initialPart={hash.tab} initialGoal={hash.query}>
-        <CanvasTopBar board={board} research={research} drawer={!!drawer} onBoard={next=>navigate(next)} onResearch={setResearch}
+        <CanvasTopBar research={research} drawer={!!drawer} onResearch={setResearch}
           onDrawer={open=>navigate('project',undefined,open?{}:null)}/>
         <main className="canvas-app-main">
           <div className="canvas-main-layer" inert={drawer?true:undefined} aria-hidden={!!drawer} style={{visibility:drawer?'hidden':'visible'}}>
             <CanvasWorkspace key={board+'-'+(focusNode ?? '')} board={board} research={research} initialSelected={focusNode} initialFocus={entry}
-              onBoard={(next,id)=>navigate(next,id)} onResearch={open=>navigate('project',undefined,{...open,candidates:!!open?.attemptId})} />
+              onResearch={open=>navigate('project',undefined,{...open,candidates:!!open?.attemptId})} />
           </div>
           {drawer && <section className="canvas-tool-layer" aria-label={toolNames.handoff}>
             <HandoffPage wide={wide} entry={drawer} />

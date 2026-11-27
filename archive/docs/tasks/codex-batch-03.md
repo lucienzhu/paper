@@ -12,7 +12,7 @@
 
 ## X09｜G2d 部件语汇控制图（最后一批）
 
-1. 从 [historic-guides](../../../evidence/historic-guides/README.md) 的 C1 控制图测出并复用：
+1. 从 [historic-guides](../../evidence/historic-guides/README.md) 的 C1 控制图测出并复用：
    - 双叶桨形的几何、轴心小圈半径、臂段宽度；
    - 中间档的臂段长度。
    

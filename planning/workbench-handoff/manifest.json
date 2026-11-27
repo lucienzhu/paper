@@ -12,11 +12,6 @@
       "sha256": "c87cbd13a39a794cf526174d1a6e4fa21f10a50387cc93db861577ab2e75fd13"
     },
     {
-      "path": "planning/workbench-handoff/context/visuals/b2-history-canvas.png",
-      "format": "binary",
-      "sha256": "f16b5b7b6c33d51faa5726dda1294bc872c5f8d45122c42be17787f1bb554cdb"
-    },
-    {
       "path": "planning/workbench-handoff/context/visuals/chat-width-preview.png",
       "format": "binary",
       "sha256": "e8b19c7daf2d72aeab1858093a82e2d36c1f9affeaa44e091a453e9c2ef81282"
@@ -49,7 +44,7 @@
     {
       "path": "planning/workbench-handoff/context/界面资料.md",
       "format": "text-lf",
-      "sha256": "93742807a9fc6db29a040d2ad7383da94dfc99ae9f7c8bf61eec1c5610e41be5"
+      "sha256": "ee9f883fad0bc6e6b6038c9b7cf017ee7632665716d307c072399135b41b389f"
     },
     {
       "path": "planning/workbench-handoff/literature/.gitignore",
@@ -219,22 +214,22 @@
     {
       "path": "prototypes/drone-configurator/package.json",
       "format": "text-lf",
-      "sha256": "29d50a9337a5e582efc1144a903177c0a1c0621de01f941459da8137fd5685f4"
+      "sha256": "79f42ca0093c8c46e1503050c591f5c4d94eedacd715f9e413c11a03616c0d56"
     },
     {
       "path": "prototypes/drone-configurator/package-lock.json",
       "format": "text-lf",
-      "sha256": "4ef6395b8419bca652502a78171e89b9c5315e8293347d2cf079af2435a46a95"
+      "sha256": "f76cf7c3b52f80499059bf731f0f596e6f2320b593cae3e346c0c5800cdb73ac"
     },
     {
       "path": "prototypes/drone-configurator/README.md",
       "format": "text-lf",
-      "sha256": "d271b2977e42d0cb227c8fc6a800526e9aeef83887c60c52a40d366a3ec63dbf"
+      "sha256": "62fad1bf9ccd1e3bddd3aeb7c5196d8e99a25c011b6c63fed9d09e15aa982c66"
     },
     {
       "path": "prototypes/drone-configurator/configurator-offline.zip",
       "format": "binary",
-      "sha256": "5873534dc6b8cc6302583de3a8cc8d5fc16ec8c09de21ba5b6448b5cb8d6b562"
+      "sha256": "64737a03ce550e155236f788be7d5d52798395d77f0dec8b93f3e9e1c608e659"
     },
     {
       "path": "prototypes/drone-configurator/src/data/evidenceCards.json",
