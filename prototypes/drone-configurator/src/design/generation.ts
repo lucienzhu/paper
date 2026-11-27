@@ -3,7 +3,7 @@ import { findAttempt, freezeAttempt, hashBlob, listAttempts, updateH3Record, typ
 import { computeLayout, frameRules, taskLabels, type Task } from './design';
 import { compilePrompt } from './partPrompt';
 import { suggestFields } from './semantics/brief';
-import { backendOf, imageBackend, modelLabel } from './imageBackend';
+import { backendOf, imageBackend, modelLabel, parentRefusal, usableAsParent } from './imageBackend';
 import type { DesignIntent, DroneParameters } from '../types/DroneParameters';
 
 const endpoint = '/api/h3/jobs';
@@ -12,7 +12,7 @@ const workers = new Map<string, Promise<void>>();
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 type ImageInput = {role: 'layout' | 'parent'; name: string; sha256: string; dataUrl: string};
-interface H3Request { attemptId: string; prompt: string; inputs: ImageInput[]; condition?: 'free' }
+interface H3Request { attemptId: string; prompt: string; inputs: ImageInput[]; condition?: 'free'; task?: 'quad' | 'hexa' }
 interface H3Job {
   provider: string; model: string; jobId: string; attemptId: string;
   status?: 'queued' | 'running' | 'unconfirmed' | 'succeeded' | 'failed';
@@ -57,7 +57,9 @@ async function originalRequest(row: FrozenAttempt) {
   // 自由提示不带布局条件图：发出去的只有设计者的原文，和他自己接上的那一张图（如果有）。
   const inputs = row.condition === 'free' ? [] : [await input('layout',row.guide)];
   if (row.parentImage) inputs.push(await input('parent',row.parentImage));
-  return new Blob([JSON.stringify({attemptId:row.id,prompt:row.confirmedText,inputs,...(row.condition === 'free' ? {condition:'free'} : {})})],{type:'application/json'});
+  // 4.6：任务一并发给本机服务，它据此选负向词（装相机的四旋多 4 个压相机伪影的词；植保六旋不带）。
+  const task = row.snapshot?.intent?.taskId === 'agricultural_spraying' ? 'hexa' : 'quad';
+  return new Blob([JSON.stringify({attemptId:row.id,prompt:row.confirmedText,inputs,...(row.condition === 'free' ? {condition:'free'} : {}),task})],{type:'application/json'});
 }
 
 function verifyIdentity(row: FrozenAttempt, job: H3Job) {
@@ -296,11 +298,14 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
   const sessionId = context?.sessionId;
   const goal =requestedGoal?.trim() || intent.note.trim() || name + ' · ' + taskLabels[intent.taskId ?? 'consumer_camera'] + ' · ' + frameRules[parameters.frame.frame_type].zh;
   if (!await findAttempt(id)) {
-    const candidate = parentCandidateId
-      ? (await findAttempt(parentCandidateId.split('/')[0]))?.candidates.find(c => c.id === parentCandidateId)
-      : undefined;
+    const parentRound = parentCandidateId ? await findAttempt(parentCandidateId.split('/')[0]) : undefined;
+    const candidate = parentCandidateId ? parentRound?.candidates.find(c => c.id === parentCandidateId) : undefined;
     if (parentCandidateId && !candidate) throw new Error('找不到所选候选的原图，请重新选择。');
-    const parent = candidate ?? reference;
+    // 4.5.2：进生成请求的图，除了软件画的布局条件图，只能是这台工作台上 Qwen 出图成功的候选。
+    // 旧版本留在浏览器里的非 Qwen 候选、画布上导入的参考图都不发出；服务端另按内容摘要核对一遍（页面上的记录不作数）。
+    if (parentRound && !usableAsParent(parentRound)) throw new Error(parentRefusal(parentRound));
+    if (reference) throw new Error('导入的参考图不是这台工作台上 Qwen 出的图，不能作为生成输入。可以把它留在画布上对照，父图请选 Qwen 出图成功的候选。');
+    const parent = candidate;
     if (method === 'free') {
       // 不编译、不加前后缀：冻结并发出的就是设计者写下的这段话。
       const words = (freeText ?? '').trim();
@@ -310,7 +315,7 @@ async function start({id, task, goal: requestedGoal, parentCandidateId, referenc
       ensureRunning(id);
       return id;
     }
-    const text = structuredText(state.parameters, state.touched, state.intent, candidate ? 'candidate' : reference ? 'reference' : undefined, requestedGoal);
+    const text = structuredText(state.parameters, state.touched, state.intent, candidate ? 'candidate' : undefined, requestedGoal);
     await freezeAttempt(state, {variantId: activeVariant, variantName: name, variantScope, workflowOrigin, goal, keep: context?.keep ?? '', condition: 'structured',
       h3: {model: (await imageBackend()).model, status: 'ready'}, decisionPath, sessionId}, '', parent, text, id);
   }

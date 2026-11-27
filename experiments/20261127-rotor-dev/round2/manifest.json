@@ -1,0 +1,125 @@
+{
+  "batch": "旋翼开发第二小批（两种做法 × 4 个种子）",
+  "base_state": "BASE",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "sentence": {
+    "current": "Each motor carries one stationary 2-blade propeller, 5-inch (127 mm) diameter. The two blades point in exactly opposite directions from the hub.",
+    "rigid": "Each motor carries one rigid, one-piece two-blade propeller, 5-inch (127 mm) diameter, not a folding propeller: seen from above it is a single straight bar through the hub, its two blades exactly opposite each other and equal in length."
+  },
+  "extra_negative_terms": [
+    "folding propeller",
+    "hinged propeller blades",
+    "three-blade propeller",
+    "four-blade propeller"
+  ],
+  "requests": [
+    {
+      "order": 1,
+      "id": "ROT-R3-s1",
+      "variant": "R3",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 19,
+      "request_sha256": "1bff48b32e27348dc9a06749f1e18486bf346261be4a1f4ef4806e762756c6fa"
+    },
+    {
+      "order": 1,
+      "id": "ROT-R4-s1",
+      "variant": "R4",
+      "seed": 2026112851,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 23,
+      "request_sha256": "d59351151051a71e022045f9a97dbf4a4e5944e029e27e0a90e4698d2fa344ba"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R3-s2",
+      "variant": "R3",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 19,
+      "request_sha256": "10939e026996d00870ca994b7de8bc889bc3b48df00d2edee2fe540e2b8e969e"
+    },
+    {
+      "order": 2,
+      "id": "ROT-R4-s2",
+      "variant": "R4",
+      "seed": 2026112852,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 23,
+      "request_sha256": "753198ae38e213fdb488f69a750d0d4eac7e4bacf8938f32df46f66e91839215"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R3-s3",
+      "variant": "R3",
+      "seed": 2026112853,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 19,
+      "request_sha256": "61982d643637836d30e3f7c87c69c9225ce57b1ff3621ff80de19044465ed0a0"
+    },
+    {
+      "order": 3,
+      "id": "ROT-R4-s3",
+      "variant": "R4",
+      "seed": 2026112853,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 23,
+      "request_sha256": "2c059a79b0fe96de75be5489b1eb4c5324b974d13e1b15b48db9f920b5f4c333"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R3-s4",
+      "variant": "R3",
+      "seed": 2026112854,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 19,
+      "request_sha256": "f022ea4195b9e8f911995f8cb6fa76c97bab80c899246860f46534034eedf44c"
+    },
+    {
+      "order": 4,
+      "id": "ROT-R4-s4",
+      "variant": "R4",
+      "seed": 2026112854,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "6ae71faa8427b447aba79d42e962d57c182f08a17821a105053cb0fac6271ee1",
+      "negative_terms": 23,
+      "request_sha256": "b316d138c5ea22d3c7b489f467a4a62332c3b45392bd85dcd24393f45ab7e947"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}

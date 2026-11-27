@@ -1,0 +1,11 @@
+﻿request,motors,arms,blades,hinge,tank,filler,boom,boom_where,nozzles,camera,product,note
+E6B-N-confirm-r1,6,6,two,yes,yes,yes,no,none,yes,no,yes,
+E6B-N-confirm-r2,6,6,two,yes,yes,yes,no,none,yes,no,yes,
+E6B-N-confirm-r3,6,6,two,yes,yes,yes,no,none,yes,no,yes,四个斜向电机旁有喷头，左右两个电机旁看不到
+E6B-N-confirm-r4,6,6,two,yes,yes,yes,no,none,yes,?,yes,前端圆盘状部件可能是天线也可能是相机，无法确定
+H2-boom-r1,6,6,two,yes,yes,yes,no,none,no,no,yes,机身前部深灰色箱顶带圆盖，后部是白色方块（可能是电池），药箱归属略有不确定
+H2-boom-r2,6,6,two,yes,yes,yes,yes,arms,some,no,yes,左右两根机臂下各平行一根带卡箍的细管，末端在电机旁有小接头；斜向四个电机旁看不到喷头
+H2-boom-r3,6,6,two,yes,yes,yes,yes,body,no,no,yes,机身后方一根横杆两端各带一个下垂喷头，中间有接头；电机旁无喷头
+H2-boom-r4,6,6,two,yes,yes,yes,yes,arms,no,no,yes,左右机臂上各平行一根细杆，靠外端有一个小接头，不是电机旁的独立部件；是否算喷杆有一定不确定
+H2-boom-r5,6,6,two,yes,yes,yes,?,?,no,no,yes,机身后方有一根横杆，中间只有一个接头，看不出是喷杆还是起落架横撑
+H2-boom-r6,6,6,two,yes,yes,yes,no,none,no,no,yes,机身后方两起落架之间有一根横杆，两端止于起落架、无喷头，判为起落架横撑

@@ -1,0 +1,134 @@
+{
+  "batch": "构型开发检查第三小批（八旋加一句；共轴 X8 原句补两个种子、交叉直杆四个种子）",
+  "sentences": {
+    "octo_hub": "The fuselage is the hub of the aircraft: all eight arms attach directly to its sides, and its nose, which carries the camera, points to the top edge of the image.",
+    "x8_cross_propeller": "Each arm end carries two stationary two-blade propellers stacked on one vertical axis, each 5-inch (127 mm) in diameter. The lower propeller rests at a right angle to the upper one, so from above each arm end shows two straight propellers crossed at their hubs. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape.",
+    "x8_cross_guide": "Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the two crossed straight bars at each dot mark the two stacked propellers at that arm end. Do not reproduce the dots, lines or bars as drawn; render real parts in their place."
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "CD3-O8c-s1",
+      "variant": "O8c",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "16404d8c748682840e27ca99fa4bc5fadec5abbd170d05ef92a49a991153f8c8"
+    },
+    {
+      "order": 1,
+      "id": "CD3-X8c-s1",
+      "variant": "X8c",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "ead7f95f84c2ee6d755bc77ab5bb17653fd4f53e7f28beb8a80e748e761e0450",
+      "request_sha256": "b560a2ee814fbef0ccd6ddd3a2d37168238b69ce8499dc0fc4760ac29553a111"
+    },
+    {
+      "order": 2,
+      "id": "CD3-O8c-s2",
+      "variant": "O8c",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "96cbff50f6d86c225be652ca8d477f7067ac8898de9f7cba9ebcae177f9ec4f7"
+    },
+    {
+      "order": 2,
+      "id": "CD3-X8c-s2",
+      "variant": "X8c",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "ead7f95f84c2ee6d755bc77ab5bb17653fd4f53e7f28beb8a80e748e761e0450",
+      "request_sha256": "1972fcb24bf613d96b4eaba8d32b315840b4fe371cd8c516185222b17c02125c"
+    },
+    {
+      "order": 3,
+      "id": "CD3-O8c-s3",
+      "variant": "O8c",
+      "seed": 2026112873,
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "d81f12a400ada3e34535c7e3d7797ea7cf54a24d90c68a707d559104d26e240f"
+    },
+    {
+      "order": 3,
+      "id": "CD3-X8a-s3",
+      "variant": "X8a",
+      "seed": 2026112873,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "488e51d247ef6b9ff48136ba4d3db2941934af6699ca4e70c3a1c129f9562e64",
+      "request_sha256": "4e0dd8a0eacca4349ea71391e969d936d81242b8c5432a4826158a80dfb9c4e3"
+    },
+    {
+      "order": 3,
+      "id": "CD3-X8c-s3",
+      "variant": "X8c",
+      "seed": 2026112873,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "ead7f95f84c2ee6d755bc77ab5bb17653fd4f53e7f28beb8a80e748e761e0450",
+      "request_sha256": "9ed5d279cef53094993cfd851c9ea9f9c2b08a2f797c364261d90b5a11d0bd0a"
+    },
+    {
+      "order": 4,
+      "id": "CD3-O8c-s4",
+      "variant": "O8c",
+      "seed": 2026112874,
+      "input_images": [
+        "wbguide-7fee96027dbc.png"
+      ],
+      "prompt_sha256": "c67e2d992edc500427155d837a02d894cd811bfdca43fe02886eedfd17a59a11",
+      "request_sha256": "d6564f15f4a84e89fcf54c1face14ca944b2b9434364c6fa71b7894e7200f6b3"
+    },
+    {
+      "order": 4,
+      "id": "CD3-X8a-s4",
+      "variant": "X8a",
+      "seed": 2026112874,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "488e51d247ef6b9ff48136ba4d3db2941934af6699ca4e70c3a1c129f9562e64",
+      "request_sha256": "e6caa6291653dc9d4f1e830a96262a53a8d6359dcceb22ade80b3cb737994f9a"
+    },
+    {
+      "order": 4,
+      "id": "CD3-X8c-s4",
+      "variant": "X8c",
+      "seed": 2026112874,
+      "input_images": [
+        "wbguide-crossbars-acdd1173f244.png"
+      ],
+      "prompt_sha256": "ead7f95f84c2ee6d755bc77ab5bb17653fd4f53e7f28beb8a80e748e761e0450",
+      "request_sha256": "942db1f9fa9bf1b1d4e0182385eb127041f9424d2f93fcd55bde664aa61b28f5"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-7fee96027dbc.png",
+      "sha256": "7fee96027dbc85278ebee8345eafa2a21a8160b2ea84f91528959e6c9f0b2d35"
+    },
+    {
+      "input": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+    },
+    {
+      "input": "wbguide-crossbars-acdd1173f244.png",
+      "sha256": "acdd1173f244ff5228553d42f5a0447bdcebd95a9d6528883591f368e0321f97"
+    }
+  ]
+}

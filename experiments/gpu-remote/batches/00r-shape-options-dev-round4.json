@@ -1,0 +1,53 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "造型选项开发第四小批 6 张：机鼻下挂相机再换两种写法",
+  "registration": "experiments/20261127-shape-options-dev/README.md",
+  "registered_manifest": "experiments/20261127-shape-options-dev/round4/manifest.json",
+  "registered_manifest_sha256": "39b64bad2385a7b826a73695234d798816edc8ce6ab32fb0bf821f22d5914b6a",
+  "requests_dir": "experiments/20261127-shape-options-dev/round4/requests",
+  "files_dirs": [
+    "experiments/20261127-shape-options-dev/round4/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-SD-S4e-s1.json",
+      "id": "SD-S4e-s1",
+      "seed": 2026112861,
+      "sha256": "430b16d4f87cf7f68e224915e35a789442e1a885624a9abfdb0801ada7b8fd94"
+    },
+    {
+      "file": "01-SD-S4f-s1.json",
+      "id": "SD-S4f-s1",
+      "seed": 2026112861,
+      "sha256": "91799bd3eb0b93b4db1337989bf192d49fe67cfde58290f0a8a33475c5dbb33a"
+    },
+    {
+      "file": "02-SD-S4e-s2.json",
+      "id": "SD-S4e-s2",
+      "seed": 2026112862,
+      "sha256": "6c09255a6861457c6e0c1160547c892bdf429ede31b4c20c9aa6d0ddd2eb0f42"
+    },
+    {
+      "file": "02-SD-S4f-s2.json",
+      "id": "SD-S4f-s2",
+      "seed": 2026112862,
+      "sha256": "5c1ccede0b086f08d87b52ca2ba0089c3876c21d0f7563af574aedb05c717bfa"
+    },
+    {
+      "file": "03-SD-S4e-s3.json",
+      "id": "SD-S4e-s3",
+      "seed": 2026112863,
+      "sha256": "3cd632586f4fe8f0573ca6fe87b4fc5e7bd91f13d4f08e639edf4ea3d7dbd971"
+    },
+    {
+      "file": "03-SD-S4f-s3.json",
+      "id": "SD-S4f-s3",
+      "seed": 2026112863,
+      "sha256": "2dc2081d6528418de342bcaabb97c59ab13fe73f4c19a74feda4673e64658626"
+    }
+  ],
+  "files": {
+    "wbguide-fc9b23f98221.png": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+  }
+}

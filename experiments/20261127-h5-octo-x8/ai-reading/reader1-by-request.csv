@@ -1,0 +1,9 @@
+﻿request,axes,arms,layers,blades,shell,roots,camera,camera_end,cover,product,note
+H5-O8-r1,8,8,one,two,round,smooth,flush,top,single,yes,
+H5-O8-r2,8,8,one,two,round,socket,flush,top,single,yes,
+H5-O8-r3,8,8,one,two,round,socket,flush,top,single,yes,臂从机壳短凸出段伸出，凸出段与臂管之间有横向接缝
+H5-O8-r4,8,8,one,two,round,socket,flush,top,single,yes,臂从机壳短凸出段伸出，凸出段与细臂管之间有横向接缝
+H5-Q-r1,4,4,one,two,round,smooth,underslung,top,single,yes,
+H5-Q-r2,4,4,one,two,round,?,underslung,top,single,yes,臂根被机身遮住，只见交界处小暗色件，分不清承座、铰链还是顺接；相机是比机身窄的小框体探出机头前缘
+H5-Q-r3,4,4,one,two,round,smooth,underslung,top,two,yes,顶盖中间有一块从前缘延伸到后部U形收口的面板线，按一道分缝算；不排除是装饰线
+H5-Q-r4,4,4,one,two,round,smooth,flush,top,single,yes,机身侧边较直但转角大圆角，按圆润判

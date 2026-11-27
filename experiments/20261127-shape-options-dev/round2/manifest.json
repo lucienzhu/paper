@@ -1,0 +1,96 @@
+{
+  "batch": "造型选项开发第二小批：S4、S5 换句子（各 3 个种子）",
+  "workbench": {
+    "version": "4.6.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BBMkHJhI.js",
+    "bundle_sha256": "812d5270902fdafd2b0cdfc41a9366666cea7c53fcd479b6b0403d13b5f0d6d8",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "sentences": {
+    "S4b": {
+      "state": "SD-S4",
+      "old": "The gimbal camera hangs underneath the front of the fuselage; from directly above only the top edge of a small camera housing peeks out just ahead of the nose, low and tight against it, with no neck, stalk or post.",
+      "new": "The gimbal camera hangs underneath the front of the fuselage, as on modern foldable camera drones. Seen from directly above, only the top edge of a small dark grey camera housing peeks out just ahead of the nose; the lens faces straight forward toward the top edge of the image, so no lens glass is visible from above. The camera sits low and tight against the nose, with no neck, stalk or post."
+    },
+    "S5b": {
+      "state": "SD-S5",
+      "old": "Three or more distinct top cover panels separated by seams.",
+      "new": "The top cover is divided into three separate panels by two transverse seams: a nose cap, a centre cover and a rear cover."
+    }
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "SD-S4b-s1",
+      "group": "S4b",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "1f826abb8cc74c6c9932f376023dc558e8f88033d5f5c50393c8312a79e7c432",
+      "request_sha256": "32e81197ca401552a7e653346ab05bf57fef5a1b0776866a70207aeb6da2b948"
+    },
+    {
+      "order": 1,
+      "id": "SD-S4b-s2",
+      "group": "S4b",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "1f826abb8cc74c6c9932f376023dc558e8f88033d5f5c50393c8312a79e7c432",
+      "request_sha256": "8e6b2e5166b5592735d69be1bc509d6dd7c78e33fb29fe4a7178b3539c3be44c"
+    },
+    {
+      "order": 1,
+      "id": "SD-S4b-s3",
+      "group": "S4b",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "1f826abb8cc74c6c9932f376023dc558e8f88033d5f5c50393c8312a79e7c432",
+      "request_sha256": "f331139c5c04092a7541a066dfa35880362f842257058cfb881efdba249b5087"
+    },
+    {
+      "order": 2,
+      "id": "SD-S5b-s1",
+      "group": "S5b",
+      "seed": 2026112841,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "1da5c8bca0accd3a603e1f13154db6dcafe21e2dd5e0da9992a6a26c2dd9f665",
+      "request_sha256": "cb91c549c46fc232736e7d2106df49679a2786e9ee40f59a68d0d060e079e15e"
+    },
+    {
+      "order": 2,
+      "id": "SD-S5b-s2",
+      "group": "S5b",
+      "seed": 2026112842,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "1da5c8bca0accd3a603e1f13154db6dcafe21e2dd5e0da9992a6a26c2dd9f665",
+      "request_sha256": "47de61fc6c0b614e3029d5216bc35484a4d3ce52f62c58f3f79c3b4eb624cc92"
+    },
+    {
+      "order": 2,
+      "id": "SD-S5b-s3",
+      "group": "S5b",
+      "seed": 2026112843,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "1da5c8bca0accd3a603e1f13154db6dcafe21e2dd5e0da9992a6a26c2dd9f665",
+      "request_sha256": "4c7725acd0e6cf50159060a040537bbb391c895eb6f005edeccab2e908c38200"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    }
+  ]
+}

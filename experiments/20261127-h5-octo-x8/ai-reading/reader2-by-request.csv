@@ -1,0 +1,9 @@
+﻿request,axes,arms,layers,blades,shell,roots,camera,camera_end,cover,product,note
+H5-O8-r1,8,8,one,two,round,smooth,flush,top,single,yes,
+H5-O8-r2,8,8,one,two,round,socket,flush,top,single,yes,
+H5-O8-r3,8,8,one,two,round,socket,flush,top,single,yes,机壳上伸出锥形短凸缘，细臂插入处有横向接缝；顶盖内圈一道闭合轮廓线按外周线计、不算分缝；相机窗所在前端块略窄于机身，判为内嵌
+H5-O8-r4,8,8,one,two,round,socket,flush,top,single,yes,机壳上伸出锥形短凸缘，细臂插入处有一道横向接缝；凸缘与机壳之间是顺滑过渡
+H5-Q-r1,4,4,one,two,?,smooth,underslung,top,single,yes,机身为圆角长方形（侧边平直、转角圆而非切角），两种都不完全符合
+H5-Q-r2,4,4,one,two,?,?,underslung,top,single,yes,机身为圆角长方形（侧边平直、转角圆）；机臂从机壳侧边下方伸出，臂根处有台阶和暗色缝隙，但看不出独立承座或铰链
+H5-Q-r3,4,4,one,two,?,smooth,underslung,top,two,yes,机身为圆角长方形（侧边平直、转角圆而非切角）；顶盖上一道U形线从前缘贯穿到后部，把中间板与外圈分开，按一道分缝计
+H5-Q-r4,4,4,one,two,?,smooth,flush,top,single,yes,机身为圆角长方形：两侧边平直但转角是圆角而非切角，两种都不完全符合

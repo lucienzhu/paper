@@ -1,0 +1,762 @@
+{
+  "batch": "A4 布局桥接开发：闭环臂第一轮（工作台流程在各档名义值下的出图）",
+  "workbench": {
+    "version": "4.7.1",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-CzVKTWgy.js",
+    "bundle_sha256": "805e1316daaa1b25cffa85d06dd973dc8235596ffa4f0cebc842bc0b5593cdc7",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "seeds": [
+    2026112701,
+    2026112702,
+    2026112703
+  ],
+  "factors": {
+    "WL": {
+      "what": "W/L（电机中心横向极差 ÷ 纵向极差）",
+      "tiers": [
+        "1.15",
+        "1.35",
+        "1.55",
+        "0.70"
+      ],
+      "in_range": [
+        "1.15",
+        "1.35",
+        "1.55"
+      ],
+      "tolerance": 0.1
+    },
+    "BW": {
+      "what": "机壳宽 ÷ 对角电机距",
+      "tiers": [
+        "0.16",
+        "0.23",
+        "0.30"
+      ],
+      "in_range": [
+        "0.16",
+        "0.23",
+        "0.30"
+      ],
+      "tolerance": 0.035
+    },
+    "DD": {
+      "what": "桨径 ÷ 对角电机距（d/D）",
+      "tiers": [
+        "0.46",
+        "0.56",
+        "0.66"
+      ],
+      "in_range": [
+        "0.46",
+        "0.56",
+        "0.66"
+      ],
+      "tolerance": 0.05
+    }
+  },
+  "states": {
+    "WL-1.15": {
+      "state": "A4-WL-1.15",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.15,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "76423c87cfd8e1ed63955007ac0f949a74e6fb6ef78d021970623a9d69e3733b"
+    },
+    "WL-1.35": {
+      "state": "A4-WL-1.35",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601"
+    },
+    "WL-1.55": {
+      "state": "A4-WL-1.55",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.55,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "db33b0552f71d4e6aefc61d38f86c26087c186ca0296dde9b98a165ab7fef78d"
+    },
+    "WL-0.70": {
+      "state": "A4-WL-0.70",
+      "values": {
+        "frame.frame_type": "Stretch X",
+        "frame.span_ratio_wl": 0.7,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "645df1897241b96b49c216783cfacffffb36006028247c9b970ba7614608edd5"
+    },
+    "BW-0.16": {
+      "state": "A4-BW-0.16",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "fuselage.fuselage_dimensions_mm.width": 40,
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "0284e3519dfab0bdd01149ded8a6d3a8f10d9bb4395d1e3f3da738246eaffc6d"
+    },
+    "BW-0.23": {
+      "state": "A4-BW-0.23",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "fuselage.fuselage_dimensions_mm.width": 57.5,
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "da685f902868bbcd7eacb7280e0363c800c2092680135c992bcc6d0030001901"
+    },
+    "BW-0.30": {
+      "state": "A4-BW-0.30",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "fuselage.fuselage_dimensions_mm.width": 75,
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "f2c96356b3ff018d63418fc8ae040f63e0f926e162a1b6018acbb8631bc01fd6"
+    },
+    "DD-0.46": {
+      "state": "A4-DD-0.46",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 4.52755905511811,
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "f01fd10e381a238b23943faf5b3ce01716a938a5df0449904697d23fd7fac0e2"
+    },
+    "DD-0.56": {
+      "state": "A4-DD-0.56",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 5.511811023622047,
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "862bfd9bccf05336f0a604d1e829d75d0991a6d7626887eb1cb537cd48bf77df"
+    },
+    "DD-0.66": {
+      "state": "A4-DD-0.66",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "propulsion.prop_diameter_inch": 6.496062992125984,
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      },
+      "prompt_sha256": "74c40cd3f9342378777b8e8edfcc379ffb32f94650e30c6c234f73e891e33b7f"
+    }
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+  "requests": [
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.15-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.15,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-WL-1.15",
+      "input_images": [
+        "wbguide-1633259782cc.png"
+      ],
+      "prompt_sha256": "76423c87cfd8e1ed63955007ac0f949a74e6fb6ef78d021970623a9d69e3733b",
+      "request_sha256": "054aaddc11bea880832bddb334f560dc26c00314b504acc5dfcc66e3c49272bf"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.35-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.35,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-WL-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "42544bd7bda3aa1a009f592953f67507ffefdd226b0c56aa6c93ca54587dfa6b"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-1.55-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.55,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-WL-1.55",
+      "input_images": [
+        "wbguide-a8e56389e509.png"
+      ],
+      "prompt_sha256": "db33b0552f71d4e6aefc61d38f86c26087c186ca0296dde9b98a165ab7fef78d",
+      "request_sha256": "ceb935dae8b4df3f418343a15f824a42d3ba6c6f0e2e3e4cd689cee703bf5c5b"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-CB-0.70-s1",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.7,
+      "in_range": false,
+      "seed": 2026112701,
+      "state": "A4-WL-0.70",
+      "input_images": [
+        "wbguide-0ec5251048a5.png"
+      ],
+      "prompt_sha256": "645df1897241b96b49c216783cfacffffb36006028247c9b970ba7614608edd5",
+      "request_sha256": "071d6d3b8b38f44a4af773f131ac5796fca34fc0fb88e8e4a28056d07a97db85"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.16-s1",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.16,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-BW-0.16",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "0284e3519dfab0bdd01149ded8a6d3a8f10d9bb4395d1e3f3da738246eaffc6d",
+      "request_sha256": "b73bd7925136a175ae09cba464a7b36e2a20826a2fb341498d8ff056a07c9de6"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.23-s1",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.23,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-BW-0.23",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "da685f902868bbcd7eacb7280e0363c800c2092680135c992bcc6d0030001901",
+      "request_sha256": "3ee6f632bd644c239caebe23a2d548d9bb830a5842fc63401d1b427da164ba92"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-CB-0.30-s1",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.3,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-BW-0.30",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "f2c96356b3ff018d63418fc8ae040f63e0f926e162a1b6018acbb8631bc01fd6",
+      "request_sha256": "912156b5e895fb5e2a67531d16947e4f3266ee0a789fd5570ba7b8628a7b75b2"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.46-s1",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.46,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-DD-0.46",
+      "input_images": [
+        "wbguide-8e0f9a4b17d9.png"
+      ],
+      "prompt_sha256": "f01fd10e381a238b23943faf5b3ce01716a938a5df0449904697d23fd7fac0e2",
+      "request_sha256": "9d6692f8bb666760c252efdbdb89ee483496ee182fedd22ae77a3be329deb59a"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.56-s1",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.56,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-DD-0.56",
+      "input_images": [
+        "wbguide-b4b585ee7a10.png"
+      ],
+      "prompt_sha256": "862bfd9bccf05336f0a604d1e829d75d0991a6d7626887eb1cb537cd48bf77df",
+      "request_sha256": "5430ef9593ccb4af995bd050a8a499b3e3b67892d441acf137c926a6425f0fdd"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-CB-0.66-s1",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.66,
+      "in_range": true,
+      "seed": 2026112701,
+      "state": "A4-DD-0.66",
+      "input_images": [
+        "wbguide-7f467548f9ab.png"
+      ],
+      "prompt_sha256": "74c40cd3f9342378777b8e8edfcc379ffb32f94650e30c6c234f73e891e33b7f",
+      "request_sha256": "dca5b2c380c59fae4d0ef24c20b6c6c4b3097eb137fcc0c7b9170ac49a1331f6"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB-1.15-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.15,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-WL-1.15",
+      "input_images": [
+        "wbguide-1633259782cc.png"
+      ],
+      "prompt_sha256": "76423c87cfd8e1ed63955007ac0f949a74e6fb6ef78d021970623a9d69e3733b",
+      "request_sha256": "ff9ccfe6230e37b24eacd096a47f7b83b4b063d3588597955d6c710da78d235d"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB-1.35-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.35,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-WL-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "ae7d0c059446f65b206abae67004cb586e74b1829d86dfe70f393dc92f224ff7"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB-1.55-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.55,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-WL-1.55",
+      "input_images": [
+        "wbguide-a8e56389e509.png"
+      ],
+      "prompt_sha256": "db33b0552f71d4e6aefc61d38f86c26087c186ca0296dde9b98a165ab7fef78d",
+      "request_sha256": "ca2052ae60696bba1772d286cd5dab289e925608f5af5a5f96e0ab6f22869470"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-CB-0.70-s2",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.7,
+      "in_range": false,
+      "seed": 2026112702,
+      "state": "A4-WL-0.70",
+      "input_images": [
+        "wbguide-0ec5251048a5.png"
+      ],
+      "prompt_sha256": "645df1897241b96b49c216783cfacffffb36006028247c9b970ba7614608edd5",
+      "request_sha256": "161bdfc902f0a866bf6bed3af3d61c4084d694d09597a939cc674fef71ee7431"
+    },
+    {
+      "order": 2,
+      "id": "A4-BW-CB-0.16-s2",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.16,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-BW-0.16",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "0284e3519dfab0bdd01149ded8a6d3a8f10d9bb4395d1e3f3da738246eaffc6d",
+      "request_sha256": "2957697518165e18f6756e5f0fe0a6d8ffebe16bffb6bc2476ff751ef3c6e888"
+    },
+    {
+      "order": 2,
+      "id": "A4-BW-CB-0.23-s2",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.23,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-BW-0.23",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "da685f902868bbcd7eacb7280e0363c800c2092680135c992bcc6d0030001901",
+      "request_sha256": "edf346559ea13b24fbe14ce43f9cd899a77f23915f90a2760b2d1af81b4fe2e6"
+    },
+    {
+      "order": 2,
+      "id": "A4-BW-CB-0.30-s2",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.3,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-BW-0.30",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "f2c96356b3ff018d63418fc8ae040f63e0f926e162a1b6018acbb8631bc01fd6",
+      "request_sha256": "59fd1573c29050ac018bb773d13a8c6022d9fc0ff96c3f584975f02bec1bdbee"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-CB-0.46-s2",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.46,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-DD-0.46",
+      "input_images": [
+        "wbguide-8e0f9a4b17d9.png"
+      ],
+      "prompt_sha256": "f01fd10e381a238b23943faf5b3ce01716a938a5df0449904697d23fd7fac0e2",
+      "request_sha256": "032c1ea983f0d036529f87f6f1f561b08d1b4ba5092b1815ce9a905058bf9872"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-CB-0.56-s2",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.56,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-DD-0.56",
+      "input_images": [
+        "wbguide-b4b585ee7a10.png"
+      ],
+      "prompt_sha256": "862bfd9bccf05336f0a604d1e829d75d0991a6d7626887eb1cb537cd48bf77df",
+      "request_sha256": "57fc79ed466ce327afabf335ffcfc4d6a6994746980b9e23d34274d80f18aee9"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-CB-0.66-s2",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.66,
+      "in_range": true,
+      "seed": 2026112702,
+      "state": "A4-DD-0.66",
+      "input_images": [
+        "wbguide-7f467548f9ab.png"
+      ],
+      "prompt_sha256": "74c40cd3f9342378777b8e8edfcc379ffb32f94650e30c6c234f73e891e33b7f",
+      "request_sha256": "783a06dafcd6bbf3f593d9a744dd455cabf5df88854f448726bdf74bedf34b64"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB-1.15-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.15,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-WL-1.15",
+      "input_images": [
+        "wbguide-1633259782cc.png"
+      ],
+      "prompt_sha256": "76423c87cfd8e1ed63955007ac0f949a74e6fb6ef78d021970623a9d69e3733b",
+      "request_sha256": "2c6f0458638cc9d69fccfb07d87a29f4e5fa32f365922f0abf0721541392c593"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB-1.35-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.35,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-WL-1.35",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "1fc8096fae6fec09456d513ee8efbdfe19cfce329d8feaf518b73ccd4b496601",
+      "request_sha256": "76d0f938c040de3454b47d6a304044bc11cd44216828e0a8fec40b9909e132fc"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB-1.55-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 1.55,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-WL-1.55",
+      "input_images": [
+        "wbguide-a8e56389e509.png"
+      ],
+      "prompt_sha256": "db33b0552f71d4e6aefc61d38f86c26087c186ca0296dde9b98a165ab7fef78d",
+      "request_sha256": "52527a699b4609923f12da356a9dbaccfae6e7bba8027c358930b14a104125e0"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-CB-0.70-s3",
+      "factor": "WL",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.7,
+      "in_range": false,
+      "seed": 2026112703,
+      "state": "A4-WL-0.70",
+      "input_images": [
+        "wbguide-0ec5251048a5.png"
+      ],
+      "prompt_sha256": "645df1897241b96b49c216783cfacffffb36006028247c9b970ba7614608edd5",
+      "request_sha256": "9e80585c9b7e89e51956f67507f0966a2ae07e74a280a69fc8949b6e21af7d74"
+    },
+    {
+      "order": 3,
+      "id": "A4-BW-CB-0.16-s3",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.16,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-BW-0.16",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "0284e3519dfab0bdd01149ded8a6d3a8f10d9bb4395d1e3f3da738246eaffc6d",
+      "request_sha256": "bfcdd052d698396b82584f8b4ee5581d5c462ee1dc678a9497a03c458081cfb9"
+    },
+    {
+      "order": 3,
+      "id": "A4-BW-CB-0.23-s3",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.23,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-BW-0.23",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "da685f902868bbcd7eacb7280e0363c800c2092680135c992bcc6d0030001901",
+      "request_sha256": "65d9417b281297cfec83f7e76308af08da9d96133ba7cf0e178deed88b0b1b8c"
+    },
+    {
+      "order": 3,
+      "id": "A4-BW-CB-0.30-s3",
+      "factor": "BW",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.3,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-BW-0.30",
+      "input_images": [
+        "wbguide-a1844dfa5fef.png"
+      ],
+      "prompt_sha256": "f2c96356b3ff018d63418fc8ae040f63e0f926e162a1b6018acbb8631bc01fd6",
+      "request_sha256": "1473be6e9d5d0c157124b5d67a8cef632f1b37dd8b8d5b0ff81066ea6e969cde"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-CB-0.46-s3",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.46,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-DD-0.46",
+      "input_images": [
+        "wbguide-8e0f9a4b17d9.png"
+      ],
+      "prompt_sha256": "f01fd10e381a238b23943faf5b3ce01716a938a5df0449904697d23fd7fac0e2",
+      "request_sha256": "83b20abb2f0749a884c7740648291ea543bcc1d23a23eda4605b6cc5d519fbe3"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-CB-0.56-s3",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.56,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-DD-0.56",
+      "input_images": [
+        "wbguide-b4b585ee7a10.png"
+      ],
+      "prompt_sha256": "862bfd9bccf05336f0a604d1e829d75d0991a6d7626887eb1cb537cd48bf77df",
+      "request_sha256": "33c841709ddff0829a63fe054ae953bf9ba826886ee1b229d8754487917def98"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-CB-0.66-s3",
+      "factor": "DD",
+      "method": "CB",
+      "round": 1,
+      "tier": 0.66,
+      "in_range": true,
+      "seed": 2026112703,
+      "state": "A4-DD-0.66",
+      "input_images": [
+        "wbguide-7f467548f9ab.png"
+      ],
+      "prompt_sha256": "74c40cd3f9342378777b8e8edfcc379ffb32f94650e30c6c234f73e891e33b7f",
+      "request_sha256": "60f563b1309c5d43a08de07738bc7bd83e0eca5f39911ea778e14693255edf60"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-0ec5251048a5.png",
+      "sha256": "0ec5251048a507efba31ba8a543dc347df23a008d2e97d389ffb3398d13ea19e"
+    },
+    {
+      "input": "wbguide-1633259782cc.png",
+      "sha256": "1633259782cc1115798cea63e32d32cdedebc87bc68b75ff5af364e51df653e1"
+    },
+    {
+      "input": "wbguide-7f467548f9ab.png",
+      "sha256": "7f467548f9abf67f1bb9bd18f54e1bee419fd160ccb258bba8523f54f0750622"
+    },
+    {
+      "input": "wbguide-8e0f9a4b17d9.png",
+      "sha256": "8e0f9a4b17d956f84ec013c41c45807ba06e3d16cb0852edd0266772fb3a5301"
+    },
+    {
+      "input": "wbguide-a1844dfa5fef.png",
+      "sha256": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3"
+    },
+    {
+      "input": "wbguide-a8e56389e509.png",
+      "sha256": "a8e56389e509ae8c9f4a1da0c5809853ce47649d892de1217b99446fe823eb70"
+    },
+    {
+      "input": "wbguide-b4b585ee7a10.png",
+      "sha256": "b4b585ee7a10c4f5781ec4de161e96f6cd9b102c5366a4da7a6926f4f4eebe20"
+    }
+  ],
+  "round2_rule": "每张图取两位读者的均值，每档取 3 个种子的中位数；对范围内的三档作最小二乘直线：读数 = a + b × 名义值；b < 0.25 记“不可校准”，不跑第二轮；否则第二轮名义值 =（目标 − a）÷ b，限在第一轮档位的 0.5—1.5 倍之间，并限在工作台该构型可调的范围内（宽 X 的 W/L 1.05—1.60，伸展 X 0.60—0.95）。每个因素 9 份，同一组种子。W/L 的 0.70 档不进校准，第二轮不跑。"
+}

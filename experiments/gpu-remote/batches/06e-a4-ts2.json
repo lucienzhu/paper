@@ -1,0 +1,226 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "A4 两段式第二步 TS2（工作台的请求，条件图换成第一步的中间图）",
+  "registration": "experiments/20261127-a4-bridge/README.md",
+  "registered_manifest": "experiments/20261127-a4-bridge/ts2/manifest.json",
+  "registered_manifest_sha256": "20c1dc25330d161ad6123dc22455b6bbbf46a3e83be6f5d1fccaaa7230302856",
+  "requests_dir": "experiments/20261127-a4-bridge/ts2/requests",
+  "files_dirs": [
+    "experiments/20261127-a4-bridge/ts2/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-A4-BW-TS2-0.16-s1.json",
+      "id": "A4-BW-TS2-0.16-s1",
+      "seed": 2026112701,
+      "sha256": "02147be32e2cdcc80652b0a46693b66ebcb81c2a959e313f6b6adee4497834a7"
+    },
+    {
+      "file": "01-A4-BW-TS2-0.23-s1.json",
+      "id": "A4-BW-TS2-0.23-s1",
+      "seed": 2026112701,
+      "sha256": "602311affff068e96b907c8fd3f52f858ce1d8286adab47564493390cfb71485"
+    },
+    {
+      "file": "01-A4-BW-TS2-0.30-s1.json",
+      "id": "A4-BW-TS2-0.30-s1",
+      "seed": 2026112701,
+      "sha256": "e0ccf11a64d8588f0368db2b345bcaad2ab2c6d2f61ed41331f53ac3b23fe530"
+    },
+    {
+      "file": "01-A4-DD-TS2-0.46-s1.json",
+      "id": "A4-DD-TS2-0.46-s1",
+      "seed": 2026112701,
+      "sha256": "9d7038e28cf3cda74e50c4a2f44c890bf26fe66713e34008c7c93eaa2e32ec37"
+    },
+    {
+      "file": "01-A4-DD-TS2-0.56-s1.json",
+      "id": "A4-DD-TS2-0.56-s1",
+      "seed": 2026112701,
+      "sha256": "5d83b4c868224d98ab1f91c6e2e4155d5f817f2fd798c2a03685003364ef7c5c"
+    },
+    {
+      "file": "01-A4-DD-TS2-0.66-s1.json",
+      "id": "A4-DD-TS2-0.66-s1",
+      "seed": 2026112701,
+      "sha256": "385257c1f925dac50f82a44b2e473dcd1b3ebe014f148f4aa17c2b314f428a02"
+    },
+    {
+      "file": "01-A4-WL-TS2-0.70-s1.json",
+      "id": "A4-WL-TS2-0.70-s1",
+      "seed": 2026112701,
+      "sha256": "4abf4208a335bf983945e1693264827bbdebae37f6d1a868082e9a144a5ddaab"
+    },
+    {
+      "file": "01-A4-WL-TS2-1.15-s1.json",
+      "id": "A4-WL-TS2-1.15-s1",
+      "seed": 2026112701,
+      "sha256": "01c70fa3ae56b8264a90eec0349948028ac5e1cb21348b16a1efe9e3dcc1eea0"
+    },
+    {
+      "file": "01-A4-WL-TS2-1.35-s1.json",
+      "id": "A4-WL-TS2-1.35-s1",
+      "seed": 2026112701,
+      "sha256": "ae06487b4208b7687adf0458b3909693beb560b697fbc7c3ad96f2dd4e542145"
+    },
+    {
+      "file": "01-A4-WL-TS2-1.55-s1.json",
+      "id": "A4-WL-TS2-1.55-s1",
+      "seed": 2026112701,
+      "sha256": "72a15067d2418e179bf734af869d6c1b28d5ab826afcb36529ee8b999ffd1437"
+    },
+    {
+      "file": "02-A4-BW-TS2-0.16-s2.json",
+      "id": "A4-BW-TS2-0.16-s2",
+      "seed": 2026112702,
+      "sha256": "d74407f9a256295aa9ec7ceb94d4413dd2a4434cbd3eb8a987f2d2e938349d3d"
+    },
+    {
+      "file": "02-A4-BW-TS2-0.23-s2.json",
+      "id": "A4-BW-TS2-0.23-s2",
+      "seed": 2026112702,
+      "sha256": "1b5517c1c4c52c9342e68c5fb5670a8f5110239764d8536daf08a2657baea0fe"
+    },
+    {
+      "file": "02-A4-BW-TS2-0.30-s2.json",
+      "id": "A4-BW-TS2-0.30-s2",
+      "seed": 2026112702,
+      "sha256": "23f69da40afda4e95f5198b60cfef52c6c57bf688a50132a3216b0a340f5972b"
+    },
+    {
+      "file": "02-A4-DD-TS2-0.46-s2.json",
+      "id": "A4-DD-TS2-0.46-s2",
+      "seed": 2026112702,
+      "sha256": "348fc32970c297ba0f6b0b146ee9720d90ffa95fdbcb4ab701fb6f77d128f89c"
+    },
+    {
+      "file": "02-A4-DD-TS2-0.56-s2.json",
+      "id": "A4-DD-TS2-0.56-s2",
+      "seed": 2026112702,
+      "sha256": "15642f240acdb443325c6fcb4456d2c8e885f33d1b0529bdb8f0c3f57a41dcba"
+    },
+    {
+      "file": "02-A4-DD-TS2-0.66-s2.json",
+      "id": "A4-DD-TS2-0.66-s2",
+      "seed": 2026112702,
+      "sha256": "9f803c2425c6418587a3ac89c42e7b2b200a6801789202f10a69d1581a6f8043"
+    },
+    {
+      "file": "02-A4-WL-TS2-0.70-s2.json",
+      "id": "A4-WL-TS2-0.70-s2",
+      "seed": 2026112702,
+      "sha256": "647a466fdb6804e960404681ed5b003c6b271703aa661e84b37a53c6848332f9"
+    },
+    {
+      "file": "02-A4-WL-TS2-1.15-s2.json",
+      "id": "A4-WL-TS2-1.15-s2",
+      "seed": 2026112702,
+      "sha256": "2b5c488ad3f06a4af375f62b5dc4ff974fe92a3b8e3f41b21db389676fce7c3a"
+    },
+    {
+      "file": "02-A4-WL-TS2-1.35-s2.json",
+      "id": "A4-WL-TS2-1.35-s2",
+      "seed": 2026112702,
+      "sha256": "62d3d91211132dc7ae68ffa06e857249749ce547f2f7e8d4d244b32f28fe1329"
+    },
+    {
+      "file": "02-A4-WL-TS2-1.55-s2.json",
+      "id": "A4-WL-TS2-1.55-s2",
+      "seed": 2026112702,
+      "sha256": "fe102a59cdd11359d7c14b311ebc3377a874a5dc37da4ed1f047cab3ae07303d"
+    },
+    {
+      "file": "03-A4-BW-TS2-0.16-s3.json",
+      "id": "A4-BW-TS2-0.16-s3",
+      "seed": 2026112703,
+      "sha256": "925982f219f931aa9f7e9733eacae0e83c65732bdbfade15c303fd709ff0218a"
+    },
+    {
+      "file": "03-A4-BW-TS2-0.23-s3.json",
+      "id": "A4-BW-TS2-0.23-s3",
+      "seed": 2026112703,
+      "sha256": "1d883b69d18950294e57142781c0d2f7fc101ce1cf5d8610047c75146ab7d89f"
+    },
+    {
+      "file": "03-A4-BW-TS2-0.30-s3.json",
+      "id": "A4-BW-TS2-0.30-s3",
+      "seed": 2026112703,
+      "sha256": "1473206cf77585e027a219dd7f2bca992b37e2a7feeb6ff87c06106959009fd3"
+    },
+    {
+      "file": "03-A4-DD-TS2-0.46-s3.json",
+      "id": "A4-DD-TS2-0.46-s3",
+      "seed": 2026112703,
+      "sha256": "77e26b93e030942bdd842614b2cce0e1b6dfb2b94c286181cbc38b35d0c530f7"
+    },
+    {
+      "file": "03-A4-DD-TS2-0.56-s3.json",
+      "id": "A4-DD-TS2-0.56-s3",
+      "seed": 2026112703,
+      "sha256": "b5ba94b49b43781fb46c886ecb24cf383fc01454576abf0f1270d43a0a2ad175"
+    },
+    {
+      "file": "03-A4-DD-TS2-0.66-s3.json",
+      "id": "A4-DD-TS2-0.66-s3",
+      "seed": 2026112703,
+      "sha256": "4ce5a53c06a4d1ba0195bfa0c88415f01dbc324ed30675f3eeb04b4e37ba5b63"
+    },
+    {
+      "file": "03-A4-WL-TS2-0.70-s3.json",
+      "id": "A4-WL-TS2-0.70-s3",
+      "seed": 2026112703,
+      "sha256": "e4e9b12e342a98a087e30f4e204fafe854506a82cdcfb8198eb0cf109339bf6d"
+    },
+    {
+      "file": "03-A4-WL-TS2-1.15-s3.json",
+      "id": "A4-WL-TS2-1.15-s3",
+      "seed": 2026112703,
+      "sha256": "a96fe3050c01409e886b58a34fe228613fa9530cbe993f308c597e91e5cb3adc"
+    },
+    {
+      "file": "03-A4-WL-TS2-1.35-s3.json",
+      "id": "A4-WL-TS2-1.35-s3",
+      "seed": 2026112703,
+      "sha256": "dec05fb83aea1045d58a093317cdc1762c4c8530b3973de9cf450fcc5b69a96f"
+    },
+    {
+      "file": "03-A4-WL-TS2-1.55-s3.json",
+      "id": "A4-WL-TS2-1.55-s3",
+      "seed": 2026112703,
+      "sha256": "efd9066a347db7e5a4d4878aedd73e05961621664a11539a14bd363fcaff1175"
+    }
+  ],
+  "files": {
+    "a4wb-ts1-BW-0.16-s1-532ac0fa42.png": "61fc2cef4264c2a562a92a1b8fb31a95ed004a1439bd1a45960700290dace945",
+    "a4wb-ts1-BW-0.16-s2-d343fadacb.png": "6a2c544f388780665bbe0dad439bd3167419cc72800569e4a33f1adff376703a",
+    "a4wb-ts1-BW-0.16-s3-69dfde630e.png": "c56711e2d93042714fad763c186187d235dc08ed2feef3b74abfc563376ed4e3",
+    "a4wb-ts1-BW-0.23-s1-5dbe267a13.png": "ee8c24b125072b748148d8c3436c318a97b8c0960aeb8106c4cb2d823cc47b44",
+    "a4wb-ts1-BW-0.23-s2-be35afbfb0.png": "d10b4bb31d4cd4fd2b7b3192a17d0dc405f46d6e16b370315afe1c0f9f38a446",
+    "a4wb-ts1-BW-0.23-s3-62d079509c.png": "295d1948857d714bd056924063a5fbddc05db67c9bbbbb8472ac7161c32544c7",
+    "a4wb-ts1-BW-0.30-s1-034fce5a57.png": "0208cac5a62cb96e09cde99af6d2ba058c4ee94dbdd5d7ce90868e14ed426379",
+    "a4wb-ts1-BW-0.30-s2-e877f6f7f1.png": "665b44aebda16df6f1106f935f6d0dc1d234f76a858dd28f636529e069011f4d",
+    "a4wb-ts1-BW-0.30-s3-93dd85e1fb.png": "82cc2f640051b1e43cf30c74df27c483a1970951c4c7cab9154db2dca48941a1",
+    "a4wb-ts1-DD-0.46-s1-4320d58332.png": "ba27524f79488a17a895538be851af6a3cc8e44c699126ee8d09ae01c46996c8",
+    "a4wb-ts1-DD-0.46-s2-dd13c488d0.png": "01a87eae5dbfd9e6bea0b6dd4f35aad90d9c09c70f1e6295c9fccccda0c8da37",
+    "a4wb-ts1-DD-0.46-s3-4fd9e29ba2.png": "ff0a353877c7b05ebd1f2a346a5bfd36a712360413e109cfa52050741ba27904",
+    "a4wb-ts1-DD-0.56-s1-7c3f2bbcfb.png": "55fc687580a2a159461f734a827812975da0a8d0c789bed6d88c6b5af2fcd8cf",
+    "a4wb-ts1-DD-0.56-s2-1d7ef61587.png": "6f6dd7c14655b2657c407233dea8e3ddf118c368141a8b109075881fb819f6ea",
+    "a4wb-ts1-DD-0.56-s3-10a09fa491.png": "1ce3d065bbb02f4c5ad4a371d117dcc1ee49c83b4298a4036c20a7c5598ff7f7",
+    "a4wb-ts1-DD-0.66-s1-19edcef1a8.png": "cd7e09e393429a5690b149755536ae96c3c28195551f1ef5aafc463e32dd2450",
+    "a4wb-ts1-DD-0.66-s2-a96a1e51e0.png": "9c0c6366e45870c6cbe6712d8ddb5378f8d8ef1e4b3c4c76f04e6d709048d01b",
+    "a4wb-ts1-DD-0.66-s3-3a4e8f3653.png": "af4a6a3e161600268f807f7d13773fe8e7d5f8a2e6f92e4c2be1e7620f252c47",
+    "a4wb-ts1-WL-0.70-s1-792e9d7cd2.png": "f5559bdd22dabd1c1690ba19a3230a5973f7994df5e6eae2d2dede95df2ff6e0",
+    "a4wb-ts1-WL-0.70-s2-34b04f60a8.png": "2bde3dfd9ed1ab50044bbd0dff0936dfadd76b611fcb5339691da599bbed8812",
+    "a4wb-ts1-WL-0.70-s3-a902389e2d.png": "3f13ab9763fa30eaa336bb25cba3691beecd6815e2ed44200b6bcd00f64e5f0b",
+    "a4wb-ts1-WL-1.15-s1-e410fe5cd9.png": "7334d903e22ad77f5ab507a1aa83c640492666bb091b33d4a46dcc8593bcf12e",
+    "a4wb-ts1-WL-1.15-s2-4736d04fb2.png": "00a2fe497eac0417c38671ea1722fbc1088e6102575871b10330284ec0dd377c",
+    "a4wb-ts1-WL-1.15-s3-f9d229f82d.png": "e95e4dca84fe9c372ed61ea23a3d494974ba643cecd21754a8c6e7774e7bb30e",
+    "a4wb-ts1-WL-1.35-s1-fd41cec1a2.png": "09a55956512e1ec0f0ae2beaf0990140568a463017ddff47a76c94ceef2d9deb",
+    "a4wb-ts1-WL-1.35-s2-2e8bd9f1d3.png": "b149e340d827763799d144122d8c451bd3603aecd44aa157be1732ebe6008229",
+    "a4wb-ts1-WL-1.35-s3-467f0b6e33.png": "aa1a8d8535aee7a319d415deb443646a25d27e2008f2fa4b982fe43e41acc731",
+    "a4wb-ts1-WL-1.55-s1-4abbe29702.png": "0bef232b37aa50d9eab7758e75a98c687d4510995528a306c2ea83eb08d8efb9",
+    "a4wb-ts1-WL-1.55-s2-cafcd381f2.png": "0bda7bfec264e33c4d644ba56505aa889457ec87ae1e5533524a80d87549cb29",
+    "a4wb-ts1-WL-1.55-s3-221b7f5e5a.png": "b2aba0530ea27639df5cb1d57ea948c08e443ed266b08399c7039bdec73f96b1"
+  }
+}

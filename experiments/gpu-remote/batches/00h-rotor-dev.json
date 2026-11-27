@@ -1,0 +1,89 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "旋翼：开发小批 12 张",
+  "registration": "experiments/20261127-rotor-dev/README.md",
+  "registered_manifest": "experiments/20261127-rotor-dev/manifest.json",
+  "registered_manifest_sha256": "609c90bc7c33a62a68436038afa851797e19ec4a3cb4b90dde664509cffeb648",
+  "requests_dir": "experiments/20261127-rotor-dev/requests",
+  "files_dirs": [
+    "experiments/20261127-rotor-dev/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-ROT-R0-s1.json",
+      "id": "ROT-R0-s1",
+      "seed": 2026112851,
+      "sha256": "d189e284647cff2026ce7efecea8ee453ea4d2fd25f04998ed1fe15868a73176"
+    },
+    {
+      "file": "01-ROT-R1-s1.json",
+      "id": "ROT-R1-s1",
+      "seed": 2026112851,
+      "sha256": "a07e603cf378be5539adb67a7b37ce4eeae199cb623be4a67fef49a878c8223f"
+    },
+    {
+      "file": "01-ROT-R2-s1.json",
+      "id": "ROT-R2-s1",
+      "seed": 2026112851,
+      "sha256": "d603b01e4e285c309e591226243900a595fd7d0e785758fdbd2a11f617268c5d"
+    },
+    {
+      "file": "02-ROT-R0-s2.json",
+      "id": "ROT-R0-s2",
+      "seed": 2026112852,
+      "sha256": "a87a010301c17583ad1c156f9a71d5b5ebad50d3d15fde640efc2d77bf31830e"
+    },
+    {
+      "file": "02-ROT-R1-s2.json",
+      "id": "ROT-R1-s2",
+      "seed": 2026112852,
+      "sha256": "e3bc4c4f4be718989d8193ee72411528f4eb260b7a50b0232b493181e7fa2420"
+    },
+    {
+      "file": "02-ROT-R2-s2.json",
+      "id": "ROT-R2-s2",
+      "seed": 2026112852,
+      "sha256": "fa647ed1da5385561c45b0e7571f160defc03a3e1b588f1565c8843c6151ce85"
+    },
+    {
+      "file": "03-ROT-R0-s3.json",
+      "id": "ROT-R0-s3",
+      "seed": 2026112853,
+      "sha256": "0e885695912455e3bf27944520ba7e2cc70febc662c37d68c7f806a1135b9265"
+    },
+    {
+      "file": "03-ROT-R1-s3.json",
+      "id": "ROT-R1-s3",
+      "seed": 2026112853,
+      "sha256": "9623c003d73f9329f473d746540408789a1197d8c5f76411df5bc2cabf6c614d"
+    },
+    {
+      "file": "03-ROT-R2-s3.json",
+      "id": "ROT-R2-s3",
+      "seed": 2026112853,
+      "sha256": "d02242c7d9a479bf72c620b9030bc25d2be775a758aeec3b92a9a3d067fc98c5"
+    },
+    {
+      "file": "04-ROT-R0-s4.json",
+      "id": "ROT-R0-s4",
+      "seed": 2026112854,
+      "sha256": "417e45f2ba61362d77dda047ac8ca875bb70da33a5ee9c9e745990f6e9c7457a"
+    },
+    {
+      "file": "04-ROT-R1-s4.json",
+      "id": "ROT-R1-s4",
+      "seed": 2026112854,
+      "sha256": "09c23988995f492aa55078de0f35871c597b17727161c154e7d368d45f9d0a97"
+    },
+    {
+      "file": "04-ROT-R2-s4.json",
+      "id": "ROT-R2-s4",
+      "seed": 2026112854,
+      "sha256": "88a06e3aae299f4dc39691657dea8058b8e1c90f7e7795afd14cf3f808db0a53"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

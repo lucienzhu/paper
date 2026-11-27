@@ -442,11 +442,7 @@ def reconcile(a):
         say("没有要对账的请求")
 
 
-# ---------- 环境核对：重出的图与归档原图比 ----------
-
-def git_blob(path):
-    return subprocess.run(["git", "-C", str(ROOT), "show", f"HEAD:{path}"], check=True, capture_output=True).stdout
-
+# ---------- 环境核对：同一份请求在这台主机上出两次 ----------
 
 def diff_stats(a_png, b_png):
     wa, ha, pa = pngread.rgb(a_png)
@@ -470,21 +466,21 @@ def diff_stats(a_png, b_png):
 
 
 def compare(a):
+    """2026-11-26 重新登记：不再与旧图比。清单里带 compare 的那一份，与它重复的那一份比；只换种子的那一份作对照。"""
     batch = load_batch(a.batch)
     out = Path(a.out)
     man = json.loads((ROOT / batch["registered_manifest"]).read_bytes())
-    rows = {r["id"]: r for r in man["requests"]}
     results, verdicts = [], []
-    for row in batch["requests"]:
+    png = lambda rid: (out / rid / f"{rid}.png").read_bytes()
+    for row in man["requests"]:
+        spec = row.get("compare")
+        if not spec:
+            continue
         rid = row["id"]
-        spec = rows[rid]["compare"]
-        new = (out / rid / f"{rid}.png").read_bytes()
-        orig = git_blob(spec["original"]["path"])
-        neigh = git_blob(spec["neighbour"]["path"])
-        assert sha(orig) == spec["original"]["sha256"] and sha(neigh) == spec["neighbour"]["sha256"], "归档原图摘要不符"
-        same = diff_stats(new, orig)
-        control = diff_stats(orig, neigh)
-        if not same.get("same_size"):
+        first, second, other = png(spec["repeat_of"]), png(rid), png(spec["contrast"])
+        same = diff_stats(second, first)
+        control = diff_stats(first, other)
+        if not same.get("same_size") or not control.get("same_size"):
             verdict = "明显不同"
         elif same["identical_pixels"]:
             verdict = "逐像素相同"
@@ -493,11 +489,13 @@ def compare(a):
         else:
             verdict = "明显不同"
         verdicts.append(verdict)
-        results.append({"id": rid, "original": spec["original"], "neighbour": spec["neighbour"],
-                        "new_png_sha256": sha(new), "new_vs_original": same, "original_vs_neighbour": control,
-                        "verdict": verdict})
-        say(f"{rid}：{verdict}（同种子平均差 {same.get('mean_abs_diff')}，相邻种子 {control.get('mean_abs_diff')}）")
-    overall = "停：先查版本和权重" if "明显不同" in verdicts else "通过"
+        results.append({"id": rid, "repeat_of": spec["repeat_of"], "contrast": spec["contrast"],
+                        "png_sha256": {x: sha(png(x)) for x in (spec["repeat_of"], rid, spec["contrast"])},
+                        "repeat_vs_first": same, "first_vs_other_seed": control, "verdict": verdict})
+        say(f"{rid}：{verdict}（同一请求两次的平均差 {same.get('mean_abs_diff')}，换种子 {control.get('mean_abs_diff')}）")
+    if not results:
+        raise SystemExit("清单里没有要比的请求")
+    overall = "停：先查主机回执、启动参数和显卡" if "明显不同" in verdicts else "通过"
     record = {"at": now(), "rule": man["rule"], "results": results, "overall": overall}
     (out / "env-check.json").write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     say(f"环境核对：{overall}")

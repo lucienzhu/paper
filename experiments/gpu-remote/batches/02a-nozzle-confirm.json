@@ -1,0 +1,77 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "农业植保六旋确认批 10 张：喷杆 6、喷头 4（工作台 4.7.1）",
+  "registration": "experiments/20261127-nozzle-confirm/README.md",
+  "registered_manifest": "experiments/20261127-nozzle-confirm/manifest.json",
+  "registered_manifest_sha256": "531b79dd3a1c24f822609a3426a6d557dce60ac644f67e5a889d0996a0974680",
+  "requests_dir": "experiments/20261127-nozzle-confirm/requests",
+  "files_dirs": [
+    "experiments/20261127-nozzle-confirm/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-E6B-N-confirm-r1.json",
+      "id": "E6B-N-confirm-r1",
+      "seed": 2026112971,
+      "sha256": "7bc923f090355465734e9edd0b972e0a15c5974f6f36275aa1f5f427b9cd587f"
+    },
+    {
+      "file": "01-E6B-N-confirm-r2.json",
+      "id": "E6B-N-confirm-r2",
+      "seed": 2026112972,
+      "sha256": "1e782e2a055bbbf46fd064f4d439294440a24a45fcffde4aa5bf77274fb2c74c"
+    },
+    {
+      "file": "01-E6B-N-confirm-r3.json",
+      "id": "E6B-N-confirm-r3",
+      "seed": 2026112973,
+      "sha256": "76f9bfb02e4b21ed993d9e544addf9ad842d2bc61aa706faf7f52e5826081719"
+    },
+    {
+      "file": "01-E6B-N-confirm-r4.json",
+      "id": "E6B-N-confirm-r4",
+      "seed": 2026112974,
+      "sha256": "15cc5e8eedbce704029f270a06319245dad8fade9615200c59643029d50424f0"
+    },
+    {
+      "file": "01-H2-boom-r1.json",
+      "id": "H2-boom-r1",
+      "seed": 2026112981,
+      "sha256": "77a35a591a086a7a31ddfab215c349377a0eefeb7f90db3df5bc1bf511249e18"
+    },
+    {
+      "file": "01-H2-boom-r2.json",
+      "id": "H2-boom-r2",
+      "seed": 2026112982,
+      "sha256": "c0bd5d935383b7ccb2c7c23e6c2eb557010401e34b1945230160e32bf3100b4a"
+    },
+    {
+      "file": "01-H2-boom-r3.json",
+      "id": "H2-boom-r3",
+      "seed": 2026112983,
+      "sha256": "f3ffc5a42a123f25882942e2f4aafd3b3ca8f12bba11af754012b827b7f42a6a"
+    },
+    {
+      "file": "01-H2-boom-r4.json",
+      "id": "H2-boom-r4",
+      "seed": 2026112984,
+      "sha256": "3a2e033f1bfee18ab1011412e8c7f26adce7a1eebc8703441507fb36b0d317e1"
+    },
+    {
+      "file": "01-H2-boom-r5.json",
+      "id": "H2-boom-r5",
+      "seed": 2026112985,
+      "sha256": "a40d53a4bebaa0d5fdf3cb6eeca7e3b48b2f76a9e3ca68e733da6ab1a993143a"
+    },
+    {
+      "file": "01-H2-boom-r6.json",
+      "id": "H2-boom-r6",
+      "seed": 2026112986,
+      "sha256": "2abd9e4d6472aaebc81d61c26bfd09b7902e40f27ebf7df679994cc5900936e7"
+    }
+  ],
+  "files": {
+    "wbguide-1e1f9e7c146b.png": "1e1f9e7c146b9e2b537077814b0a4be102b42b7f280a88f62871e4ce34c1e7d6"
+  }
+}

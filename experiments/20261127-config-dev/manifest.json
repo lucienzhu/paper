@@ -1,0 +1,122 @@
+{
+  "batch": "构型开发检查小批（植保六旋两种喷洒部件、平面八旋、共轴 X8 × 2 个种子）",
+  "workbench": {
+    "version": "4.7.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-YPZXpxR6.js",
+    "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "CD-boom-s1",
+      "state": "boom",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-1e1f9e7c146b.png"
+      ],
+      "prompt_sha256": "279723cb0ab24c4aac4b507f15f82c461124280f183d9966a006d95a82e68460",
+      "request_sha256": "096ec802f08c99606edb01b6558de045f7f5b0d5c9952448985f71575155019c"
+    },
+    {
+      "order": 1,
+      "id": "CD-nozzle-s1",
+      "state": "nozzle",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-1e1f9e7c146b.png"
+      ],
+      "prompt_sha256": "1ed390583b1b3cb0d95ff5cda72139020417688d1d58292f5f31dc8f2f714e99",
+      "request_sha256": "8d28b781b970e6b910fc5b732ac53946c5071d8380fc61bac7ea4b58df6bb5e3"
+    },
+    {
+      "order": 1,
+      "id": "CD-O8-s1",
+      "state": "O8",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-93d76dbaaed1.png"
+      ],
+      "prompt_sha256": "26d941c5a1241b91bfcd1ee95ba37382dffe5f03c4db9f4ca930c210056480ad",
+      "request_sha256": "1569b15379685c207e9d55b2a5a3f1e48120914ab75d092831053908cd58acd9"
+    },
+    {
+      "order": 1,
+      "id": "CD-X8-s1",
+      "state": "X8",
+      "seed": 2026112871,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "488e51d247ef6b9ff48136ba4d3db2941934af6699ca4e70c3a1c129f9562e64",
+      "request_sha256": "15b78172f10b7823c4bb8471cf76cc58009547b4352e0ca0d7d9be1a9d1abca3",
+      "negative_swap": [
+        "extra rotor",
+        "extra arm"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "CD-boom-s2",
+      "state": "boom",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-1e1f9e7c146b.png"
+      ],
+      "prompt_sha256": "279723cb0ab24c4aac4b507f15f82c461124280f183d9966a006d95a82e68460",
+      "request_sha256": "a842c1cd859346214ab712c31636fac393df4f8fa78bf30f7b62b46729005c79"
+    },
+    {
+      "order": 2,
+      "id": "CD-nozzle-s2",
+      "state": "nozzle",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-1e1f9e7c146b.png"
+      ],
+      "prompt_sha256": "1ed390583b1b3cb0d95ff5cda72139020417688d1d58292f5f31dc8f2f714e99",
+      "request_sha256": "02fca9b320861548be5a4c9c8d3640acda383bd135a9cbb4d740704702bb9660"
+    },
+    {
+      "order": 2,
+      "id": "CD-O8-s2",
+      "state": "O8",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-93d76dbaaed1.png"
+      ],
+      "prompt_sha256": "26d941c5a1241b91bfcd1ee95ba37382dffe5f03c4db9f4ca930c210056480ad",
+      "request_sha256": "7b768c705da3d5fd073cc445c9c6c586102a9a553d5c053ad911d75d389ee0f1"
+    },
+    {
+      "order": 2,
+      "id": "CD-X8-s2",
+      "state": "X8",
+      "seed": 2026112872,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "488e51d247ef6b9ff48136ba4d3db2941934af6699ca4e70c3a1c129f9562e64",
+      "request_sha256": "444828a2da97aa1408768a002c076e6d679f4abf642d2c5e840293085c0d2c03",
+      "negative_swap": [
+        "extra rotor",
+        "extra arm"
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-1e1f9e7c146b.png",
+      "sha256": "1e1f9e7c146b9e2b537077814b0a4be102b42b7f280a88f62871e4ce34c1e7d6"
+    },
+    {
+      "input": "wbguide-93d76dbaaed1.png",
+      "sha256": "93d76dbaaed18d54adac5298480a689f6f17970b58e169b474c0bef5e5aeb525"
+    },
+    {
+      "input": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+    }
+  ]
+}

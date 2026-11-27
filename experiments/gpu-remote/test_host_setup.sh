@@ -89,7 +89,7 @@ EOF
 ok $? "回执内容齐全（版本、torch、显卡、启动参数）"
 [ "$(wc -l < "$T/downloads.log" | tr -d ' ')" = 3 ]; ok $? "三份权重各下载一次"
 # 主机检查要读得到回执：版本和源文件相符；测试权重的摘要当然对不上登记，要被拦下
-python3 -B "$HERE/remote_runner.py" check --comfy "http://127.0.0.1:$P1" --batch "$HERE/batches/01-f1-dev.json" --out "$T/check1" > "$T/check1.log" 2>&1
+python3 -B "$HERE/remote_runner.py" check --comfy "http://127.0.0.1:$P1" --batch "$HERE/batches/01-f6-shape-levels.json" --out "$T/check1" > "$T/check1.log" 2>&1
 code=$?
 grep -q "实测摘要与登记不符" "$T/check1.log" && ! grep -q "ComfyUI 版本是\|四个源文件" "$T/check1.log" && [ $code = 1 ]
 ok $? "主机检查读到回执：版本、源文件相符，测试权重被拦下" "$T/check1.log"

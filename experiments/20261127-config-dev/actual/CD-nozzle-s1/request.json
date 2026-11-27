@@ -1,0 +1,101 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "qwen_image_2.1_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_8b_bf16.safetensors",
+        "type": "qwen_image",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "TextEncodeQwenImage21",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "prompt": "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.\nDesign a flat hexacopter for civil agricultural crop care. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nSix motors in a Radial hex layout: six motor centres at the corners of a regular hexagon. Mean opposite-motor (diagonal) span 1400 mm; motor-centre width-to-length span ratio W/L 1.15; adjacent arm angles clockwise from the first motor: 60°, 60°, 60°, 60°, 60°, 60°.\nMatch the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place.\nEach motor carries one stationary two-blade propeller, 20-inch (508 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm is attached to the shell by a visible folding hinge with a pivot pin.\nFuselage design envelope 100 × 80 × 30 mm (length × width × height); this is a size limit, not a shape.\nA square spray tank sits half-embedded in the central frame: the frame wraps the lower half of the tank, while the tank top and its round filler cap stay exposed.\nNo camera or gimbal is fitted.\nThere is no spray boom. Instead, one small round spray nozzle is mounted directly below each of the six motors, its dark nozzle tip just visible beside the motor from above.\nLow landing skids with 40 mm ground clearance, tucked beneath the aircraft.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+        "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
+        "resolution": 1024,
+        "images.image_1": [
+          "15",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "4",
+          0
+        ],
+        "negative": [
+          "4",
+          1
+        ],
+        "latent_image": [
+          "4",
+          2
+        ],
+        "seed": 2026112871,
+        "steps": 40,
+        "cfg": 3,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    "11": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "10",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "12": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "11",
+          0
+        ],
+        "filename_prefix": "CD-nozzle-s1"
+      }
+    },
+    "15": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "wbguide-1e1f9e7c146b.png"
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+﻿request,shell,root_fl,root_fr,root_rr,root_rl,camera,camera_end,lens_up,cover,product,note
+F6-S0-r01,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,每处臂根有一个小的椭圆形凸垫，不是贯穿机臂的横缝
+F6-S0-r02,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S0-r03,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S0-r04,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻窗带前方还探出一个小的深色部件，按探出舱体填；也可读作 flush
+F6-S0-r05,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S0-r06,round,smooth,smooth,smooth,smooth,flush,top,no,two,yes,机鼻是比机壳略窄的深色前盖带窗带，按 flush 填；顶盖内一块闭合嵌入面板，按两块填
+F6-S0-r07,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S0-r08,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S1-r01,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,臂根旁各有一个深色椭圆凹孔，但没有接缝或铰链
+F6-S1-r02,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,机鼻前方是一块比机壳窄的深色前盖带窗带，与其他深色前盖同样按 flush 填；也可读作 underslung
+F6-S1-r03,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,臂根各有一个椭圆减重孔，没有接缝
+F6-S1-r04,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,顶面的斜切棱线按外形线处理，不算分缝
+F6-S1-r05,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,两根后臂在机身后方由一道横梁连在一起
+F6-S1-r06,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前缘既有一条窄窗带又有一个小的深色舱体探出，按探出舱体填 underslung
+F6-S1-r07,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S1-r08,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S2-r01,round,hinge,hinge,hinge,hinge,flush,top,no,multi,yes,臂根是带横缝的转动关节块，可见深色转轴但看不到轴销；顶盖中央面板外两侧另有横向分缝
+F6-S2-r02,round,socket,socket,socket,socket,flush,top,no,single,yes,
+F6-S2-r03,round,socket,socket,socket,socket,flush,top,no,single,yes,
+F6-S2-r04,round,socket,socket,socket,socket,flush,top,no,single,yes,左后臂近臂根处有几道细裂纹样的线
+F6-S2-r05,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,臂根是带横缝的转动关节块，可见圆形转轴座但看不到轴销
+F6-S2-r06,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S2-r07,round,hinge,hinge,hinge,hinge,flush,top,no,two,yes,臂根各有一个很小的轴销和圆形铰块；顶盖一道弧形横缝
+F6-S2-r08,round,socket,socket,socket,socket,flush,top,no,two,yes,
+F6-S3-r01,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S3-r02,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S3-r03,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,机鼻是两级：窗带前方再探出一小块带深色窗口的灰色舱体；也可读作 flush
+F6-S3-r04,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,机鼻是一块与机身同宽的深色前盖带窗带，按 flush 填
+F6-S3-r05,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S3-r06,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S3-r07,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S3-r08,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S4-r01,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,臂根附近有很淡的弧线和小刻痕，没有贯穿机臂的接缝
+F6-S4-r02,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,顶盖中央一块面板，四角有分缝通到外缘，分出前、后、左、右几块
+F6-S4-r03,round,smooth,smooth,smooth,smooth,underslung,top,no,two,yes,顶盖内有一块闭合的嵌入面板（一道闭合分缝），按两块填
+F6-S4-r04,round,smooth,smooth,smooth,smooth,underslung,top,no,two,yes,顶盖内有一块闭合的嵌入面板（一道闭合分缝），按两块填
+F6-S4-r05,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S4-r06,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S4-r07,round,smooth,smooth,smooth,smooth,underslung,top,no,two,yes,顶盖一道U形分缝从机鼻前缘开始绕到后部
+F6-S4-r08,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S5-r01,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,每处臂根有一道短的凹槽，不贯穿机臂，不算接缝
+F6-S5-r02,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,
+F6-S5-r03,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,
+F6-S5-r04,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,
+F6-S5-r05,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,机身分成宽窄不同的几段，中段两侧略凸出
+F6-S5-r06,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,
+F6-S5-r07,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,
+F6-S5-r08,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,

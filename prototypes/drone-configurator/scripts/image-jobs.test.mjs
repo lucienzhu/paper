@@ -58,7 +58,7 @@ test('the image service only runs Qwen on ComfyUI: any other backend is refused'
 });
 
 test('a Qwen job runs the archived E3 workflow on ComfyUI, keeps the raw receipts and reuses its seed', async () => {
-  const { comfyDefaults, seedOf, qwenModel } = await import('./image-jobs.mjs');
+  const { comfyDefaults, negativeFor, seedOf, qwenModel } = await import('./image-jobs.mjs');
   const directory=await mkdtemp(join(tmpdir(),'qwen-job-test-'));
   const png=await readFile(new URL('../src/data/history/quad-guide.png',import.meta.url));
   const digest=createHash('sha256').update(png).digest('hex');
@@ -90,7 +90,7 @@ test('a Qwen job runs the archived E3 workflow on ComfyUI, keeps the raw receipt
     assert.equal(graph['1'].inputs.unet_name,'qwen_image_2.1_bf16.safetensors');
     assert.deepEqual({steps:graph['10'].inputs.steps,cfg:graph['10'].inputs.cfg,sampler:graph['10'].inputs.sampler_name,scheduler:graph['10'].inputs.scheduler,denoise:graph['10'].inputs.denoise},
       {steps:40,cfg:3,sampler:'euler',scheduler:'simple',denoise:1});
-    assert.equal(graph['4'].inputs.negative_prompt,comfyDefaults.negative_prompt);
+    assert.equal(graph['4'].inputs.negative_prompt,negativeFor('quad'));
     assert.equal(graph['4'].inputs.prompt,input.prompt);
     assert.deepEqual(graph['4'].inputs['images.image_1'],['15',0]);
     assert.equal(graph['15'].inputs.image,'studio-'+digest+'.png');
@@ -110,7 +110,7 @@ test('a Qwen job runs the archived E3 workflow on ComfyUI, keeps the raw receipt
 });
 
 test('a free-prompt Qwen job sends only the designer text, with the same settings, seed rule and receipts as a structured one', async () => {
-  const { comfyDefaults, seedOf } = await import('./image-jobs.mjs');
+  const { comfyDefaults, negativeFor, seedOf } = await import('./image-jobs.mjs');
   const { existsSync } = await import('node:fs');
   const directory=await mkdtemp(join(tmpdir(),'qwen-free-test-'));
   const png=await readFile(new URL('../src/data/history/quad-guide.png',import.meta.url));
@@ -140,7 +140,7 @@ test('a free-prompt Qwen job sends only the designer text, with the same setting
     const text=graphs[0];
     assert.deepEqual(Object.fromEntries(Object.entries(text).map(([k,v])=>[k,v.class_type])),
       {1:'UNETLoader',2:'CLIPLoader',3:'VAELoader',4:'TextEncodeQwenImage21',10:'KSampler',11:'VAEDecode',12:'SaveImage'});
-    assert.deepEqual(text['4'].inputs,{clip:['2',0],prompt:words,negative_prompt:comfyDefaults.negative_prompt,resolution:1024});
+    assert.deepEqual(text['4'].inputs,{clip:['2',0],prompt:words,negative_prompt:negativeFor('quad'),resolution:1024});
     assert.equal(text['10'].inputs.seed,seedOf(first.attemptId));
     assert.deepEqual(job.evidence.request.images,[]);
     assert.equal(job.evidence.request.condition,'free');
@@ -420,4 +420,116 @@ test('GPT 复测三条：回执在远端校验时丢了、远端收下后报 502
         {first:{status:'unconfirmed',enqueue:'not-sent',promptId:null,lost:false},last:done,sent:1,enqueueRequests:1});
     });
   } finally { server.close(); server.closeAllConnections(); await rm(directory,{recursive:true,force:true}); }
+});
+
+// 4.5.2（Codex 2026-11-26 复现）：浏览器里存着的旧项目可能带着 4.5 以前开发用后端出的图。父图的来源在服务端按内容摘要核对：
+// 只认这台服务自己从 Qwen 取回并记为成功的原图；别的后端的旧记录、没出过的图、软件夹具的图（对真实服务）都不接收。
+test('a parent image is accepted only if this service received it from a completed Qwen job', async () => {
+  const { deflateSync } = await import('node:zlib');
+  const { writeFile, mkdir, readdir } = await import('node:fs/promises');
+  // 两张内容不同的合法 PNG（1024×1024 纯色，出图服务的回图必须是这个尺寸）。
+  const crcTable=Array.from({length:256},(_,n)=>{ let c=n; for(let k=0;k<8;k++) c=c&1 ? 0xedb88320^(c>>>1) : c>>>1; return c>>>0; });
+  const crc=bytes=>{ let c=0xffffffff; for(const b of bytes) c=crcTable[(c^b)&0xff]^(c>>>8); return (c^0xffffffff)>>>0; };
+  const chunk=(type,data)=>{ const head=Buffer.alloc(4); head.writeUInt32BE(data.length); const body=Buffer.concat([Buffer.from(type,'ascii'),data]);
+    const tail=Buffer.alloc(4); tail.writeUInt32BE(crc(body)); return Buffer.concat([head,body,tail]); };
+  const solid=grey=>{ const ihdr=Buffer.alloc(13); ihdr.writeUInt32BE(1024,0); ihdr.writeUInt32BE(1024,4); ihdr[8]=8; ihdr[9]=0;
+    const row=Buffer.concat([Buffer.from([0]),Buffer.alloc(1024,grey)]);
+    return Buffer.concat([Buffer.from('89504e470d0a1a0a','hex'),chunk('IHDR',ihdr),chunk('IDAT',deflateSync(Buffer.concat(Array(1024).fill(row)))),chunk('IEND',Buffer.alloc(0))]); };
+  const qwenOut=solid(40), foreign=solid(200);
+  const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+  const as=(role,bytes)=>({role,sha256:sha(bytes),dataUrl:'data:image/png;base64,'+bytes.toString('base64')});
+  const directory=await mkdtemp(join(tmpdir(),'image-job-parent-'));
+  let prompts=0;
+  const fetchImpl=async(url,init={})=>{
+    const {pathname}=new URL(url);
+    if(pathname==='/upload/image') return Response.json({name:init.body.get('image').name,subfolder:'',type:'input'});
+    if(pathname==='/queue') return Response.json({queue_running:[],queue_pending:[]});
+    if(pathname==='/prompt'){ prompts++; return Response.json({prompt_id:'run-'+prompts,node_errors:{}}); }
+    if(pathname.startsWith('/history/')){ const id=pathname.slice(9); return Response.json({[id]:{status:{completed:true,status_str:'success'},
+      outputs:{12:{images:[{filename:'studio-x_00001_.png',subfolder:'',type:'output'}]}}}}); }
+    if(pathname==='/view') return new Response(qwenOut);
+    return new Response('',{status:404});
+  };
+  const done=async(jobs,id)=>{ let job; for(let i=0;i<200 && (job=await jobs.get(id)).status==='running';i++) await new Promise(r=>setTimeout(r,10)); return job; };
+  const refused=error=>error.status===422 && /父图不是这台工作台从 Qwen 取回的原图/.test(error.message);
+  try {
+    const jobs=createImageJobs({backend:{provider:'qwen-comfy',url:'http://gpu.test:8188',pollMs:5},fetchImpl,directory});
+    // 还没有任何成功的 Qwen 轮次：什么图都不能当父图。
+    await assert.rejects(jobs.submit({attemptId:randomUUID(),condition:'free',prompt:'机身再窄一些',inputs:[as('parent',qwenOut)]}),refused);
+    assert.equal(prompts,0,'被拒收的请求没有发给出图服务');
+    const first={attemptId:randomUUID(),condition:'free',prompt:'一架紧凑的四旋翼',inputs:[]};
+    await jobs.submit(first);
+    const job=await done(jobs,first.attemptId);
+    assert.equal(job.status,'succeeded',job.error);
+    assert.equal(job.outputs[0].sha256,sha(qwenOut));
+    // 这台服务从 Qwen 取回的原图可以当父图；结构化方式的第二张图同样核对。
+    const second={attemptId:randomUUID(),condition:'free',prompt:'机身再窄一些',inputs:[as('parent',qwenOut)]};
+    await jobs.submit(second);
+    assert.equal((await done(jobs,second.attemptId)).status,'succeeded');
+    await assert.rejects(jobs.submit({attemptId:randomUUID(),prompt:'compiled text',inputs:[as('layout',qwenOut),as('parent',foreign)]}),refused);
+    // 别处来的图：内容对不上任何一轮的原图。
+    await assert.rejects(jobs.submit({attemptId:randomUUID(),condition:'free',prompt:'机身再窄一些',inputs:[as('parent',foreign)]}),refused);
+    // 4.5 以前开发用后端留在作业目录里的旧记录：记录上写着成功，也不认。
+    const oldId=randomUUID();
+    await mkdir(directory,{recursive:true});
+    await writeFile(join(directory,oldId+'.json'),JSON.stringify({attemptId:oldId,jobId:oldId,provider:'minimax',model:'MiniMax-H3-Image',status:'succeeded',
+      outputs:[{name:'H3-'+oldId+'.png',mimeType:'image/png',sha256:sha(foreign)}]}));
+    await assert.rejects(jobs.submit({attemptId:randomUUID(),condition:'free',prompt:'机身再窄一些',inputs:[as('parent',foreign)]}),refused);
+    // 重启后的服务按同一个目录里的记录认。
+    const restarted=createImageJobs({backend:{provider:'qwen-comfy',url:'http://gpu.test:8188',pollMs:5},fetchImpl,directory});
+    const third={attemptId:randomUUID(),condition:'free',prompt:'臂根再宽一些',inputs:[as('parent',qwenOut)]};
+    await restarted.submit(third);
+    assert.equal((await done(restarted,third.attemptId)).status,'succeeded');
+    // 软件夹具出的图只在夹具服务里能当父图：同一个目录换成夹具服务，不认真实服务的图；反过来也不认。
+    const fixtureJobs=createImageJobs({fixture:true,backend:{provider:'qwen-comfy',url:'http://gpu.test:8188',pollMs:5},fetchImpl,directory});
+    await assert.rejects(fixtureJobs.submit({attemptId:randomUUID(),condition:'free',prompt:'机身再窄一些',inputs:[as('parent',qwenOut)]}),refused);
+    const before=prompts;
+    assert.equal((await readdir(directory)).filter(n=>/^[a-f\d-]{36}\.json$/.test(n)).length,4,'被拒收的请求不留作业记录（三轮成功的，加一份旧后端的记录）');
+    assert.equal(prompts,before);
+  } finally { await rm(directory,{recursive:true,force:true}); }
+});
+
+test('the negative prompt is the unified one: the workbench ten terms plus five blade terms, no camera-position terms', async () => {
+  const { comfyDefaults, negativeFor, cameraNegative } = await import('./image-jobs.mjs');
+  // 4.6：装相机的任务另加 4 个压相机伪影的词；植保六旋不带。没有机尾的词。
+  assert.equal(negativeFor('hexa'),comfyDefaults.negative_prompt);
+  assert.equal(negativeFor('quad'),comfyDefaults.negative_prompt+', '+cameraNegative);
+  assert.deepEqual(cameraNegative.split(', '),['camera lens visible from above','upward-facing lens','camera on a neck or stalk','camera on a post']);
+  assert.ok(!/tail/.test(negativeFor('quad')));
+  const terms=comfyDefaults.negative_prompt.split(', ');
+  assert.equal(terms.length,15);
+  assert.deepEqual(terms.slice(0,10),['flat schematic','line drawing','collage','text','labels','logo','cropped rotor','disconnected arm','extra rotor','perspective camera']);
+  assert.deepEqual(terms.slice(10),['V-shaped propeller','blades at an acute angle','single-blade propeller','missing blade','unequal blades']);
+  assert.ok(!/lens|stalk|post|tail/.test(comfyDefaults.negative_prompt));
+});
+
+test('the task chooses the negative prompt: camera terms for the quad task, none for the plant-protection hexacopter', async () => {
+  const { comfyDefaults, negativeFor } = await import('./image-jobs.mjs');
+  const directory=await mkdtemp(join(tmpdir(),'image-job-task-'));
+  const png=await readFile(new URL('../src/data/history/quad-guide.png',import.meta.url));
+  const digest=createHash('sha256').update(png).digest('hex');
+  const layout={role:'layout',sha256:digest,dataUrl:'data:image/png;base64,'+png.toString('base64')};
+  const graphs=[];
+  const fetchImpl=async(url,init={})=>{
+    const {pathname}=new URL(url);
+    if(pathname==='/upload/image') return Response.json({name:init.body.get('image').name,subfolder:'',type:'input'});
+    if(pathname==='/queue') return Response.json({queue_running:[],queue_pending:[]});
+    if(pathname==='/prompt'){ graphs.push(JSON.parse(init.body).prompt); return Response.json({prompt_id:'run-'+graphs.length,node_errors:{}}); }
+    if(pathname.startsWith('/history/')){ const id=pathname.slice(9); return Response.json({[id]:{status:{completed:true,status_str:'success'},
+      outputs:{12:{images:[{filename:'studio-x_00001_.png',subfolder:'',type:'output'}]}}}}); }
+    if(pathname==='/view') return new Response(png);
+    return new Response('',{status:404});
+  };
+  const done=async(jobs,id)=>{ let job; for(let i=0;i<200 && (job=await jobs.get(id)).status==='running';i++) await new Promise(r=>setTimeout(r,10)); return job; };
+  try {
+    const jobs=createImageJobs({backend:{provider:'qwen-comfy',url:'http://gpu.test:8188',pollMs:5},fetchImpl,directory});
+    const run=async extra=>{ const request={attemptId:randomUUID(),prompt:'compiled text',inputs:[layout],...extra}; await jobs.submit(request); return done(jobs,request.attemptId); };
+    const quad=await run({task:'quad'}), unstated=await run({}), hexa=await run({task:'hexa'});
+    assert.equal(graphs[0]['4'].inputs.negative_prompt,negativeFor('quad'));
+    assert.equal(graphs[1]['4'].inputs.negative_prompt,negativeFor('quad'),'没写任务的按四旋算');
+    assert.equal(graphs[2]['4'].inputs.negative_prompt,comfyDefaults.negative_prompt);
+    assert.deepEqual([quad.evidence.request.task,unstated.evidence.request.task,hexa.evidence.request.task],['quad','quad','hexa']);
+    assert.equal(hexa.evidence.request.negative_prompt,graphs[2]['4'].inputs.negative_prompt,'记录里的负向词就是实际发出的');
+    await assert.rejects(jobs.submit({attemptId:randomUUID(),prompt:'compiled text',inputs:[layout],task:'octo'}),/任务无法识别/);
+  } finally { await rm(directory,{recursive:true,force:true}); }
 });

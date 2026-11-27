@@ -1,0 +1,1 @@
+Same drone as the image. Change only the four arm roots: make the arm-to-body transitions smoother. Keep the nose, the forward camera and the four motor positions unchanged. Strict top view.

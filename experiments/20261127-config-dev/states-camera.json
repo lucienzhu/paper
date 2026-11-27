@@ -1,0 +1,41 @@
+{
+  "task": "consumer_camera",
+  "note": "构型开发检查：平面八旋和共轴 X8，基准造型与四旋的 S0（工作台 4.7.0 修正后的基准）相同，只换机架构型；平面八旋另把桨径改为 3.5 英寸（理由见 experiments/20261126-h5-octo-x8）。",
+  "states": [
+    {
+      "name": "CD-O8",
+      "values": {
+        "frame.frame_type": "Radial Octo",
+        "propulsion.prop_diameter_inch": 3.5,
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      }
+    },
+    {
+      "name": "CD-X8",
+      "values": {
+        "frame.frame_type": "Coax X8",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "accessories.surface_finish": "matte"
+      }
+    }
+  ]
+}

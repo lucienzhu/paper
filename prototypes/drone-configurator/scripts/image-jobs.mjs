@@ -1,14 +1,22 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { link, mkdir, readFile, rename, stat, unlink, writeFile } from 'node:fs/promises';
+import { link, mkdir, readdir, readFile, rename, stat, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { homedir } from 'node:os';
 import { ChatError } from './design-chat.mjs';
 
 export const qwenModel = 'Qwen-Image-2.1';
 // 与第 4 章 E3 设计通路已归档的请求是同一套工作流和设置（experiments/e3-quad-qwen/requests/*.request.json）。
+// 4.5.2：负向词全研究统一（作者 2026-11-26 把细节交给 Claude 定）。工作台原有的 10 个词，加 5 个桨叶词；不加相机位置词（那是设计选择）。
+// 各批 GPU 请求用的也是这一份：experiments/workbench-graph 按本函数生成并逐份核对。
 export const comfyDefaults = { unet:'qwen_image_2.1_bf16.safetensors', clip:'qwen3vl_8b_bf16.safetensors', vae:'qwen_image_2.1_vae_bf16.safetensors',
   steps:40, cfg:3, sampler_name:'euler', scheduler:'simple',
-  negative_prompt:'flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera' };
+  negative_prompt:'flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, '
+    +'V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades' };
+// 4.6：装相机的任务（日常航拍四旋）另加 4 个只压相机伪影的词：朝上的镜片、长颈、立柱。它们不限定相机装在哪。
+// 真机开发小批（experiments/20261126-camera-dev）：没有这 4 个词时基准的相机 4 张里 3 张外突；加上并用 v1.6 的内嵌原句后 4/4 内嵌。
+// 农业植保六旋不装相机，不带这几个词（圆形加注口不能被当成镜片压掉；出图防错清单第 5 条）。
+export const cameraNegative = 'camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post';
+export const negativeFor = (task, base=comfyDefaults.negative_prompt) => task==='hexa' ? base : base+', '+cameraNegative;
 // 不带图的自由提示与 E1 纯文字组已归档的请求同构（evidence/e1-open-20261112/E1-actual/E1-text-*/request.json）：编码器只接文字，不接 VAE。
 export function comfyGraph(id, prompt, seed, imageNames, s=comfyDefaults) {
   const encoder={clip:['2',0],...(imageNames.length ? {vae:['3',0]} : {}),prompt,negative_prompt:s.negative_prompt,resolution:1024};
@@ -41,6 +49,8 @@ function checkedPng(bytes, inbound) {
 function validate(request) {
   const {attemptId,prompt,inputs}=request ?? {};
   if (![undefined,'structured','free'].includes(request?.condition)) fail(400,'图像请求的生成方式无法识别。');
+  // 4.6：任务决定负向词用哪一份。没写的（4.6 以前留下、还没发出的轮次）按四旋算。
+  if (![undefined,'quad','hexa'].includes(request?.task)) fail(400,'图像请求的任务无法识别。');
   const free=request.condition==='free';
   if (typeof attemptId!=='string' || !uuid.test(attemptId) || typeof prompt!=='string' || !prompt.trim() ||
       prompt.length>32000 || !Array.isArray(inputs) || !(free ? [0,1] : [1,2]).includes(inputs.length)) fail(400,free ? '自由提示请求缺少文字，或带了多余的图。' : '图像请求缺少本轮目标或布局图。');
@@ -51,7 +61,7 @@ function validate(request) {
     if(!checkedPng(bytes,true) || sha(bytes)!==input.sha256) fail(400,'参考图的尺寸、格式或内容摘要校验失败。');
     return {role:input.role, sha256:input.sha256, dataUrl:input.dataUrl};
   });
-  return {attemptId,prompt,references,free};
+  return {attemptId,prompt,references,free,task:request.task ?? 'quad'};
 }
 
 /**
@@ -75,7 +85,7 @@ export function createImageJobs({fetchImpl=globalThis.fetch,backend={provider:'q
   if (backend?.provider!=='qwen-comfy') throw new Error('出图后端只能是本机 ComfyUI 上的 Qwen-Image 2.1。');
   const comfy={...comfyDefaults,...Object.fromEntries(Object.entries(backend).filter(([,v])=>v!==undefined && v!==''))};
   const ident={provider:'qwen-comfy',model:qwenModel};
-  const baseRecord=id=>({attemptId:id,jobId:id,...ident});
+  const baseRecord=id=>({attemptId:id,jobId:id,...ident,...(fixture ? {fixture:true} : {})});
   // 软件夹具冒充后端接口时，标签直说不出真图，免得把走查截图当成真实回图。
   const realLabel='Qwen-Image 2.1（本机 ComfyUI）';
   const describe=()=>({...ident,endpoint:'/prompt',label:fixture ? '软件夹具（接口同 '+realLabel.replace(/（.*?）/,'')+'，不出真图）' : realLabel,
@@ -164,7 +174,7 @@ export function createImageJobs({fetchImpl=globalThis.fetch,backend={provider:'q
       names.push([up.subfolder,up.name].filter(Boolean).join('/'));
     }
     // 实际发出的请求、入队回执和运行历史原样存盘，供主持人登记场次时使用。prompt_id 由工作台给定（ComfyUI 支持时沿用），回执丢了也知道该找哪一个。
-    const body=JSON.stringify({client_id:'studio-'+record.jobId,prompt_id:record.jobId,prompt:comfyGraph(record.jobId,record.evidence.request.prompt,record.evidence.request.seed,names,comfy)});
+    const body=JSON.stringify({client_id:'studio-'+record.jobId,prompt_id:record.jobId,prompt:comfyGraph(record.jobId,record.evidence.request.prompt,record.evidence.request.seed,names,{...comfy,negative_prompt:record.evidence.request.negative_prompt ?? comfy.negative_prompt})});
     await writeFile(file(record.jobId,'.comfy-request.json'),body,{mode:0o600});
     // 实际发给模型的文字另存一份纯文本（不加换行），主持人登记时直接引用。自由提示这一份就是设计者的原文。
     await writeFile(file(record.jobId,'.prompt.txt'),record.evidence.request.prompt,{mode:0o600});
@@ -297,13 +307,32 @@ export function createImageJobs({fetchImpl=globalThis.fetch,backend={provider:'q
     }
     await save(record);
   }
+  // 4.5.2：父图的来源在服务端核对。父图只能是这台服务自己从 Qwen 取回、并记为成功的原图（按内容摘要在本机作业记录里找）。
+  // 浏览器里的轮次记录可能是旧版本留下的（4.5 以前开发用的托管后端），也可能被改过，页面上的标签不作数。
+  // 软件夹具出的图只在夹具服务里能当父图，真实服务不认。
+  const known=new Set();
+  async function fromQwen(sha256) {
+    if(known.has(sha256)) return true;
+    let names;
+    try { names=await readdir(directory); } catch(e){ if(e.code==='ENOENT') return false; throw e; }
+    for(const name of names){
+      if(!name.endsWith('.json') || !uuid.test(name.slice(0,-5))) continue;
+      let record; try { record=JSON.parse(await readFile(path.join(directory,name),'utf8')); } catch { continue; }
+      if(record?.provider!=='qwen-comfy' || record.status!=='succeeded' || !!record.fixture!==!!fixture) continue;
+      for(const out of record.outputs ?? []) if(/^[a-f\d]{64}$/.test(out?.sha256 ?? '')) known.add(out.sha256);
+      if(known.has(sha256)) return true;
+    }
+    return false;
+  }
   async function submit(raw) {
-    const {attemptId,prompt,references,free}=validate(raw);
+    const {attemptId,prompt,references,free,task}=validate(raw);
+    for(const ref of references) if(ref.role==='parent' && !(await fromQwen(ref.sha256)))
+      fail(422,'父图不是这台工作台从 Qwen 取回的原图，这一轮没有发出。父图只能选本机 Qwen 出图成功的候选。');
     const hashes=references.map(x=>x.sha256);
     const images=references.map(({role,sha256})=>({role,sha256}));
     // 两种方式的模型、画幅、步数、引导强度、采样器、负向词和种子规则完全相同；差别只在发什么文字、带不带布局条件图。
     const request={model:qwenModel,prompt,size:'1024x1024',n:1,output_format:'png',endpoint:'/prompt',seed:seedOf(attemptId),
-        steps:comfy.steps,cfg:comfy.cfg,sampler_name:comfy.sampler_name,scheduler:comfy.scheduler,negative_prompt:comfy.negative_prompt,
+        steps:comfy.steps,cfg:comfy.cfg,sampler_name:comfy.sampler_name,scheduler:comfy.scheduler,negative_prompt:negativeFor(task,comfy.negative_prompt),task,
         weights:{unet:comfy.unet,clip:comfy.clip,vae:comfy.vae},images,...(free ? {condition:'free'} : {})};
     const fingerprint=sha(JSON.stringify(request));
     await mkdir(directory,{recursive:true,mode:0o700});

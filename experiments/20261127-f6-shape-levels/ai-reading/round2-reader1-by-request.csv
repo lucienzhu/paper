@@ -1,0 +1,49 @@
+﻿request,shell,root_fl,root_fr,root_rr,root_rl,camera,camera_end,lens_up,cover,product,note
+F6-S0-r01,round,?,?,?,?,underslung,top,no,single,yes,四个臂根各有一个小椭圆凹位或圆形凸点，臂上无缝，不能确定是铰链还是顺滑
+F6-S0-r02,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S0-r03,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S0-r04,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,相机舱前端另有一小块深色件
+F6-S0-r05,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S0-r06,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S0-r07,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S0-r08,round,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S1-r01,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,顶盖为小圆角矩形，下方机架后端为切角，按方正机壳判；臂根有椭圆孔不是接缝
+F6-S1-r02,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S1-r03,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,臂根有椭圆孔，不是接缝
+F6-S1-r04,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,右前臂根旁有一个小黑点，看不出是否轴销
+F6-S1-r05,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S1-r06,box,smooth,smooth,smooth,smooth,?,top,no,single,yes,机鼻前缘既有一条齐平的深色窗带，又有一个小深色舱体探出，两种相机装法都像
+F6-S1-r07,box,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,
+F6-S1-r08,box,smooth,smooth,smooth,smooth,flush,top,no,single,yes,
+F6-S2-r01,round,hinge,hinge,hinge,hinge,flush,top,?,?,yes,窗带右端有一个小圆形件，说不准是否朝上的镜片；顶盖有内嵌面板及侧边短线，分块数说不准
+F6-S2-r02,round,socket,socket,socket,socket,underslung,top,no,single,yes,臂插入机身两侧的圆形凸缘，接口处有横缝
+F6-S2-r03,round,socket,socket,socket,socket,underslung,top,no,single,yes,
+F6-S2-r04,round,socket,socket,socket,socket,underslung,top,no,single,yes,左后臂上有几道不规则细线
+F6-S2-r05,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,臂根有横缝和圆形铰块，判为铰链
+F6-S2-r06,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S2-r07,round,hinge,hinge,hinge,hinge,underslung,top,no,two,yes,
+F6-S2-r08,round,socket,socket,socket,socket,underslung,top,no,two,yes,臂根进入带横缝的承座块，未见轴销
+F6-S3-r01,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,机鼻窗带所在的前段与顶盖之间有台阶，按探出的相机舱判
+F6-S3-r02,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,
+F6-S3-r03,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,相机舱顶面另有一个小黑槽
+F6-S3-r04,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,
+F6-S3-r05,round,hinge,hinge,hinge,hinge,flush,top,no,single,yes,
+F6-S3-r06,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,机鼻窗带前段略窄于机身并探出，flush/underslung 界限不太明显
+F6-S3-r07,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,窗带所在的机鼻前段略窄并探出，flush/underslung 界限不太明显
+F6-S3-r08,round,hinge,hinge,hinge,hinge,underslung,top,no,single,yes,相机外框略探出机鼻，flush/underslung 界限不太明显
+F6-S4-r01,round,?,?,?,?,underslung,top,no,single,yes,四个臂根都有一道很淡的短弧线或小刻痕，不像完整横缝也不完全顺滑
+F6-S4-r02,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,中央面板四角各有一道线通到外缘，按多块盖板判；机鼻前为云台相机
+F6-S4-r03,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机
+F6-S4-r04,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机
+F6-S4-r05,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机
+F6-S4-r06,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机
+F6-S4-r07,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机
+F6-S4-r08,round,smooth,smooth,smooth,smooth,underslung,top,no,single,yes,机鼻前探出带两侧轴的云台相机
+F6-S5-r01,round,?,?,?,?,underslung,top,no,multi,yes,四个臂根各有一道短横线，只横过臂的一部分，看不出是否独立承座
+F6-S5-r02,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,
+F6-S5-r03,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,机身为圆角长方，侧边较直但转角为圆角非切角
+F6-S5-r04,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,窗带所在的机鼻前段略窄并探出，flush/underslung 界限不太明显
+F6-S5-r05,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,机身前段窄于中段，轮廓有台阶
+F6-S5-r06,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,
+F6-S5-r07,round,smooth,smooth,smooth,smooth,underslung,top,no,multi,yes,
+F6-S5-r08,round,smooth,smooth,smooth,smooth,flush,top,no,multi,yes,

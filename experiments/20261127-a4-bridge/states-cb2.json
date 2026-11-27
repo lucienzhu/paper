@@ -1,0 +1,156 @@
+{
+  "task": "consumer_camera",
+  "note": "A4 闭环臂第二轮：按第一轮读数的最小二乘直线反推的名义值（build_cb2.py）。基准同第一轮（宽 X、W/L 1.35、250 mm、5 英寸桨）。",
+  "plan": {
+    "WL": {
+      "a": 0.1725,
+      "b": 0.8725,
+      "calibratable": true,
+      "tiers": [
+        {
+          "target": 1.15,
+          "nominal": 1.12
+        },
+        {
+          "target": 1.35,
+          "nominal": 1.35
+        },
+        {
+          "target": 1.55,
+          "nominal": 1.579
+        }
+      ]
+    },
+    "DD": {
+      "a": 0.0693,
+      "b": 0.89,
+      "calibratable": true,
+      "tiers": [
+        {
+          "target": 0.46,
+          "nominal": 0.439
+        },
+        {
+          "target": 0.56,
+          "nominal": 0.551
+        },
+        {
+          "target": 0.66,
+          "nominal": 0.664
+        }
+      ]
+    },
+    "BW": {
+      "a": 0.262,
+      "b": 0.0,
+      "calibratable": false
+    }
+  },
+  "states": [
+    {
+      "name": "A4-WL2-1.15",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.12,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      }
+    },
+    {
+      "name": "A4-WL2-1.35",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      }
+    },
+    {
+      "name": "A4-WL2-1.55",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.579,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b"
+      }
+    },
+    {
+      "name": "A4-DD2-0.46",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "propulsion.prop_diameter_inch": 4.320866141732283
+      }
+    },
+    {
+      "name": "A4-DD2-0.56",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "propulsion.prop_diameter_inch": 5.4232283464566935
+      }
+    },
+    {
+      "name": "A4-DD2-0.66",
+      "values": {
+        "frame.frame_type": "Wide X",
+        "frame.span_ratio_wl": 1.35,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte",
+        "landing_gear.landing_gear_style": "无独立起落架",
+        "accessories.arm_color": "#c7cbd1",
+        "accessories.prop_color": "#1e293b",
+        "propulsion.prop_diameter_inch": 6.535433070866142
+      }
+    }
+  ]
+}

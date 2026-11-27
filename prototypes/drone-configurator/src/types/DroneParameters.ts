@@ -48,8 +48,14 @@ export interface AccessoriesParameters {
   /** 相机安装方式。空字符串表示留白。相机朝机头前方是任务固定条件。 */
   camera_mount: '' | 'flush' | 'underslung';
   custom_prompt_additions: string;
-  /** 主色。空字符串表示留白。 */
+  /** 主色：机身外壳的颜色。空字符串表示留白。 */
   drone_primary_color: string;
+  /**
+   * 4.6：按部件配色。机臂、桨叶各自的颜色；空字符串或没有这个键表示留白（不写进文字）。
+   * 电机颜色试过两种写法，真机上都控不住（0/4、0/4），所以不设这一项：给了选项却出不来，等于假选项。
+   */
+  arm_color?: string;
+  prop_color?: string;
   /** 表面处理。空字符串表示留白。 */
   surface_finish: '' | 'matte' | 'satin' | 'gloss' | 'metallic' | 'textured';
   /** 农业植保才有：药箱怎样和机身结合。空字符串表示留白；其他任务不写这一项。 */

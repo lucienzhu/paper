@@ -1,0 +1,159 @@
+{
+  "batch": "条件图颜色残留：开发小批（三种做法 × 4 个种子）",
+  "base_state": "F6-S0",
+  "workbench": {
+    "version": "4.5.2",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-Co7FOXPy.js",
+    "bundle_sha256": "ff9c9c881c8751da4836555a48c85c1e31bc2c039d7ef5f8791d765865be81da",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
+  },
+  "sentence": {
+    "old": "red dots mark motor centres, blue lines mark frame links",
+    "new": "dots mark motor centres, lines mark frame links"
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "GC-V0-s1",
+      "variant": "V0",
+      "seed": 2026112801,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "404b0e109988a051a8fa4e13f8d58bfd3660518fad15064d38dd94d0f9d9974d"
+    },
+    {
+      "order": 1,
+      "id": "GC-V1-s1",
+      "variant": "V1",
+      "seed": 2026112801,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "3cd8fcee7156d03dc559f9ad18c04a29cd57ee7a4970eb1486c7da0b8505f008"
+    },
+    {
+      "order": 1,
+      "id": "GC-V2-s1",
+      "variant": "V2",
+      "seed": 2026112801,
+      "input_images": [
+        "wbguide-neutral-78716dae3031.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "4d8f6b5ea87439864d0721a39fffd609978898c6e5c73cf8d7a32608b80a404d"
+    },
+    {
+      "order": 2,
+      "id": "GC-V0-s2",
+      "variant": "V0",
+      "seed": 2026112802,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "86e0c62e1d2bc53e4fdbb7a1b895493ec95ad57588f7338819b90ffcc072b24a"
+    },
+    {
+      "order": 2,
+      "id": "GC-V1-s2",
+      "variant": "V1",
+      "seed": 2026112802,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "d8d9af26611f373e6a799143f6ae89513b43c92139df1373cb665149f4e5be2b"
+    },
+    {
+      "order": 2,
+      "id": "GC-V2-s2",
+      "variant": "V2",
+      "seed": 2026112802,
+      "input_images": [
+        "wbguide-neutral-78716dae3031.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "33b1c6a4f966e530f772a097df2f8726e9e7262138e3d707e39a35c2503cb796"
+    },
+    {
+      "order": 3,
+      "id": "GC-V0-s3",
+      "variant": "V0",
+      "seed": 2026112803,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "b88ad72939b4746157c1bb4d346fc1a1b149d63504f35ea820dbd9f336b6d220"
+    },
+    {
+      "order": 3,
+      "id": "GC-V1-s3",
+      "variant": "V1",
+      "seed": 2026112803,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "00c1f5cc3b8a4968d4307e29cf53289da786f9c6d36b3b1f1419b9e57738715a"
+    },
+    {
+      "order": 3,
+      "id": "GC-V2-s3",
+      "variant": "V2",
+      "seed": 2026112803,
+      "input_images": [
+        "wbguide-neutral-78716dae3031.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "299f25193d252ac88258d49eed819e7f00619588fa922b51bc2c1b4228bbb1da"
+    },
+    {
+      "order": 4,
+      "id": "GC-V0-s4",
+      "variant": "V0",
+      "seed": 2026112804,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "d6bf357e59c9eca138eb5dad091dcaf365af5c3aaba766c5410c6125aaf88492",
+      "request_sha256": "94bd4b5129f149f274e0551b46e9bf365ae82952f2a4b5c74808e0e42e7bf596"
+    },
+    {
+      "order": 4,
+      "id": "GC-V1-s4",
+      "variant": "V1",
+      "seed": 2026112804,
+      "input_images": [
+        "wbguide-deb3284ef6b5.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "075dd088cf2d8afc97910d6581d495b37c7ad705ca28ecaa3d0136e4d00c25d8"
+    },
+    {
+      "order": 4,
+      "id": "GC-V2-s4",
+      "variant": "V2",
+      "seed": 2026112804,
+      "input_images": [
+        "wbguide-neutral-78716dae3031.png"
+      ],
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "20dee354709b59fc9409aa72cc42411d6df155923032b0e6e2f9720b50f5f0ad"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+    },
+    {
+      "input": "wbguide-neutral-78716dae3031.png",
+      "sha256": "78716dae3031a0b18f9ef4dad80b9ee3f424de8584758c144a142b422212aff2"
+    }
+  ]
+}

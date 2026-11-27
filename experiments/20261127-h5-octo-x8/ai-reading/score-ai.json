@@ -1,0 +1,425 @@
+{
+  "summary": {
+    "readers": [
+      "1",
+      "2"
+    ],
+    "as_expected_by": []
+  },
+  "by_reader": {
+    "1": {
+      "O8_axes_8": 4,
+      "O8_became_quad": 0,
+      "expectation_1": true,
+      "key_parts": {
+        "camera_flush_top": {
+          "Q": 1,
+          "O8": 4
+        },
+        "cover_single": {
+          "Q": 3,
+          "O8": 4
+        },
+        "roots_smooth": {
+          "Q": 3,
+          "O8": 1
+        },
+        "shell_round": {
+          "Q": 4,
+          "O8": 4
+        }
+      },
+      "expectation_2": false,
+      "as_expected": false,
+      "Q": {
+        "axes": {
+          "4": 4
+        },
+        "arms": {
+          "4": 4
+        },
+        "layers": {
+          "one": 4
+        },
+        "blades": {
+          "two": 4
+        },
+        "shell": {
+          "round": 4
+        },
+        "roots": {
+          "?": 1,
+          "smooth": 3
+        },
+        "camera": {
+          "underslung": 3,
+          "flush": 1
+        },
+        "camera_end": {
+          "top": 4
+        },
+        "cover": {
+          "single": 3,
+          "two": 1
+        },
+        "product": {
+          "yes": 4
+        }
+      },
+      "O8": {
+        "axes": {
+          "8": 4
+        },
+        "arms": {
+          "8": 4
+        },
+        "layers": {
+          "one": 4
+        },
+        "blades": {
+          "two": 4
+        },
+        "shell": {
+          "round": 4
+        },
+        "roots": {
+          "socket": 3,
+          "smooth": 1
+        },
+        "camera": {
+          "flush": 4
+        },
+        "camera_end": {
+          "top": 4
+        },
+        "cover": {
+          "single": 4
+        },
+        "product": {
+          "yes": 4
+        }
+      },
+      "per_image": [
+        {
+          "request": "H5-Q-r1",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "smooth",
+          "camera": "underslung",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "H5-Q-r2",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "?",
+          "camera": "underslung",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "臂根被机身遮住，只见交界处小暗色件，分不清承座、铰链还是顺接；相机是比机身窄的小框体探出机头前缘"
+        },
+        {
+          "request": "H5-Q-r3",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "smooth",
+          "camera": "underslung",
+          "camera_end": "top",
+          "cover": "two",
+          "product": "yes",
+          "note": "顶盖中间有一块从前缘延伸到后部U形收口的面板线，按一道分缝算；不排除是装饰线"
+        },
+        {
+          "request": "H5-Q-r4",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "smooth",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "机身侧边较直但转角大圆角，按圆润判"
+        },
+        {
+          "request": "H5-O8-r1",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "smooth",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "H5-O8-r2",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "socket",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "H5-O8-r3",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "socket",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "臂从机壳短凸出段伸出，凸出段与臂管之间有横向接缝"
+        },
+        {
+          "request": "H5-O8-r4",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "socket",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "臂从机壳短凸出段伸出，凸出段与细臂管之间有横向接缝"
+        }
+      ]
+    },
+    "2": {
+      "O8_axes_8": 4,
+      "O8_became_quad": 0,
+      "expectation_1": true,
+      "key_parts": {
+        "camera_flush_top": {
+          "Q": 1,
+          "O8": 4
+        },
+        "cover_single": {
+          "Q": 3,
+          "O8": 4
+        },
+        "roots_smooth": {
+          "Q": 3,
+          "O8": 1
+        },
+        "shell_round": {
+          "Q": 0,
+          "O8": 4
+        }
+      },
+      "expectation_2": false,
+      "as_expected": false,
+      "Q": {
+        "axes": {
+          "4": 4
+        },
+        "arms": {
+          "4": 4
+        },
+        "layers": {
+          "one": 4
+        },
+        "blades": {
+          "two": 4
+        },
+        "shell": {
+          "?": 4
+        },
+        "roots": {
+          "smooth": 3,
+          "?": 1
+        },
+        "camera": {
+          "flush": 1,
+          "underslung": 3
+        },
+        "camera_end": {
+          "top": 4
+        },
+        "cover": {
+          "single": 3,
+          "two": 1
+        },
+        "product": {
+          "yes": 4
+        }
+      },
+      "O8": {
+        "axes": {
+          "8": 4
+        },
+        "arms": {
+          "8": 4
+        },
+        "layers": {
+          "one": 4
+        },
+        "blades": {
+          "two": 4
+        },
+        "shell": {
+          "round": 4
+        },
+        "roots": {
+          "socket": 3,
+          "smooth": 1
+        },
+        "camera": {
+          "flush": 4
+        },
+        "camera_end": {
+          "top": 4
+        },
+        "cover": {
+          "single": 4
+        },
+        "product": {
+          "yes": 4
+        }
+      },
+      "per_image": [
+        {
+          "request": "H5-Q-r1",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "?",
+          "roots": "smooth",
+          "camera": "underslung",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "机身为圆角长方形（侧边平直、转角圆而非切角），两种都不完全符合"
+        },
+        {
+          "request": "H5-Q-r2",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "?",
+          "roots": "?",
+          "camera": "underslung",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "机身为圆角长方形（侧边平直、转角圆）；机臂从机壳侧边下方伸出，臂根处有台阶和暗色缝隙，但看不出独立承座或铰链"
+        },
+        {
+          "request": "H5-Q-r3",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "?",
+          "roots": "smooth",
+          "camera": "underslung",
+          "camera_end": "top",
+          "cover": "two",
+          "product": "yes",
+          "note": "机身为圆角长方形（侧边平直、转角圆而非切角）；顶盖上一道U形线从前缘贯穿到后部，把中间板与外圈分开，按一道分缝计"
+        },
+        {
+          "request": "H5-Q-r4",
+          "axes": "4",
+          "arms": "4",
+          "layers": "one",
+          "blades": "two",
+          "shell": "?",
+          "roots": "smooth",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "机身为圆角长方形：两侧边平直但转角是圆角而非切角，两种都不完全符合"
+        },
+        {
+          "request": "H5-O8-r1",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "smooth",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "H5-O8-r2",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "socket",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": ""
+        },
+        {
+          "request": "H5-O8-r3",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "socket",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "机壳上伸出锥形短凸缘，细臂插入处有横向接缝；顶盖内圈一道闭合轮廓线按外周线计、不算分缝；相机窗所在前端块略窄于机身，判为内嵌"
+        },
+        {
+          "request": "H5-O8-r4",
+          "axes": "8",
+          "arms": "8",
+          "layers": "one",
+          "blades": "two",
+          "shell": "round",
+          "roots": "socket",
+          "camera": "flush",
+          "camera_end": "top",
+          "cover": "single",
+          "product": "yes",
+          "note": "机壳上伸出锥形短凸缘，细臂插入处有一道横向接缝；凸缘与机壳之间是顺滑过渡"
+        }
+      ]
+    }
+  }
+}

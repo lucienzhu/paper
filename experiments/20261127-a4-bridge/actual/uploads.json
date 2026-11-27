@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-27T05:40:38+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/06a-a4-cb-round1.json",
+  "uploaded": [
+    {
+      "file": "wbguide-0ec5251048a5.png",
+      "sha256": "0ec5251048a507efba31ba8a543dc347df23a008d2e97d389ffb3398d13ea19e",
+      "bytes": 58510
+    },
+    {
+      "file": "wbguide-1633259782cc.png",
+      "sha256": "1633259782cc1115798cea63e32d32cdedebc87bc68b75ff5af364e51df653e1",
+      "bytes": 62785
+    },
+    {
+      "file": "wbguide-7f467548f9ab.png",
+      "sha256": "7f467548f9abf67f1bb9bd18f54e1bee419fd160ccb258bba8523f54f0750622",
+      "bytes": 66503
+    },
+    {
+      "file": "wbguide-8e0f9a4b17d9.png",
+      "sha256": "8e0f9a4b17d956f84ec013c41c45807ba06e3d16cb0852edd0266772fb3a5301",
+      "bytes": 59860
+    },
+    {
+      "file": "wbguide-a1844dfa5fef.png",
+      "sha256": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3",
+      "bytes": 61555
+    },
+    {
+      "file": "wbguide-a8e56389e509.png",
+      "sha256": "a8e56389e509ae8c9f4a1da0c5809853ce47649d892de1217b99446fe823eb70",
+      "bytes": 64408
+    },
+    {
+      "file": "wbguide-b4b585ee7a10.png",
+      "sha256": "b4b585ee7a10c4f5781ec4de161e96f6cd9b102c5366a4da7a6926f4f4eebe20",
+      "bytes": 63030
+    }
+  ],
+  "readback_problems": []
+}

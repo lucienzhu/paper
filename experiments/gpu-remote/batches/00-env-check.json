@@ -1,29 +1,35 @@
 {
   "schema": "gpu-remote-batch-v1",
-  "batch": "环境核对（每次开机先做）",
+  "batch": "环境核对 3 张（同一请求出两次，中间隔一份换种子的）",
   "registration": "experiments/gpu-remote/env-check/manifest.json",
   "registered_manifest": "experiments/gpu-remote/env-check/manifest.json",
-  "registered_manifest_sha256": "a6e7430d971bb3dc12a01051e73d43a392b3c4e6acae6d7a85263df877adddca",
+  "registered_manifest_sha256": "1000b20dd52dca1cf1916d3bf388028c695c4faba58175c031b3196d5f203e69",
   "requests_dir": "experiments/gpu-remote/env-check/requests",
   "files_dirs": [
-    "experiments/20261117-local-edit-v2/inputs"
+    "experiments/gpu-remote/env-check/inputs"
   ],
   "on_error": "stop",
   "requests": [
     {
-      "file": "01-ENV-S12-S0-r05.json",
-      "id": "ENV-S12-S0-r05",
-      "seed": 2026112005,
-      "sha256": "e7b42ca153cf325194d32140906ddb323ff1f584892b253759fbad4f3f8c280d"
+      "file": "01-ENV-A-r1.json",
+      "id": "ENV-A-r1",
+      "seed": 2026112691,
+      "sha256": "899ade37574df8ef5bcf737753610ab03c232146ea93efad2a83fa65e0ed9345"
     },
     {
-      "file": "01-ENV-COMBO-pod-inside-single-r1.json",
-      "id": "ENV-COMBO-pod-inside-single-r1",
-      "seed": 2026112221,
-      "sha256": "779a91ee49f27e582afa5021f29f90aa6763c1ef9bdaf1f368a82be7ad336b5a"
+      "file": "02-ENV-N.json",
+      "id": "ENV-N",
+      "seed": 2026112692,
+      "sha256": "fb41f39987e1dcc232aabdf4e2e68bcf27f5fcabf4949f3db1069b360e3db489"
+    },
+    {
+      "file": "03-ENV-A-r2.json",
+      "id": "ENV-A-r2",
+      "seed": 2026112691,
+      "sha256": "63df5080eeb972c87cb53ab6ee3fd3e666b15c282549c63d9107ecd1420f27a1"
     }
   ],
   "files": {
-    "qwen-shape-dots-250-15c5ad1c924b.png": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338"
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
   }
 }

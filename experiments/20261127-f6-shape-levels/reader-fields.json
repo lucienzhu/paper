@@ -1,0 +1,279 @@
+{
+  "intro": [
+    "这里有若干张四旋翼无人机的顶视效果图。请一张一张看，只凭图上看得见的东西点选；不要推测图是怎么生成的，也不要因为别的图是什么样就猜这一张。",
+    "每一张都请实际看清楚再选，看不清的地方可以点图放大。确实看不清或拿不准，就选“看不清”，不要硬选。",
+    "图的上方是机头方向。“左前”指画面左上的那根机臂，“右前”右上，“右后”右下，“左后”左下。",
+    "进度自动存在这台电脑的浏览器里，中途可以关掉再打开。全部填完后点右上角“导出读数”，把下载到的 reading.csv 发回给研究者。请独立完成，不要和别的读者商量。"
+  ],
+  "fields": [
+    {
+      "column": "shell",
+      "label": "机身轮廓",
+      "help": "",
+      "options": [
+        {
+          "value": "round",
+          "label": "流线舱",
+          "help": "圆润连续：轮廓是连续的曲线"
+        },
+        {
+          "value": "box",
+          "label": "方正机壳",
+          "help": "侧边平直，转角是切角"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": "看不清，或两样都像"
+        }
+      ]
+    },
+    {
+      "column": "root_fl",
+      "label": "左前臂根",
+      "group": "四处臂根（各选一次）",
+      "help": "只有颜色变化、没有缝线或台阶的，不算接缝，选“顺滑”。",
+      "options": [
+        {
+          "value": "smooth",
+          "label": "顺滑",
+          "help": "机臂从机壳上顺滑地长出来，臂根没有接缝"
+        },
+        {
+          "value": "socket",
+          "label": "承座",
+          "help": "机臂插进机壳上一个独立的承座或凸缘，臂根有一道横向的接缝"
+        },
+        {
+          "value": "hinge",
+          "label": "铰链",
+          "help": "臂根有看得见的折叠铰链或转轴（轴销、铰块）"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "root_fr",
+      "label": "右前臂根",
+      "group": "四处臂根（各选一次）",
+      "help": "判法同左前臂根。",
+      "options": [
+        {
+          "value": "smooth",
+          "label": "顺滑",
+          "help": ""
+        },
+        {
+          "value": "socket",
+          "label": "承座",
+          "help": ""
+        },
+        {
+          "value": "hinge",
+          "label": "铰链",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "root_rr",
+      "label": "右后臂根",
+      "group": "四处臂根（各选一次）",
+      "help": "判法同左前臂根。",
+      "options": [
+        {
+          "value": "smooth",
+          "label": "顺滑",
+          "help": ""
+        },
+        {
+          "value": "socket",
+          "label": "承座",
+          "help": ""
+        },
+        {
+          "value": "hinge",
+          "label": "铰链",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "root_rl",
+      "label": "左后臂根",
+      "group": "四处臂根（各选一次）",
+      "help": "判法同左前臂根。",
+      "options": [
+        {
+          "value": "smooth",
+          "label": "顺滑",
+          "help": ""
+        },
+        {
+          "value": "socket",
+          "label": "承座",
+          "help": ""
+        },
+        {
+          "value": "hinge",
+          "label": "铰链",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "camera",
+      "label": "相机怎样装在机头",
+      "group": "相机",
+      "help": "",
+      "options": [
+        {
+          "value": "flush",
+          "label": "内嵌机鼻",
+          "help": "内嵌在机鼻里，与机壳齐平：从正上方只看见机鼻最前缘一条窄的窗带"
+        },
+        {
+          "value": "underslung",
+          "label": "机鼻下挂",
+          "help": "挂在机鼻下方：从正上方看见一个小的相机舱体从机鼻前缘探出一点"
+        },
+        {
+          "value": "none",
+          "label": "看不到相机",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "camera_end",
+      "label": "看上去像相机的部件在画面哪一端",
+      "group": "相机",
+      "help": "",
+      "options": [
+        {
+          "value": "top",
+          "label": "上端",
+          "help": ""
+        },
+        {
+          "value": "bottom",
+          "label": "下端",
+          "help": ""
+        },
+        {
+          "value": "both",
+          "label": "两端都有",
+          "help": ""
+        },
+        {
+          "value": "none",
+          "label": "都没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "lens_up",
+      "label": "有没有正对观察者的镜片玻璃",
+      "group": "相机",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "cover",
+      "label": "顶盖",
+      "group": "顶盖与整体",
+      "help": "机壳的外周轮廓线和装饰线不算分缝。",
+      "options": [
+        {
+          "value": "single",
+          "label": "一整块",
+          "help": "没有贯穿顶盖的分缝"
+        },
+        {
+          "value": "multi",
+          "label": "三块或更多",
+          "help": "盖板之间有分缝"
+        },
+        {
+          "value": "two",
+          "label": "两块",
+          "help": "一道分缝"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "product",
+      "label": "整体看上去是不是一件完整的产品",
+      "group": "顶盖与整体",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "是",
+          "help": "一件完整的、合乎常理的产品"
+        },
+        {
+          "value": "no",
+          "label": "不是",
+          "help": "平涂剪影、部件拼贴、示意图，或有明显断开、缺失的部件"
+        },
+        {
+          "value": "?",
+          "label": "拿不准",
+          "help": ""
+        }
+      ]
+    }
+  ]
+}

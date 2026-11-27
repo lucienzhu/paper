@@ -1,0 +1,5 @@
+pair,before,after,group,target,keep
+P-911B65,LE-A38F5D,LE-911B65,structured,机鼻与前向相机,四处臂根、四个电机轴心的位置
+P-A48DB1,LE-A38F5D,LE-A48DB1,structured,四处臂根,机鼻与前向相机、四个电机轴心的位置
+P-CB0575,LE-840D44,LE-CB0575,free,机鼻与前向相机,四处臂根、四个电机轴心的位置
+P-E806D2,LE-840D44,LE-E806D2,free,四处臂根,机鼻与前向相机、四个电机轴心的位置

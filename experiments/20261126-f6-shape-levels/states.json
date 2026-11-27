@@ -1,0 +1,12 @@
+{
+  "task": "consumer_camera",
+  "note": "F6 造型档位 S0—S5。共同条件：登记的机架条件 c2-pilot（真 X、W/L 1.00、对角轴距 250 mm）；机身包络和其余各项用工作台的起始值；主色银灰、细砂哑光，使分缝在各档下同样看得清。每档只改一项。",
+  "states": [
+    { "name": "F6-S0", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "seamless", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "F6-S1", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Boxy Enclosure", "frame.arm_root": "seamless", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "F6-S2", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "socket", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "F6-S3", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "hinge", "accessories.camera_mount": "flush", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "F6-S4", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "seamless", "accessories.camera_mount": "underslung", "fuselage.top_cover": "single", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } },
+    { "name": "F6-S5", "values": { "frame.frame_type": "True X", "frame.span_ratio_wl": 1, "frame.wheelbase_mm": 250, "fuselage.fuselage_style": "Aerodynamic Pod", "frame.arm_root": "seamless", "accessories.camera_mount": "flush", "fuselage.top_cover": "multi", "accessories.drone_primary_color": "#c7cbd1", "accessories.surface_finish": "matte" } }
+  ]
+}

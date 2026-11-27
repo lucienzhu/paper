@@ -127,8 +127,9 @@ def main():
             code, log = runner("check", f, F1, tmp / ("check-" + flag[-1]))
             expect(f"主机检查拦下：{name}", code == 1, log)
 
-    other = ROOT / "experiments/20261126-a6-hexa-ratio/inputs/hexa-points-0.70.png"
-    with Fake("--preload", f"hexa-points-1.00.png={other}") as f:
+    # 夹具批次的输入图是工作台画的六旋条件图；主机上预先放一张同名、内容不同的图（八旋的条件图）。
+    other = ROOT / "experiments/20261126-h5-octo-x8/inputs/wbguide-1f21ae837a63.png"
+    with Fake("--preload", f"wbguide-0b22d00e5389.png={other}") as f:
         code, log = runner("upload", f, F1, tmp / "conflict")
         expect("主机上有同名不同内容的文件时不覆盖、停下", code != 0 and "同名" in log, log)
 
@@ -139,24 +140,25 @@ def main():
         code, log = runner("run", f, F1, out)
         expect("见到 STOP 不提交", code == 3 and not f.posts(), log)
 
-    env = json.loads((HERE / "env-check/manifest.json").read_bytes())
-    def echo_dir(swap):
+    # 环境核对（2026-11-26 重新登记）：同一份请求出两次，中间隔一份换种子的。假主机按请求号回放两张内容不同的图。
+    pic_a = (ROOT / "experiments/20261126-f6-shape-levels/inputs/wbguide-deb3284ef6b5.png").read_bytes()
+    sys.path.insert(0, str(HERE))
+    import pngread
+    pic_b = pngread.encode_rgb(1024, 1024, bytes([200]) * (1024 * 1024 * 3), {"prompt": "fake"})  # 一张明显不同的图（浅灰）
+    def echo_dir(second):
         d = Path(tempfile.mkdtemp(prefix="echo-", dir=tmp))
-        for r in env["requests"]:
-            src = r["compare"]["neighbour" if swap else "original"]["path"]
-            data = subprocess.run(["git", "-C", str(ROOT), "show", f"HEAD:{src}"], capture_output=True, check=True).stdout
-            (d / (r["id"][4:] + ".png")).write_bytes(data)
+        for name, data in (("A-r1", pic_a), ("N", pic_b), ("A-r2", second)):
+            (d / (name + ".png")).write_bytes(data)
         return str(d)
-    for args, name, want_code, want in (([], "逐像素相同", 0, "逐像素相同"), (["--noise", "2"], "只有数值差异", 0, "只有数值差异"),
-                                        (["swap"], "换成别的种子的图", 1, "明显不同")):
-        swap = args == ["swap"]
-        with Fake("--echo-dir", echo_dir(swap), *([] if swap else args)) as f:
+    for args, second, name, want_code, want in (([], pic_a, "逐像素相同", 0, "逐像素相同"), (["--noise", "2"], pic_a, "只有数值差异", 0, "只有数值差异"),
+                                                ([], pic_b, "第二次出的是另一张图", 1, "明显不同")):
+        with Fake("--echo-dir", echo_dir(second), *args) as f:
             out = tmp / ("env-" + name)
             runner("upload", f, ENV, out)
             code, log = runner("run", f, ENV, out)
             ccode, clog = runner("compare", None, ENV, out)
             got = json.loads((out / "env-check.json").read_bytes())["results"] if (out / "env-check.json").exists() else []
-            expect(f"环境核对：{name}", code == 0 and ccode == want_code and all(r["verdict"] == want for r in got), log + clog)
+            expect(f"环境核对：{name}", code == 0 and ccode == want_code and len(got) == 1 and all(r["verdict"] == want for r in got), log + clog)
 
     bad = [n for n, ok in results if not ok]
     print(f"\n共 {len(results)} 项，没过 {len(bad)} 项" + ("" if not bad else "：" + "、".join(bad)))

@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-27T02:12:55+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/00n-rotor-dev-round6.json",
+  "uploaded": [
+    {
+      "file": "wbguide-propbars-ef7365442206.png",
+      "sha256": "ef73654422063ad8b1b1b5f13e899069f514c515bb5c3c0905bda49bd53f1d0f",
+      "bytes": 8903
+    }
+  ],
+  "readback_problems": []
+}

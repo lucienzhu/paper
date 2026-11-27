@@ -1,0 +1,34 @@
+{
+  "at": "2026-11-26T22:47:30+1100",
+  "rule": "ENV-A-r1 与 ENV-A-r2 是同一份请求（同文字、同条件图、同种子），中间隔一份只换种子的 ENV-N，免得第二次命中缓存。两张先逐像素比：完全相同记“逐像素相同”。不同时算三通道平均绝对差，再算 ENV-A-r1 与 ENV-N 的平均绝对差作对照：同种子的差不超过对照的 0.25 倍，记“只有数值差异”，照跑，把显卡型号和差值写进记录。超过就记“明显不同”，先停：核对主机回执（ComfyUI 版本、四个源文件、权重摘要）、启动参数、torch 版本和显卡型号，修好再做一次环境核对，修好之前不跑任何批次。这条规则 2026-11-26 在开机前写定。它核对的是这台主机按登记的执行图出图、同一请求可以重复；不与任何旧图比。",
+  "results": [
+    {
+      "id": "ENV-A-r2",
+      "repeat_of": "ENV-A-r1",
+      "contrast": "ENV-N",
+      "png_sha256": {
+        "ENV-A-r1": "852b1af2e41da987931cfa8eae3326c12f384eee2a6a6e55c3b01460b62f81e3",
+        "ENV-A-r2": "c37f6928160e4576bdeaadcf80de10eb65dcd8850c0ee64dedf8d1e9e0125a9f",
+        "ENV-N": "c18530151ed1830e0df21936be11f852f3816a15bacf2a5dd958eb83be07a24e"
+      },
+      "repeat_vs_first": {
+        "same_size": true,
+        "identical_pixels": true,
+        "mean_abs_diff": 0.0,
+        "p99_abs_diff": 0,
+        "max_abs_diff": 0,
+        "share_pixels_over_8": 0.0
+      },
+      "first_vs_other_seed": {
+        "same_size": true,
+        "identical_pixels": false,
+        "mean_abs_diff": 9.2369,
+        "p99_abs_diff": 133,
+        "max_abs_diff": 254,
+        "share_pixels_over_8": 0.14625
+      },
+      "verdict": "逐像素相同"
+    }
+  ],
+  "overall": "通过"
+}

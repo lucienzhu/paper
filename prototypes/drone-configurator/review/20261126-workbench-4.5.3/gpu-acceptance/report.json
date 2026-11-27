@@ -1,0 +1,17 @@
+{
+  "mode": "real",
+  "comfyUrl": "http://127.0.0.1:18189",
+  "startedAt": "2026-11-26T10:15:20.372Z",
+  "weights": {
+    "unet": "qwen_image_2.1_bf16.safetensors",
+    "clip": "qwen3vl_8b_bf16.safetensors",
+    "vae": "qwen_image_2.1_vae_bf16.safetensors"
+  },
+  "rounds": [],
+  "sessions": [],
+  "problems": [
+    "中断：page.waitForFunction: Timeout 900000ms exceeded."
+  ],
+  "finishedAt": "2026-11-26T10:44:05.384Z",
+  "ok": false
+}

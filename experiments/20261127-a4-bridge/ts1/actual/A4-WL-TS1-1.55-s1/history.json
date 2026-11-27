@@ -1,0 +1,215 @@
+{
+  "prompt": [
+    270,
+    "74630e79-0842-4b68-8acd-a1b2aa18a5d8",
+    {
+      "1": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "qwen_image_2.1_bf16.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "2": {
+        "class_type": "CLIPLoader",
+        "inputs": {
+          "clip_name": "qwen3vl_8b_bf16.safetensors",
+          "type": "qwen_image",
+          "device": "default"
+        }
+      },
+      "3": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+        }
+      },
+      "4": {
+        "class_type": "TextEncodeQwenImage21",
+        "inputs": {
+          "clip": [
+            "2",
+            0
+          ],
+          "prompt": "Design a quadcopter for everyday carry-along aerial photography. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nFour motors in a Wide X layout: the four motor centres sit at the corners of a rectangle that is wider than it is long. Mean opposite-motor (diagonal) span 250 mm; motor-centre width-to-length span ratio W/L 1.55; adjacent arm angles clockwise from the front-left motor: 114.3°, 65.7°, 114.3°, 65.7°.\nEach motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nFuselage design envelope 150 × 55 × 30 mm (length × width × height); this is a size limit, not a shape.\nA rounded pod with a continuous curved outline.\nA plain top cover with no seams crossing it.\nA forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.\nNo separate landing gear.\nColours by part: body shell silver grey (#c7cbd1); arms silver grey (#c7cbd1); propellers charcoal black (#1e293b).\nShell surface finish: fine matte.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+          "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+          "resolution": 1024
+        }
+      },
+      "10": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "9",
+            0
+          ],
+          "positive": [
+            "4",
+            0
+          ],
+          "negative": [
+            "4",
+            1
+          ],
+          "latent_image": [
+            "4",
+            2
+          ],
+          "seed": 2026112701,
+          "steps": 40,
+          "cfg": 1.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        }
+      },
+      "11": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "10",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ]
+        }
+      },
+      "12": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "11",
+            0
+          ],
+          "filename_prefix": "A4-WL-TS1-1.55-s1"
+        }
+      },
+      "5": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "a4wb-parts-WL-1.55-3658d2253a.png"
+        }
+      },
+      "6": {
+        "class_type": "ImageScale",
+        "inputs": {
+          "image": [
+            "5",
+            0
+          ],
+          "upscale_method": "nearest-exact",
+          "width": 1024,
+          "height": 1024,
+          "crop": "disabled"
+        }
+      },
+      "7": {
+        "class_type": "Canny",
+        "inputs": {
+          "image": [
+            "6",
+            0
+          ],
+          "low_threshold": 0.4,
+          "high_threshold": 0.8
+        }
+      },
+      "8": {
+        "class_type": "ModelPatchLoader",
+        "inputs": {
+          "name": "qwen_image_2.1_fun_controlnet_union_bf16.safetensors"
+        }
+      },
+      "9": {
+        "class_type": "QwenImageDiffsynthControlnet",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "model_patch": [
+            "8",
+            0
+          ],
+          "vae": [
+            "3",
+            0
+          ],
+          "image": [
+            "7",
+            0
+          ],
+          "strength": 0.7,
+          "start_percent": 0.0,
+          "end_percent": 1.0
+        }
+      }
+    },
+    {
+      "create_time": 1795745422778
+    },
+    [
+      "12"
+    ]
+  ],
+  "outputs": {
+    "12": {
+      "images": [
+        {
+          "filename": "A4-WL-TS1-1.55-s1_00001_.png",
+          "subfolder": "",
+          "type": "output",
+          "metadata": {
+            "kind": "image",
+            "width": 1024,
+            "height": 1024
+          },
+          "id": "9f72b51c-0058-47c0-bc25-2cf1f33b64ab"
+        }
+      ]
+    }
+  },
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "74630e79-0842-4b68-8acd-a1b2aa18a5d8",
+          "timestamp": 1795745422779
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [
+            "1",
+            "2",
+            "3",
+            "8"
+          ],
+          "prompt_id": "74630e79-0842-4b68-8acd-a1b2aa18a5d8",
+          "timestamp": 1795745422783
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "74630e79-0842-4b68-8acd-a1b2aa18a5d8",
+          "timestamp": 1795745482952
+        }
+      ]
+    ]
+  },
+  "meta": {
+    "12": {
+      "node_id": "12",
+      "display_node": "12",
+      "parent_node": null,
+      "real_node_id": "12"
+    }
+  }
+}

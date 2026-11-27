@@ -1,0 +1,317 @@
+{
+  "intro": [
+    "这里有若干张多旋翼植保无人机的顶视效果图。请一张一张看，只凭图上看得见的东西点选；不要推测图是怎么生成的，也不要因为别的图是什么样就猜这一张。",
+    "每一张都请实际看清楚再选，看不清的地方可以点图放大。确实看不清或拿不准，就选“看不清”，不要硬选。图的上方是机头方向。",
+    "进度自动存在这台电脑的浏览器里，中途可以关掉再打开。全部填完后点右上角“导出读数”，把下载到的 reading.csv 发回给研究者。请独立完成，不要和别的读者商量。"
+  ],
+  "fields": [
+    {
+      "column": "motors",
+      "label": "看得见几个电机",
+      "group": "机架",
+      "help": "",
+      "options": [
+        {
+          "value": "3",
+          "label": "3",
+          "help": ""
+        },
+        {
+          "value": "4",
+          "label": "4",
+          "help": ""
+        },
+        {
+          "value": "5",
+          "label": "5",
+          "help": ""
+        },
+        {
+          "value": "6",
+          "label": "6",
+          "help": ""
+        },
+        {
+          "value": "7",
+          "label": "7",
+          "help": ""
+        },
+        {
+          "value": "8",
+          "label": "8",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "数不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "arms",
+      "label": "从机身伸到电机的机臂有几根",
+      "group": "机架",
+      "help": "",
+      "options": [
+        {
+          "value": "3",
+          "label": "3",
+          "help": ""
+        },
+        {
+          "value": "4",
+          "label": "4",
+          "help": ""
+        },
+        {
+          "value": "5",
+          "label": "5",
+          "help": ""
+        },
+        {
+          "value": "6",
+          "label": "6",
+          "help": ""
+        },
+        {
+          "value": "7",
+          "label": "7",
+          "help": ""
+        },
+        {
+          "value": "8",
+          "label": "8",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "数不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "blades",
+      "label": "每个电机上的桨",
+      "group": "机架",
+      "help": "",
+      "options": [
+        {
+          "value": "two",
+          "label": "都是双叶",
+          "help": "每个电机都是一副双叶桨（两片桨叶）"
+        },
+        {
+          "value": "other",
+          "label": "有的不是",
+          "help": "有的电机多叶、少一片或没有桨"
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "hinge",
+      "label": "机臂根部有没有看得见的折叠铰接",
+      "group": "机架",
+      "help": "铰链、转轴或锁扣。",
+      "options": [
+        {
+          "value": "yes",
+          "label": "有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "tank",
+      "label": "机身中部有没有看得见的药箱顶面",
+      "group": "药箱",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "filler",
+      "label": "药箱顶上有没有看得见的加注口盖",
+      "group": "药箱",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "boom",
+      "label": "有没有横向的喷杆",
+      "group": "喷洒部件",
+      "help": "一根横着的细杆，上面带喷头或接头。",
+      "options": [
+        {
+          "value": "yes",
+          "label": "有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "boom_where",
+      "label": "喷杆在哪",
+      "group": "喷洒部件",
+      "help": "上一项选“没有”时，这里选“没有喷杆”。",
+      "options": [
+        {
+          "value": "arms",
+          "label": "沿两侧机臂",
+          "help": "沿着左右两侧的机臂"
+        },
+        {
+          "value": "body",
+          "label": "横穿机身",
+          "help": "横穿机身，不沿机臂"
+        },
+        {
+          "value": "other",
+          "label": "别处",
+          "help": ""
+        },
+        {
+          "value": "none",
+          "label": "没有喷杆",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "nozzles",
+      "label": "电机旁边或下方有没有看得见的喷头",
+      "group": "喷洒部件",
+      "help": "电机旁一个单独的小部件。",
+      "options": [
+        {
+          "value": "yes",
+          "label": "多数电机旁都有",
+          "help": ""
+        },
+        {
+          "value": "some",
+          "label": "只有个别有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "camera",
+      "label": "有没有看上去像相机的部件",
+      "group": "整体",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "有",
+          "help": ""
+        },
+        {
+          "value": "no",
+          "label": "没有",
+          "help": ""
+        },
+        {
+          "value": "?",
+          "label": "看不清",
+          "help": ""
+        }
+      ]
+    },
+    {
+      "column": "product",
+      "label": "整体看上去是不是一件完整的产品",
+      "group": "整体",
+      "help": "",
+      "options": [
+        {
+          "value": "yes",
+          "label": "是",
+          "help": "一件完整的、合乎常理的产品"
+        },
+        {
+          "value": "no",
+          "label": "不是",
+          "help": "平涂剪影、部件拼贴、示意图，或有明显断开、缺失的部件"
+        },
+        {
+          "value": "?",
+          "label": "拿不准",
+          "help": ""
+        }
+      ]
+    }
+  ]
+}

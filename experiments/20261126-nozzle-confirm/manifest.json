@@ -1,76 +1,161 @@
 {
-  "batch": "H3 电机下方喷头确认",
+  "batch": "农业植保六旋：横向喷杆 6 张、电机下方喷头确认 4 张（工作台流程）",
+  "workbench": {
+    "version": "4.5.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
+  },
+  "states": {
+    "H3-nozzle": {
+      "values": {
+        "accessories.spray_system": "motor-nozzles"
+      },
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3"
+    },
+    "H2-boom": {
+      "values": {},
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423"
+    }
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
   "requests": [
     {
       "order": 1,
       "id": "E6B-N-confirm-r1",
+      "group": "H3-nozzle",
+      "group_note": "电机下方喷头（确认）",
       "seed": 2026112601,
+      "state": "H3-nozzle",
       "input_images": [
-        "hexa-points-1.00.png"
+        "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
-      "request_sha256": "d18b0ddfc51384a0157e9ef6d2ce33ce0923934aa1d3aa79787b1f96f52880bc",
-      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
-      "change": "只换种子和保存前缀"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "39e01c217bac4b29a7a5d7935c69886231ba9557de1a8e0da8ce71fa75eae896"
     },
     {
       "order": 1,
       "id": "E6B-N-confirm-r2",
+      "group": "H3-nozzle",
+      "group_note": "电机下方喷头（确认）",
       "seed": 2026112602,
+      "state": "H3-nozzle",
       "input_images": [
-        "hexa-points-1.00.png"
+        "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
-      "request_sha256": "1432e0010f6d9704948f48b1ee8d73a339227a35c1f50f86ff4f4475de2aa75c",
-      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
-      "change": "只换种子和保存前缀"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "2efe60218a0932400ff9db97863dafb15a05024b0837f124ead0e268a845a43f"
     },
     {
       "order": 1,
       "id": "E6B-N-confirm-r3",
+      "group": "H3-nozzle",
+      "group_note": "电机下方喷头（确认）",
       "seed": 2026112603,
+      "state": "H3-nozzle",
       "input_images": [
-        "hexa-points-1.00.png"
+        "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
-      "request_sha256": "6ca0586be69c18c11e20e932e208f2d8926c0dd137c07fdb49319d1f83a1c361",
-      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
-      "change": "只换种子和保存前缀"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "3826d7c2f33eb37f4cd7c5271a4c338b6bdbcb6af205b4b2b93f6585eac301bd"
     },
     {
       "order": 1,
       "id": "E6B-N-confirm-r4",
+      "group": "H3-nozzle",
+      "group_note": "电机下方喷头（确认）",
       "seed": 2026112604,
+      "state": "H3-nozzle",
       "input_images": [
-        "hexa-points-1.00.png"
+        "wbguide-0b22d00e5389.png"
       ],
-      "prompt_sha256": "e917dffd0b85e614d3cd58ee86880f6cae4516e74e2c4f3e442fa7f898f44bc9",
-      "request_sha256": "3111d919f0c5604400fb00f7e344cb37da0d0a959e3fa9fee5ae3e44cc96a2fd",
-      "source": "experiments/gpu-day-20261115/afternoon-dev/requests/02-E6B-N-dev-r1.json",
-      "change": "只换种子和保存前缀"
+      "prompt_sha256": "c1f702a748c242c66c65c9911cf07293d00d3166719f50b4d7290f9ebd6ad0f3",
+      "request_sha256": "3ade1c4dc7b20fe2e227a04aa718cd16670265c539de2610ea44e3ccc94019d0"
+    },
+    {
+      "order": 1,
+      "id": "H2-boom-r1",
+      "group": "H2-boom",
+      "group_note": "横向喷杆（工作台里这个任务的起始状态；读数包里作对照）",
+      "seed": 2026112621,
+      "state": "H2-boom",
+      "input_images": [
+        "wbguide-0b22d00e5389.png"
+      ],
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "925aea73f8517d7ddbe97311cb1fd5ebbd4219949e5240515a09cd208f7bcb10"
+    },
+    {
+      "order": 1,
+      "id": "H2-boom-r2",
+      "group": "H2-boom",
+      "group_note": "横向喷杆（工作台里这个任务的起始状态；读数包里作对照）",
+      "seed": 2026112622,
+      "state": "H2-boom",
+      "input_images": [
+        "wbguide-0b22d00e5389.png"
+      ],
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "71f9c399234880f2b05a34d2507a9ebf6fe104bf73e04e5ea83d0e3d52616418"
+    },
+    {
+      "order": 1,
+      "id": "H2-boom-r3",
+      "group": "H2-boom",
+      "group_note": "横向喷杆（工作台里这个任务的起始状态；读数包里作对照）",
+      "seed": 2026112623,
+      "state": "H2-boom",
+      "input_images": [
+        "wbguide-0b22d00e5389.png"
+      ],
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "4b28c9550a05064af420d1e8c357d2ecbcd6172d0ee300f5a43e388ce83a76f4"
+    },
+    {
+      "order": 1,
+      "id": "H2-boom-r4",
+      "group": "H2-boom",
+      "group_note": "横向喷杆（工作台里这个任务的起始状态；读数包里作对照）",
+      "seed": 2026112624,
+      "state": "H2-boom",
+      "input_images": [
+        "wbguide-0b22d00e5389.png"
+      ],
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "b24f642f88b639b8cafb4dfa730891567296a2410e95d42278f886d6a679f760"
+    },
+    {
+      "order": 1,
+      "id": "H2-boom-r5",
+      "group": "H2-boom",
+      "group_note": "横向喷杆（工作台里这个任务的起始状态；读数包里作对照）",
+      "seed": 2026112625,
+      "state": "H2-boom",
+      "input_images": [
+        "wbguide-0b22d00e5389.png"
+      ],
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "2709bea54b84213f3e9dcf406dbd18306cdb5207b73f51759699b65421b4218a"
+    },
+    {
+      "order": 1,
+      "id": "H2-boom-r6",
+      "group": "H2-boom",
+      "group_note": "横向喷杆（工作台里这个任务的起始状态；读数包里作对照）",
+      "seed": 2026112626,
+      "state": "H2-boom",
+      "input_images": [
+        "wbguide-0b22d00e5389.png"
+      ],
+      "prompt_sha256": "5aab294604b91b1e821ec071dbc2e367425a5d1237b9e13fc652f2c2d42ae423",
+      "request_sha256": "a54709a983c430644b4e4dbfd4bae77ed55c4e762abb3df8b6dd08b2de0c458b"
     }
   ],
   "inputs": [
     {
-      "input": "hexa-points-1.00.png",
-      "sha256": "d0768f8dac4f240316761309551a931b022390c89d06b956bda9f7b028829f5d"
-    }
-  ],
-  "dev": [
-    {
-      "id": "E6B-N-dev-r1",
-      "seed": 2026112301,
-      "request_sha256": "9cc6e08d23375e7e5c82b90662b64e6aed6e80586dc44765729d5a5d4ba67ee1"
-    },
-    {
-      "id": "E6B-N-dev-r2",
-      "seed": 2026112302,
-      "request_sha256": "e783120565e1ebccf1cbcdad1f81e2d87e7f3a1a93c046cb4df266fb1ab1ced0"
-    },
-    {
-      "id": "E6B-N-dev-r3",
-      "seed": 2026112303,
-      "request_sha256": "ebc42c29fbb730cd020870df8ce7dc6deb65e27c51cd9762997b0703e48bfd85"
+      "input": "wbguide-0b22d00e5389.png",
+      "sha256": "0b22d00e5389745c5203565acc8682bcbaeb1ac53361d7c6e1dbdc7b631327c1"
     }
   ]
 }

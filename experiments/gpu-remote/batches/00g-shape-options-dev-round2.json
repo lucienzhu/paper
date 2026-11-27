@@ -1,0 +1,53 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "造型选项开发第二小批 6 张：S4、S5 换句子",
+  "registration": "experiments/20261127-shape-options-dev/README.md",
+  "registered_manifest": "experiments/20261127-shape-options-dev/round2/manifest.json",
+  "registered_manifest_sha256": "9fc5f8fbedf80a6501a7799ab59a44148e4d888b3ceb18562fd8d3edf74fb6b6",
+  "requests_dir": "experiments/20261127-shape-options-dev/round2/requests",
+  "files_dirs": [
+    "experiments/20261127-shape-options-dev/round2/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-SD-S4b-s1.json",
+      "id": "SD-S4b-s1",
+      "seed": 2026112841,
+      "sha256": "32e81197ca401552a7e653346ab05bf57fef5a1b0776866a70207aeb6da2b948"
+    },
+    {
+      "file": "01-SD-S4b-s2.json",
+      "id": "SD-S4b-s2",
+      "seed": 2026112842,
+      "sha256": "8e6b2e5166b5592735d69be1bc509d6dd7c78e33fb29fe4a7178b3539c3be44c"
+    },
+    {
+      "file": "01-SD-S4b-s3.json",
+      "id": "SD-S4b-s3",
+      "seed": 2026112843,
+      "sha256": "f331139c5c04092a7541a066dfa35880362f842257058cfb881efdba249b5087"
+    },
+    {
+      "file": "02-SD-S5b-s1.json",
+      "id": "SD-S5b-s1",
+      "seed": 2026112841,
+      "sha256": "cb91c549c46fc232736e7d2106df49679a2786e9ee40f59a68d0d060e079e15e"
+    },
+    {
+      "file": "02-SD-S5b-s2.json",
+      "id": "SD-S5b-s2",
+      "seed": 2026112842,
+      "sha256": "47de61fc6c0b614e3029d5216bc35484a4d3ce52f62c58f3f79c3b4eb624cc92"
+    },
+    {
+      "file": "02-SD-S5b-s3.json",
+      "id": "SD-S5b-s3",
+      "seed": 2026112843,
+      "sha256": "4c7725acd0e6cf50159060a040537bbb391c895eb6f005edeccab2e908c38200"
+    }
+  ],
+  "files": {
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
+  }
+}

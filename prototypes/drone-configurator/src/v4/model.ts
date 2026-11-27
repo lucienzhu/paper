@@ -25,7 +25,8 @@ export const layerFields: Record<Layer, string[]> = {
     'fuselage.fuselage_style', 'fuselage.top_cover', 'accessories.spray_tank'],
   details: ['frame.arm_root', 'accessories.has_camera_gimbal', 'accessories.camera_mount', 'landing_gear.landing_gear_style', 'landing_gear.landing_gear_height_mm',
     'accessories.spray_system'],
-  cmf: ['accessories.drone_primary_color', 'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
+  cmf: ['accessories.drone_primary_color', 'accessories.arm_color', 'accessories.prop_color',
+    'accessories.surface_finish', 'frame.material_visual', 'accessories.custom_prompt_additions'],
 };
 
 /**
@@ -62,7 +63,7 @@ export function baseParameters(taskId: TaskId): DroneParameters {
     propulsion: { prop_diameter_inch: hexa ? 20 : 5, prop_blade_count: hexa ? '2叶' : quadBladeCount, motor_tilt_degree: 0, prop_guard: 'none' },
     fuselage: { fuselage_style: '', top_cover: '', fuselage_dimensions_mm: hexa ? { ...legacyStart.fuselage_dimensions_mm } : { ...designStart.fuselage_dimensions_mm } },
     landing_gear: { landing_gear_style: '低矮滑撬/支腿', landing_gear_height_mm: 40 },
-    accessories: { has_camera_gimbal: !hexa, camera_mount: '', custom_prompt_additions: '', drone_primary_color: '', surface_finish: '',
+    accessories: { has_camera_gimbal: !hexa, camera_mount: '', custom_prompt_additions: '', drone_primary_color: '', arm_color: '', prop_color: '', surface_finish: '',
       ...(hexa ? { spray_tank: 'half-embedded' as const, spray_system: 'boom' as const } : {}) },
   };
 }

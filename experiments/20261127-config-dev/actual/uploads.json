@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-27T03:38:00+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/00p-config-dev.json",
+  "uploaded": [
+    {
+      "file": "wbguide-1e1f9e7c146b.png",
+      "sha256": "1e1f9e7c146b9e2b537077814b0a4be102b42b7f280a88f62871e4ce34c1e7d6",
+      "bytes": 57301
+    },
+    {
+      "file": "wbguide-93d76dbaaed1.png",
+      "sha256": "93d76dbaaed18d54adac5298480a689f6f17970b58e169b474c0bef5e5aeb525",
+      "bytes": 86068
+    },
+    {
+      "file": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645",
+      "bytes": 45638
+    }
+  ],
+  "readback_problems": []
+}

@@ -2,7 +2,7 @@
 // 轴心取自 computeLayout()，与导出的条件图、坐标和提示词布局句是同一组数。
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useDroneStore } from '../../store/droneStore';
-import { computeLayout, frameRules, usesConsumerReferences, sideRotorAxes, type Layout } from '../../design/design';
+import { computeLayout, frameRules, usesConsumerReferences, sideRotorAxes, type Layout, propBarsPx } from '../../design/design';
 import { bodyCorner, cameraView } from '../../design/checks';
 import { realRanges } from '../../data/aircraft';
 import type { DroneParameters, ParameterGroup } from '../../types/DroneParameters';
@@ -264,11 +264,12 @@ export const TopStage: React.FC<{
   );
 };
 
-/** 点线条件图：与导出的 PNG 同一组像素坐标（黑底、蓝线、红点，不含文字）。 */
+/** 点线条件图：与导出的 PNG 同一组像素坐标（黑底、蓝线、表示桨的浅灰直杆、红点，不含文字）。 */
 export const GuideView: React.FC<{ layout: Layout; className?: string }> = ({ layout, className = '' }) => (
-  <svg viewBox={`0 0 ${layout.guide.size} ${layout.guide.size}`} className={className} role="img" aria-label="点线条件图：红点是电机轴心，蓝线是机架连接" data-testid="guide-view">
+  <svg viewBox={`0 0 ${layout.guide.size} ${layout.guide.size}`} className={className} role="img" aria-label="点线条件图：红点是电机轴心，蓝线是机架连接，浅灰直杆是桨" data-testid="guide-view">
     <rect width={layout.guide.size} height={layout.guide.size} fill="#000000" />
     {layout.links_px.map(([x, y, u, v], i) => <line key={i} x1={x} y1={y} x2={u} y2={v} stroke="#205cff" strokeWidth="3" />)}
+    {propBarsPx(layout).map(([x, y, u, v], i) => <line key={'p' + i} x1={x} y1={y} x2={u} y2={v} stroke="#c8c8c8" strokeWidth="3" data-guide-prop={i} />)}
     {layout.hubs.map(h => <circle key={h.id} cx={h.x_px} cy={h.y_px} r="10" fill="#ff0000" data-guide-hub={h.id} />)}
   </svg>
 );

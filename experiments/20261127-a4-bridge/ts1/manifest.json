@@ -1,0 +1,552 @@
+{
+  "batch": "A4 两段式第一步 TS1（纯文字执行图 + 登记的控制分支，CFG 1），10 个状态 × 3 个种子",
+  "workbench": {
+    "version": "4.7.1",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-CzVKTWgy.js",
+    "bundle_sha256": "805e1316daaa1b25cffa85d06dd973dc8235596ffa4f0cebc842bc0b5593cdc7",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "control": {
+    "patch": "qwen_image_2.1_fun_controlnet_union_bf16.safetensors",
+    "strength": 0.7,
+    "canny": [
+      0.4,
+      0.8
+    ],
+    "cfg": 1
+  },
+  "seeds": [
+    2026112701,
+    2026112702,
+    2026112703
+  ],
+  "removed_lines": [
+    "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.",
+    "Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place."
+  ],
+  "requests": [
+    {
+      "order": 1,
+      "id": "A4-BW-TS1-0.16-s1",
+      "seed": 2026112701,
+      "request_sha256": "4a3450be87b1f44009d28b1a60e40440ea0b88c8d648961efff9e3527fc68b63",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.16,
+      "in_range": true,
+      "state": "A4-BW-0.16",
+      "input_images": [
+        "a4wb-parts-BW-0.16-5fa8185557.png"
+      ],
+      "prompt_sha256": "2cf512fce232546266d17cb039b6f1510a88cd7ddd4e59676d0bf50482702399"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TS1-0.23-s1",
+      "seed": 2026112701,
+      "request_sha256": "ac700e008e012ad7a1034b77b90287772d87127d980a76ecaaad0bbac7f77c22",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.23,
+      "in_range": true,
+      "state": "A4-BW-0.23",
+      "input_images": [
+        "a4wb-parts-BW-0.23-864d83c762.png"
+      ],
+      "prompt_sha256": "f88a54821ed0d8337acf3a4315d9ced97a8023ce0b377c1cd501743cae434049"
+    },
+    {
+      "order": 1,
+      "id": "A4-BW-TS1-0.30-s1",
+      "seed": 2026112701,
+      "request_sha256": "259fdf9dbf044a4ffd13a98443faeb469d4e0040b809f1a24561c4443f2fbcec",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.3,
+      "in_range": true,
+      "state": "A4-BW-0.30",
+      "input_images": [
+        "a4wb-parts-BW-0.30-73d947da30.png"
+      ],
+      "prompt_sha256": "a57e9f77ff04d32206b5aa1de21ee3aa1e45d38e97356de125898eb834adf933"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TS1-0.46-s1",
+      "seed": 2026112701,
+      "request_sha256": "3c915746f929bde587f1c7bb67db40d3ad3dd93384dde209f43775453120b148",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.46,
+      "in_range": true,
+      "state": "A4-DD-0.46",
+      "input_images": [
+        "a4wb-parts-DD-0.46-c4ec345738.png"
+      ],
+      "prompt_sha256": "c8bdf010ebd889e4b648ba13f10326d82c431c1530ee432d598909323054041e"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TS1-0.56-s1",
+      "seed": 2026112701,
+      "request_sha256": "2ec1af39f5fbdbbfa195135a133c6ef1420685e69305952c104094f83383e10f",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.56,
+      "in_range": true,
+      "state": "A4-DD-0.56",
+      "input_images": [
+        "a4wb-parts-DD-0.56-3bd31bb635.png"
+      ],
+      "prompt_sha256": "5527fbe7908a842bb853e4058f33a2700dae3ec58b3396d518340a1abfe370fd"
+    },
+    {
+      "order": 1,
+      "id": "A4-DD-TS1-0.66-s1",
+      "seed": 2026112701,
+      "request_sha256": "6c8b481cf4aa6e09070ff49c644dc0e2b2f59a01c6a5f6e64e1e2ef5444977f9",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.66,
+      "in_range": true,
+      "state": "A4-DD-0.66",
+      "input_images": [
+        "a4wb-parts-DD-0.66-74073d6bc5.png"
+      ],
+      "prompt_sha256": "6da9614aaa2ddba17cb313474d4b68effe2ce3c13bf6699115c056abab5c1024"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TS1-0.70-s1",
+      "seed": 2026112701,
+      "request_sha256": "f31fd094c9c456a4b2be9f2394d1ca740bf839d805e8446986c27edde2e050af",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.7,
+      "in_range": false,
+      "state": "A4-WL-0.70",
+      "input_images": [
+        "a4wb-parts-WL-0.70-66ea96ee9b.png"
+      ],
+      "prompt_sha256": "52de03c859bd3a2cd3bb70452245289fafb7eea31bebcf4661ab89d94c419938"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TS1-1.15-s1",
+      "seed": 2026112701,
+      "request_sha256": "f87da717362ee5345c7dc4dff6c181a5b1a72562cd15070ff5982964de161abf",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.15,
+      "in_range": true,
+      "state": "A4-WL-1.15",
+      "input_images": [
+        "a4wb-parts-WL-1.15-eb52cd6ad8.png"
+      ],
+      "prompt_sha256": "af90429d12415e41c7b92d2da3b62e8b968beb46b18c689e57e964ccc6f362af"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TS1-1.35-s1",
+      "seed": 2026112701,
+      "request_sha256": "7524d4c20fe8370deeebeb6c6697f8682f51759a5bb4522dabbb7ce462c57008",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.35,
+      "in_range": true,
+      "state": "A4-WL-1.35",
+      "input_images": [
+        "a4wb-parts-WL-1.35-b5b25f7568.png"
+      ],
+      "prompt_sha256": "8879da2e45da8ca659ef93338b49846ad298cf8b0a25746fd05f40501e78beb3"
+    },
+    {
+      "order": 1,
+      "id": "A4-WL-TS1-1.55-s1",
+      "seed": 2026112701,
+      "request_sha256": "dfe7fb540e05aac5ce57ed05557be0c9bf7341345f6d6b7161e5e1b67820f169",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.55,
+      "in_range": true,
+      "state": "A4-WL-1.55",
+      "input_images": [
+        "a4wb-parts-WL-1.55-3658d2253a.png"
+      ],
+      "prompt_sha256": "4d8312d4f5737dcaedcf991f9e9762e455979fd224a2f1fea24fc9bf654c20d6"
+    },
+    {
+      "order": 2,
+      "id": "A4-BW-TS1-0.16-s2",
+      "seed": 2026112702,
+      "request_sha256": "ff170e7673bc1246da4e4a4d05b2dc9864cafb0a4b6c0d0bc2a07a4b65668cc9",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.16,
+      "in_range": true,
+      "state": "A4-BW-0.16",
+      "input_images": [
+        "a4wb-parts-BW-0.16-5fa8185557.png"
+      ],
+      "prompt_sha256": "2cf512fce232546266d17cb039b6f1510a88cd7ddd4e59676d0bf50482702399"
+    },
+    {
+      "order": 2,
+      "id": "A4-BW-TS1-0.23-s2",
+      "seed": 2026112702,
+      "request_sha256": "1c73a40ee137b9a71e4f536f7b33dc584ae585d64f687b671b038bfe9a75ebbf",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.23,
+      "in_range": true,
+      "state": "A4-BW-0.23",
+      "input_images": [
+        "a4wb-parts-BW-0.23-864d83c762.png"
+      ],
+      "prompt_sha256": "f88a54821ed0d8337acf3a4315d9ced97a8023ce0b377c1cd501743cae434049"
+    },
+    {
+      "order": 2,
+      "id": "A4-BW-TS1-0.30-s2",
+      "seed": 2026112702,
+      "request_sha256": "e0a464b35bbe19ee3904e767db00e2886132c0e37a15b4ea5f564bcaf0f5fde1",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.3,
+      "in_range": true,
+      "state": "A4-BW-0.30",
+      "input_images": [
+        "a4wb-parts-BW-0.30-73d947da30.png"
+      ],
+      "prompt_sha256": "a57e9f77ff04d32206b5aa1de21ee3aa1e45d38e97356de125898eb834adf933"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-TS1-0.46-s2",
+      "seed": 2026112702,
+      "request_sha256": "42a10e1a025636b013cdc4e74f3c2b5669a81eed716a9745d46278bed9fcfb92",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.46,
+      "in_range": true,
+      "state": "A4-DD-0.46",
+      "input_images": [
+        "a4wb-parts-DD-0.46-c4ec345738.png"
+      ],
+      "prompt_sha256": "c8bdf010ebd889e4b648ba13f10326d82c431c1530ee432d598909323054041e"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-TS1-0.56-s2",
+      "seed": 2026112702,
+      "request_sha256": "ac89df373889e4df4938063c9f2a2dd9bc841e92c0481e34c4d92591827c562b",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.56,
+      "in_range": true,
+      "state": "A4-DD-0.56",
+      "input_images": [
+        "a4wb-parts-DD-0.56-3bd31bb635.png"
+      ],
+      "prompt_sha256": "5527fbe7908a842bb853e4058f33a2700dae3ec58b3396d518340a1abfe370fd"
+    },
+    {
+      "order": 2,
+      "id": "A4-DD-TS1-0.66-s2",
+      "seed": 2026112702,
+      "request_sha256": "867757c5bf9b77cb980725fe49ea834c1022b8aae0cc67c56a670434937d5cb0",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.66,
+      "in_range": true,
+      "state": "A4-DD-0.66",
+      "input_images": [
+        "a4wb-parts-DD-0.66-74073d6bc5.png"
+      ],
+      "prompt_sha256": "6da9614aaa2ddba17cb313474d4b68effe2ce3c13bf6699115c056abab5c1024"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-TS1-0.70-s2",
+      "seed": 2026112702,
+      "request_sha256": "c8ee5e99c60c357aafed637e688221d34f3ad6a1aca30d42a81c5a84042dbdfc",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.7,
+      "in_range": false,
+      "state": "A4-WL-0.70",
+      "input_images": [
+        "a4wb-parts-WL-0.70-66ea96ee9b.png"
+      ],
+      "prompt_sha256": "52de03c859bd3a2cd3bb70452245289fafb7eea31bebcf4661ab89d94c419938"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-TS1-1.15-s2",
+      "seed": 2026112702,
+      "request_sha256": "60e4fc5b92dafbdd861acd8f57450811b8311e6b8630ea9535052f0e744ef1ee",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.15,
+      "in_range": true,
+      "state": "A4-WL-1.15",
+      "input_images": [
+        "a4wb-parts-WL-1.15-eb52cd6ad8.png"
+      ],
+      "prompt_sha256": "af90429d12415e41c7b92d2da3b62e8b968beb46b18c689e57e964ccc6f362af"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-TS1-1.35-s2",
+      "seed": 2026112702,
+      "request_sha256": "6ad661f87c91b68a36bcf0a14d4169fa8dbc862823458e9a8d6ca3b8727cbedb",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.35,
+      "in_range": true,
+      "state": "A4-WL-1.35",
+      "input_images": [
+        "a4wb-parts-WL-1.35-b5b25f7568.png"
+      ],
+      "prompt_sha256": "8879da2e45da8ca659ef93338b49846ad298cf8b0a25746fd05f40501e78beb3"
+    },
+    {
+      "order": 2,
+      "id": "A4-WL-TS1-1.55-s2",
+      "seed": 2026112702,
+      "request_sha256": "102e97c0ce68c8514f54c779a9ef5d60fb180f3632f6459d1bcb9bfb5fab2b74",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.55,
+      "in_range": true,
+      "state": "A4-WL-1.55",
+      "input_images": [
+        "a4wb-parts-WL-1.55-3658d2253a.png"
+      ],
+      "prompt_sha256": "4d8312d4f5737dcaedcf991f9e9762e455979fd224a2f1fea24fc9bf654c20d6"
+    },
+    {
+      "order": 3,
+      "id": "A4-BW-TS1-0.16-s3",
+      "seed": 2026112703,
+      "request_sha256": "609c8363fcef3139e483fac00eda9ef5e8e81af4ad7bab2775cd10b0a56d4e75",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.16,
+      "in_range": true,
+      "state": "A4-BW-0.16",
+      "input_images": [
+        "a4wb-parts-BW-0.16-5fa8185557.png"
+      ],
+      "prompt_sha256": "2cf512fce232546266d17cb039b6f1510a88cd7ddd4e59676d0bf50482702399"
+    },
+    {
+      "order": 3,
+      "id": "A4-BW-TS1-0.23-s3",
+      "seed": 2026112703,
+      "request_sha256": "183f0bd763dc38b8070f25772fdf32b5352c9b41689f2c895614f6b0d647ec5c",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.23,
+      "in_range": true,
+      "state": "A4-BW-0.23",
+      "input_images": [
+        "a4wb-parts-BW-0.23-864d83c762.png"
+      ],
+      "prompt_sha256": "f88a54821ed0d8337acf3a4315d9ced97a8023ce0b377c1cd501743cae434049"
+    },
+    {
+      "order": 3,
+      "id": "A4-BW-TS1-0.30-s3",
+      "seed": 2026112703,
+      "request_sha256": "38c3d9aa07b03cedf656fa9f5830ee3d9d31ef06ed443b28ede10055935fa570",
+      "factor": "BW",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.3,
+      "in_range": true,
+      "state": "A4-BW-0.30",
+      "input_images": [
+        "a4wb-parts-BW-0.30-73d947da30.png"
+      ],
+      "prompt_sha256": "a57e9f77ff04d32206b5aa1de21ee3aa1e45d38e97356de125898eb834adf933"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-TS1-0.46-s3",
+      "seed": 2026112703,
+      "request_sha256": "adebe4d3d8242b72213ab9591736fb8390c696e0f187b6133e1e94bfb225e09d",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.46,
+      "in_range": true,
+      "state": "A4-DD-0.46",
+      "input_images": [
+        "a4wb-parts-DD-0.46-c4ec345738.png"
+      ],
+      "prompt_sha256": "c8bdf010ebd889e4b648ba13f10326d82c431c1530ee432d598909323054041e"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-TS1-0.56-s3",
+      "seed": 2026112703,
+      "request_sha256": "42124d9eab06cf06b157baa5a7dc83346ee8eef2bd5349b4299a00a368095209",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.56,
+      "in_range": true,
+      "state": "A4-DD-0.56",
+      "input_images": [
+        "a4wb-parts-DD-0.56-3bd31bb635.png"
+      ],
+      "prompt_sha256": "5527fbe7908a842bb853e4058f33a2700dae3ec58b3396d518340a1abfe370fd"
+    },
+    {
+      "order": 3,
+      "id": "A4-DD-TS1-0.66-s3",
+      "seed": 2026112703,
+      "request_sha256": "20be2891b7b6c1071f45d737059d090eed073b80c5486bedbeb0620753fc3aee",
+      "factor": "DD",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.66,
+      "in_range": true,
+      "state": "A4-DD-0.66",
+      "input_images": [
+        "a4wb-parts-DD-0.66-74073d6bc5.png"
+      ],
+      "prompt_sha256": "6da9614aaa2ddba17cb313474d4b68effe2ce3c13bf6699115c056abab5c1024"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-TS1-0.70-s3",
+      "seed": 2026112703,
+      "request_sha256": "9c8434afc73270cde9de47dd3de61c0e2c197d560385b4023cb01d87568e29e8",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 0.7,
+      "in_range": false,
+      "state": "A4-WL-0.70",
+      "input_images": [
+        "a4wb-parts-WL-0.70-66ea96ee9b.png"
+      ],
+      "prompt_sha256": "52de03c859bd3a2cd3bb70452245289fafb7eea31bebcf4661ab89d94c419938"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-TS1-1.15-s3",
+      "seed": 2026112703,
+      "request_sha256": "9755900d278d1cdfe435f4c870c7cc32c8ba08d520c233ce131705e9cab754ba",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.15,
+      "in_range": true,
+      "state": "A4-WL-1.15",
+      "input_images": [
+        "a4wb-parts-WL-1.15-eb52cd6ad8.png"
+      ],
+      "prompt_sha256": "af90429d12415e41c7b92d2da3b62e8b968beb46b18c689e57e964ccc6f362af"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-TS1-1.35-s3",
+      "seed": 2026112703,
+      "request_sha256": "8931efb0919db4b0516fde157e6b66bd2246fa88bb096a5ffb130a65ff44b38c",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.35,
+      "in_range": true,
+      "state": "A4-WL-1.35",
+      "input_images": [
+        "a4wb-parts-WL-1.35-b5b25f7568.png"
+      ],
+      "prompt_sha256": "8879da2e45da8ca659ef93338b49846ad298cf8b0a25746fd05f40501e78beb3"
+    },
+    {
+      "order": 3,
+      "id": "A4-WL-TS1-1.55-s3",
+      "seed": 2026112703,
+      "request_sha256": "50d8715a7169d7ed6a37ee2b4acfe3080041c1a23d9f3f9eff9b26abeef7c946",
+      "factor": "WL",
+      "method": "TS",
+      "stage": 1,
+      "tier": 1.55,
+      "in_range": true,
+      "state": "A4-WL-1.55",
+      "input_images": [
+        "a4wb-parts-WL-1.55-3658d2253a.png"
+      ],
+      "prompt_sha256": "4d8312d4f5737dcaedcf991f9e9762e455979fd224a2f1fea24fc9bf654c20d6"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "a4wb-parts-BW-0.16-5fa8185557.png",
+      "sha256": "5fa818555789c5bbcb9a0440e2171663fe66c8294050f56affa98246cc636745"
+    },
+    {
+      "input": "a4wb-parts-BW-0.23-864d83c762.png",
+      "sha256": "864d83c76263d35978892bf91100cd63aea99e88021220ed50dfd58cd7d3d339"
+    },
+    {
+      "input": "a4wb-parts-BW-0.30-73d947da30.png",
+      "sha256": "73d947da305a9346615746f4f3dd7473fd7501a4ac35fae6100f84b4ad7dc3bc"
+    },
+    {
+      "input": "a4wb-parts-DD-0.46-c4ec345738.png",
+      "sha256": "c4ec3457389f1183400a17c7cc12b66470f86ab2e28f7018e0de4ab2c1dbe66b"
+    },
+    {
+      "input": "a4wb-parts-DD-0.56-3bd31bb635.png",
+      "sha256": "3bd31bb6355e2c6307151270aab2ad00bb04ad74009320c36c7f0de8f095a3c9"
+    },
+    {
+      "input": "a4wb-parts-DD-0.66-74073d6bc5.png",
+      "sha256": "74073d6bc502869868fe5a66b8dd039a362d03e7cf5e6df101179ce96308572b"
+    },
+    {
+      "input": "a4wb-parts-WL-0.70-66ea96ee9b.png",
+      "sha256": "66ea96ee9be0e7d2de1464c35e0b60251fcef810c3a8242b8fa1ca6fed6caf56"
+    },
+    {
+      "input": "a4wb-parts-WL-1.15-eb52cd6ad8.png",
+      "sha256": "eb52cd6ad8ecdca8562219ebd245e504910a0c3785b644512d9e1b93e1d4fa4c"
+    },
+    {
+      "input": "a4wb-parts-WL-1.35-b5b25f7568.png",
+      "sha256": "b5b25f75680b8cc91597c8530841367bfb356a66325f90244b3128fb6b8780f0"
+    },
+    {
+      "input": "a4wb-parts-WL-1.55-3658d2253a.png",
+      "sha256": "3658d2253a98e015101b9f1fbf989dbaeb2067f50b9e7e807ef9cc4e7fc98114"
+    }
+  ]
+}

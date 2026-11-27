@@ -60,6 +60,9 @@ const fieldSpec = {
   'landing_gear.landing_gear_height_mm': { kind: 'number', min: 20, max: 100, step: 5 },
   // 主色可以是色板里的，也可以是设计者自定的任意 #rrggbb。
   'accessories.drone_primary_color': { kind: 'colour' },
+  // 4.6：按部件配色。
+  'accessories.arm_color': { kind: 'colour' },
+  'accessories.prop_color': { kind: 'colour' },
   'accessories.surface_finish': { kind: 'enum', values: ['', ...enumOf(finishOptions)] },
   'frame.material_visual': { kind: 'enum', values: ['', ...enumOf(armMaterialOptions)] },
   // 农业植保才有：只在规格里有这两个键（植保六旋的起始值）时交给模型、允许它提。

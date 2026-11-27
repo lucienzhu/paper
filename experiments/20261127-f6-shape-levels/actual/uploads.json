@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-27T03:53:40+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/01a-f6-shape-levels-part1.json",
+  "uploaded": [
+    {
+      "file": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645",
+      "bytes": 45638
+    }
+  ],
+  "readback_problems": []
+}

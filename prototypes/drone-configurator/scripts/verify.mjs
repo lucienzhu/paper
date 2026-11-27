@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { computeLayout, layoutExport, frameRules } from '../src/design/design.ts';
+import { computeLayout, layoutExport, frameRules, propBarsPx, propBarTurnDeg } from '../src/design/design.ts';
 import { compilePrompt, diffSentences, auditPrompt } from '../src/design/partPrompt.ts';
 import { openDecisions } from '../src/design/fields.ts';
 import { buildExport, parseImported } from '../src/design/exporters.ts';
@@ -77,6 +77,45 @@ const e20 = buildExport({ parameters: p20, touched: { 'frame.arm_width_mm': true
 check('JSON 的臂宽与提示词同值', e20.parameters.frame.arm_width_mm === '20mm' && e20.prompt.text.includes('20 mm wide') && e20.selection_status.find(s => s.path === 'frame.arm_width_mm').status === 'chosen');
 const l10 = layoutExport(computeLayout(p10)), l20 = layoutExport(computeLayout(p20));
 check('臂宽不改变轴心坐标', JSON.stringify(l10.hubs) === JSON.stringify(l20.hubs));
+
+// 5b. 条件图上表示桨的直杆（4.7.0）：每个电机一根，过轴心，与“机架中心到轴心”的方向垂直，长度等于桨径
+for (const type of ['True X', 'Wide X', 'Deadcat', 'H-Frame']) {
+  const layout = computeLayout(withFrame(type));
+  const bars = propBarsPx(layout), c = layout.guide.size / 2, want = layout.prop_diameter_mm * layout.guide.px_per_mm;
+  const ok = bars.length === layout.hubs.length && bars.every(([x, y, u, v], i) => {
+    const h = layout.hubs[i];
+    const through = near((x + u) / 2, h.x_px, 1e-6) && near((y + v) / 2, h.y_px, 1e-6);
+    const length = near(Math.hypot(u - x, v - y), want, 1e-6);
+    const perpendicular = near((u - x) * (h.x_px - c) + (v - y) * (h.y_px - c), 0, 1e-6);
+    return through && length && perpendicular;
+  });
+  check(`${type}：条件图上每个电机一根表示桨的直杆，过轴心、与机臂方向垂直、长度等于桨径`, ok, `${bars.length} 根，各 ${want.toFixed(1)} px`);
+}
+// 5c. 八旋的直杆转 35°，相邻两根不首尾相接；共轴另有桨句（4.7.2）。四旋不变。
+{
+  const octo = computeLayout(withFrame('Radial Octo', { span_ratio_wl: 1 }));
+  const bars = propBarsPx(octo), c = octo.guide.size / 2;
+  const angles = bars.map(([x, y, u, v], i) => {
+    const h = octo.hubs[i], r = Math.hypot(h.x_px - c, h.y_px - c), len = Math.hypot(u - x, v - y);
+    return Math.acos(Math.abs(((u - x) * (h.x_px - c) + (v - y) * (h.y_px - c)) / (len * r))) * 180 / Math.PI;  // 直杆与机臂方向的夹角
+  });
+  const tips = bars.flatMap(([x, y, u, v]) => [[x, y], [u, v]]);
+  let nearest = Infinity;
+  for (let i = 0; i < bars.length; i++) for (let j = 0; j < bars.length; j++) if (i !== j)
+    for (const a of [tips[2 * i], tips[2 * i + 1]]) for (const b of [tips[2 * j], tips[2 * j + 1]]) nearest = Math.min(nearest, Math.hypot(a[0] - b[0], a[1] - b[1]));
+  check('平面八旋：八根直杆，各与机臂方向成 55°（比垂直转了 35°），相邻两根的端点相距 30 px 以上', bars.length === 8 && angles.every(a => near(a, 55, 1e-6)) && nearest >= 30 && propBarTurnDeg(octo) === 35,
+    `夹角 ${angles[0].toFixed(1)}°，端点最近 ${nearest.toFixed(1)} px`);
+  check('四旋的直杆不转', propBarTurnDeg(computeLayout(base())) === 0);
+  const p8 = withFrame('Radial Octo', { span_ratio_wl: 1 }), x8 = withFrame('Coax X8', { span_ratio_wl: 1 });
+  check('平面八旋的布局句写明八根机臂从中心的机身伸出', prompt(p8).text.includes('all radiate from the fuselage at the centre of the octagon'));
+  check('共轴 X8 的桨句与四旋相同（4.7.3 退回原句）；八旋另有“机身就是毂”一句，四旋和 X8 没有',
+    prompt(x8).text.includes('Each motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller')
+    && prompt(p8).text.includes('The fuselage is the hub of the aircraft: all eight arms attach directly to its sides')
+    && !prompt(x8).text.includes('The fuselage is the hub') && !prompt(base()).text.includes('The fuselage is the hub'));
+}
+check('条件图读法那一句写明直杆是桨，桨句是 v1.6 的原句',
+  prompt(base()).text.includes("the straight bar across each dot marks that motor's propeller") && prompt(base()).text.includes('forming one straight blade 180 degrees across, never a V shape'));
+check('导出的布局带直杆的像素坐标', layoutExport(computeLayout(base())).prop_bars_px.length === 4);
 
 // 6. 默认状态：模板不自行加入护圈、颜色、碳纹；留白项不成句
 const def = prompt(base());

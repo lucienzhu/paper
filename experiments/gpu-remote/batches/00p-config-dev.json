@@ -1,0 +1,67 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "构型开发检查小批 8 张：植保六旋、平面八旋、共轴 X8",
+  "registration": "experiments/20261127-config-dev/README.md",
+  "registered_manifest": "experiments/20261127-config-dev/manifest.json",
+  "registered_manifest_sha256": "3cf4e394eb8ed76e896ca36e49613dca0a5de279b8769a2f88f38185445500ef",
+  "requests_dir": "experiments/20261127-config-dev/requests",
+  "files_dirs": [
+    "experiments/20261127-config-dev/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-CD-boom-s1.json",
+      "id": "CD-boom-s1",
+      "seed": 2026112871,
+      "sha256": "096ec802f08c99606edb01b6558de045f7f5b0d5c9952448985f71575155019c"
+    },
+    {
+      "file": "01-CD-nozzle-s1.json",
+      "id": "CD-nozzle-s1",
+      "seed": 2026112871,
+      "sha256": "8d28b781b970e6b910fc5b732ac53946c5071d8380fc61bac7ea4b58df6bb5e3"
+    },
+    {
+      "file": "01-CD-O8-s1.json",
+      "id": "CD-O8-s1",
+      "seed": 2026112871,
+      "sha256": "1569b15379685c207e9d55b2a5a3f1e48120914ab75d092831053908cd58acd9"
+    },
+    {
+      "file": "01-CD-X8-s1.json",
+      "id": "CD-X8-s1",
+      "seed": 2026112871,
+      "sha256": "15b78172f10b7823c4bb8471cf76cc58009547b4352e0ca0d7d9be1a9d1abca3"
+    },
+    {
+      "file": "02-CD-boom-s2.json",
+      "id": "CD-boom-s2",
+      "seed": 2026112872,
+      "sha256": "a842c1cd859346214ab712c31636fac393df4f8fa78bf30f7b62b46729005c79"
+    },
+    {
+      "file": "02-CD-nozzle-s2.json",
+      "id": "CD-nozzle-s2",
+      "seed": 2026112872,
+      "sha256": "02fca9b320861548be5a4c9c8d3640acda383bd135a9cbb4d740704702bb9660"
+    },
+    {
+      "file": "02-CD-O8-s2.json",
+      "id": "CD-O8-s2",
+      "seed": 2026112872,
+      "sha256": "7b768c705da3d5fd073cc445c9c6c586102a9a553d5c053ad911d75d389ee0f1"
+    },
+    {
+      "file": "02-CD-X8-s2.json",
+      "id": "CD-X8-s2",
+      "seed": 2026112872,
+      "sha256": "444828a2da97aa1408768a002c076e6d679f4abf642d2c5e840293085c0d2c03"
+    }
+  ],
+  "files": {
+    "wbguide-1e1f9e7c146b.png": "1e1f9e7c146b9e2b537077814b0a4be102b42b7f280a88f62871e4ce34c1e7d6",
+    "wbguide-93d76dbaaed1.png": "93d76dbaaed18d54adac5298480a689f6f17970b58e169b474c0bef5e5aeb525",
+    "wbguide-fc9b23f98221.png": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+  }
+}

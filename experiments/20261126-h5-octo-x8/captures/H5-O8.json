@@ -1,0 +1,167 @@
+{
+  "name": "H5-O8",
+  "task": "consumer_camera",
+  "values": {
+    "frame.frame_type": "Radial Octo",
+    "propulsion.prop_diameter_inch": 3.5,
+    "frame.span_ratio_wl": 1,
+    "frame.wheelbase_mm": 250,
+    "fuselage.fuselage_style": "Aerodynamic Pod",
+    "frame.arm_root": "seamless",
+    "accessories.camera_mount": "flush",
+    "fuselage.top_cover": "single",
+    "accessories.drone_primary_color": "#c7cbd1",
+    "accessories.surface_finish": "matte"
+  },
+  "parameters": {
+    "frame": {
+      "frame_type": "Radial Octo",
+      "wheelbase_mm": 250,
+      "span_ratio_wl": 1,
+      "arm_thickness_mm": "4mm",
+      "arm_width_mm": "15mm",
+      "material_visual": "",
+      "arm_root": "seamless"
+    },
+    "propulsion": {
+      "prop_diameter_inch": 3.5,
+      "prop_blade_count": "2叶",
+      "motor_tilt_degree": 0,
+      "prop_guard": "none"
+    },
+    "fuselage": {
+      "fuselage_style": "Aerodynamic Pod",
+      "top_cover": "single",
+      "fuselage_dimensions_mm": {
+        "length": 150,
+        "width": 55,
+        "height": 30
+      }
+    },
+    "landing_gear": {
+      "landing_gear_style": "低矮滑撬/支腿",
+      "landing_gear_height_mm": 40
+    },
+    "accessories": {
+      "has_camera_gimbal": true,
+      "camera_mount": "flush",
+      "custom_prompt_additions": "",
+      "drone_primary_color": "#c7cbd1",
+      "surface_finish": "matte"
+    }
+  },
+  "prompt": "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.\nDesign a flat octocopter for everyday carry-along aerial photography. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nEight motors in a Radial octo layout: eight distinct horizontal axes at the corners of a regular octagon. Mean opposite-motor (diagonal) span 250 mm; motor-centre width-to-length span ratio W/L 1.00; adjacent arm angles clockwise from the first motor: 45°, 45°, 45°, 45°, 45°, 45°, 45°, 45°.\nMatch the motor centres and frame links in the attached layout image: dots mark motor centres, lines mark frame links. Do not reproduce the dots or lines in the result.\nEach motor carries one stationary 2-blade propeller, 3.5-inch (89 mm) diameter. The two blades point in exactly opposite directions from the hub.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nFuselage design envelope 150 × 55 × 30 mm (length × width × height); this is a size limit, not a shape.\nA rounded pod with a continuous curved outline.\nA plain top cover with no seams crossing it.\nA forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin strip of its front window shows at the very front edge of the nose.\nLow landing skids with 40 mm ground clearance, tucked beneath the aircraft.\nMain shell colour: silver grey (#c7cbd1).\nShell surface finish: fine matte.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+  "prompt_sha256": "8f81e00e42c1c8ac883610f983dd3c9975e33a511c678386af2c326a9840fefc",
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
+  "guide": {
+    "file": "wbguide-1f21ae837a63.png",
+    "sha256": "1f21ae837a63c5534efa4a0505ac0c6f3f0aa69c30be7bba30f93d736b66e8b0",
+    "bytes": 62708
+  },
+  "graph": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "qwen_image_2.1_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_8b_bf16.safetensors",
+        "type": "qwen_image",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "TextEncodeQwenImage21",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "prompt": "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.\nDesign a flat octocopter for everyday carry-along aerial photography. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nEight motors in a Radial octo layout: eight distinct horizontal axes at the corners of a regular octagon. Mean opposite-motor (diagonal) span 250 mm; motor-centre width-to-length span ratio W/L 1.00; adjacent arm angles clockwise from the first motor: 45°, 45°, 45°, 45°, 45°, 45°, 45°, 45°.\nMatch the motor centres and frame links in the attached layout image: dots mark motor centres, lines mark frame links. Do not reproduce the dots or lines in the result.\nEach motor carries one stationary 2-blade propeller, 3.5-inch (89 mm) diameter. The two blades point in exactly opposite directions from the hub.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nFuselage design envelope 150 × 55 × 30 mm (length × width × height); this is a size limit, not a shape.\nA rounded pod with a continuous curved outline.\nA plain top cover with no seams crossing it.\nA forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin strip of its front window shows at the very front edge of the nose.\nLow landing skids with 40 mm ground clearance, tucked beneath the aircraft.\nMain shell colour: silver grey (#c7cbd1).\nShell surface finish: fine matte.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+        "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
+        "resolution": 1024,
+        "images.image_1": [
+          "15",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "4",
+          0
+        ],
+        "negative": [
+          "4",
+          1
+        ],
+        "latent_image": [
+          "4",
+          2
+        ],
+        "seed": null,
+        "steps": 40,
+        "cfg": 3,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    "11": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "10",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "12": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "11",
+          0
+        ],
+        "filename_prefix": null
+      }
+    },
+    "15": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "wbguide-1f21ae837a63.png"
+      }
+    }
+  },
+  "workbench": {
+    "version": "4.5.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
+  }
+}

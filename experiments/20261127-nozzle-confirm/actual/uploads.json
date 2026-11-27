@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-27T05:10:52+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/02a-nozzle-confirm.json",
+  "uploaded": [
+    {
+      "file": "wbguide-1e1f9e7c146b.png",
+      "sha256": "1e1f9e7c146b9e2b537077814b0a4be102b42b7f280a88f62871e4ce34c1e7d6",
+      "bytes": 57301
+    }
+  ],
+  "readback_problems": []
+}

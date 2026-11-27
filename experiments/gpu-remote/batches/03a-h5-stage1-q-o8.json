@@ -1,0 +1,66 @@
+{
+  "schema": "gpu-remote-batch-v1",
+  "batch": "H5 第一段顶视 8 张：四旋参照 4、平面八旋 4（工作台 4.7.3）",
+  "registration": "experiments/20261127-h5-octo-x8/README.md",
+  "registered_manifest": "experiments/20261127-h5-octo-x8/manifest.json",
+  "registered_manifest_sha256": "8e0da72bcdda1a707e810ac3d3ad6abc85e119904ec19f81bd15b14607a28c3a",
+  "requests_dir": "experiments/20261127-h5-octo-x8/requests",
+  "files_dirs": [
+    "experiments/20261127-h5-octo-x8/inputs"
+  ],
+  "on_error": "stop",
+  "requests": [
+    {
+      "file": "01-H5-Q-r1.json",
+      "id": "H5-Q-r1",
+      "seed": 2026112991,
+      "sha256": "0dcc4a8034608937f795a5a2314ea6c3c1b3884f6f231a845783b9fd335d8d80"
+    },
+    {
+      "file": "01-H5-Q-r2.json",
+      "id": "H5-Q-r2",
+      "seed": 2026112992,
+      "sha256": "af65f7781d3345da4925c2cf68f3f35f24f6feaf30eaffab494d6cf47ed3206f"
+    },
+    {
+      "file": "01-H5-Q-r3.json",
+      "id": "H5-Q-r3",
+      "seed": 2026112993,
+      "sha256": "277b656407ed17014d8b9653431be090bffdcf3cc153126dca70387b3dd53c94"
+    },
+    {
+      "file": "01-H5-Q-r4.json",
+      "id": "H5-Q-r4",
+      "seed": 2026112994,
+      "sha256": "b8d2bf1462d8b87abee94123679fde867a15ecae0c7905c1e33833e900f1ac6d"
+    },
+    {
+      "file": "01-H5-O8-r1.json",
+      "id": "H5-O8-r1",
+      "seed": 2026112991,
+      "sha256": "625a2ee5ab36caced2bf682a90a8a779544c969c45ce2a4d82dabac0b6b555a5"
+    },
+    {
+      "file": "01-H5-O8-r2.json",
+      "id": "H5-O8-r2",
+      "seed": 2026112992,
+      "sha256": "0d4b2248c718466e7a07d5bc63683171a68da4eda75df9ef37d6e7606fc49686"
+    },
+    {
+      "file": "01-H5-O8-r3.json",
+      "id": "H5-O8-r3",
+      "seed": 2026112993,
+      "sha256": "06b622fcb4942f90ef91d9ada0da0d88d9a29411abaed61bf9c6fee7c89521f4"
+    },
+    {
+      "file": "01-H5-O8-r4.json",
+      "id": "H5-O8-r4",
+      "seed": 2026112994,
+      "sha256": "92a4e90537f8638384db65a4b18a1b3ad1b8dac12b18f7a459bcf89c892d8906"
+    }
+  ],
+  "files": {
+    "wbguide-7fee96027dbc.png": "7fee96027dbc85278ebee8345eafa2a21a8160b2ea84f91528959e6c9f0b2d35",
+    "wbguide-fc9b23f98221.png": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+  }
+}

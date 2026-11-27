@@ -30,6 +30,8 @@ export interface FrameRule {
   /** 给设计者看的一句话说明。 */
   desc: string;
   shape_en: string;
+  /** 有的构型要另写一句机身在哪、机头朝哪（见 partPrompt 的 hub 句）；四旋、六旋不写。 */
+  hub_en?: string;
 }
 
 export const frameRules: Record<FrameType, FrameRule> = {
@@ -79,7 +81,9 @@ export const frameRules: Record<FrameType, FrameRule> = {
     zh: '平面八旋', en: 'Radial octo', topology: 'flat_octo', hubs: 8,
     wl: { value: 1, min: 1, max: 1, adjustable: false },
     basis: 'definition', rule: '八处单层轴位位于正八边形顶点。',
-    desc: '八个独立轴位，每处一副旋翼。', shape_en: 'eight distinct horizontal axes at the corners of a regular octagon',
+    desc: '八个独立轴位，每处一副旋翼。', shape_en: 'eight distinct horizontal axes at the corners of a regular octagon, on eight arms that all radiate from the fuselage at the centre of the octagon',
+    // 4.7.3：八臂交在一点时，模型常把交点画成一个小毂、把机身另放在前面，或把机头画反；加这一句后 4 张里 3 张对（experiments/20261127-config-dev 第三小批）。
+    hub_en: 'The fuselage is the hub of the aircraft: all eight arms attach directly to its sides, and its nose, which carries the camera, points to the top edge of the image.',
   },
   'Coax Y6': {
     zh: '共轴六旋 Y6', en: 'Coaxial Y6', topology: 'coax_hex', hubs: 3, layers: 2,
@@ -287,7 +291,32 @@ export function sideRotorAxes(layout: Layout, armThickness: number) {
     })));
 }
 
-/** 点线条件图：黑底、蓝色机架连接线、红色轴心点；图内不放文字、刻度或箭头。 */
+/**
+ * 每个电机一根表示桨的直杆（像素坐标）：过轴心、与“机架中心到轴心”的方向垂直，长度等于桨径。
+ * 4.7.0 起画进条件图：只靠文字时，四成左右的图旋翼出错（V 形、多叶、缺一片）；把桨画进条件图后，出过错的状态和种子都出了直的双叶桨
+ * （真机开发小批 experiments/20261127-rotor-dev）。布局本来就是这样交给条件图管住的。
+ */
+export function propBarsPx(layout: Layout): [number, number, number, number][] {
+  const c = layout.guide.size / 2, half = layout.prop_diameter_mm * layout.guide.px_per_mm / 2;
+  const turn = (propBarTurnDeg(layout) * Math.PI) / 180, cos = Math.cos(turn), sin = Math.sin(turn);
+  return layout.hubs.map(h => {
+    const ax = h.x_px - c, ay = h.y_px - c, n = Math.hypot(ax, ay);
+    const [px, py] = n < 1e-6 ? [1, 0] : [-ay / n, ax / n];
+    const [tx, ty] = [px * cos - py * sin, px * sin + py * cos];
+    return [h.x_px - tx * half, h.y_px - ty * half, h.x_px + tx * half, h.y_px + ty * half];
+  });
+}
+
+/**
+ * 直杆相对“与机臂垂直”再转多少度。四旋、六旋是 0。八个及以上的独立轴位转 35°（4.7.2）：
+ * 八旋的直杆与机臂垂直时首尾几乎相接（桨径 89 mm、相邻电机 96 mm），真机上被画成了一圈连着八个电机的外框（experiments/20261127-config-dev）；
+ * 统一转一个角度以后相邻两根错开，连不成圈。
+ */
+export function propBarTurnDeg(layout: Layout): number {
+  return layout.hubs.length >= 8 ? 35 : 0;
+}
+
+/** 点线条件图：黑底、蓝色机架连接线、浅灰的桨（直杆）、红色轴心点；图内不放文字、刻度或箭头。 */
 export function drawGuide(canvas: HTMLCanvasElement, layout: Layout) {
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('无法绘制条件图。');
@@ -298,6 +327,11 @@ export function drawGuide(canvas: HTMLCanvasElement, layout: Layout) {
   ctx.strokeStyle = '#205cff';
   ctx.lineWidth = 3;
   for (const [x, y, u, v] of layout.links_px) {
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(u, v); ctx.stroke();
+  }
+  ctx.strokeStyle = '#c8c8c8';
+  ctx.lineWidth = 3;
+  for (const [x, y, u, v] of propBarsPx(layout)) {
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(u, v); ctx.stroke();
   }
   ctx.fillStyle = '#ff0000';
@@ -326,6 +360,7 @@ export function layoutExport(layout: Layout) {
       bearing_deg: round(h.bearing_deg, 2),
     })),
     links_px: layout.links_px.map(l => l.map(v => round(v, 2))),
+    prop_bars_px: propBarsPx(layout).map(l => l.map(v => round(v, 2))),
     W_mm: round(layout.W_mm, 3), L_mm: round(layout.L_mm, 3), W_over_L: round(layout.W_over_L, 4),
     opposite_motor_distances_mm: layout.opposite_mm.map(v => round(v, 3)),
     D_mean_mm: layout.D_mean_mm === null ? null : round(layout.D_mean_mm, 3),
@@ -340,7 +375,7 @@ export function layoutExport(layout: Layout) {
     disk_gap_mm: round(layout.disk_gap_mm, 2),
     body_width_over_D_mean: layout.D_mean_mm === null ? null : round(layout.body_width_over_D, 4),
     body_length_over_width: round(layout.body_length_over_width, 4),
-    guide: { ...layout.guide, px_per_mm: round(layout.guide.px_per_mm, 6), type: '点线图（轴心与机架连接）' },
+    guide: { ...layout.guide, px_per_mm: round(layout.guide.px_per_mm, 6), type: '点线图（轴心、机架连接、桨的直杆）' },
     warnings: layout.warnings,
   };
 }

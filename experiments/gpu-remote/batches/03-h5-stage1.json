@@ -1,9 +1,9 @@
 {
   "schema": "gpu-remote-batch-v1",
-  "batch": "H5 八旋一轮与共轴 X8：第一段顶视 12 张",
+  "batch": "H5 八旋一轮与共轴 X8：第一段顶视 12 张（工作台流程）",
   "registration": "experiments/20261126-h5-octo-x8/README.md",
   "registered_manifest": "experiments/20261126-h5-octo-x8/manifest.json",
-  "registered_manifest_sha256": "515a14625734b68ba1df2f39598ff6a1d12be3001190a95cb4d4cd6705683e82",
+  "registered_manifest_sha256": "9057970cc29b1b3bf4df598efa291030d538b5d1d48569fef472f46c4d97474b",
   "requests_dir": "experiments/20261126-h5-octo-x8/requests",
   "files_dirs": [
     "experiments/20261126-h5-octo-x8/inputs"
@@ -14,77 +14,77 @@
       "file": "01-H5-Q-r1.json",
       "id": "H5-Q-r1",
       "seed": 2026112611,
-      "sha256": "e743edc5b3866e1ea9165b6856ea7a14339c34a3a73b91f30060b2e51a4664e7"
+      "sha256": "1f35527646e5a807cd72772009fa8041a2eb33b5b5208522aed6ab47ac3ed5f5"
     },
     {
       "file": "01-H5-Q-r2.json",
       "id": "H5-Q-r2",
       "seed": 2026112612,
-      "sha256": "d899d9bbcf2b8216caadf74fa43909e829f15121290ca93656a8fe1c966f6ede"
+      "sha256": "2d3c98e7067fdba7895d419cb4c56979e87b6643051f52312cc284cd69569dbb"
     },
     {
       "file": "01-H5-Q-r3.json",
       "id": "H5-Q-r3",
       "seed": 2026112613,
-      "sha256": "fe455e13364e476fdbdf9ca80fd45b72d3d7cca56bbf689f6f035c7ecc81a6ab"
+      "sha256": "b94bbf177ef410ff814607e40a14ecd1df01bc4c6f17790b7e3a6e09a095d9a0"
     },
     {
       "file": "01-H5-Q-r4.json",
       "id": "H5-Q-r4",
       "seed": 2026112614,
-      "sha256": "e2e4011af4889e1509a5c1c1a0255c80be5cca9534f89bbcb094391d4724f65c"
+      "sha256": "68a67dc1124c81e32027da4bf1b9551901dde86c6b2df7404211161ba81eb05a"
     },
     {
       "file": "01-H5-O8-r1.json",
       "id": "H5-O8-r1",
       "seed": 2026112611,
-      "sha256": "3d63420195017a15a5f7d198bc05e7e012e6fd2df8cbb039b2b9a3bda07bcc95"
+      "sha256": "fff5d5f5df696577c6956529d66e73d620ef596101f86939ae369acf5950c2c1"
     },
     {
       "file": "01-H5-O8-r2.json",
       "id": "H5-O8-r2",
       "seed": 2026112612,
-      "sha256": "ebfef2f61d15a778ab8317d4f8d8a39806da7aef154b7562fbc3102b2ef55072"
+      "sha256": "d2335f5beb14eec69200d5855bc25b22f3b340dc8bc4545ad6e541be76cdc785"
     },
     {
       "file": "01-H5-O8-r3.json",
       "id": "H5-O8-r3",
       "seed": 2026112613,
-      "sha256": "f59517937d0ed7ab22c758b0dff616b610a14b856063b6739da1d0ea9c383fc9"
+      "sha256": "a110df9a700527c8ab5216bca2579d27fe9766616a48d1718871a0cebe017651"
     },
     {
       "file": "01-H5-O8-r4.json",
       "id": "H5-O8-r4",
       "seed": 2026112614,
-      "sha256": "2552ead1468dff671d6c117e16c37e568ed76fe2121a0e8b59e5a2635d30616c"
+      "sha256": "9a9c23850b41949d51066f09e33b231041198fee1cf3d97a71e7801c76f52444"
     },
     {
       "file": "01-H5-X8-r1.json",
       "id": "H5-X8-r1",
       "seed": 2026112611,
-      "sha256": "76386b906303857fed0a60ca7573637aded89ed37b0caac25edbf1af30183619"
+      "sha256": "142a08f79ab5751f8c612d1200ac1dd9c4e0270fa12f36c7fbdcb416ecf7941a"
     },
     {
       "file": "01-H5-X8-r2.json",
       "id": "H5-X8-r2",
       "seed": 2026112612,
-      "sha256": "941b942cc0e5da1b718ae453ba12cb765ca035325cb3ed770855d845c284a023"
+      "sha256": "a5da640b661766ca3ca5ecf866df775c3214e16f7eca290ac29a38c5d9ae9f8d"
     },
     {
       "file": "01-H5-X8-r3.json",
       "id": "H5-X8-r3",
       "seed": 2026112613,
-      "sha256": "ee8b83af5a62fef11a7951197110774f9b3378cfbaab8b3aac9eb058bc8ffb00"
+      "sha256": "36b4d0476105e12ab15882e11a1f372dbdbc36ccdc2edf0de176aa6b0448c857"
     },
     {
       "file": "01-H5-X8-r4.json",
       "id": "H5-X8-r4",
       "seed": 2026112614,
-      "sha256": "69ddeea713b0bb12fa4afa1130fb36c73241c6b3de27b5e44bdb81bdd8bd31fd"
+      "sha256": "b25e43671b466c0a32a7588cea4a736687f687e72d574f5689b1c73481ef449d"
     }
   ],
   "files": {
-    "octo-points-1.00.png": "d3fba4c9e53a29ae2d9c69e8a0b6c56a4cee1b339e8cb22b1114c60cab9c6a0d",
-    "qwen-shape-dots-250-15c5ad1c924b.png": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338"
+    "wbguide-1f21ae837a63.png": "1f21ae837a63c5534efa4a0505ac0c6f3f0aa69c30be7bba30f93d736b66e8b0",
+    "wbguide-deb3284ef6b5.png": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
   }
 }

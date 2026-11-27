@@ -1,0 +1,1 @@
+Same drone as the image. Change only the nose: blend the forward camera into the nose more smoothly. Keep the four arm-to-body joints and the four motor positions unchanged. Strict top view.

@@ -53,16 +53,21 @@ export const legacyFuselageStyles: Option<DroneParameters['fuselage']['fuselage_
 export const topCoverOptions: Option<DroneParameters['fuselage']['top_cover']>[] = [
   { value: 'single', zh: '单盖', en: 'A plain top cover with no seams crossing it.' },
   { value: 'two', zh: '两段', en: 'The top cover is divided by one curved transverse parting line into a nose cap and a main cover.' },
-  { value: 'multi', zh: '多块', en: 'Three or more distinct top cover panels separated by seams.' },
+  // 4.7.0：原句“Three or more distinct top cover panels separated by seams.”在真机开发小批里 3 张有 2 张只出两块；改为写明块数和缝的走向。
+  { value: 'multi', zh: '多块', en: 'The top cover is divided into three separate panels by two transverse seams: a nose cap, a centre cover and a rear cover.' },
 ];
 export const cameraMountOptions: Option<DroneParameters['accessories']['camera_mount']>[] = [
   {
     value: 'flush', zh: '内嵌机鼻', hint: '从正上方只见机鼻前缘一条窗带',
-    en: 'The camera sits inside the nose, flush with the shell; from directly overhead only a thin strip of its front window shows at the very front edge of the nose.',
+    // 4.6：改回 v1.6 字典的原句（thin dark strip，另加朝向那一句）。真机开发小批里，这一句连同 4 个相机负向词一起用，基准的相机 4/4 内嵌。
+    en: 'The camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.',
   },
   {
     value: 'underslung', zh: '机鼻下挂', hint: '从正上方只见舱体前缘略微探出',
-    en: 'The gimbal camera hangs underneath the front of the fuselage; from directly above only the top edge of a small camera housing peeks out just ahead of the nose, low and tight against it, with no neck, stalk or post.',
+    // 4.7.1：v1.6 原句里否定镜片的半句（“so no lens glass is visible from above”）换成正面描述顶面。提到镜片（哪怕是否定）时真机上镜头都正对观察者
+    // （4.6 的短句 3/3、v1.6 原句 3/3）；不提 camera housing 时舱体不出来（4/4）；这一句在开发小批里舱体探出且不露镜片（experiments/20261127-shape-options-dev 第四小批）。
+    en: 'The gimbal camera hangs underneath the front of the fuselage. Seen from directly above, only the top edge of a small camera housing peeks out just ahead of the nose; the top of the housing is a plain closed cap. ' +
+      'The camera looks straight forward toward the top edge of the image and sits low and tight against the nose, with no neck, stalk or post.',
   },
 ];
 export const finishOptions: Option<DroneParameters['accessories']['surface_finish']>[] = [
@@ -183,6 +188,9 @@ export const fields: FieldDef[] = [
     format: p => opt(spraySystemOptions, p.accessories.spray_system ?? ''), relevant: p => p.accessories.spray_system !== undefined,
   },
   { path: 'accessories.drone_primary_color', group: 'accessories', label: '主色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.drone_primary_color) },
+  // 4.6：按部件配色。真实产品不是整机一个颜色；主色管机身外壳，机臂、桨叶各有一项（电机颜色真机上控不住，不设）。
+  { path: 'accessories.arm_color', group: 'accessories', label: '机臂颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.arm_color ?? '') },
+  { path: 'accessories.prop_color', group: 'accessories', label: '桨叶颜色', kind: 'styling', visibility: 'top', format: p => colourText(p.accessories.prop_color ?? '') },
   { path: 'accessories.surface_finish', group: 'accessories', label: '表面处理', kind: 'styling', visibility: 'text', format: p => opt(finishOptions, p.accessories.surface_finish) },
   {
     path: 'accessories.custom_prompt_additions', group: 'accessories', label: '补充文字', kind: 'custom', visibility: 'text',

@@ -1,247 +1,245 @@
 {
-  "batch": "H5 八旋一轮与共轴 X8（第一段：顶视 12 张）",
-  "base_request": {
-    "path": "experiments/gpu-day-20261115/queue/08-S16-S0-r01.json",
-    "sha256": "a5f2940e5332298e6b2d460aba27b3436cd430c9c5742b7989f4a0a3e64a3534"
+  "batch": "H5 八旋一轮与共轴 X8：第一段顶视（工作台流程）",
+  "workbench": {
+    "version": "4.5.3",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-BRaG_8au.js",
+    "bundle_sha256": "852813cb97c0c5a8a4ea3cf71a59c99345c546c00fdb6bd8d7a26914dcd6d433",
+    "image_jobs_sha256": "04ae3d91175f0d7006bc3ab2795836cf9fefc67696e61be34983e65d40e7c7c6"
   },
+  "states": {
+    "Q": {
+      "state": "H5-Q",
+      "values": {
+        "frame.frame_type": "True X",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937"
+    },
+    "O8": {
+      "state": "H5-O8",
+      "values": {
+        "frame.frame_type": "Radial Octo",
+        "propulsion.prop_diameter_inch": 3.5,
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "8f81e00e42c1c8ac883610f983dd3c9975e33a511c678386af2c326a9840fefc"
+    },
+    "X8": {
+      "state": "H5-X8",
+      "values": {
+        "frame.frame_type": "Coax X8",
+        "frame.span_ratio_wl": 1,
+        "frame.wheelbase_mm": 250,
+        "fuselage.fuselage_style": "Aerodynamic Pod",
+        "frame.arm_root": "seamless",
+        "accessories.camera_mount": "flush",
+        "fuselage.top_cover": "single",
+        "accessories.drone_primary_color": "#c7cbd1",
+        "accessories.surface_finish": "matte"
+      },
+      "prompt_sha256": "a9fbce79d33bedb1e9b79fc6b41bddddb935d59a35f4faf53cf42b4615d9984c"
+    }
+  },
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
   "requests": [
     {
       "order": 1,
       "id": "H5-Q-r1",
       "config": "Q",
+      "config_note": "四旋参照",
       "seed": 2026112611,
+      "state": "H5-Q",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "183bed2f754ce20c2fd8f8b087ee88c3a934b210f681d30195c1b3e45c36dd49",
-      "request_sha256": "e743edc5b3866e1ea9165b6856ea7a14339c34a3a73b91f30060b2e51a4664e7"
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "1f35527646e5a807cd72772009fa8041a2eb33b5b5208522aed6ab47ac3ed5f5"
     },
     {
       "order": 1,
       "id": "H5-Q-r2",
       "config": "Q",
+      "config_note": "四旋参照",
       "seed": 2026112612,
+      "state": "H5-Q",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "183bed2f754ce20c2fd8f8b087ee88c3a934b210f681d30195c1b3e45c36dd49",
-      "request_sha256": "d899d9bbcf2b8216caadf74fa43909e829f15121290ca93656a8fe1c966f6ede"
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "2d3c98e7067fdba7895d419cb4c56979e87b6643051f52312cc284cd69569dbb"
     },
     {
       "order": 1,
       "id": "H5-Q-r3",
       "config": "Q",
+      "config_note": "四旋参照",
       "seed": 2026112613,
+      "state": "H5-Q",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "183bed2f754ce20c2fd8f8b087ee88c3a934b210f681d30195c1b3e45c36dd49",
-      "request_sha256": "fe455e13364e476fdbdf9ca80fd45b72d3d7cca56bbf689f6f035c7ecc81a6ab"
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "b94bbf177ef410ff814607e40a14ecd1df01bc4c6f17790b7e3a6e09a095d9a0"
     },
     {
       "order": 1,
       "id": "H5-Q-r4",
       "config": "Q",
+      "config_note": "四旋参照",
       "seed": 2026112614,
+      "state": "H5-Q",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "183bed2f754ce20c2fd8f8b087ee88c3a934b210f681d30195c1b3e45c36dd49",
-      "request_sha256": "e2e4011af4889e1509a5c1c1a0255c80be5cca9534f89bbcb094391d4724f65c"
+      "prompt_sha256": "dff4789452dcc88a551eb98cdaacfb99327f04c6b64639b86a3a1b8f6abd1937",
+      "request_sha256": "68a67dc1124c81e32027da4bf1b9551901dde86c6b2df7404211161ba81eb05a"
     },
     {
       "order": 1,
       "id": "H5-O8-r1",
       "config": "O8",
+      "config_note": "平面八旋",
       "seed": 2026112611,
+      "state": "H5-O8",
       "input_images": [
-        "octo-points-1.00.png"
+        "wbguide-1f21ae837a63.png"
       ],
-      "prompt_sha256": "ce9b92dedd06384c95e3dde2f2c88fb65e096edcf2b522e888c54ae035272b75",
-      "request_sha256": "3d63420195017a15a5f7d198bc05e7e012e6fd2df8cbb039b2b9a3bda07bcc95"
+      "prompt_sha256": "8f81e00e42c1c8ac883610f983dd3c9975e33a511c678386af2c326a9840fefc",
+      "request_sha256": "fff5d5f5df696577c6956529d66e73d620ef596101f86939ae369acf5950c2c1"
     },
     {
       "order": 1,
       "id": "H5-O8-r2",
       "config": "O8",
+      "config_note": "平面八旋",
       "seed": 2026112612,
+      "state": "H5-O8",
       "input_images": [
-        "octo-points-1.00.png"
+        "wbguide-1f21ae837a63.png"
       ],
-      "prompt_sha256": "ce9b92dedd06384c95e3dde2f2c88fb65e096edcf2b522e888c54ae035272b75",
-      "request_sha256": "ebfef2f61d15a778ab8317d4f8d8a39806da7aef154b7562fbc3102b2ef55072"
+      "prompt_sha256": "8f81e00e42c1c8ac883610f983dd3c9975e33a511c678386af2c326a9840fefc",
+      "request_sha256": "d2335f5beb14eec69200d5855bc25b22f3b340dc8bc4545ad6e541be76cdc785"
     },
     {
       "order": 1,
       "id": "H5-O8-r3",
       "config": "O8",
+      "config_note": "平面八旋",
       "seed": 2026112613,
+      "state": "H5-O8",
       "input_images": [
-        "octo-points-1.00.png"
+        "wbguide-1f21ae837a63.png"
       ],
-      "prompt_sha256": "ce9b92dedd06384c95e3dde2f2c88fb65e096edcf2b522e888c54ae035272b75",
-      "request_sha256": "f59517937d0ed7ab22c758b0dff616b610a14b856063b6739da1d0ea9c383fc9"
+      "prompt_sha256": "8f81e00e42c1c8ac883610f983dd3c9975e33a511c678386af2c326a9840fefc",
+      "request_sha256": "a110df9a700527c8ab5216bca2579d27fe9766616a48d1718871a0cebe017651"
     },
     {
       "order": 1,
       "id": "H5-O8-r4",
       "config": "O8",
+      "config_note": "平面八旋",
       "seed": 2026112614,
+      "state": "H5-O8",
       "input_images": [
-        "octo-points-1.00.png"
+        "wbguide-1f21ae837a63.png"
       ],
-      "prompt_sha256": "ce9b92dedd06384c95e3dde2f2c88fb65e096edcf2b522e888c54ae035272b75",
-      "request_sha256": "2552ead1468dff671d6c117e16c37e568ed76fe2121a0e8b59e5a2635d30616c"
+      "prompt_sha256": "8f81e00e42c1c8ac883610f983dd3c9975e33a511c678386af2c326a9840fefc",
+      "request_sha256": "9a9c23850b41949d51066f09e33b231041198fee1cf3d97a71e7801c76f52444"
     },
     {
       "order": 1,
       "id": "H5-X8-r1",
       "config": "X8",
+      "config_note": "共轴 X8",
       "seed": 2026112611,
+      "state": "H5-X8",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "bb8d0b3e0c294e99c8b35b3523d21df86441a652e7626cf8729086d2e7573abf",
-      "request_sha256": "76386b906303857fed0a60ca7573637aded89ed37b0caac25edbf1af30183619"
+      "prompt_sha256": "a9fbce79d33bedb1e9b79fc6b41bddddb935d59a35f4faf53cf42b4615d9984c",
+      "request_sha256": "142a08f79ab5751f8c612d1200ac1dd9c4e0270fa12f36c7fbdcb416ecf7941a",
+      "negative_swap": [
+        "extra rotor",
+        "extra arm"
+      ]
     },
     {
       "order": 1,
       "id": "H5-X8-r2",
       "config": "X8",
+      "config_note": "共轴 X8",
       "seed": 2026112612,
+      "state": "H5-X8",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "bb8d0b3e0c294e99c8b35b3523d21df86441a652e7626cf8729086d2e7573abf",
-      "request_sha256": "941b942cc0e5da1b718ae453ba12cb765ca035325cb3ed770855d845c284a023"
+      "prompt_sha256": "a9fbce79d33bedb1e9b79fc6b41bddddb935d59a35f4faf53cf42b4615d9984c",
+      "request_sha256": "a5da640b661766ca3ca5ecf866df775c3214e16f7eca290ac29a38c5d9ae9f8d",
+      "negative_swap": [
+        "extra rotor",
+        "extra arm"
+      ]
     },
     {
       "order": 1,
       "id": "H5-X8-r3",
       "config": "X8",
+      "config_note": "共轴 X8",
       "seed": 2026112613,
+      "state": "H5-X8",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "bb8d0b3e0c294e99c8b35b3523d21df86441a652e7626cf8729086d2e7573abf",
-      "request_sha256": "ee8b83af5a62fef11a7951197110774f9b3378cfbaab8b3aac9eb058bc8ffb00"
+      "prompt_sha256": "a9fbce79d33bedb1e9b79fc6b41bddddb935d59a35f4faf53cf42b4615d9984c",
+      "request_sha256": "36b4d0476105e12ab15882e11a1f372dbdbc36ccdc2edf0de176aa6b0448c857",
+      "negative_swap": [
+        "extra rotor",
+        "extra arm"
+      ]
     },
     {
       "order": 1,
       "id": "H5-X8-r4",
       "config": "X8",
+      "config_note": "共轴 X8",
       "seed": 2026112614,
+      "state": "H5-X8",
       "input_images": [
-        "qwen-shape-dots-250-15c5ad1c924b.png"
+        "wbguide-deb3284ef6b5.png"
       ],
-      "prompt_sha256": "bb8d0b3e0c294e99c8b35b3523d21df86441a652e7626cf8729086d2e7573abf",
-      "request_sha256": "69ddeea713b0bb12fa4afa1130fb36c73241c6b3de27b5e44bdb81bdd8bd31fd"
+      "prompt_sha256": "a9fbce79d33bedb1e9b79fc6b41bddddb935d59a35f4faf53cf42b4615d9984c",
+      "request_sha256": "b25e43671b466c0a32a7588cea4a736687f687e72d574f5689b1c73481ef449d",
+      "negative_swap": [
+        "extra rotor",
+        "extra arm"
+      ]
     }
   ],
   "inputs": [
     {
-      "input": "qwen-shape-dots-250-15c5ad1c924b.png",
-      "sha256": "15c5ad1c924b8e1c46ae4ffe59c4f7785e8ff5c130f9000432821410b1fd1338"
+      "input": "wbguide-1f21ae837a63.png",
+      "sha256": "1f21ae837a63c5534efa4a0505ac0c6f3f0aa69c30be7bba30f93d736b66e8b0"
     },
     {
-      "input": "octo-points-1.00.png",
-      "sha256": "d3fba4c9e53a29ae2d9c69e8a0b6c56a4cee1b339e8cb22b1114c60cab9c6a0d"
+      "input": "wbguide-deb3284ef6b5.png",
+      "sha256": "deb3284ef6b58858bbd252becb60bc9d2aec51ee950a8bc087c5058ff8325d52"
     }
   ],
-  "guides": {
-    "qwen-shape-dots-250-15c5ad1c924b.png": {
-      "hubs_measured": [
-        [
-          302.04,
-          302.1
-        ],
-        [
-          721.92,
-          302.1
-        ],
-        [
-          302.03,
-          721.93
-        ],
-        [
-          721.97,
-          721.94
-        ]
-      ]
-    },
-    "octo-points-1.00.png": {
-      "hubs_planned": [
-        [
-          625.65,
-          237.62
-        ],
-        [
-          786.38,
-          398.35
-        ],
-        [
-          786.38,
-          625.65
-        ],
-        [
-          625.65,
-          786.38
-        ],
-        [
-          398.35,
-          786.38
-        ],
-        [
-          237.62,
-          625.65
-        ],
-        [
-          237.62,
-          398.35
-        ],
-        [
-          398.35,
-          237.62
-        ]
-      ],
-      "hubs_measured": [
-        [
-          398.43,
-          237.57
-        ],
-        [
-          625.57,
-          237.57
-        ],
-        [
-          237.57,
-          398.43
-        ],
-        [
-          786.43,
-          398.43
-        ],
-        [
-          237.57,
-          625.57
-        ],
-        [
-          786.43,
-          625.57
-        ],
-        [
-          398.43,
-          786.43
-        ],
-        [
-          625.57,
-          786.43
-        ]
-      ],
-      "span_ratio": 1.0,
-      "radius_px": 296.98
-    }
-  },
   "stage2_template": {
     "prompt": "Edit this drone image. Show the same drone from a three-quarter front view, about 30 degrees above the horizon, so that the arm ends, motors and propellers are seen from the side. {rotor} Keep the design exactly the same: the body shape and colours, the camera at the nose, the top cover, and the arms and their roots. Show the complete product on a plain light background. Omit guide marks and lettering.",
     "rotor": {
@@ -250,5 +248,6 @@
     },
     "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra arm, top view, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades",
     "rule": "输入为同种子 Q、X8 顶视原图，不裁不改；种子与顶视图相同；其余节点与第一段相同"
-  }
+  },
+  "stage2_note": "第二段的模板是 11-26 早先登记的原文；负向词要在第一段出图后按统一的那一份重编，编好再过出图前检查。"
 }

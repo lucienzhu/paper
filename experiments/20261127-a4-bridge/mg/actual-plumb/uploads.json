@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-27T12:54:37+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/06b-a4-mg-plumb.json",
+  "uploaded": [
+    {
+      "file": "a4wb-parts-WL-1.35-b5b25f7568.png",
+      "sha256": "b5b25f75680b8cc91597c8530841367bfb356a66325f90244b3128fb6b8780f0",
+      "bytes": 16688
+    },
+    {
+      "file": "wbguide-a1844dfa5fef.png",
+      "sha256": "a1844dfa5fefa3c7036273b856dd23e0a5e5b618d9ecb63a6061e1376b4f4be3",
+      "bytes": 61555
+    }
+  ],
+  "readback_problems": []
+}

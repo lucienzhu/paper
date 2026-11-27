@@ -73,9 +73,14 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
       `${spanDescription} ${fmt(frame.wheelbase_mm, 1)} mm; motor-centre width-to-length span ratio W/L ${effectiveWl(frame).toFixed(2)}; ` +
       `adjacent arm angles clockwise from the ${first} motor: ${layout.adjacent_deg.map(a => fmt(a, 1) + '°').join(', ')}.`,
   });
+  if (rule.hub_en) add({ id: 'hub', group: 'frame', source: src('frame.frame_type'), zh: '机身在机臂的交点上、机头朝上', fields: ['frame.frame_type'], text: rule.hub_en });
   add({
     id: 'guide', group: 'task', source: 'fixed', zh: '随附点线图的读法', fields: [],
-    text: 'Match the motor centres and frame links in the attached layout image: red dots mark motor centres, blue lines mark frame links. Do not reproduce the dots or lines in the result.',
+    // 4.5.3：这一句不写点和线的颜色。写了“red dots…blue lines”时，颜色会进到产品上（真机开发小批：现行写法 4 张里 3 张机臂发蓝，去掉颜色词后 0/4；
+    // experiments/20261126-guide-colour-dev）。条件图本身的画法不变。
+    // 4.7.0：条件图上多了每个电机一根表示桨的直杆，这一句跟着写明它是什么。
+    text: 'Match the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, ' +
+      "and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place.",
   });
 
   const blades = parseInt(propulsion.prop_blade_count, 10);
@@ -83,8 +88,12 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
     id: 'propulsion', group: 'propulsion',
     source: src('propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'),
     zh: '桨径、每轴桨叶数、电机倾角', fields: ['propulsion.prop_diameter_inch', 'propulsion.prop_blade_count', 'propulsion.motor_tilt_degree'],
-    text: `Each motor carries one stationary ${blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.` +
-      (blades === 2 ? ' The two blades point in exactly opposite directions from the hub.' : '') +
+    // 4.7.3：共轴不另写桨句（4.7.2 试过“每处臂端上下两副、顶视只见一副”，真机上每处臂端画出三四片乱排的桨叶，0/4，比原句的 2/4 更差；
+    // experiments/20261127-config-dev）。共轴 X8 还没有过开发门。
+    text: `Each motor carries one stationary ${blades === 2 ? 'two' : blades}-blade propeller, ${fmt(propulsion.prop_diameter_inch, 1)}-inch (${fmt(layout.prop_diameter_mm, 0)} mm) diameter.` +
+      // 4.7.0：双叶改回 v1.6 的原句（4.6 以前被缩短，丢了“成一条直线、不是 V 形”）。
+      (blades === 2 ? ' The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, ' +
+        'forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.' : '') +
       (propulsion.motor_tilt_degree > 0 ? ` Motors are tilted ${propulsion.motor_tilt_degree}° forward.` : ''),
   });
   add({
@@ -148,11 +157,21 @@ export function compilePrompt(p: DroneParameters, touched: Record<string, boolea
           : `Tall landing legs with ${gear.landing_gear_height_mm} mm ground clearance.`,
   });
 
-  const hex = accessories.drone_primary_color;
-  if (hex)
+  // 4.6：按部件配色。真实产品不是整机一个颜色（作者 2026-11-26）：主色只管机身外壳，机臂、桨叶各有一项；选了哪几项就写哪几项。
+  // 真机开发小批：机身、机臂、桨叶 4/4 各归各的颜色；电机颜色两种写法都是 0/4，所以没有电机这一项。
+  const colourOf = (value: string) => `${colourName(value)?.en ?? 'custom colour'} (${value})`;
+  const partColours = ([
+    ['body shell', 'accessories.drone_primary_color', accessories.drone_primary_color],
+    ['arms', 'accessories.arm_color', accessories.arm_color ?? ''],
+    ['propellers', 'accessories.prop_color', accessories.prop_color ?? ''],
+  ] as [string, string, string][]).filter(part => part[2]);
+  if (partColours.length)
     add({
-      id: 'colour', group: 'accessories', source: 'chosen', zh: '主色', fields: ['accessories.drone_primary_color'],
-      text: `Main shell colour: ${colourName(hex)?.en ?? 'custom colour'} (${hex}).`,
+      id: 'colour', group: 'accessories', source: 'chosen', zh: partColours.length > 1 ? '按部件配色' : '主色', fields: partColours.map(part => part[1]),
+      // 只选了机身主色时沿用原来的一句；这一句的写法由分部件配色的真机开发小批定（experiments/20261126-colour-parts-dev）。
+      text: partColours.length === 1 && partColours[0][0] === 'body shell'
+        ? `Main shell colour: ${colourOf(partColours[0][2])}.`
+        : `Colours by part: ${partColours.map(part => `${part[0]} ${colourOf(part[2])}`).join('; ')}.`,
     });
   add({ id: 'finish', group: 'accessories', source: 'chosen', zh: '表面处理', fields: ['accessories.surface_finish'], text: en(finishOptions, accessories.surface_finish) });
 
@@ -195,7 +214,7 @@ const topics: { topic: AuditItem['topic']; label: string; pattern: RegExp; allow
   {
     topic: 'colour', label: '颜色',
     pattern: /#[0-9a-f]{6}\b|\b(black|white|grey|gray|orange|red|blue|green|purple|pink|yellow|silver|golden?|charcoal)\b|colou?r|配色|黑|灰|橙/i,
-    allowed: p => (p.accessories.drone_primary_color ? ['colour'] : []),
+    allowed: p => (p.accessories.drone_primary_color || p.accessories.arm_color || p.accessories.prop_color ? ['colour'] : []),
   },
   {
     topic: 'carbon', label: '碳纤维纹理', pattern: /carbon|weave|碳/i,

@@ -133,7 +133,7 @@ export type ConfigExport = ReturnType<typeof buildExport>;
 /** 条件图内容摘要：由轴心与连接线的像素坐标算出，不依赖浏览器的 PNG 编码。 */
 export function layoutDigest(layout: Layout) {
   const g = layoutExport(layout);
-  return sha256Text(JSON.stringify({ hubs: g.hubs.map(h => [h.id, h.x_px, h.y_px]), links: g.links_px }));
+  return sha256Text(JSON.stringify({ hubs: g.hubs.map(h => [h.id, h.x_px, h.y_px]), links: g.links_px, prop_bars: g.prop_bars_px }));
 }
 
 export function guideCanvas(layout: Layout) {

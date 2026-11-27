@@ -1,0 +1,216 @@
+{
+  "batch": "合在一起的检查小批（基准和五个造型档位 × 3 个新种子）",
+  "workbench": {
+    "version": "4.7.0",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-YPZXpxR6.js",
+    "bundle_sha256": "1ba0520f28733e08493ea5f4ab34fd76ffd050a552d8f8fa295d4f7995e9d6cd",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  },
+  "requests": [
+    {
+      "order": 1,
+      "id": "IC-S0-s1",
+      "state": "S0",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "1f616c213e3b646f0a2062603da4e858e1f3af4444e04369830aa36f618878dd"
+    },
+    {
+      "order": 1,
+      "id": "IC-S1-s1",
+      "state": "S1",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "496c20a3fcd1fc88c9038e31429b28ba8981c47a0d372eff8e89d9780365d8c5"
+    },
+    {
+      "order": 1,
+      "id": "IC-S2-s1",
+      "state": "S2",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "adfba2f610776dabf74e13bb79a9db1386bf62020ac47226696777c326b95732"
+    },
+    {
+      "order": 1,
+      "id": "IC-S3-s1",
+      "state": "S3",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "f4036de4538ce37a269522f86089b9445e4cc8d5ac845a7e10824ed22a080d7f"
+    },
+    {
+      "order": 1,
+      "id": "IC-S4-s1",
+      "state": "S4",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "12052f0c7dcfcf7d4d674930a1ef2869c83bd32de7787d25e3b866b2ddca37c1",
+      "request_sha256": "890afaa771059de0602fd9e5360d106e77adcefaa8d374cea27deff7ccdaae11"
+    },
+    {
+      "order": 1,
+      "id": "IC-S5-s1",
+      "state": "S5",
+      "seed": 2026112861,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "db0a82754d87a29367a387fba939774d257596a2e0cacb971876d1085de9bb40"
+    },
+    {
+      "order": 2,
+      "id": "IC-S0-s2",
+      "state": "S0",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "0828993a315d8a6cae8909a6dbebcba007cb64337989237ca650ffc2cdf0e9e2"
+    },
+    {
+      "order": 2,
+      "id": "IC-S1-s2",
+      "state": "S1",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "56bd55b95a32f7da9df31cedc660fad56172d59159634e4d3dfaf0ed6dde5c94"
+    },
+    {
+      "order": 2,
+      "id": "IC-S2-s2",
+      "state": "S2",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "6f8e22195ded85d10c7ee87a0a073bed7daf38f8c79ca4c2ab624af766b98329"
+    },
+    {
+      "order": 2,
+      "id": "IC-S3-s2",
+      "state": "S3",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "5ac1a3083bd1f9aa4606cb0117681701090be4197436191bb4f0965f62906473"
+    },
+    {
+      "order": 2,
+      "id": "IC-S4-s2",
+      "state": "S4",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "12052f0c7dcfcf7d4d674930a1ef2869c83bd32de7787d25e3b866b2ddca37c1",
+      "request_sha256": "9f6930c780875cecd14ce779d29e52104253ab70a01cb2e9bfd2464a50369e02"
+    },
+    {
+      "order": 2,
+      "id": "IC-S5-s2",
+      "state": "S5",
+      "seed": 2026112862,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "03af749a2d2ef400f3432a53d8dbaea87f9097b2bfc82febad5b3bd89d2b89d5"
+    },
+    {
+      "order": 3,
+      "id": "IC-S0-s3",
+      "state": "S0",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "717b074c1d01b1fa5a9f3cd33ed6d3f56853fa11087efe23497201655c52b4ec",
+      "request_sha256": "f9391cc97b4c2ecd34644f708360f70c090903240ceec4b60efc53ca3b7509e2"
+    },
+    {
+      "order": 3,
+      "id": "IC-S1-s3",
+      "state": "S1",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "edcdcbd45812f52c656d74186f13bae9741a66f6efd3b6a5e46b42fa4aa1e307",
+      "request_sha256": "704636f233b3f4a547d3db442b1d495216b10f613f544a0f962d6c6092d11071"
+    },
+    {
+      "order": 3,
+      "id": "IC-S2-s3",
+      "state": "S2",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "546f8f9bb115c1fe95cf627a4c3aa73c253039c9733561d2ad1528ef6a2ade86",
+      "request_sha256": "9e3fa79fee951169da8094995da8d9506761b690ba15232aad65c9037fe89151"
+    },
+    {
+      "order": 3,
+      "id": "IC-S3-s3",
+      "state": "S3",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "cf27155bc4e6f76e516c56b7fd700bc7e91f25ce73dcb9bd17e4f6ddfd449fc5",
+      "request_sha256": "82365b7e2771682c4c862390c861e809b05eff0b122d7cfc87d7a1d0eddf7be3"
+    },
+    {
+      "order": 3,
+      "id": "IC-S4-s3",
+      "state": "S4",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "12052f0c7dcfcf7d4d674930a1ef2869c83bd32de7787d25e3b866b2ddca37c1",
+      "request_sha256": "8f711aafb52ef4222da92bbfae7e189afef849a8d0f0773ca598bc799791f1af"
+    },
+    {
+      "order": 3,
+      "id": "IC-S5-s3",
+      "state": "S5",
+      "seed": 2026112863,
+      "input_images": [
+        "wbguide-fc9b23f98221.png"
+      ],
+      "prompt_sha256": "56f8538293442c6e6f38a910da113925e9764c1283cddd12c0b304265d178e91",
+      "request_sha256": "95762895bbe07e4655ac9a71214fad7923b37095e2ca3692b72e62a833b74d36"
+    }
+  ],
+  "inputs": [
+    {
+      "input": "wbguide-fc9b23f98221.png",
+      "sha256": "fc9b23f98221e4fe37646c7d74abf5b01a1905390c229b3b7451fbfd09324645"
+    }
+  ]
+}

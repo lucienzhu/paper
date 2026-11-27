@@ -1,0 +1,171 @@
+{
+  "name": "A4-WL-1.15",
+  "task": "consumer_camera",
+  "values": {
+    "frame.frame_type": "Wide X",
+    "frame.span_ratio_wl": 1.15,
+    "frame.wheelbase_mm": 250,
+    "fuselage.fuselage_style": "Aerodynamic Pod",
+    "frame.arm_root": "seamless",
+    "accessories.camera_mount": "flush",
+    "fuselage.top_cover": "single",
+    "accessories.drone_primary_color": "#c7cbd1",
+    "accessories.surface_finish": "matte",
+    "landing_gear.landing_gear_style": "无独立起落架",
+    "accessories.arm_color": "#c7cbd1",
+    "accessories.prop_color": "#1e293b"
+  },
+  "parameters": {
+    "frame": {
+      "frame_type": "Wide X",
+      "wheelbase_mm": 250,
+      "span_ratio_wl": 1.15,
+      "arm_thickness_mm": "4mm",
+      "arm_width_mm": "15mm",
+      "material_visual": "",
+      "arm_root": "seamless"
+    },
+    "propulsion": {
+      "prop_diameter_inch": 5,
+      "prop_blade_count": "2叶",
+      "motor_tilt_degree": 0,
+      "prop_guard": "none"
+    },
+    "fuselage": {
+      "fuselage_style": "Aerodynamic Pod",
+      "top_cover": "single",
+      "fuselage_dimensions_mm": {
+        "length": 150,
+        "width": 55,
+        "height": 30
+      }
+    },
+    "landing_gear": {
+      "landing_gear_style": "无独立起落架",
+      "landing_gear_height_mm": 40
+    },
+    "accessories": {
+      "has_camera_gimbal": true,
+      "camera_mount": "flush",
+      "custom_prompt_additions": "",
+      "drone_primary_color": "#c7cbd1",
+      "arm_color": "#c7cbd1",
+      "prop_color": "#1e293b",
+      "surface_finish": "matte"
+    }
+  },
+  "prompt": "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.\nDesign a quadcopter for everyday carry-along aerial photography. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nFour motors in a Wide X layout: the four motor centres sit at the corners of a rectangle that is wider than it is long. Mean opposite-motor (diagonal) span 250 mm; motor-centre width-to-length span ratio W/L 1.15; adjacent arm angles clockwise from the front-left motor: 98°, 82°, 98°, 82°.\nMatch the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place.\nEach motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nFuselage design envelope 150 × 55 × 30 mm (length × width × height); this is a size limit, not a shape.\nA rounded pod with a continuous curved outline.\nA plain top cover with no seams crossing it.\nA forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.\nNo separate landing gear.\nColours by part: body shell silver grey (#c7cbd1); arms silver grey (#c7cbd1); propellers charcoal black (#1e293b).\nShell surface finish: fine matte.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+  "prompt_sha256": "76423c87cfd8e1ed63955007ac0f949a74e6fb6ef78d021970623a9d69e3733b",
+  "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+  "guide": {
+    "file": "wbguide-1633259782cc.png",
+    "sha256": "1633259782cc1115798cea63e32d32cdedebc87bc68b75ff5af364e51df653e1",
+    "bytes": 62785
+  },
+  "graph": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "qwen_image_2.1_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen3vl_8b_bf16.safetensors",
+        "type": "qwen_image",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "TextEncodeQwenImage21",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "prompt": "Image 1 is a motor-axis layout guide only. Replace dots and lines with a complete industrial product and omit all visible guide marks.\nDesign a quadcopter for everyday carry-along aerial photography. Strict orthographic top view, nose toward the top edge of the image, arms fully unfolded.\nFour motors in a Wide X layout: the four motor centres sit at the corners of a rectangle that is wider than it is long. Mean opposite-motor (diagonal) span 250 mm; motor-centre width-to-length span ratio W/L 1.15; adjacent arm angles clockwise from the front-left motor: 98°, 82°, 98°, 82°.\nMatch the motor centres and frame links in the attached layout image: dots mark motor centres, lines from the centre mark frame links, and the straight bar across each dot marks that motor's propeller. Do not reproduce the dots, lines or bars as drawn; render real parts in their place.\nEach motor carries one stationary two-blade propeller, 5-inch (127 mm) diameter. The two blades of each propeller are identical in length and width and point in exactly opposite directions from the hub, forming one straight blade 180 degrees across, never a V shape; each propeller rests at its own natural angle.\nNo propeller guards.\nEach arm is 15 mm wide and 4 mm thick; seen from above it reads as a 15 mm wide beam.\nEach arm grows out of the shell through a smooth seamless blend, with no joint line at the root.\nFuselage design envelope 150 × 55 × 30 mm (length × width × height); this is a size limit, not a shape.\nA rounded pod with a continuous curved outline.\nA plain top cover with no seams crossing it.\nA forward-facing camera sits at the nose and looks horizontally toward the top edge of the image; no lens glass faces the viewer, and nothing camera-like appears at the tail.\nThe camera sits inside the nose, flush with the shell; from directly overhead only a thin dark strip of its front window shows at the very front edge of the nose. The camera faces horizontally forward.\nNo separate landing gear.\nColours by part: body shell silver grey (#c7cbd1); arms silver grey (#c7cbd1); propellers charcoal black (#1e293b).\nShell surface finish: fine matte.\nShow the complete product on a plain light background as a photorealistic industrial design rendering. Omit guide marks, dimensions and lettering.",
+        "negative_prompt": "flat schematic, line drawing, collage, text, labels, logo, cropped rotor, disconnected arm, extra rotor, perspective camera, V-shaped propeller, blades at an acute angle, single-blade propeller, missing blade, unequal blades, camera lens visible from above, upward-facing lens, camera on a neck or stalk, camera on a post",
+        "resolution": 1024,
+        "images.image_1": [
+          "15",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "4",
+          0
+        ],
+        "negative": [
+          "4",
+          1
+        ],
+        "latent_image": [
+          "4",
+          2
+        ],
+        "seed": null,
+        "steps": 40,
+        "cfg": 3,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    "11": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "10",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "12": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "11",
+          0
+        ],
+        "filename_prefix": null
+      }
+    },
+    "15": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "wbguide-1633259782cc.png"
+      }
+    }
+  },
+  "workbench": {
+    "version": "4.7.1",
+    "model": "Qwen-Image-2.1",
+    "bundle": "assets/index-CzVKTWgy.js",
+    "bundle_sha256": "805e1316daaa1b25cffa85d06dd973dc8235596ffa4f0cebc842bc0b5593cdc7",
+    "image_jobs_sha256": "2a3af5b5c9ecb98ec441fd6a8105e93e7b7c188ea1f087ba996d157360ee06e9"
+  }
+}
