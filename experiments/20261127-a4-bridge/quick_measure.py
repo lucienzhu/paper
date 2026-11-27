@@ -45,7 +45,7 @@ def main():
         while right < w - 1 and not bg(right + 1):
             right += 1
         got = {"WL": W / L, "BW": (right - left + 1) / D, "DD": d / D}
-        m = re.match(r"A4-(WL|BW|DD)-CB-([0-9.]+)-s\d", name)
+        m = re.match(r"A4-(WL|BW|DD)-(?:CB2|CB|MG|TS2)-([0-9.]+)-s\d", name)
         target = f"{TARGET[m.group(1)]} {m.group(2)}" if m else "—"
         dev = f"{got[m.group(1)] - float(m.group(2)):+.3f}" if m else "—"
         print(f"{name}\t4\t{got['WL']:.3f}\t{got['BW']:.3f}\t{got['DD']:.3f}\t{target}\t{dev}")
