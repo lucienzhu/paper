@@ -1,0 +1,58 @@
+{
+  "at": "2026-11-27T12:59:45+1100",
+  "comfy": "http://127.0.0.1:18189",
+  "batch": "experiments/gpu-remote/batches/06d-a4-ts1.json",
+  "uploaded": [
+    {
+      "file": "a4wb-parts-BW-0.16-5fa8185557.png",
+      "sha256": "5fa818555789c5bbcb9a0440e2171663fe66c8294050f56affa98246cc636745",
+      "bytes": 20302
+    },
+    {
+      "file": "a4wb-parts-BW-0.23-864d83c762.png",
+      "sha256": "864d83c76263d35978892bf91100cd63aea99e88021220ed50dfd58cd7d3d339",
+      "bytes": 19869
+    },
+    {
+      "file": "a4wb-parts-BW-0.30-73d947da30.png",
+      "sha256": "73d947da305a9346615746f4f3dd7473fd7501a4ac35fae6100f84b4ad7dc3bc",
+      "bytes": 19475
+    },
+    {
+      "file": "a4wb-parts-DD-0.46-c4ec345738.png",
+      "sha256": "c4ec3457389f1183400a17c7cc12b66470f86ab2e28f7018e0de4ab2c1dbe66b",
+      "bytes": 15866
+    },
+    {
+      "file": "a4wb-parts-DD-0.56-3bd31bb635.png",
+      "sha256": "3bd31bb6355e2c6307151270aab2ad00bb04ad74009320c36c7f0de8f095a3c9",
+      "bytes": 17455
+    },
+    {
+      "file": "a4wb-parts-DD-0.66-74073d6bc5.png",
+      "sha256": "74073d6bc502869868fe5a66b8dd039a362d03e7cf5e6df101179ce96308572b",
+      "bytes": 18923
+    },
+    {
+      "file": "a4wb-parts-WL-0.70-66ea96ee9b.png",
+      "sha256": "66ea96ee9be0e7d2de1464c35e0b60251fcef810c3a8242b8fa1ca6fed6caf56",
+      "bytes": 15666
+    },
+    {
+      "file": "a4wb-parts-WL-1.15-eb52cd6ad8.png",
+      "sha256": "eb52cd6ad8ecdca8562219ebd245e504910a0c3785b644512d9e1b93e1d4fa4c",
+      "bytes": 15980
+    },
+    {
+      "file": "a4wb-parts-WL-1.35-b5b25f7568.png",
+      "sha256": "b5b25f75680b8cc91597c8530841367bfb356a66325f90244b3128fb6b8780f0",
+      "bytes": 16688
+    },
+    {
+      "file": "a4wb-parts-WL-1.55-3658d2253a.png",
+      "sha256": "3658d2253a98e015101b9f1fbf989dbaeb2067f50b9e7e807ef9cc4e7fc98114",
+      "bytes": 16608
+    }
+  ],
+  "readback_problems": []
+}
